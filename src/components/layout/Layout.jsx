@@ -164,7 +164,7 @@ export const Layout = ({ children }) => {
         <div className="min-h-screen bg-background flex">
             <Sidebar className="hidden md:flex" />
 
-            <div className="flex-1 flex flex-col pb-16 md:pb-0"> {/* Padding bottom for Mobile Nav */}
+            <div className="flex-1 flex flex-col pb-20 md:pb-0"> {/* Padding bottom for Mobile Nav */}
                 <header className="pt-safe border-b bg-card/50 backdrop-blur px-4 flex items-center justify-between md:hidden sticky top-0 z-40 bg-[#050A1F]/80">
                     <div className="flex items-center gap-2 h-14">
                         <img src="/logo.png" alt="Logo" className="w-6 h-6 rounded-md" />

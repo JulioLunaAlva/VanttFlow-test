@@ -19,39 +19,39 @@ export const MobileNav = () => {
     const [isAddOpen, setIsAddOpen] = useState(false);
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-background/95 backdrop-blur border-t flex items-center justify-between px-4 z-50 pb-safe">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-background/95 backdrop-blur border-t flex items-center justify-between px-6 z-50 pb-safe">
             {/* Left Side */}
             <NavLink
                 to="/"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-12 h-full transition-colors",
+                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
             >
-                <LayoutDashboard size={24} strokeWidth={2} />
-                <span className="text-[10px] mt-1 font-medium">Inicio</span>
+                <LayoutDashboard size={28} strokeWidth={2} />
+                <span className="text-[11px] mt-1 font-semibold">Inicio</span>
             </NavLink>
 
             <NavLink
                 to="/transactions"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-12 h-full transition-colors",
+                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
             >
-                <Receipt size={24} strokeWidth={2} />
-                <span className="text-[10px] mt-1 font-medium">Movs</span>
+                <Receipt size={28} strokeWidth={2} />
+                <span className="text-[11px] mt-1 font-semibold">Movs</span>
             </NavLink>
 
             {/* Center Action Button */}
-            <div className="relative -top-5">
+            <div className="relative -top-6">
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                     <DialogTrigger asChild>
                         <Button
                             size="icon"
-                            className="h-14 w-14 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 border-4 border-background"
+                            className="h-16 w-16 rounded-full shadow-xl bg-primary text-primary-foreground hover:bg-primary/90 border-4 border-background"
                         >
-                            <Plus size={32} />
+                            <Plus size={36} />
                         </Button>
                     </DialogTrigger>
                     <DialogContent className="p-4 max-h-[90vh] overflow-y-auto">
@@ -65,12 +65,12 @@ export const MobileNav = () => {
             <NavLink
                 to="/cards"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-12 h-full transition-colors",
+                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
                     isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
                 )}
             >
-                <CreditCard size={24} strokeWidth={2} />
-                <span className="text-[10px] mt-1 font-medium">Cuentas</span>
+                <CreditCard size={28} strokeWidth={2} />
+                <span className="text-[11px] mt-1 font-semibold">Cuentas</span>
             </NavLink>
 
             {/* More Menu */}
@@ -78,12 +78,12 @@ export const MobileNav = () => {
                 <DropdownMenuTrigger asChild>
                     <button
                         className={cn(
-                            "flex flex-col items-center justify-center w-12 h-full transition-colors",
+                            "flex flex-col items-center justify-center w-14 h-full transition-colors",
                             "text-muted-foreground hover:text-foreground"
                         )}
                     >
-                        <Menu size={24} strokeWidth={2} />
-                        <span className="text-[10px] mt-1 font-medium">Más</span>
+                        <Menu size={28} strokeWidth={2} />
+                        <span className="text-[11px] mt-1 font-semibold">Más</span>
                     </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 mb-2">

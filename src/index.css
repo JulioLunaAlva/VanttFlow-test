@@ -81,12 +81,16 @@
 
   body {
     @apply bg-background text-foreground;
-    /* Prevent rubber-band scrolling on the whole body for a more native feel */
-    overflow: hidden;
+    /* Allow vertical scrolling but prevent horizontal overflow */
+    overflow-x: hidden;
+    overflow-y: auto;
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
+    /* Ensure body takes full height for safe area background colors */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
   }
 
   /* Safe Area Utilities */
