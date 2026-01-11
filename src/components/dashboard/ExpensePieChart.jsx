@@ -50,7 +50,7 @@ export const ExpensePieChart = () => {
             <CardHeader className="pb-2">
                 <CardTitle>Gastos por Categoría</CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 min-h-[300px]">
+            <CardContent className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart margin={{ top: 0, right: 0, bottom: 0, left: 0 }}>
                         <Pie
