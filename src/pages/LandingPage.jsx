@@ -25,19 +25,19 @@ export const LandingPage = () => {
             <div className="z-10 max-w-4xl w-full text-center space-y-12 animate-in fade-in zoom-in duration-700">
 
                 {/* Brand Section */}
-                <div className="flex flex-col items-center gap-6">
+                <div className="flex flex-col items-center gap-4 md:gap-6">
                     {/* Logo Icon - Preserved as requested */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                        <img src="/logo.png" alt="VanttFlow Logo" className="relative w-24 h-24 object-contain drop-shadow-2xl" />
+                        <img src="/logo.png" alt="VanttFlow Logo" className="relative w-20 h-20 md:w-24 md:h-24 object-contain drop-shadow-2xl" />
                     </div>
 
                     <div className="space-y-4">
-                        <h1 className="text-[7.5rem] leading-[0.85] font-black tracking-[-0.07em] mb-4 select-none drop-shadow-2xl">
+                        <h1 className="text-5xl sm:text-7xl md:text-[7.5rem] leading-[0.9] md:leading-[0.85] font-black tracking-[-0.07em] mb-4 select-none drop-shadow-2xl">
                             <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Vantt</span>
                             <span className="bg-gradient-to-b from-blue-500 to-blue-600 bg-clip-text text-transparent italic px-1">Flow</span>
                         </h1>
-                        <p className="text-2xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed">
+                        <p className="text-lg md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed px-4">
                             Reimagina tu libertad financiera con <span className="text-white font-bold">inteligencia</span> y <span className="text-white font-bold">estilo</span>.
                         </p>
 
