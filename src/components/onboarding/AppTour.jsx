@@ -18,10 +18,9 @@ const TOUR_STEPS = [
         position: 'bottom'
     },
     {
-        target: 'tour-add',
-        desktopTarget: 'tour-transactions-nav',
-        title: 'Acción Rápida',
-        content: 'Este es el corazón de VanttFlow. Úsalo para registrar tus gastos e ingresos al instante.',
+        target: 'tour-analytics',
+        title: 'Análisis Inteligente',
+        content: 'Visualiza en qué gastas más y toma mejores decisiones con estas gráficas dinámicas.',
         position: 'top',
         desktopPosition: 'bottom'
     },
@@ -32,16 +31,18 @@ const TOUR_STEPS = [
         position: 'top'
     },
     {
-        target: 'tour-analytics',
-        title: 'Análisis Inteligente',
-        content: 'Visualiza en qué gastas más y toma mejores decisiones con estas gráficas dinámicas.',
+        target: 'tour-gamification',
+        title: 'Modo Espíritu (XP)',
+        content: '¡Tu salud financiera ahora tiene nivel! Gana "XP" (experiencia) al registrar gastos y metas. Es una forma divertida de ver tu progreso.',
         position: 'top'
     },
     {
-        target: 'tour-gamification',
-        title: 'Modo Espíritu (XP)',
-        content: '¡Tu salud financiera ahora tiene nivel! Gana "XP" (experiencia) al registrar gastos y metas. Es una forma divertida de ver tu progreso. ¿No te gusta? Puedes desactivarlo en Configuración.',
-        position: 'top'
+        target: 'tour-add',
+        desktopTarget: 'tour-transactions-nav',
+        title: 'Acción Rápida',
+        content: 'Este es el corazón de VanttFlow. Úsalo para registrar tus gastos e ingresos al instante.',
+        position: 'top',
+        desktopPosition: 'bottom'
     }
 ];
 
