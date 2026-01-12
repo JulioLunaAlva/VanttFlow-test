@@ -5,6 +5,13 @@ import { X, ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
 
 const TOUR_STEPS = [
     {
+        target: 'tour-theme-toggle-mobile',
+        desktopTarget: 'tour-theme-toggle-desktop',
+        title: 'Elige tu Estilo',
+        content: 'Personaliza VanttFlow a tu gusto. Elige entre el Modo Oscuro, Pink, Gamer o el nuevo Modo Anime para una experiencia única.',
+        position: 'bottom'
+    },
+    {
         target: 'tour-balance',
         title: 'Tu Salud Financiera',
         content: 'Aquí puedes ver tu balance total consolidado de todas tus cuentas en tiempo real.',
@@ -12,9 +19,11 @@ const TOUR_STEPS = [
     },
     {
         target: 'tour-add',
+        desktopTarget: 'tour-transactions-nav',
         title: 'Acción Rápida',
         content: 'Este es el corazón de VanttFlow. Úsalo para registrar tus gastos e ingresos al instante.',
-        position: 'top'
+        position: 'top',
+        desktopPosition: 'bottom'
     },
     {
         target: 'tour-goals',
@@ -27,6 +36,12 @@ const TOUR_STEPS = [
         title: 'Análisis Inteligente',
         content: 'Visualiza en qué gastas más y toma mejores decisiones con estas gráficas dinámicas.',
         position: 'top'
+    },
+    {
+        target: 'tour-gamification',
+        title: 'Modo Espíritu (XP)',
+        content: '¡Tu salud financiera ahora tiene nivel! Gana "XP" (experiencia) al registrar gastos y metas. Es una forma divertida de ver tu progreso. ¿No te gusta? Puedes desactivarlo en Configuración.',
+        position: 'top'
     }
 ];
 
@@ -37,9 +52,24 @@ export const AppTour = () => {
 
     const updateCoords = useCallback(() => {
         const step = TOUR_STEPS[currentStep];
-        const element = document.getElementById(step.target);
+        let element = document.getElementById(step.target);
+
+        // Desktop fallback if mobile target is hidden/missing
+        if ((!element || element.offsetParent === null) && step.desktopTarget) {
+            element = document.getElementById(step.desktopTarget);
+        }
+
         if (element) {
             const rect = element.getBoundingClientRect();
+
+            // Auto-scroll logic: only if the element is not clearly visible
+            if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+            }
+
             setCoords({
                 top: rect.top,
                 left: rect.left,
@@ -47,6 +77,17 @@ export const AppTour = () => {
                 height: rect.height,
                 windowWidth: window.innerWidth,
                 windowHeight: window.innerHeight
+            });
+        } else {
+            // Fallback to center if element still missing (prevents focal jump to 0,0)
+            setCoords({
+                top: window.innerHeight / 2 - 50,
+                left: window.innerWidth / 2 - 50,
+                width: 100,
+                height: 100,
+                windowWidth: window.innerWidth,
+                windowHeight: window.innerHeight,
+                isFallback: true
             });
         }
     }, [currentStep]);
@@ -57,23 +98,32 @@ export const AppTour = () => {
             // Delay start slightly for layout to settle
             const timer = setTimeout(() => {
                 setIsVisible(true);
-                updateCoords();
             }, 1500);
             return () => clearTimeout(timer);
         }
-    }, [updateCoords]);
+    }, []);
 
     useEffect(() => {
         if (isVisible) {
+            updateCoords();
             window.addEventListener('resize', updateCoords);
             window.addEventListener('scroll', updateCoords);
-            updateCoords();
+
+            // Desktop Keyboard Navigation
+            const handleKeyDown = (e) => {
+                if (e.key === 'ArrowRight') handleNext();
+                if (e.key === 'ArrowLeft') handlePrev();
+                if (e.key === 'Escape') completeTour();
+            };
+            window.addEventListener('keydown', handleKeyDown);
+
+            return () => {
+                window.removeEventListener('resize', updateCoords);
+                window.removeEventListener('scroll', updateCoords);
+                window.removeEventListener('keydown', handleKeyDown);
+            };
         }
-        return () => {
-            window.removeEventListener('resize', updateCoords);
-            window.removeEventListener('scroll', updateCoords);
-        };
-    }, [isVisible, updateCoords]);
+    }, [isVisible, updateCoords, currentStep]);
 
     const handleNext = () => {
         if (currentStep < TOUR_STEPS.length - 1) {
@@ -98,9 +148,14 @@ export const AppTour = () => {
 
     const step = TOUR_STEPS[currentStep];
 
-    // Calculate tooltip position
+    // Calculate tooltip position with safety margins
     const tooltipStyle = {};
-    if (step.position === 'bottom') {
+    const effectivePosition = (coords.windowWidth > 768 && step.desktopPosition) ? step.desktopPosition : step.position;
+
+    if (coords.isFallback) {
+        tooltipStyle.top = window.innerHeight / 2 + 70;
+        tooltipStyle.left = window.innerWidth / 2 - 140;
+    } else if (effectivePosition === 'bottom') {
         tooltipStyle.top = coords.top + coords.height + 20;
         tooltipStyle.left = Math.max(10, Math.min(coords.left + coords.width / 2 - 140, window.innerWidth - 290));
     } else {
@@ -109,10 +164,10 @@ export const AppTour = () => {
     }
 
     return createPortal(
-        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none overflow-hidden">
             {/* Darkened Backdrop with Spotlight */}
             <div
-                className="absolute inset-0 bg-black/70 transition-all duration-500 pointer-events-auto"
+                className="absolute inset-0 bg-black/80 transition-all duration-300 pointer-events-auto"
                 style={{
                     clipPath: `polygon(
                         0% 0%, 
@@ -130,9 +185,9 @@ export const AppTour = () => {
                 onClick={completeTour}
             />
 
-            {/* Highlight Border/Glow */}
+            {/* Highlight Border/Glow with Pulse */}
             <div
-                className="absolute border-2 border-primary rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all duration-500"
+                className="absolute border-2 border-primary rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.5)] transition-all duration-300 animate-pulse"
                 style={{
                     top: coords.top - 4,
                     left: coords.left - 4,

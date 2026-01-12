@@ -5,8 +5,12 @@ import { BalanceBarChart } from "@/components/dashboard/BalanceBarChart";
 import { PendingPaymentsWidget } from '@/components/dashboard/PendingPaymentsWidget';
 import { RecentActivityWidget } from '@/components/dashboard/RecentActivityWidget';
 import { GoalsSummaryWidget } from '@/components/dashboard/GoalsSummaryWidget';
+import { GamificationWidget } from '@/components/gamification/GamificationWidget';
+import { SavingPowerWidget } from '@/components/gamification/SavingPowerWidget';
+import { DailyMissionsWidget } from '@/components/gamification/DailyMissionsWidget';
+import { MarketTrendsWidget } from '@/components/dashboard/MarketTrendsWidget';
 import { Button } from "@/components/ui/button";
-import { RotateCcw, GripHorizontal, Check, Settings2 } from 'lucide-react';
+import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useFinance } from '@/context/FinanceContext';
 
@@ -28,9 +32,13 @@ const WelcomeHeader = () => (
 
 const WIDGETS_CONFIG = [
     { id: 'balance', component: BalanceBarChart, label: 'Balance General', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
-    { id: 'goals', component: GoalsSummaryWidget, label: 'Progreso de Metas', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'activity', component: RecentActivityWidget, label: 'Actividad Reciente', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'expenses', component: ExpensePieChart, label: 'Gastos por Categoría', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
+    { id: 'goals', component: GoalsSummaryWidget, label: 'Progreso de Metas', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
+    { id: 'gamification', component: GamificationWidget, label: 'Rango Financiero', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
+    { id: 'saving', component: SavingPowerWidget, label: 'Poder de Ahorro', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
+    { id: 'missions', component: DailyMissionsWidget, label: 'Misiones Diarias', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
+    { id: 'market', component: MarketTrendsWidget, label: 'Pulsos del Mercado', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'pending', component: PendingPaymentsWidget, label: 'Pagos Pendientes', className: 'lg:col-span-7 md:col-span-2' }
 ];
 
@@ -40,6 +48,13 @@ export const DashboardPage = () => {
     const [order, setOrder] = useState(() => {
         const saved = localStorage.getItem('dashboard_layout');
         return saved ? JSON.parse(saved) : WIDGETS_CONFIG.map(w => w.id);
+    });
+
+    const [visibility, setVisibility] = useState(() => {
+        const saved = localStorage.getItem('dashboard_visibility');
+        const defaultVisibility = {};
+        WIDGETS_CONFIG.forEach(w => defaultVisibility[w.id] = true);
+        return saved ? { ...defaultVisibility, ...JSON.parse(saved) } : defaultVisibility;
     });
 
     // Validar si hay nuevos widgets que no estan en el orden guardado
@@ -60,9 +75,32 @@ export const DashboardPage = () => {
         localStorage.setItem('dashboard_layout', JSON.stringify(newOrder));
     };
 
+    const toggleVisibility = (id) => {
+        const newVisibility = { ...visibility, [id]: !visibility[id] };
+        setVisibility(newVisibility);
+        localStorage.setItem('dashboard_visibility', JSON.stringify(newVisibility));
+        toast.success(`${visibility[id] ? 'Ocultado' : 'Mostrado'}: ${WIDGETS_CONFIG.find(w => w.id === id)?.label}`);
+    };
+
+    const moveWidget = (index, direction) => {
+        const newOrder = [...order];
+        const newIndex = direction === 'up' ? index - 1 : index + 1;
+
+        if (newIndex >= 0 && newIndex < newOrder.length) {
+            const temp = newOrder[index];
+            newOrder[index] = newOrder[newIndex];
+            newOrder[newIndex] = temp;
+            saveOrder(newOrder);
+        }
+    };
+
     const resetLayout = () => {
         const defaultOrder = WIDGETS_CONFIG.map(w => w.id);
+        const defaultVisibility = {};
+        WIDGETS_CONFIG.forEach(w => defaultVisibility[w.id] = true);
         saveOrder(defaultOrder);
+        setVisibility(defaultVisibility);
+        localStorage.setItem('dashboard_visibility', JSON.stringify(defaultVisibility));
         toast.info("Diseño restablecido a valores por defecto");
     };
 
@@ -109,7 +147,9 @@ export const DashboardPage = () => {
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
                     <p className="text-xs text-muted-foreground mt-1">
-                        {isEditMode ? "Arrastra los cuadros para reordenar" : "Resumen de tu actividad financiera"}
+                        {isEditMode
+                            ? (window.innerWidth < 768 ? "Usa las flechas para reordenar" : "Arrastra los cuadros para reordenar")
+                            : "Resumen de tu actividad financiera"}
                     </p>
                 </div>
                 <div className="flex gap-2">
@@ -147,20 +187,60 @@ export const DashboardPage = () => {
                             onDragStart={(e) => handleDragStart(e, index)}
                             onDragEnd={handleDragEnd}
                             onDragOver={(e) => handleDragOver(e, index)}
-                            id={widgetId === 'goals' ? 'tour-goals' : widgetId === 'balance' ? 'tour-analytics' : undefined}
+                            style={{ display: visibility[widgetId] || isEditMode ? 'block' : 'none' }}
+                            id={widgetId === 'goals' ? 'tour-goals' : widgetId === 'gamification' ? 'tour-gamification' : widgetId === 'balance' ? 'tour-analytics' : undefined}
                             className={`
                                 ${widgetConfig.className} 
                                 relative group transition-all duration-200 ease-in-out rounded-xl
                                 ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-2 ring-primary ring-offset-2 bg-card z-10' : ''}
                                 ${draggedItem === index ? 'opacity-50' : ''}
+                                ${!visibility[widgetId] && isEditMode ? 'opacity-40 grayscale' : ''}
                             `}
                         >
                             {/* Edit Overlay / Handle - Visible only in Edit Mode */}
                             {isEditMode && (
-                                <div className="absolute inset-0 bg-background/50 backdrop-blur-[1px] rounded-xl flex items-center justify-center z-50 border-2 border-dashed border-primary/50 pointer-events-none">
-                                    <div className="bg-background shadow-lg rounded-full px-4 py-2 flex items-center gap-2 text-sm font-medium animate-in fade-in zoom-in">
+                                <div className="absolute inset-0 bg-background/50 backdrop-blur-[1px] rounded-xl flex flex-col items-center justify-center z-50 border-2 border-dashed border-primary/50 pointer-events-none p-4">
+                                    <div className="absolute top-2 right-2 pointer-events-auto">
+                                        <Button
+                                            size="icon"
+                                            variant={visibility[widgetId] ? "secondary" : "destructive"}
+                                            className="h-8 w-8 rounded-full shadow-lg"
+                                            onClick={() => toggleVisibility(widgetId)}
+                                            title={visibility[widgetId] ? "Ocultar" : "Mostrar"}
+                                        >
+                                            {visibility[widgetId] ? <Eye size={14} /> : <EyeOff size={14} />}
+                                        </Button>
+                                    </div>
+                                    <div className="bg-background shadow-lg rounded-full px-4 py-2 flex items-center gap-2 text-sm font-medium animate-in fade-in zoom-in hidden md:flex">
                                         <GripHorizontal size={16} />
                                         Mover {widgetConfig.label}
+                                    </div>
+
+                                    {/* Mobile Reordering Controls */}
+                                    <div className="md:hidden flex flex-col gap-4 pointer-events-auto">
+                                        <div className="text-center mb-1">
+                                            <span className="text-xs font-bold uppercase tracking-wider text-primary">{widgetConfig.label}</span>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <Button
+                                                size="icon"
+                                                variant="secondary"
+                                                className="h-14 w-14 rounded-2xl shadow-lg border border-primary/20 bg-background/80"
+                                                onClick={() => moveWidget(index, 'up')}
+                                                disabled={index === 0}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-up"><path d="m5 12 7-7 7 7" /><path d="M12 19V5" /></svg>
+                                            </Button>
+                                            <Button
+                                                size="icon"
+                                                variant="secondary"
+                                                className="h-14 w-14 rounded-2xl shadow-lg border border-primary/20 bg-background/80"
+                                                onClick={() => moveWidget(index, 'down')}
+                                                disabled={index === order.length - 1}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-arrow-down"><path d="m19 12-7 7-7-7" /><path d="M12 5v14" /></svg>
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
                             )}

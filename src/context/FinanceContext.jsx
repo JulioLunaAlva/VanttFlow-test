@@ -2,6 +2,7 @@ import React, { createContext, useContext, useMemo } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO, format, setDate, min, lastDayOfMonth, isSameMonth } from 'date-fns';
 import { toast } from 'sonner';
+import { useGamification } from './GamificationContext';
 
 const FinanceContext = createContext();
 
@@ -43,6 +44,8 @@ export const FinanceProvider = ({ children }) => {
     // Global Filter State
     const [selectedMonth, setSelectedMonth] = React.useState(new Date()); // Date object representing the month
 
+    const { gainXp, unlockAchievement, completeMission } = useGamification();
+
     // Actions
     // ... (previous actions)
 
@@ -50,6 +53,9 @@ export const FinanceProvider = ({ children }) => {
     const addGoal = (goal) => {
         setGoals(prev => [...prev, { ...goal, id: crypto.randomUUID(), createdAt: Date.now() }]);
         toast.success('Meta creada');
+        gainXp(20, 'Planificando el futuro');
+        unlockAchievement('goal_creator');
+        completeMission('add_goal');
     };
 
     const updateGoal = (id, updates) => {
@@ -103,6 +109,9 @@ export const FinanceProvider = ({ children }) => {
             }
         });
         toast.success('Presupuesto actualizado');
+        gainXp(15, 'Organizando tus finanzas');
+        unlockAchievement('budget_master');
+        completeMission('check_budget');
     };
 
     // Derived Data (Filtered by Month)
@@ -127,7 +136,10 @@ export const FinanceProvider = ({ children }) => {
 
         const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + Number(curr.amount), 0);
         const totalExpense = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + Number(curr.amount), 0);
-        const balance = totalIncome - totalExpense;
+
+        // Include initial balances of all accounts
+        const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
+        const balance = initialBalancesSum + totalIncome - totalExpense;
 
         return { income, expense, balance };
     };
@@ -195,6 +207,9 @@ export const FinanceProvider = ({ children }) => {
 
         setTransactions(prev => [newTransaction, ...prev]);
         toast.success('Transacción guardada');
+        gainXp(10, 'Registro de actividad');
+        unlockAchievement('first_transaction');
+        completeMission('reg_trans');
     };
 
     const deleteTransaction = (id) => {
@@ -287,10 +302,12 @@ export const FinanceProvider = ({ children }) => {
             id: crypto.randomUUID(),
             createdAt: Date.now(),
             status: 'active',
-            startMonthKey: payment.frequency === 'monthly' ? format(selectedMonth, 'yyyy-MM') : null
+            startMonthKey: format(new Date(), 'yyyy-MM'),
+            endMonthKey: payment.endDate ? format(parseISO(payment.endDate), 'yyyy-MM') : null
         };
         setScheduledPayments(prev => [...prev, newPayment]);
         toast.success('Pago programado creado');
+        completeMission('add_scheduled');
     };
 
     const toggleScheduledStatus = (id) => {
@@ -354,6 +371,7 @@ export const FinanceProvider = ({ children }) => {
             };
             setPaymentInstances(prev => [...prev.filter(i => !(i.scheduledPaymentId === payment.id && i.monthKey === monthKey)), newInstance]);
             toast.success('Pago registrado');
+            gainXp(30, 'Responsabilidad cumplida');
         } else if (action === 'skip') {
             const newInstance = {
                 id: crypto.randomUUID(),
@@ -419,7 +437,8 @@ export const FinanceProvider = ({ children }) => {
         deleteCategory,
         updateAccount,
         deleteAccount,
-        getCreditCardStatus
+        getCreditCardStatus,
+        budgets
     };
 
     return (

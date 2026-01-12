@@ -1,5 +1,6 @@
 import React from 'react';
 import { useFinance } from "@/context/FinanceContext";
+import { useGamification } from "@/context/GamificationContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus, BarChart2 } from 'lucide-react';
 import { format, subMonths, isSameMonth, parseISO } from 'date-fns';
@@ -7,6 +8,11 @@ import { es } from 'date-fns/locale';
 
 export const AnalyticsPage = () => {
     const { transactions, selectedMonth, categories } = useFinance();
+    const { completeMission } = useGamification();
+
+    React.useEffect(() => {
+        completeMission('visit_analytics');
+    }, []);
 
     // 1. Determine comparison months
     const currentMonthDate = selectedMonth;

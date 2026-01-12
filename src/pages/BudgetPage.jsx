@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Progress } from "@/components/ui/progress";
 import { Plus, Wallet, AlertCircle } from 'lucide-react';
 import { BudgetCard } from '@/components/budget/BudgetCard';
+import { cn } from "@/lib/utils";
 import { toast } from 'sonner';
 
 export const BudgetPage = () => {
@@ -60,32 +61,47 @@ export const BudgetPage = () => {
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
             {/* Header Summary */}
-            <div className="grid gap-4 md:grid-cols-3">
-                <Card className="bg-primary/5 border-primary/20">
+            <div className="grid gap-6 md:grid-cols-3">
+                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-3xl -mr-12 -mt-12 transition-all group-hover:bg-primary/20" />
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Presupuesto Total</CardTitle>
+                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">Presupuesto Total</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${totalBudget.toLocaleString()}</div>
-                        <p className="text-xs text-muted-foreground">Para este mes</p>
+                        <div className="text-3xl font-black tracking-tighter">${totalBudget.toLocaleString()}</div>
+                        <p className="text-[10px] font-medium text-primary/60 mt-1 uppercase tracking-wider">Planificación Mensual</p>
                     </CardContent>
                 </Card>
-                <Card>
+
+                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Gastado</CardTitle>
+                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">Consumo Acumulado</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">${totalSpent.toLocaleString()}</div>
-                        <Progress value={totalProgress} className="h-1 mt-2" />
+                        <div className="text-3xl font-black tracking-tighter text-foreground">${totalSpent.toLocaleString()}</div>
+                        <div className="mt-4 space-y-1.5">
+                            <div className="flex justify-between items-center text-[10px] font-black uppercase">
+                                <span className="opacity-40">Progreso General</span>
+                                <span className={cn(totalProgress > 90 ? "text-red-500" : "text-emerald-500")}>{totalProgress.toFixed(0)}%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-slate-900/40 rounded-full overflow-hidden border border-white/5">
+                                <div
+                                    className={cn("h-full transition-all duration-1000 ease-out", totalProgress > 90 ? "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]" : "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]")}
+                                    style={{ width: `${Math.min(totalProgress, 100)}%` }}
+                                />
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
-                <Card>
+
+                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl -mr-12 -mt-12 transition-all group-hover:bg-emerald-500/20" />
                     <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Disponible</CardTitle>
+                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">Capital Disponible</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-emerald-600">${Math.max(0, totalBudget - totalSpent).toLocaleString()}</div>
-                        <p className="text-xs text-muted-foreground">En categorías presupuestadas</p>
+                        <div className="text-3xl font-black tracking-tighter text-emerald-500">${Math.max(0, totalBudget - totalSpent).toLocaleString()}</div>
+                        <p className="text-[10px] font-medium text-emerald-500/60 mt-1 uppercase tracking-wider">Margen Operativo</p>
                     </CardContent>
                 </Card>
             </div>

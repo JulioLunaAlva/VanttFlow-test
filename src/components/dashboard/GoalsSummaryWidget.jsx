@@ -28,7 +28,7 @@ export const GoalsSummaryWidget = () => {
                             No has definido metas aún. Empieza a ahorrar para lo que más quieres.
                         </p>
                     </div>
-                    <Link to="/metas">
+                    <Link to="/goals">
                         <span className="text-xs font-bold text-primary hover:underline bg-primary/10 px-3 py-1.5 rounded-full transition-colors">Crear primera meta</span>
                     </Link>
                 </CardContent>
@@ -50,7 +50,7 @@ export const GoalsSummaryWidget = () => {
                     <Trophy size={16} className="text-yellow-500" />
                     Progreso de Metas
                 </CardTitle>
-                <Link to="/metas" className="text-xs text-muted-foreground hover:text-primary flex items-center">
+                <Link to="/goals" className="text-xs text-muted-foreground hover:text-primary flex items-center">
                     Ver todas <ChevronRight size={12} />
                 </Link>
             </CardHeader>

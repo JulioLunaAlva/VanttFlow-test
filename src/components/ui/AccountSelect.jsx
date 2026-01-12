@@ -53,7 +53,11 @@ export function AccountSelect({ accounts, value, onChange, placeholder = "Selecc
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[300px] p-0 pointer-events-auto">
-                <div className="max-h-[40vh] md:max-h-[300px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto">
+                <div
+                    className="max-h-[40vh] md:max-h-[300px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto"
+                    onWheel={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
+                >
                     {accounts.map((account) => (
                         <div
                             key={account.id}

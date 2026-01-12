@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 
 export const OnboardingWizard = () => {
     const { register } = useIdentity();
-    const { addAccount } = useFinance(); // We'll add the initial cash account
+    const { addAccount, updateAccount } = useFinance(); // We'll add the initial cash account
     const navigate = useNavigate();
 
     const [step, setStep] = useState(1);
@@ -43,12 +43,8 @@ export const OnboardingWizard = () => {
         // We might want to clear existing data if resetting? For now we append.
         const initialCash = Number(formData.initialBalance) || 0;
         if (initialCash >= 0) {
-            addAccount({
-                name: 'Efectivo Inicial',
-                initialBalance: initialCash,
-                type: 'cash',
-                color: '#10b981'
-            });
+            // Update the default 'wallet' (Efectivo) account balance
+            updateAccount('wallet', { initialBalance: initialCash });
         }
 
         // 3. Navigate

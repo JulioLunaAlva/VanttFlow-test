@@ -66,6 +66,131 @@
     --ring: 224.3 76.3% 48%;
   }
 
+  .pink {
+    color-scheme: light;
+    --background: 340 100% 98%;
+    --foreground: 340 40% 20%;
+
+    --card: 340 100% 100%;
+    --card-foreground: 340 40% 20%;
+
+    --popover: 340 100% 100%;
+    --popover-foreground: 340 40% 20%;
+
+    --primary: 340 80% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 340 50% 94%;
+    --secondary-foreground: 340 40% 30%;
+
+    --muted: 340 40% 96%;
+    --muted-foreground: 340 20% 50%;
+
+    --accent: 340 80% 65%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 340 40% 98%;
+
+    --border: 340 50% 90%;
+    --input: 340 50% 90%;
+    --ring: 340 80% 65%;
+  }
+
+  .gamer {
+    color-scheme: dark;
+    --background: 280 40% 4%;
+    --foreground: 180 100% 90%;
+
+    --card: 280 40% 6%;
+    --card-foreground: 180 100% 90%;
+
+    --popover: 280 40% 6%;
+    --popover-foreground: 180 100% 90%;
+
+    --primary: 290 100% 60%;
+    --primary-foreground: 180 100% 10%;
+
+    --secondary: 260 50% 15%;
+    --secondary-foreground: 290 100% 60%;
+
+    --muted: 260 50% 15%;
+    --muted-foreground: 260 20% 60%;
+
+    --accent: 180 100% 50%;
+    --accent-foreground: 280 40% 4%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 290 100% 60% / 0.2;
+    --input: 290 100% 60% / 0.2;
+    --ring: 290 100% 60%;
+  }
+
+  .anime {
+    color-scheme: light;
+    /* Warm Parchment / Ninja Scroll Background */
+    --background: 35 40% 90%;
+    --foreground: 230 40% 15%;
+
+    --card: 35 30% 96%;
+    --card-foreground: 230 40% 15%;
+
+    --popover: 35 30% 96%;
+    --popover-foreground: 230 40% 15%;
+
+    /* Fiery Red / Leaf Village Spirit */
+    --primary: 0 75% 45%;
+    --primary-foreground: 45 100% 98%;
+
+    /* Scroll Gold / Sunlight */
+    --secondary: 40 80% 60%;
+    --secondary-foreground: 0 0% 10%;
+
+    --muted: 35 30% 85%;
+    --muted-foreground: 230 20% 40%;
+
+    /* Ghibli Mint / Spirit Water */
+    --accent: 170 60% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 90% 40%;
+    --destructive-foreground: 45 100% 98%;
+
+    /* Thick Ink Outlines */
+    --border: 35 40% 15% / 0.15;
+    --input: 35 40% 15% / 0.1;
+    --ring: 0 75% 45%;
+    --radius: 1rem;
+  }
+
+  /* Anime Mode Global Pattern */
+  .anime body {
+    background-image: radial-gradient(circle at 2px 2px, hsla(0, 0%, 0%, 0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+    background-color: hsl(var(--background));
+  }
+
+  .anime .card {
+    border-width: 2px;
+    border-color: hsla(var(--foreground), 0.1);
+    box-shadow: 4px 4px 0px hsla(var(--foreground), 0.05);
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40a20 20 0 0 1 20-20 20 20 0 0 1 20 20H0zm20-20a20 20 0 0 1 20-20V0a20 20 0 0 0-20 20zM0 0a20 20 0 0 0 20 20V0H0z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
+  .anime button:not([size="icon"]) {
+    border-bottom-width: 4px;
+    border-right-width: 2px;
+    transition: all 0.1s ease;
+  }
+
+  .anime button:not([size="icon"]):active {
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    transform: translate(1px, 2px);
+  }
+
   /* Force dark background for options in dark mode */
   .dark select,
   .dark option {
@@ -130,4 +255,34 @@ main {
 input,
 textarea {
   user-select: text;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
 }

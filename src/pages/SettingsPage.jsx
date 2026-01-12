@@ -6,11 +6,24 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select } from "@/components/ui/select";
-import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles } from 'lucide-react';
+import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useGamification } from '@/context/GamificationContext';
 
 export const SettingsPage = () => {
     const { user, updateProfile, logout } = useIdentity();
+    const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
+
+    const PET_OPTIONS = [
+        { id: 'fox', emoji: '🦊', name: 'Zorro' },
+        { id: 'dog', emoji: '🐶', name: 'Perro' },
+        { id: 'shinobi', emoji: '🥷', name: 'Shinobi' },
+        { id: 'chief', emoji: '🛡️', name: 'Spartan' },
+        { id: 'kitty', emoji: '🐱', name: 'Gatito' },
+        { id: 'pocket', emoji: '⚡', name: 'Pocket' },
+        { id: 'maiden', emoji: '👸', name: 'Dama' }
+    ];
 
     const [formData, setFormData] = useState({
         name: user?.name || '',
@@ -148,6 +161,59 @@ export const SettingsPage = () => {
                 </CardContent>
             </Card>
 
+            {/* Gamification Settings */}
+            <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-card to-primary/5">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Sword className="h-5 w-5 text-primary" />
+                        Modo Espíritu (Gamificación)
+                    </CardTitle>
+                    <CardDescription>Convierte tus finanzas en una aventura RPG con niveles y logros.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-background/50 border border-white/5">
+                        <div className="space-y-0.5">
+                            <Label className="text-base">Habilitar Gamificación</Label>
+                            <p className="text-sm text-muted-foreground">Activa el sistema de XP, Niveles y Logros.</p>
+                        </div>
+                        <Button
+                            variant={isEnabled ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => setIsEnabled(!isEnabled)}
+                            className="rounded-full px-6 transition-all"
+                        >
+                            {isEnabled ? "Activado" : "Desactivado"}
+                        </Button>
+                    </div>
+
+                    {isEnabled && (
+                        <div className="pt-4 border-t border-white/5 animate-in fade-in slide-in-from-top-2">
+                            <Label className="text-sm mb-3 block">Elige tu Compañero Espiritual</Label>
+                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                                {PET_OPTIONS.map(pet => (
+                                    <button
+                                        key={pet.id}
+                                        onClick={() => {
+                                            setSelectedPet(pet.id);
+                                            toast.success(`Compañero cambiado a ${pet.name}`);
+                                        }}
+                                        className={cn(
+                                            "flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all hover:scale-105 active:scale-95",
+                                            selectedPet === pet.id
+                                                ? "border-primary bg-primary/10 shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                                                : "border-transparent bg-background/50 grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
+                                        )}
+                                    >
+                                        <span className="text-2xl mb-1">{pet.emoji}</span>
+                                        <span className="text-[8px] font-bold uppercase truncate w-full text-center">{pet.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
             {/* Session & Danger Zone */}
             <div className="grid gap-6 md:grid-cols-2">
                 <Card className="border-red-200 dark:border-red-900/50">
@@ -182,7 +248,7 @@ export const SettingsPage = () => {
             </div>
 
             <div className="text-center text-xs text-muted-foreground pt-8">
-                VanttFlow v1.1.0 • Build 2024
+                VanttFlow v1.2 Beta • Build 2026
             </div>
         </div>
     );

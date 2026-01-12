@@ -42,7 +42,11 @@ export const IconPicker = ({ value, onChange }) => {
                     onChange={(e) => setSearch(e.target.value)}
                     className="mb-2 h-8"
                 />
-                <div className="max-h-[200px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto">
+                <div
+                    className="max-h-[200px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto"
+                    onWheel={(e) => e.stopPropagation()}
+                    onTouchMove={(e) => e.stopPropagation()}
+                >
                     <div className="grid grid-cols-6 gap-2">
                         {filteredIcons.map(iconName => {
                             const Icon = LucideIcons[iconName];
