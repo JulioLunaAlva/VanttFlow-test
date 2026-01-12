@@ -125,7 +125,8 @@ export const FinanceProvider = ({ children }) => {
         });
     }, [transactions, selectedMonth]);
 
-    const getSummary = () => {
+    // Memoized Summary
+    const summary = useMemo(() => {
         const income = filteredTransactions
             .filter(t => t.type === 'income')
             .reduce((acc, curr) => acc + Number(curr.amount), 0);
@@ -137,12 +138,11 @@ export const FinanceProvider = ({ children }) => {
         const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + Number(curr.amount), 0);
         const totalExpense = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + Number(curr.amount), 0);
 
-        // Include initial balances of all accounts
         const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
         const balance = initialBalancesSum + totalIncome - totalExpense;
 
         return { income, expense, balance };
-    };
+    }, [filteredTransactions, transactions, accounts]);
 
     // --- LOGICA CATEGORIAS ---
     const addCategory = (category) => {
@@ -156,7 +156,6 @@ export const FinanceProvider = ({ children }) => {
     };
 
     const deleteCategory = (id) => {
-        // Validation: Check if used
         const isUsed = transactions.some(t => t.category === id);
         if (isUsed) {
             toast.error('No se puede eliminar: Hay transacciones usando esta categoría');
@@ -175,7 +174,6 @@ export const FinanceProvider = ({ children }) => {
             createdAt: new Date().toISOString()
         };
 
-        // Budget Alert Check
         if (transaction.type === 'expense') {
             const date = transaction.date ? parseISO(transaction.date) : new Date();
             const monthKey = format(date, 'yyyy-MM');
@@ -226,7 +224,7 @@ export const FinanceProvider = ({ children }) => {
         setAccounts(prev => [...prev, {
             ...account,
             id: crypto.randomUUID(),
-            type: account.type || 'debit', // debit, credit, cash
+            type: account.type || 'debit',
             limit: Number(account.limit) || 0,
             color: account.color || '#000000'
         }]);
@@ -239,7 +237,6 @@ export const FinanceProvider = ({ children }) => {
     };
 
     const deleteAccount = (id) => {
-        // Validation: Check usage
         const isUsed = transactions.some(t => t.accountId === id);
         if (isUsed) {
             toast.error('No se puede eliminar: Tiene transacciones asociadas');
@@ -250,7 +247,6 @@ export const FinanceProvider = ({ children }) => {
         return true;
     };
 
-    // Credit Card Logic
     const getCreditCardStatus = (accountId) => {
         const account = accounts.find(a => a.id === accountId);
         if (!account || account.type !== 'credit') return null;
@@ -259,28 +255,13 @@ export const FinanceProvider = ({ children }) => {
             .filter(t => t.accountId === accountId)
             .reduce((acc, t) => acc + (t.type === 'income' ? Number(t.amount) : -Number(t.amount)), 0);
 
-        // In this model: Negative Balance = Debt.
         const currentDebt = currentBalance < 0 ? Math.abs(currentBalance) : 0;
         const availableCredit = (account.limit || 0) - currentDebt;
 
-        // Date Logic
         const today = new Date();
         const currentYear = today.getFullYear();
-        const currentMonth = today.getMonth(); // 0-11
-        const cutOffDay = parseInt(account.cutOffDay) || 1;
+        const currentMonth = today.getMonth();
         const paymentDay = parseInt(account.paymentDay) || 15;
-
-        // Calculate Next Payment Date
-        // If today is before Cutoff, we are in cycle ending in this month. Payment is likely next month.
-        // If today is after Cutoff, we are in cycle ending next month.
-
-        // Simple approximation for MVP: 
-        // Next payment day is the 'paymentDay' of the current month if we are before it? 
-        // Or if cutoff passed?
-
-        // Let's assume standard: Cutoff Jan 5 -> Pay Jan 25.
-        // If today is Jan 10 (after cutoff), current cycle ends Feb 5. Payment Feb 25.
-        // The "Payment for no interest" is the debt accumulated up to the LAST cutoff.
 
         let nextPaymentDate = new Date(currentYear, currentMonth, paymentDay);
         if (today > nextPaymentDate) {
@@ -385,9 +366,6 @@ export const FinanceProvider = ({ children }) => {
         }
     };
 
-    // --- LOGICA PRESUPUESTOS ---
-
-
     const getBudgetStatus = () => {
         const safeBudgets = budgets || [];
         const monthKey = format(selectedMonth, 'yyyy-MM');
@@ -407,9 +385,9 @@ export const FinanceProvider = ({ children }) => {
         }).sort((a, b) => b.percentage - a.percentage);
     };
 
-    const value = {
-        transactions, // Raw transactions if needed
-        filteredTransactions, // Creating this alias for easier monthly views
+    const value = useMemo(() => ({
+        transactions,
+        filteredTransactions,
         categories,
         accounts,
         selectedMonth,
@@ -423,7 +401,7 @@ export const FinanceProvider = ({ children }) => {
         deleteScheduledPayment,
         getScheduledForMonth,
         processScheduledPayment,
-        getSummary,
+        summary,
         updateBudget,
         getBudgetStatus,
         goals,
@@ -439,7 +417,17 @@ export const FinanceProvider = ({ children }) => {
         deleteAccount,
         getCreditCardStatus,
         budgets
-    };
+    }), [
+        transactions,
+        filteredTransactions,
+        categories,
+        accounts,
+        selectedMonth,
+        scheduledPayments,
+        summary,
+        goals,
+        budgets
+    ]);
 
     return (
         <FinanceContext.Provider value={value}>

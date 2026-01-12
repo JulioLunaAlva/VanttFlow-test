@@ -4,7 +4,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recha
 import { useFinance } from "@/context/FinanceContext";
 import { PieChart as PieChartIcon } from 'lucide-react';
 
-export const ExpensePieChart = () => {
+export const ExpensePieChart = React.memo(() => {
     const { filteredTransactions, categories } = useFinance();
 
     const data = React.useMemo(() => {
@@ -100,4 +100,4 @@ export const ExpensePieChart = () => {
             </CardContent>
         </Card>
     );
-};
+});

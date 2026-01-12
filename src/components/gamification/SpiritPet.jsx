@@ -78,7 +78,7 @@ const PET_CONFIGS = {
 
 export const SpiritPet = ({ size = 'md', showBubble = true, className }) => {
     const { selectedPet, isEnabled } = useGamification();
-    const { budgets, transactions, getSummary } = useFinance();
+    const { budgets, transactions, summary: financeSummary } = useFinance();
 
     if (!isEnabled) return null;
 
@@ -89,7 +89,7 @@ export const SpiritPet = ({ size = 'md', showBubble = true, className }) => {
         if (!budgets || budgets.length === 0) return 'happy';
         if (!transactions) return 'happy';
 
-        const summary = getSummary() || { expense: 0 };
+        const summary = financeSummary || { expense: 0 };
         const overBudget = budgets.some(b => {
             const budgetTransactions = transactions.filter(t =>
                 t.type === 'expense' && String(t.category) === String(b.categoryId)
@@ -104,7 +104,7 @@ export const SpiritPet = ({ size = 'md', showBubble = true, className }) => {
         if (summary.expense > totalLimit * 0.9) return 'neutral';
 
         return 'happy';
-    }, [budgets, transactions, getSummary]);
+    }, [budgets, transactions, financeSummary]);
 
     const sizeClasses = {
         sm: 'w-10 h-10 text-xl',

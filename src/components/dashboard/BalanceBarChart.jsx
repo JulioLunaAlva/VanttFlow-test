@@ -4,8 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useFinance } from "@/context/FinanceContext";
 
 export const BalanceBarChart = () => {
-    const { getSummary } = useFinance();
-    const { income, expense } = getSummary();
+    const { summary } = useFinance();
+    const { income, expense } = summary;
 
     const data = [
         {

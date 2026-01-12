@@ -7,8 +7,8 @@ import { Zap, ShieldCheck, Flame, TrendingUp, Sparkles, ArrowRight } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
-export const SavingPowerWidget = () => {
-    const { budgets, transactions, getSummary } = useFinance();
+export const SavingPowerWidget = React.memo(() => {
+    const { budgets, transactions, summary: financeSummary } = useFinance();
     const { isEnabled } = useGamification();
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export const SavingPowerWidget = () => {
         };
 
         const totalBudget = budgets.reduce((acc, b) => acc + Number(b.amount || 0), 0);
-        const summary = getSummary() || { expense: 0 };
+        const summary = financeSummary || { expense: 0 };
         const totalExpenses = summary.expense;
 
         const savings = Math.max(0, totalBudget - totalExpenses);
@@ -56,7 +56,7 @@ export const SavingPowerWidget = () => {
         }
 
         return { score, label, color, glow, icon, totalBudget, totalExpenses, savings, isEmpty: false };
-    }, [budgets, transactions, getSummary]);
+    }, [budgets, transactions, financeSummary]);
 
     const { score, label, color, glow, icon: Icon, totalBudget, savings, isEmpty } = savingData;
 
@@ -217,7 +217,7 @@ export const SavingPowerWidget = () => {
             </Card>
         </motion.div>
     );
-};
+});
 
 const Button = ({ children, variant, className, ...props }) => {
     return (

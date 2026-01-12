@@ -21,7 +21,7 @@ const ARCH_ICONS = {
     Flame: Flame
 };
 
-export const GamificationWidget = () => {
+export const GamificationWidget = React.memo(() => {
     const { currentLevel, nextLevel, achievements, isEnabled, xp } = useGamification();
     const [selectedArch, setSelectedArch] = React.useState(null);
 
@@ -185,4 +185,4 @@ export const GamificationWidget = () => {
             </CardContent>
         </Card>
     );
-};
+});

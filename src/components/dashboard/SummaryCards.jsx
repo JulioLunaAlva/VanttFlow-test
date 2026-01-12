@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpCircle, ArrowDownCircle, DollarSign } from 'lucide-react';
 import { useFinance } from "@/context/FinanceContext";
 
-export const SummaryCards = () => {
-    const { getSummary } = useFinance();
-    const { income, expense, balance } = getSummary();
+export const SummaryCards = React.memo(() => {
+    const { summary } = useFinance();
+    const { income, expense, balance } = summary;
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
@@ -59,4 +59,4 @@ export const SummaryCards = () => {
             </Card>
         </div>
     );
-};
+});

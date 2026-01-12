@@ -246,7 +246,7 @@ export const DashboardPage = () => {
                             )}
 
                             {/* Block interaction with charts while editing to prevent conflicts */}
-                            <div className={isEditMode ? "opacity-40 blur-sm scale-95 transition-all" : "h-full"}>
+                            <div className={isEditMode ? "opacity-30 blur-sm scale-[0.98] transition-all" : "h-full"}>
                                 <WidgetComponent />
                             </div>
                         </div>
