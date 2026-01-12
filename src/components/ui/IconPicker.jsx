@@ -35,33 +35,35 @@ export const IconPicker = ({ value, onChange }) => {
                     {value || "Seleccionar icono"}
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[300px] p-2" align="start">
+            <PopoverContent className="w-[300px] p-2 pointer-events-auto" align="start">
                 <Input
                     placeholder="Buscar icono..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="mb-2 h-8"
                 />
-                <div className="grid grid-cols-6 gap-2 max-h-[200px] overflow-y-auto p-1">
-                    {filteredIcons.map(iconName => {
-                        const Icon = LucideIcons[iconName];
-                        if (!Icon) return null;
-                        return (
-                            <Button
-                                key={iconName}
-                                variant="ghost"
-                                size="icon"
-                                className={`h-8 w-8 ${value === iconName ? 'bg-accent' : ''}`}
-                                onClick={() => {
-                                    onChange(iconName);
-                                    setOpen(false);
-                                }}
-                                title={iconName}
-                            >
-                                <Icon className="h-4 w-4" />
-                            </Button>
-                        );
-                    })}
+                <div className="max-h-[200px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto">
+                    <div className="grid grid-cols-6 gap-2">
+                        {filteredIcons.map(iconName => {
+                            const Icon = LucideIcons[iconName];
+                            if (!Icon) return null;
+                            return (
+                                <Button
+                                    key={iconName}
+                                    variant="ghost"
+                                    size="icon"
+                                    className={`h-8 w-8 ${value === iconName ? 'bg-accent' : ''}`}
+                                    onClick={() => {
+                                        onChange(iconName);
+                                        setOpen(false);
+                                    }}
+                                    title={iconName}
+                                >
+                                    <Icon className="h-4 w-4" />
+                                </Button>
+                            );
+                        })}
+                    </div>
                 </div>
             </PopoverContent>
         </Popover>

@@ -84,13 +84,21 @@
     /* Allow vertical scrolling but prevent horizontal overflow */
     overflow-x: hidden;
     overflow-y: auto;
-    overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
-    /* Ensure body takes full height for safe area background colors */
+    /* Ensure body takes full height */
     min-height: 100vh;
     min-height: -webkit-fill-available;
+  }
+
+  /* Specific rule for portals and overlays to allow scrolling and interaction */
+  [data-radix-portal] {
+    user-select: auto !important;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
   }
 
   /* Safe Area Utilities */

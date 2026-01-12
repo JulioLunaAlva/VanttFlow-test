@@ -158,10 +158,12 @@ const Sidebar = ({ className }) => {
 };
 
 import { MobileNav } from './MobileNav';
+import { AppTour } from '@/components/onboarding/AppTour';
 
 export const Layout = ({ children }) => {
     return (
         <div className="min-h-screen bg-background flex">
+            <AppTour />
             <Sidebar className="hidden md:flex" />
 
             <div className="flex-1 flex flex-col pb-20 md:pb-0"> {/* Padding bottom for Mobile Nav */}

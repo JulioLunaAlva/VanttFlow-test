@@ -52,8 +52,8 @@ export function AccountSelect({ accounts, value, onChange, placeholder = "Selecc
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[300px] p-0 max-h-[300px] overflow-y-auto" onWheel={(e) => e.stopPropagation()}>
-                <div className="p-1">
+            <PopoverContent className="w-[300px] p-0 pointer-events-auto">
+                <div className="max-h-[40vh] md:max-h-[300px] overflow-y-auto p-1 touch-pan-y overscroll-contain pointer-events-auto">
                     {accounts.map((account) => (
                         <div
                             key={account.id}

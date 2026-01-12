@@ -147,6 +147,7 @@ export const DashboardPage = () => {
                             onDragStart={(e) => handleDragStart(e, index)}
                             onDragEnd={handleDragEnd}
                             onDragOver={(e) => handleDragOver(e, index)}
+                            id={widgetId === 'goals' ? 'tour-goals' : widgetId === 'balance' ? 'tour-analytics' : undefined}
                             className={`
                                 ${widgetConfig.className} 
                                 relative group transition-all duration-200 ease-in-out rounded-xl

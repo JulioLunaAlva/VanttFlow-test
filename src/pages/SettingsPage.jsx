@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select } from "@/components/ui/select";
-import { User, Mail, Lock, LogOut, Trash2, Save, Globe } from 'lucide-react';
+import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const SettingsPage = () => {
@@ -125,6 +125,25 @@ export const SettingsPage = () => {
                         <p className="text-xs text-muted-foreground">
                             Nota: Cambiar la moneda no convierte los montos existentes, solo cambia el símbolo visual.
                         </p>
+                    </div>
+                    <Separator />
+
+                    <div className="pt-2">
+                        <Label>Ayuda y Guía</Label>
+                        <div className="mt-2 text-center p-6 border-2 border-dashed rounded-xl bg-muted/20">
+                            <Sparkles className="w-8 h-8 text-primary mx-auto mb-2 opacity-50" />
+                            <p className="text-sm text-muted-foreground mb-4">¿Quieres volver a ver la guía interactiva de bienvenida?</p>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    localStorage.removeItem('vanttflow_tour_completed');
+                                    toast.success("Tour reiniciado. Ve al Dashboard para comenzar.");
+                                }}
+                            >
+                                Reiniciar Tour de Bienvenida
+                            </Button>
+                        </div>
                     </div>
                 </CardContent>
             </Card>

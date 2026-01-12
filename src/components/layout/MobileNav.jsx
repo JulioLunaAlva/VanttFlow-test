@@ -44,7 +44,7 @@ export const MobileNav = () => {
             </NavLink>
 
             {/* Center Action Button */}
-            <div className="relative -top-6">
+            <div id="tour-add" className="relative -top-6">
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                     <DialogTrigger asChild>
                         <Button
