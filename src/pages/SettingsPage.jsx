@@ -10,10 +10,15 @@ import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword } from '
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useGamification } from '@/context/GamificationContext';
+import { useFinance } from '@/context/FinanceContext';
+import { Download, Upload } from 'lucide-react';
+import { useRef } from 'react';
 
 export const SettingsPage = () => {
     const { user, updateProfile, logout } = useIdentity();
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
+    const { state: financeState, dispatch } = useFinance(); // Get access to finance state
+    const fileInputRef = useRef(null);
 
     const PET_OPTIONS = [
         { id: 'fox', emoji: '🦊', name: 'Zorro' },
@@ -49,6 +54,60 @@ export const SettingsPage = () => {
             localStorage.clear();
             window.location.reload();
         }
+    };
+
+    const handleExport = () => {
+        const data = {
+            version: '1.0',
+            exportedAt: new Date().toISOString(),
+            finance: JSON.parse(localStorage.getItem('finance_data')),
+            identity: JSON.parse(localStorage.getItem('identity_data')),
+            gamification: JSON.parse(localStorage.getItem('gamification_data')),
+            market: JSON.parse(localStorage.getItem('market_data_real'))
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `vanttflow_backup_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        toast.success('Copia de seguridad descargada exitosamente');
+    };
+
+    const handleImport = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const data = JSON.parse(event.target.result);
+
+                // Basic validation
+                if (!data.finance || !data.identity) {
+                    throw new Error('Archivo de respaldo inválido');
+                }
+
+                if (confirm('Reemplazar todos tus datos actuales con los del archivo? Se recargará la página.')) {
+                    localStorage.setItem('finance_data', JSON.stringify(data.finance));
+                    localStorage.setItem('identity_data', JSON.stringify(data.identity));
+                    localStorage.setItem('gamification_data', JSON.stringify(data.gamification || {}));
+                    localStorage.setItem('market_data_real', JSON.stringify(data.market || {}));
+
+                    toast.success('Datos importados correctamente. Recargando...');
+                    setTimeout(() => window.location.reload(), 1500);
+                }
+            } catch (error) {
+                console.error(error);
+                toast.error('Error al importar: Archivo corrupto o inválido');
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = null; // Reset input
     };
 
     return (
@@ -157,6 +216,36 @@ export const SettingsPage = () => {
                                 Reiniciar Tour de Bienvenida
                             </Button>
                         </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Data Management Section */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Download className="h-5 w-5" />
+                        Respaldo y Portabilidad
+                    </CardTitle>
+                    <CardDescription>exporta tus datos para guardarlos seguros o impórtalos en otro dispositivo.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex gap-4">
+                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
+                            <Download size={18} />
+                            Exportar Datos (JSON)
+                        </Button>
+                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={() => fileInputRef.current?.click()}>
+                            <Upload size={18} />
+                            Importar Respaldo
+                        </Button>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleImport}
+                            className="hidden"
+                            accept=".json"
+                        />
                     </div>
                 </CardContent>
             </Card>
