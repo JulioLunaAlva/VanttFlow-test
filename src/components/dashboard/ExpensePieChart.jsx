@@ -4,8 +4,11 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useFinance } from "@/context/FinanceContext";
 import { PieChart as PieChartIcon, TrendingDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIdentity } from "@/context/IdentityContext";
 export const ExpensePieChart = React.memo(() => {
     const { filteredTransactions, categories } = useFinance();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
     const [activeIndex, setActiveIndex] = useState(null);
     const data = React.useMemo(() => {
         const expensesByCategory = filteredTransactions
@@ -35,7 +38,7 @@ export const ExpensePieChart = React.memo(() => {
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
-            currency: 'MXN',
+            currency: currency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(value);

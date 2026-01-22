@@ -1,11 +1,14 @@
 import React, { useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useFinance } from "@/context/FinanceContext";
+import { useIdentity } from "@/context/IdentityContext";
 import { TrendingDown, TrendingUp, Calendar, AlertTriangle, CheckCircle } from 'lucide-react';
 
 export const ForecastWidget = () => {
     const { getForecast } = useFinance();
+    const { user } = useIdentity();
     const forecast = getForecast();
+    const currency = user?.currency || 'MXN';
 
     // Safety levels:
     // Green: Forecast > 20% of current balance (plenty buffer)
@@ -46,7 +49,7 @@ export const ForecastWidget = () => {
                 <div className="space-y-4">
                     <div>
                         <div className={`text-2xl font-bold ${statusColor}`}>
-                            {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(forecast.forecastBalance)}
+                            {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(forecast.forecastBalance)}
                         </div>
                         <p className="text-xs text-muted-foreground mt-1">
                             Saldo real disponible
@@ -56,16 +59,16 @@ export const ForecastWidget = () => {
                     <div className="space-y-2 text-xs">
                         <div className="flex justify-between items-center text-muted-foreground">
                             <span>Saldo actual total:</span>
-                            <span className="font-medium">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(forecast.currentBalance)}</span>
+                            <span className="font-medium">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(forecast.currentBalance)}</span>
                         </div>
                         <div className="flex justify-between items-center text-red-500">
                             <span className="flex items-center gap-1"><TrendingDown size={12} /> Pagos pendientes ({forecast.pendingCount}):</span>
-                            <span className="font-medium">-{new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(forecast.pendingExpenses)}</span>
+                            <span className="font-medium">-{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(forecast.pendingExpenses)}</span>
                         </div>
                         {forecast.pendingIncome > 0 && (
                             <div className="flex justify-between items-center text-emerald-500">
                                 <span className="flex items-center gap-1"><TrendingUp size={12} /> Ingresos esperados:</span>
-                                <span className="font-medium">+{new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(forecast.pendingIncome)}</span>
+                                <span className="font-medium">+{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(forecast.pendingIncome)}</span>
                             </div>
                         )}
                     </div>

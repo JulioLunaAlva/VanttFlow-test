@@ -1,12 +1,15 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useFinance } from "@/context/FinanceContext";
+import { useIdentity } from "@/context/IdentityContext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { subMonths, format, startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export const ReportsPage = () => {
     const { transactions, categories } = useFinance();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
 
     // 1. Datos para Gráfico Histórico (Últimos 6 meses)
     const getHistoricalData = () => {
@@ -91,7 +94,7 @@ export const ReportsPage = () => {
                                     tickFormatter={(value) => `$${value / 1000}k`}
                                 />
                                 <Tooltip
-                                    formatter={(value) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value)}
+                                    formatter={(value) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(value)}
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                 />
                                 <Legend />
@@ -123,7 +126,7 @@ export const ReportsPage = () => {
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
-                                <Tooltip formatter={(value) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value)} />
+                                <Tooltip formatter={(value) => new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(value)} />
                                 <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>
@@ -166,13 +169,13 @@ export const ReportsPage = () => {
                                         <div>
                                             <p className="text-sm text-muted-foreground">Promedio Ingresos</p>
                                             <p className="text-lg font-bold">
-                                                {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(totalIncome / 6)}
+                                                {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalIncome / 6)}
                                             </p>
                                         </div>
                                         <div>
                                             <p className="text-sm text-muted-foreground">Promedio Gastos</p>
                                             <p className="text-lg font-bold">
-                                                {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(totalExpense / 6)}
+                                                {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalExpense / 6)}
                                             </p>
                                         </div>
                                     </div>
@@ -182,6 +185,6 @@ export const ReportsPage = () => {
                     </CardContent>
                 </Card>
             </div>
-        </div>
+        </div >
     );
 };

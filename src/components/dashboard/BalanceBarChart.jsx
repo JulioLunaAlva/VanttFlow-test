@@ -4,8 +4,11 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { useFinance } from "@/context/FinanceContext";
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useIdentity } from "@/context/IdentityContext";
 export const BalanceBarChart = () => {
     const { summary } = useFinance();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
     const { income, expense } = summary;
     const data = [
         {
@@ -26,7 +29,7 @@ export const BalanceBarChart = () => {
     const formatCurrency = (value) => {
         return new Intl.NumberFormat('es-MX', {
             style: 'currency',
-            currency: 'MXN',
+            currency: currency,
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(value);

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useFinance } from '@/context/FinanceContext';
 import { useGamification } from '@/context/GamificationContext';
+import { useIdentity } from '@/context/IdentityContext';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
 import { Zap, ShieldCheck, Flame, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
@@ -9,8 +10,10 @@ import { useNavigate } from 'react-router-dom';
 export const SavingPowerWidget = React.memo(() => {
     const { budgets, transactions, summary: financeSummary } = useFinance();
     const { isEnabled } = useGamification();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
     const navigate = useNavigate();
-    if (isEnabled) return null;
+    // if (!isEnabled) return null; // Removed check to force display as per user request
     const savingData = useMemo(() => {
         if (!budgets || budgets.length === 0) return {
             score: 0,
@@ -158,7 +161,9 @@ export const SavingPowerWidget = React.memo(() => {
                                     <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 anime:bg-foreground/40" />
                                     Teórico
                                 </p>
-                                <p className="text-lg font-black tracking-tight text-foreground">${totalBudget.toLocaleString()}</p>
+                                <p className="text-lg font-black tracking-tight text-foreground">
+                                    {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}
+                                </p>
                             </div>
                             <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 backdrop-blur-sm hover:bg-primary/10 transition-colors group/stat relative overflow-hidden">
                                 <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 rotate-12">
@@ -168,7 +173,9 @@ export const SavingPowerWidget = React.memo(() => {
                                     <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
                                     Real
                                 </p>
-                                <p className="text-lg font-black text-primary tracking-tight">${savings.toLocaleString()}</p>
+                                <p className="text-lg font-black text-primary tracking-tight">
+                                    {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(savings)}
+                                </p>
                             </div>
                         </div>
                     )}
