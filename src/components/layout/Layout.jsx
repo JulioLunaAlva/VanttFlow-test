@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, Receipt, Wallet, Menu, CalendarClock, PieChart, Target, Download, BarChart3, Tags, CreditCard, Zap, Upload, Settings, ChevronRight, CandlestickChart } from 'lucide-react';
+import { LayoutDashboard, Receipt, Wallet, Menu, CalendarClock, PieChart, Target, Download, BarChart3, Tags, CreditCard, Zap, Upload, Settings, ChevronRight, CandlestickChart, Eye, EyeOff } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,7 @@ import { useIdentity } from "@/context/IdentityContext";
 
 const Sidebar = ({ className }) => {
     const { exportData } = useFinance();
-    const { user } = useIdentity();
+    const { user, privacyMode, setPrivacyMode } = useIdentity();
 
     return (
         <div className={cn(
@@ -39,7 +39,18 @@ const Sidebar = ({ className }) => {
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 -mt-1">Financial Spirit</span>
                     </div>
                 </div>
-                <ModeToggle id="tour-theme-toggle-desktop" />
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full text-muted-foreground hover:text-foreground"
+                        onClick={() => setPrivacyMode(!privacyMode)}
+                        title={privacyMode ? "Mostrar valores" : "Ocultar valores"}
+                    >
+                        {privacyMode ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </Button>
+                    <ModeToggle id="tour-theme-toggle-desktop" />
+                </div>
             </div>
 
             {/* Quick User Intro */}
@@ -162,6 +173,8 @@ export const Layout = ({ children }) => {
                     <div className="flex items-center gap-4">
                         <LevelProgress variant="compact" className="w-32" />
                         <div className="h-8 w-[1.5px] bg-border/40 mx-1 hidden xs:block rotate-[15deg]" />
+                        <div className="h-8 w-[1.5px] bg-border/40 mx-1 hidden xs:block rotate-[15deg]" />
+                        <SidebarPrivacyToggle />
                         <ModeToggle id="tour-theme-toggle-mobile" />
                     </div>
                 </header>
@@ -196,5 +209,19 @@ export const Layout = ({ children }) => {
                 <MobileNav />
             </div>
         </div>
+    );
+};
+
+const SidebarPrivacyToggle = () => {
+    const { privacyMode, setPrivacyMode } = useIdentity();
+    return (
+        <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full text-muted-foreground hover:text-foreground"
+            onClick={() => setPrivacyMode(!privacyMode)}
+        >
+            {privacyMode ? <EyeOff size={18} /> : <Eye size={18} />}
+        </Button>
     );
 };

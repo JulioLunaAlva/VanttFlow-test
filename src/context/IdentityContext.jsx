@@ -8,6 +8,7 @@ export const IdentityProvider = ({ children }) => {
     // User Structure: { name: string, pin: string, currency: string, onboardingCompleted: boolean }
     const [user, setUser] = useLocalStorage('vantt_identity', null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [privacyMode, setPrivacyMode] = useLocalStorage('vantt_privacy_mode', false);
 
     const login = (pin) => {
         if (!user) return false;
@@ -49,6 +50,8 @@ export const IdentityProvider = ({ children }) => {
     const value = {
         user,
         isAuthenticated,
+        privacyMode,
+        setPrivacyMode,
         login,
         register,
         logout,

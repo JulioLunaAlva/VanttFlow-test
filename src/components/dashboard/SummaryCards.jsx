@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowUpCircle, ArrowDownCircle, DollarSign } from 'lucide-react';
 import { useFinance } from "@/context/FinanceContext";
+import { PrivacyBlur } from "@/components/ui/PrivacyBlur";
+
 export const SummaryCards = React.memo(() => {
     const { summary } = useFinance();
     const { income, expense, balance } = summary;
@@ -18,7 +20,9 @@ export const SummaryCards = React.memo(() => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="text-3xl font-black tracking-tighter text-foreground">{formatCurrency(balance)}</div>
+                    <div className="text-3xl font-black tracking-tighter text-foreground">
+                        <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
+                    </div>
                     <p className="text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
                         Estado de cuenta actual
                     </p>
@@ -32,7 +36,9 @@ export const SummaryCards = React.memo(() => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="text-3xl font-black tracking-tighter text-emerald-600 dark:text-emerald-400 anime:text-emerald-700">{formatCurrency(income)}</div>
+                    <div className="text-3xl font-black tracking-tighter text-emerald-600 dark:text-emerald-400 anime:text-emerald-700">
+                        <PrivacyBlur intensity="lg">{formatCurrency(income)}</PrivacyBlur>
+                    </div>
                     <p className="text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
                         Entradas totales
                     </p>
@@ -46,7 +52,9 @@ export const SummaryCards = React.memo(() => {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="text-3xl font-black tracking-tighter text-destructive dark:text-red-400 anime:text-red-700">{formatCurrency(expense)}</div>
+                    <div className="text-3xl font-black tracking-tighter text-destructive dark:text-red-400 anime:text-red-700">
+                        <PrivacyBlur intensity="lg">{formatCurrency(expense)}</PrivacyBlur>
+                    </div>
                     <p className="text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
                         Salidas totales
                     </p>
