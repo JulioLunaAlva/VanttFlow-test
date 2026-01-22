@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select } from "@/components/ui/select";
-import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword } from 'lucide-react';
+
+import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useGamification } from '@/context/GamificationContext';
@@ -15,7 +16,7 @@ import { Download, Upload } from 'lucide-react';
 import { useRef } from 'react';
 
 export const SettingsPage = () => {
-    const { user, updateProfile, logout } = useIdentity();
+    const { user, updateProfile, logout, autoLockMinutes, setAutoLockMinutes } = useIdentity();
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
     const { state: financeState, dispatch } = useFinance(); // Get access to finance state
     const fileInputRef = useRef(null);
@@ -364,11 +365,27 @@ export const SettingsPage = () => {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <LogOut className="h-5 w-5" />
-                            Sesión
+                            Sesión y Seguridad
                         </CardTitle>
-                        <CardDescription>Cierra tu sesión de forma segura.</CardDescription>
+                        <CardDescription>Gestiona tu sesión actual.</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
+                        <div className="grid gap-2">
+                            <Label className="flex items-center gap-2"><Timer size={14} /> Bloqueo Automático (Inactividad)</Label>
+                            <select
+                                value={autoLockMinutes}
+                                onChange={e => setAutoLockMinutes(Number(e.target.value))}
+                                className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            >
+                                <option value={0}>Desactivado (Nunca)</option>
+                                <option value={1}>1 minuto</option>
+                                <option value={2}>2 minutos</option>
+                                <option value={5}>5 minutos (Recomendado)</option>
+                                <option value={15}>15 minutos</option>
+                                <option value={30}>30 minutos</option>
+                            </select>
+                        </div>
+                        <Separator />
                         <Button variant="outline" className="w-full" onClick={logout}>
                             Cerrar Sesión
                         </Button>
