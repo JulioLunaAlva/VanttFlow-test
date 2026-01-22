@@ -67,6 +67,12 @@ export const ForecastWidget = () => {
                             <span className="flex items-center gap-1"><TrendingDown size={12} /> {t('dashboard.forecast_widget.pending_payments')} ({forecast.pendingCount}):</span>
                             <span className="font-medium">-{new Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(forecast.pendingExpenses)}</span>
                         </div>
+                        {forecast.estimatedDailyExpenses > 0 && (
+                            <div className="flex justify-between items-center text-muted-foreground opacity-80 italic">
+                                <span>Gasto Diario Est. (x{new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate()} días):</span>
+                                <span>-{new Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(forecast.estimatedDailyExpenses)}</span>
+                            </div>
+                        )}
                         {forecast.pendingIncome > 0 && (
                             <div className="flex justify-between items-center text-emerald-500">
                                 <span className="flex items-center gap-1"><TrendingUp size={12} /> {t('dashboard.forecast_widget.expected_income')}</span>

@@ -61,39 +61,23 @@ export const VanttScoreWidget = () => {
                     </div>
 
                     {/* Breakdown */}
-                    <div className="flex-1 space-y-3">
-                        <div className="flex items-center justify-between text-xs">
-                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <Shield size={12} /> {t('dashboard.vantt_score.liquidity')}
+                    <div className="flex-1 space-y-2">
+                        {[
+                            { icon: Shield, label: 'liquidity', value: details.liquidity, color: 'bg-blue-500' },
+                            { icon: CreditCard, label: 'debt', value: details.debt, color: 'bg-purple-500' },
+                            { icon: TrendingUp, label: 'growth', value: details.growth, color: 'bg-emerald-500' },
+                            { icon: PiggyBank, label: 'savings', value: details.savings, color: 'bg-amber-500' },
+                            { icon: Award, label: 'discipline', value: details.discipline, color: 'bg-pink-500' }
+                        ].map((item) => (
+                            <div key={item.label} className="flex items-center justify-between text-[10px]">
+                                <div className="flex items-center gap-1.5 text-muted-foreground whitespace-nowrap">
+                                    <item.icon size={10} /> {t(`dashboard.vantt_score.${item.label}`)}
+                                </div>
+                                <div className="h-1 w-12 bg-muted rounded-full overflow-hidden ml-2">
+                                    <div className={`h-full ${item.color}`} style={{ width: `${(item.value / 200) * 100}%` }} />
+                                </div>
                             </div>
-                            <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-blue-500" style={{ width: `${(details.liquidity / 250) * 100}%` }} />
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between text-xs">
-                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <CreditCard size={12} /> {t('dashboard.vantt_score.debt')}
-                            </div>
-                            <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-purple-500" style={{ width: `${(details.debt / 250) * 100}%` }} />
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between text-xs">
-                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <TrendingUp size={12} /> {t('dashboard.vantt_score.growth')}
-                            </div>
-                            <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-emerald-500" style={{ width: `${(details.growth / 250) * 100}%` }} />
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between text-xs">
-                            <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <PiggyBank size={12} /> {t('dashboard.vantt_score.savings')}
-                            </div>
-                            <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-amber-500" style={{ width: `${(details.savings / 250) * 100}%` }} />
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
                 <p className="text-[10px] text-center text-muted-foreground mt-2 italic">

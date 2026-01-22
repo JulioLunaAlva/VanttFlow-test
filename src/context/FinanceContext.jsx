@@ -125,30 +125,43 @@ export const FinanceProvider = ({ children }) => {
         return totalAccounts;
     };
 
+    // Helper: Average daily spending (excluding scheduled)
+    const getAverageDailySpending = () => {
+        if (transactions.length === 0) return 0;
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+        const recentExpenses = transactions.filter(t =>
+            t.type === 'expense' &&
+            !t.isScheduled &&
+            t.date &&
+            parseISO(t.date) >= thirtyDaysAgo
+        );
+
+        if (recentExpenses.length === 0) return 0;
+        const totalSpent = recentExpenses.reduce((acc, t) => acc + Number(t.amount), 0);
+        return totalSpent / 30;
+    };
+
     // --- FORECAST LOGIC ---
     const getForecast = () => {
         const today = new Date();
         const currentBalance = calculateCurrentNetWorth();
         const daysInMonth = lastDayOfMonth(today).getDate();
         const currentDay = today.getDate();
+        const daysRemaining = daysInMonth - currentDay;
 
         // Find scheduled payments pending for this month
         const pendingScheduled = scheduledPayments.filter(p => {
             if (p.status === 'paused') return false;
             // If monthly, check if day is > today
             if (p.frequency === 'monthly') {
-                // Check if already paid this month
                 const monthKey = format(today, 'yyyy-MM');
                 const isPaid = paymentInstances.some(i => i.scheduledPaymentId === p.id && i.monthKey === monthKey && i.state === 'paid');
                 if (isPaid) return false;
-
-                // If not paid, and day is in future (or today?), count it. 
-                // Actually, if it's not paid, it's pending regardless of date? 
-                // Let's assume passed dates are 'overdue' and still pending.
                 return true;
             }
             if (p.frequency === 'one-time') {
-                // Check dates
                 return new Date(p.descDate) >= today && isSameMonth(new Date(p.descDate), today);
             }
             return false;
@@ -157,12 +170,17 @@ export const FinanceProvider = ({ children }) => {
         const pendingIncome = pendingScheduled.filter(p => p.type === 'income').reduce((acc, p) => acc + Number(p.amount), 0);
         const pendingExpenses = pendingScheduled.filter(p => p.type === 'expense').reduce((acc, p) => acc + Number(p.amount), 0);
 
-        const forecastBalance = currentBalance + pendingIncome - pendingExpenses;
+        // Daily spending estimation
+        const avgDaily = getAverageDailySpending();
+        const estimatedDailyExpenses = avgDaily * daysRemaining;
+
+        const forecastBalance = currentBalance + pendingIncome - pendingExpenses - estimatedDailyExpenses;
 
         return {
             currentBalance,
             pendingIncome,
             pendingExpenses,
+            estimatedDailyExpenses,
             forecastBalance,
             pendingCount: pendingScheduled.length
         };
@@ -175,22 +193,22 @@ export const FinanceProvider = ({ children }) => {
             liquidity: 0,
             debt: 0,
             growth: 0,
-            savings: 0
+            savings: 0,
+            discipline: 0
         };
 
-        // 1. Liquidity (Forecast) - Max 250
+        // 1. Liquidity (Forecast) - Max 200
         const forecast = getForecast();
         if (forecast.forecastBalance > 0) {
             const buffer = forecast.currentBalance > 0 ? (forecast.forecastBalance / forecast.currentBalance) : 1;
-            if (buffer > 0.3) score += 250; // Great buffer
-            else if (buffer > 0.1) score += 150; // OK buffer
-            else score += 50; // Risky
-            details.liquidity = score;
+            if (buffer > 0.3) details.liquidity = 200;
+            else if (buffer > 0.1) details.liquidity = 120;
+            else details.liquidity = 40;
         } else {
-            details.liquidity = 0; // Negative forecast
+            details.liquidity = 0;
         }
 
-        // 2. Debt (Credit Utilization) - Max 250
+        // 2. Debt (Credit Utilization) - Max 200
         const creditCards = accounts.filter(a => a.type === 'credit');
         if (creditCards.length > 0) {
             const totalLimit = creditCards.reduce((acc, c) => acc + Number(c.limit || 0), 0);
@@ -201,64 +219,123 @@ export const FinanceProvider = ({ children }) => {
 
             if (totalLimit > 0) {
                 const globalUtilization = (totalDebt / totalLimit) * 100;
-                let debtScore = 0;
-                if (globalUtilization < 10) debtScore = 250;
-                else if (globalUtilization < 30) debtScore = 200;
-                else if (globalUtilization < 50) debtScore = 100;
-                else if (globalUtilization < 90) debtScore = 50;
-                else debtScore = 0;
-
-                score += debtScore;
-                details.debt = debtScore;
+                if (globalUtilization < 10) details.debt = 200;
+                else if (globalUtilization < 30) details.debt = 160;
+                else if (globalUtilization < 50) details.debt = 80;
+                else if (globalUtilization < 90) details.debt = 40;
+                else details.debt = 0;
             } else {
-                // No limit defined? Treat as neutral
-                score += 150;
-                details.debt = 150;
+                details.debt = 120;
             }
         } else {
-            // No credit cards = Good? Or neutral? Let's say Good.
-            score += 250;
-            details.debt = 250;
+            details.debt = 200;
         }
 
-        // 3. Growth (Net Worth Trend) - Max 250
+        // 3. Growth (Net Worth Trend) - Max 200
         if (netWorthHistory.length >= 2) {
             const sorted = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
             const latest = sorted[sorted.length - 1];
-            const prev = sorted[sorted.length - 2]; // Compare vs yesterday or last record
-            // Ideally compare vs 30 days ago.
-            // For MVP, if trend is positive or stable -> Good.
+            const prev = sorted[sorted.length - 2];
             if (Number(latest.balance) >= Number(prev.balance)) {
-                score += 250;
-                details.growth = 250;
+                details.growth = 200;
             } else {
-                score += 125; // Dropped
-                details.growth = 125;
+                details.growth = 100;
             }
         } else {
-            score += 125; // Not enough data
-            details.growth = 125;
+            details.growth = 100;
         }
 
-        // 4. Savings (Income vs Expense) - Max 250
+        // 4. Savings Rate - Max 200
         const { income, expense } = summary;
         if (income > 0) {
             const savingsRate = (income - expense) / income;
-            let savingsScore = 0;
-            if (savingsRate > 0.20) savingsScore = 250; // 20% savings
-            else if (savingsRate > 0.10) savingsScore = 200;
-            else if (savingsRate > 0) savingsScore = 150; // At least saving something
-            else savingsScore = 50; // Spending more than income
-
-            score += savingsScore;
-            details.savings = savingsScore;
+            if (savingsRate > 0.20) details.savings = 200;
+            else if (savingsRate > 0.10) details.savings = 160;
+            else if (savingsRate > 0) details.savings = 100;
+            else details.savings = 40;
         } else {
-            // Avoid punishing if just started
-            score += 125;
-            details.savings = 125;
+            details.savings = 100;
         }
 
+        // 5. Discipline (Consistency & Budgets) - Max 200
+        let disciplineScore = 0;
+        const lastTrans = transactions[0];
+        if (lastTrans && lastTrans.createdAt) {
+            const daysSinceLast = (Date.now() - new Date(lastTrans.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+            if (daysSinceLast < 2) disciplineScore += 100;
+            else if (daysSinceLast < 5) disciplineScore += 60;
+        }
+
+        const budgetStatus = getBudgetStatus();
+        if (budgetStatus.length > 0) {
+            const overBudgets = budgetStatus.filter(b => b.percentage > 100).length;
+            if (overBudgets === 0) disciplineScore += 100;
+            else if (overBudgets === 1) disciplineScore += 50;
+        } else {
+            disciplineScore += 50;
+        }
+        details.discipline = disciplineScore;
+
+        score = details.liquidity + details.debt + details.growth + details.savings + details.discipline;
         return { total: score, details };
+    };
+
+    // --- AI ADVICE LOGIC ---
+    const getAIRecommendations = () => {
+        const recommendations = [];
+        const forecast = getForecast();
+        const scoreData = getVanttScore();
+        const { income, expense } = summary;
+
+        if (forecast.forecastBalance < 0) {
+            recommendations.push({
+                id: 'critical_forecast',
+                type: 'danger',
+                title_key: 'ai.advice.danger_forecast_title',
+                desc_key: 'ai.advice.danger_forecast_desc'
+            });
+        }
+
+        const budgetStatus = getBudgetStatus();
+        const overBudget = budgetStatus.find(b => b.percentage > 90);
+        if (overBudget) {
+            recommendations.push({
+                id: 'budget_limit',
+                type: 'warning',
+                title_key: 'ai.advice.budget_limit_title',
+                desc_key: 'ai.advice.budget_limit_desc',
+                params: { category: categories.find(c => c.id === overBudget.categoryId)?.name }
+            });
+        }
+
+        if (income > 0 && (expense / income) > 0.9) {
+            recommendations.push({
+                id: 'low_savings',
+                type: 'warning',
+                title_key: 'ai.advice.low_savings_title',
+                desc_key: 'ai.advice.low_savings_desc'
+            });
+        }
+
+        if (scoreData.total > 700) {
+            recommendations.push({
+                id: 'great_score',
+                type: 'success',
+                title_key: 'ai.advice.great_score_title',
+                desc_key: 'ai.advice.great_score_desc'
+            });
+        }
+
+        if (recommendations.length === 0) {
+            recommendations.push({
+                id: 'default',
+                type: 'info',
+                title_key: 'ai.advice.default_title',
+                desc_key: 'ai.advice.default_desc'
+            });
+        }
+
+        return recommendations.slice(0, 3);
     };
 
     // --- ORACLE LOGIC ---
@@ -654,6 +731,7 @@ export const FinanceProvider = ({ children }) => {
         netWorthHistory,
         getForecast,
         getVanttScore,
+        getAIRecommendations,
         simulatePurchase
     }), [
         transactions,
@@ -663,7 +741,6 @@ export const FinanceProvider = ({ children }) => {
         selectedMonth,
         scheduledPayments,
         summary,
-        goals,
         goals,
         budgets,
         netWorthHistory

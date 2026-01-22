@@ -10,6 +10,7 @@ import { LevelProgress } from '@/components/gamification/LevelProgress';
 import { SpiritPet } from '@/components/gamification/SpiritPet';
 import { MobileNav } from './MobileNav';
 import { AppTour } from '@/components/onboarding/AppTour';
+import { VanttAIChat } from '@/components/ai/VanttAIChat';
 
 import { useIdentity } from "@/context/IdentityContext";
 import { useTranslation } from 'react-i18next';
@@ -211,6 +212,7 @@ export const Layout = ({ children }) => {
 
                 <MobileNav />
             </div>
+            <VanttAIChat />
         </div>
     );
 };
