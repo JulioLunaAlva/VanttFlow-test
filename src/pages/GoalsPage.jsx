@@ -3,6 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFinance } from "@/context/FinanceContext";
+import { useIdentity } from "@/context/IdentityContext";
 import { Plus, Target, Trophy, Trash2, Edit2, Rocket, Star } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { MoneyInput } from "@/components/ui/MoneyInput";
