@@ -2,13 +2,18 @@ import React from 'react';
 import { useFinance } from "@/context/FinanceContext";
 import { useGamification } from "@/context/GamificationContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus, BarChart2 } from 'lucide-react';
+import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus, BarChart2, LineChart as LineChartIcon } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format, subMonths, isSameMonth, parseISO } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 export const AnalyticsPage = () => {
-    const { transactions, selectedMonth, categories } = useFinance();
+    const { transactions, selectedMonth, categories, netWorthHistory } = useFinance();
     const { completeMission } = useGamification();
+
+    // Sort history by date to ensure correct chart rendering
+    const chartData = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+
 
     React.useEffect(() => {
         completeMission('visit_analytics');
@@ -87,6 +92,62 @@ export const AnalyticsPage = () => {
                     </p>
                 </div>
             </div>
+
+
+
+            {/* Patrimony Evolution Chart */}
+            <Card className="overflow-hidden">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <LineChartIcon size={20} className="text-primary" /> Evolución de Patrimonio
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="h-[300px] w-full">
+                    {chartData.length > 0 ? (
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                                <defs>
+                                    <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted))" />
+                                <XAxis
+                                    dataKey="date"
+                                    tickFormatter={(val) => format(parseISO(val), 'dd MMM', { locale: es })}
+                                    stroke="hsl(var(--muted-foreground))"
+                                    fontSize={12}
+                                />
+                                <YAxis
+                                    stroke="hsl(var(--muted-foreground))"
+                                    fontSize={12}
+                                    tickFormatter={(val) => `$${(val / 1000).toFixed(0)}k`}
+                                />
+                                <Tooltip
+                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                                    formatter={(value) => [new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value), 'Patrimonio']}
+                                    labelFormatter={(label) => format(parseISO(label), 'dd MMMM yyyy', { locale: es })}
+                                />
+                                <Area
+                                    type="monotone"
+                                    dataKey="balance"
+                                    stroke="#10b981"
+                                    fillOpacity={1}
+                                    fill="url(#colorBalance)"
+                                    strokeWidth={3}
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    ) : (
+                        <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50">
+                            <LineChartIcon size={48} className="mb-2" />
+                            <p>Tu historia financiera comienza hoy.</p>
+                            <p className="text-xs">Vuelve mañana para ver tu progreso.</p>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -218,6 +279,6 @@ export const AnalyticsPage = () => {
                     </div>
                 </CardContent>
             </Card>
-        </div>
+        </div >
     );
 };

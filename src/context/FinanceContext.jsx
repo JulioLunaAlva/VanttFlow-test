@@ -40,6 +40,7 @@ export const FinanceProvider = ({ children }) => {
     const [paymentInstances, setPaymentInstances] = useLocalStorage('finance_scheduled_instances', []);
     const [budgets, setBudgets] = useLocalStorage('finance_budgets', []); // { monthKey, categoryId, amount }
     const [goals, setGoals] = useLocalStorage('finance_goals', []); // { id, name, targetAmount, currentSaved }
+    const [netWorthHistory, setNetWorthHistory] = useLocalStorage('finance_net_worth_history', []); // [{ date: '2023-01-01', balance: 1000 }]
 
     // Global Filter State
     const [selectedMonth, setSelectedMonth] = React.useState(new Date()); // Date object representing the month
@@ -112,7 +113,218 @@ export const FinanceProvider = ({ children }) => {
         gainXp(15, 'Organizando tus finanzas');
         unlockAchievement('budget_master');
         completeMission('check_budget');
+        completeMission('check_budget');
     };
+
+    // --- NET WORTH LOGIC ---
+    // Calculate total net worth at any moment
+    const calculateCurrentNetWorth = () => {
+        const totalAccounts = accounts.reduce((acc, account) => {
+            return acc + getAccountBalance(account.id);
+        }, 0);
+        return totalAccounts;
+    };
+
+    // --- FORECAST LOGIC ---
+    const getForecast = () => {
+        const today = new Date();
+        const currentBalance = calculateCurrentNetWorth();
+        const daysInMonth = lastDayOfMonth(today).getDate();
+        const currentDay = today.getDate();
+
+        // Find scheduled payments pending for this month
+        const pendingScheduled = scheduledPayments.filter(p => {
+            if (p.status === 'paused') return false;
+            // If monthly, check if day is > today
+            if (p.frequency === 'monthly') {
+                // Check if already paid this month
+                const monthKey = format(today, 'yyyy-MM');
+                const isPaid = paymentInstances.some(i => i.scheduledPaymentId === p.id && i.monthKey === monthKey && i.state === 'paid');
+                if (isPaid) return false;
+
+                // If not paid, and day is in future (or today?), count it. 
+                // Actually, if it's not paid, it's pending regardless of date? 
+                // Let's assume passed dates are 'overdue' and still pending.
+                return true;
+            }
+            if (p.frequency === 'one-time') {
+                // Check dates
+                return new Date(p.descDate) >= today && isSameMonth(new Date(p.descDate), today);
+            }
+            return false;
+        });
+
+        const pendingIncome = pendingScheduled.filter(p => p.type === 'income').reduce((acc, p) => acc + Number(p.amount), 0);
+        const pendingExpenses = pendingScheduled.filter(p => p.type === 'expense').reduce((acc, p) => acc + Number(p.amount), 0);
+
+        const forecastBalance = currentBalance + pendingIncome - pendingExpenses;
+
+        return {
+            currentBalance,
+            pendingIncome,
+            pendingExpenses,
+            forecastBalance,
+            pendingCount: pendingScheduled.length
+        };
+    };
+
+    // --- VANTT SCORE LOGIC ---
+    const getVanttScore = () => {
+        let score = 0;
+        const details = {
+            liquidity: 0,
+            debt: 0,
+            growth: 0,
+            savings: 0
+        };
+
+        // 1. Liquidity (Forecast) - Max 250
+        const forecast = getForecast();
+        if (forecast.forecastBalance > 0) {
+            const buffer = forecast.currentBalance > 0 ? (forecast.forecastBalance / forecast.currentBalance) : 1;
+            if (buffer > 0.3) score += 250; // Great buffer
+            else if (buffer > 0.1) score += 150; // OK buffer
+            else score += 50; // Risky
+            details.liquidity = score;
+        } else {
+            details.liquidity = 0; // Negative forecast
+        }
+
+        // 2. Debt (Credit Utilization) - Max 250
+        const creditCards = accounts.filter(a => a.type === 'credit');
+        if (creditCards.length > 0) {
+            const totalLimit = creditCards.reduce((acc, c) => acc + Number(c.limit || 0), 0);
+            const totalDebt = creditCards.reduce((acc, c) => {
+                const status = getCreditCardStatus(c.id);
+                return acc + (status?.currentDebt || 0);
+            }, 0);
+
+            if (totalLimit > 0) {
+                const globalUtilization = (totalDebt / totalLimit) * 100;
+                let debtScore = 0;
+                if (globalUtilization < 10) debtScore = 250;
+                else if (globalUtilization < 30) debtScore = 200;
+                else if (globalUtilization < 50) debtScore = 100;
+                else if (globalUtilization < 90) debtScore = 50;
+                else debtScore = 0;
+
+                score += debtScore;
+                details.debt = debtScore;
+            } else {
+                // No limit defined? Treat as neutral
+                score += 150;
+                details.debt = 150;
+            }
+        } else {
+            // No credit cards = Good? Or neutral? Let's say Good.
+            score += 250;
+            details.debt = 250;
+        }
+
+        // 3. Growth (Net Worth Trend) - Max 250
+        if (netWorthHistory.length >= 2) {
+            const sorted = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const latest = sorted[sorted.length - 1];
+            const prev = sorted[sorted.length - 2]; // Compare vs yesterday or last record
+            // Ideally compare vs 30 days ago.
+            // For MVP, if trend is positive or stable -> Good.
+            if (Number(latest.balance) >= Number(prev.balance)) {
+                score += 250;
+                details.growth = 250;
+            } else {
+                score += 125; // Dropped
+                details.growth = 125;
+            }
+        } else {
+            score += 125; // Not enough data
+            details.growth = 125;
+        }
+
+        // 4. Savings (Income vs Expense) - Max 250
+        const { income, expense } = summary;
+        if (income > 0) {
+            const savingsRate = (income - expense) / income;
+            let savingsScore = 0;
+            if (savingsRate > 0.20) savingsScore = 250; // 20% savings
+            else if (savingsRate > 0.10) savingsScore = 200;
+            else if (savingsRate > 0) savingsScore = 150; // At least saving something
+            else savingsScore = 50; // Spending more than income
+
+            score += savingsScore;
+            details.savings = savingsScore;
+        } else {
+            // Avoid punishing if just started
+            score += 125;
+            details.savings = 125;
+        }
+
+        return { total: score, details };
+    };
+
+    // --- ORACLE LOGIC ---
+    const simulatePurchase = (amount) => {
+        const forecast = getForecast();
+        const cost = parseFloat(amount);
+        if (isNaN(cost) || cost <= 0) return { status: 'invalid', message: 'Ingresa un monto válido.' };
+
+        const remainingAfterPurchase = forecast.forecastBalance - cost;
+
+        // Logic:
+        // 1. If remaining < 0 -> DANGER (Can't pay bills)
+        // 2. If remaining < 10% of total balance -> WARNING (Living on edge)
+        // 3. Otherwise -> SAFE
+
+        if (remainingAfterPurchase < 0) {
+            return {
+                status: 'danger',
+                message: '¡PELIGRO! Si compras esto, no completarás para tus pagos programados del mes.',
+                remaining: remainingAfterPurchase
+            };
+        }
+
+        const buffer = forecast.currentBalance > 0 ? (remainingAfterPurchase / forecast.currentBalance) : 0;
+
+        if (buffer < 0.10) {
+            return {
+                status: 'warning',
+                message: 'CUIDADO. Te quedarás con muy poco margen para imprevistos.',
+                remaining: remainingAfterPurchase
+            };
+        }
+
+        return {
+            status: 'safe',
+            message: 'APROBADO. Tu salud financiera se mantiene estable.',
+            remaining: remainingAfterPurchase
+        };
+    };
+
+    // Capture daily snapshot
+    React.useEffect(() => {
+        const today = new Date().toISOString().split('T')[0];
+        setNetWorthHistory(prev => {
+            // Check if we already have a snapshot for today
+            const hasToday = prev.find(item => item.date === today);
+
+            // Calculate current worth
+            const currentWorth = accounts.reduce((acc, account) => {
+                // For credit cards, balance is negative if used, so it correctly subtracts from net worth
+                // For debit/cash, balance is positive.
+                return acc + getAccountBalance(account.id);
+            }, 0);
+
+            if (hasToday) {
+                // Optional: Update today's value if it changed? 
+                // Let's update it so it's always fresh for the current day until the day passes.
+                return prev.map(item => item.date === today ? { ...item, balance: currentWorth } : item);
+            } else {
+                // Add new snapshot
+                // Limit history to last 365 days to save space? Nah, localStorage can handle it for a while.
+                return [...prev, { date: today, balance: currentWorth }];
+            }
+        });
+    }, [transactions, accounts]); // Update whenever transactions or accounts change? 
+    // Ideally we want this to be efficient. Updating on every transaction change ensures 'today' is always accurate.
 
     // Derived Data (Filtered by Month)
     const filteredTransactions = useMemo(() => {
@@ -440,7 +652,13 @@ export const FinanceProvider = ({ children }) => {
         deleteAccount,
         getCreditCardStatus,
         getAccountBalance,
-        budgets
+        getCreditCardStatus,
+        getAccountBalance,
+        budgets,
+        netWorthHistory,
+        getForecast,
+        getVanttScore,
+        simulatePurchase
     }), [
         transactions,
         filteredTransactions,
@@ -450,7 +668,9 @@ export const FinanceProvider = ({ children }) => {
         scheduledPayments,
         summary,
         goals,
-        budgets
+        goals,
+        budgets,
+        netWorthHistory
     ]);
 
     return (

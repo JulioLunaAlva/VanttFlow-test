@@ -9,6 +9,9 @@ import { GamificationWidget } from '@/components/gamification/GamificationWidget
 import { SavingPowerWidget } from '@/components/gamification/SavingPowerWidget';
 import { DailyMissionsWidget } from '@/components/gamification/DailyMissionsWidget';
 import { MarketTrendsWidget } from '@/components/dashboard/MarketTrendsWidget';
+import { ForecastWidget } from '@/components/dashboard/ForecastWidget';
+import { VanttScoreWidget } from '@/components/dashboard/VanttScoreWidget';
+import { OracleWidget } from '@/components/dashboard/OracleWidget';
 import { Button } from "@/components/ui/button";
 import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -32,6 +35,9 @@ const WelcomeHeader = () => (
 
 const WIDGETS_CONFIG = [
     { id: 'balance', component: BalanceBarChart, label: 'Balance General', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
+    { id: 'forecast', component: ForecastWidget, label: 'Proyección Fin de Mes', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
+    { id: 'vanttscore', component: VanttScoreWidget, label: 'VanttScore (Salud)', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
+    { id: 'oracle', component: OracleWidget, label: 'El Oráculo', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
     { id: 'activity', component: RecentActivityWidget, label: 'Actividad Reciente', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'expenses', component: ExpensePieChart, label: 'Gastos por Categoría', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
     { id: 'goals', component: GoalsSummaryWidget, label: 'Progreso de Metas', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
