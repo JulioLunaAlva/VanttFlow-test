@@ -247,13 +247,34 @@ export const FinanceProvider = ({ children }) => {
         return true;
     };
 
+    const getAccountBalance = (accountId) => {
+        const account = accounts.find(a => a.id === accountId);
+        if (!account) return 0;
+
+        const balance = account.initialBalance + transactions
+            .filter(t => t.accountId === accountId || t.targetAccountId === accountId)
+            .reduce((acc, t) => {
+                if (t.type === 'income') return acc + Number(t.amount);
+                if (t.type === 'expense') return acc - Number(t.amount);
+                if (t.type === 'transfer') {
+                    if (t.accountId === accountId) return acc - Number(t.amount); // Outgoing
+                    if (t.targetAccountId === accountId) return acc + Number(t.amount); // Incoming
+                }
+                return acc;
+            }, 0);
+        return balance;
+    };
+
     const getCreditCardStatus = (accountId) => {
         const account = accounts.find(a => a.id === accountId);
         if (!account || account.type !== 'credit') return null;
 
-        const currentBalance = account.initialBalance + transactions
-            .filter(t => t.accountId === accountId)
-            .reduce((acc, t) => acc + (t.type === 'income' ? Number(t.amount) : -Number(t.amount)), 0);
+        const currentBalance = getAccountBalance(accountId);
+
+        // For credit cards, balance is usually negative (debt), or we track debt as positive?
+        // In this app, it seems 'debt' was calculated. 
+        // If initialBalance is 0, expenses make balance negative.
+        // So Debt = Math.abs(balance) if balance < 0.
 
         const currentDebt = currentBalance < 0 ? Math.abs(currentBalance) : 0;
         const availableCredit = (account.limit || 0) - currentDebt;
@@ -415,7 +436,10 @@ export const FinanceProvider = ({ children }) => {
         deleteCategory,
         updateAccount,
         deleteAccount,
+        updateAccount,
+        deleteAccount,
         getCreditCardStatus,
+        getAccountBalance,
         budgets
     }), [
         transactions,

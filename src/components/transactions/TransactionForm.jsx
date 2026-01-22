@@ -9,6 +9,7 @@ import { MoneyInput } from "@/components/ui/MoneyInput";
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
+import { cn } from "@/lib/utils";
 
 export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "Agregar" }) => {
     const { addTransaction, editTransaction, categories, accounts } = useFinance();
@@ -18,6 +19,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
     const [type, setType] = useState(initialData?.type || 'expense');
     const [category, setCategory] = useState(initialData?.category || '');
     const [accountId, setAccountId] = useState(initialData?.accountId || '');
+    const [targetAccountId, setTargetAccountId] = useState(initialData?.targetAccountId || '');
     const [date, setDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
     const [attachment, setAttachment] = useState(initialData?.attachment || null); // { name, base64 }
 
@@ -27,7 +29,9 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
             setDescription(initialData.description);
             setType(initialData.type);
             setCategory(initialData.category);
+            setCategory(initialData.category);
             setAccountId(initialData.accountId);
+            setTargetAccountId(initialData.targetAccountId || '');
             const dateStr = initialData.date ? new Date(initialData.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
             setDate(dateStr);
             setAttachment(initialData.attachment || null);
@@ -66,8 +70,9 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
             amount: parseFloat(amount),
             description,
             type,
-            category: category || (type === 'income' ? 'other_income' : 'other_expense'),
+            category: type === 'transfer' ? 'transfer' : (category || (type === 'income' ? 'other_income' : 'other_expense')),
             accountId: accountId || (accounts[0]?.id),
+            targetAccountId: type === 'transfer' ? targetAccountId : null,
             date,
             attachment // Save base64
         };
@@ -111,22 +116,30 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="flex gap-2 p-1 bg-muted rounded-lg">
                         <Button
                             type="button"
-                            variant={type === 'income' ? 'default' : 'outline'}
+                            variant={type === 'income' ? 'default' : 'ghost'}
                             onClick={() => setType('income')}
-                            className="w-full"
+                            className={cn("flex-1 text-xs", type === 'income' && "bg-emerald-600 hover:bg-emerald-700 text-white")}
                         >
                             Ingreso
                         </Button>
                         <Button
                             type="button"
-                            variant={type === 'expense' ? 'destructive' : 'outline'}
+                            variant={type === 'expense' ? 'default' : 'ghost'}
                             onClick={() => setType('expense')}
-                            className={type === 'expense' ? 'bg-red-600 hover:bg-red-700 text-white' : 'w-full'}
+                            className={cn("flex-1 text-xs", type === 'expense' && "bg-red-600 hover:bg-red-700 text-white")}
                         >
                             Gasto
+                        </Button>
+                        <Button
+                            type="button"
+                            variant={type === 'transfer' ? 'default' : 'ghost'}
+                            onClick={() => setType('transfer')}
+                            className={cn("flex-1 text-xs", type === 'transfer' && "bg-blue-600 hover:bg-blue-700 text-white")}
+                        >
+                            Transferencia
                         </Button>
                     </div>
 
@@ -136,16 +149,25 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
                                 accounts={accounts}
                                 value={accountId}
                                 onChange={setAccountId}
-                                placeholder="Cuenta"
+                                placeholder={type === 'transfer' ? "Cuenta Origen" : "Cuenta"}
                             />
                         </div>
                         <div className="space-y-2">
-                            <CategorySelect
-                                categories={categories.filter(c => c.type === type || c.type === 'both')}
-                                value={category}
-                                onChange={setCategory}
-                                placeholder="Categoría"
-                            />
+                            {type === 'transfer' ? (
+                                <AccountSelect
+                                    accounts={accounts.filter(a => a.id !== accountId)}
+                                    value={targetAccountId}
+                                    onChange={setTargetAccountId}
+                                    placeholder="Cuenta Destino"
+                                />
+                            ) : (
+                                <CategorySelect
+                                    categories={categories.filter(c => c.type === type || c.type === 'both')}
+                                    value={category}
+                                    onChange={setCategory}
+                                    placeholder="Categoría"
+                                />
+                            )}
                         </div>
                     </div>
 

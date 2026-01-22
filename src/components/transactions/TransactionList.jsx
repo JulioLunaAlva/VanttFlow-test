@@ -127,7 +127,9 @@ export const TransactionList = () => {
                                             <span>{format(new Date(t.date), 'dd MMM', { locale: es })}</span>
                                             <span>•</span>
                                             {t.type === 'transfer' ? (
-                                                <span>{getAccountName(t.accountId)} → {getAccountName(t.toAccountId)}</span>
+                                                <span className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400">
+                                                    {getAccountName(t.accountId)} <ArrowRightLeft size={10} /> {getAccountName(t.targetAccountId)}
+                                                </span>
                                             ) : (
                                                 <span>{getAccountName(t.accountId)}</span>
                                             )}
@@ -144,9 +146,9 @@ export const TransactionList = () => {
                                             {t.category && (
                                                 <span
                                                     className="text-[10px] px-2 py-0.5 rounded-full text-white ml-1"
-                                                    style={{ backgroundColor: (categories.find(c => c.id === t.category)?.color) || '#94a3b8' }}
+                                                    style={{ backgroundColor: t.category === 'transfer' ? '#2563eb' : (categories.find(c => c.id === t.category)?.color || '#94a3b8') }}
                                                 >
-                                                    {categories.find(c => c.id === t.category)?.name || 'Otros'}
+                                                    {t.category === 'transfer' ? 'Transferencia' : (categories.find(c => c.id === t.category)?.name || 'Otros')}
                                                 </span>
                                             )}
                                         </div>
