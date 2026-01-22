@@ -58,11 +58,31 @@ export const SettingsPage = () => {
 
     const handleExport = () => {
         const data = {
-            version: '1.0',
+            version: '1.2',
             exportedAt: new Date().toISOString(),
-            finance: JSON.parse(localStorage.getItem('finance_data')),
-            identity: JSON.parse(localStorage.getItem('identity_data')),
-            gamification: JSON.parse(localStorage.getItem('gamification_data')),
+            // Finance Keys
+            transactions: JSON.parse(localStorage.getItem('finance_transactions') || '[]'),
+            categories: JSON.parse(localStorage.getItem('finance_categories') || '[]'),
+            accounts: JSON.parse(localStorage.getItem('finance_accounts') || '[]'),
+            scheduledPayments: JSON.parse(localStorage.getItem('finance_scheduled') || '[]'),
+            paymentInstances: JSON.parse(localStorage.getItem('finance_scheduled_instances') || '[]'),
+            budgets: JSON.parse(localStorage.getItem('finance_budgets') || '[]'),
+            goals: JSON.parse(localStorage.getItem('finance_goals') || '[]'),
+            // Identity Keys
+            identity: JSON.parse(localStorage.getItem('vantt_identity')),
+            privacyMode: JSON.parse(localStorage.getItem('vantt_privacy_mode') || 'false'),
+            // Gamification Keys
+            gamification: {
+                enabled: JSON.parse(localStorage.getItem('gamification_enabled') || 'true'),
+                pet: JSON.parse(localStorage.getItem('gamification_selected_pet') || '"fox"'),
+                xp: JSON.parse(localStorage.getItem('gamification_xp') || '0'),
+                achievements: JSON.parse(localStorage.getItem('gamification_achievements') || '[]'),
+                lastLogin: JSON.parse(localStorage.getItem('gamification_last_login')),
+                streak: JSON.parse(localStorage.getItem('gamification_streak') || '0'),
+                missions: JSON.parse(localStorage.getItem('gamification_daily_missions') || '[]'),
+                missionsDate: JSON.parse(localStorage.getItem('gamification_missions_date'))
+            },
+            // Market
             market: JSON.parse(localStorage.getItem('market_data_real'))
         };
 
@@ -88,15 +108,35 @@ export const SettingsPage = () => {
                 const data = JSON.parse(event.target.result);
 
                 // Basic validation
-                if (!data.finance || !data.identity) {
-                    throw new Error('Archivo de respaldo inválido');
+                if (!data.identity) {
+                    throw new Error('Archivo de respaldo inválido: Falta identidad');
                 }
 
-                if (confirm('Reemplazar todos tus datos actuales con los del archivo? Se recargará la página.')) {
-                    localStorage.setItem('finance_data', JSON.stringify(data.finance));
-                    localStorage.setItem('identity_data', JSON.stringify(data.identity));
-                    localStorage.setItem('gamification_data', JSON.stringify(data.gamification || {}));
-                    localStorage.setItem('market_data_real', JSON.stringify(data.market || {}));
+                if (confirm('¿Reemplazar todos tus datos actuales con los del archivo? Se recargará la página.')) {
+                    // Finance
+                    if (data.transactions) localStorage.setItem('finance_transactions', JSON.stringify(data.transactions));
+                    if (data.categories) localStorage.setItem('finance_categories', JSON.stringify(data.categories));
+                    if (data.accounts) localStorage.setItem('finance_accounts', JSON.stringify(data.accounts));
+                    if (data.scheduledPayments) localStorage.setItem('finance_scheduled', JSON.stringify(data.scheduledPayments));
+                    if (data.paymentInstances) localStorage.setItem('finance_scheduled_instances', JSON.stringify(data.paymentInstances));
+                    if (data.budgets) localStorage.setItem('finance_budgets', JSON.stringify(data.budgets));
+                    if (data.goals) localStorage.setItem('finance_goals', JSON.stringify(data.goals));
+
+                    // Identity
+                    localStorage.setItem('vantt_identity', JSON.stringify(data.identity));
+                    if (data.privacyMode !== undefined) localStorage.setItem('vantt_privacy_mode', JSON.stringify(data.privacyMode));
+
+                    // Gamification
+                    if (data.gamification) {
+                        localStorage.setItem('gamification_enabled', JSON.stringify(data.gamification.enabled));
+                        localStorage.setItem('gamification_selected_pet', JSON.stringify(data.gamification.pet));
+                        localStorage.setItem('gamification_xp', JSON.stringify(data.gamification.xp));
+                        localStorage.setItem('gamification_achievements', JSON.stringify(data.gamification.achievements));
+                        localStorage.setItem('gamification_last_login', JSON.stringify(data.gamification.lastLogin));
+                        localStorage.setItem('gamification_streak', JSON.stringify(data.gamification.streak));
+                        localStorage.setItem('gamification_daily_missions', JSON.stringify(data.gamification.missions));
+                        localStorage.setItem('gamification_missions_date', JSON.stringify(data.gamification.missionsDate));
+                    }
 
                     toast.success('Datos importados correctamente. Recargando...');
                     setTimeout(() => window.location.reload(), 1500);
