@@ -24,6 +24,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { GamificationProvider } from "@/context/GamificationContext";
 import { MarketProvider } from "@/context/MarketContext";
+import { NotificationProvider } from '@/context/NotificationContext';
 import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 
@@ -64,30 +65,32 @@ function App() {
             <GamificationProvider>
               <MarketProvider>
                 <FinanceProvider>
-                  <Routes>
-                    {/* Public Routes */}
-                    <Route path="/" element={<RootRoute />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/setup" element={<OnboardingWizard />} />
+                  <NotificationProvider>
+                    <Routes>
+                      {/* Public Routes */}
+                      <Route path="/" element={<RootRoute />} />
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/setup" element={<OnboardingWizard />} />
 
-                    {/* Protected Routes */}
-                    <Route path="/transactions" element={<ProtectedRoute><TransactionsPage /></ProtectedRoute>} />
-                    <Route path="/scheduled" element={<ProtectedRoute><ScheduledPage /></ProtectedRoute>} />
-                    <Route path="/budget" element={<ProtectedRoute><BudgetPage /></ProtectedRoute>} />
-                    <Route path="/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
-                    <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
-                    <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
-                    <Route path="/cards" element={<ProtectedRoute><CreditCardsPage /></ProtectedRoute>} />
-                    <Route path="/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
-                    <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
-                    <Route path="/import" element={<ProtectedRoute><ImportPage /></ProtectedRoute>} />
-                    <Route path="/market" element={<ProtectedRoute><MarketPage /></ProtectedRoute>} />
+                      {/* Protected Routes */}
+                      <Route path="/transactions" element={<ProtectedRoute><TransactionsPage /></ProtectedRoute>} />
+                      <Route path="/scheduled" element={<ProtectedRoute><ScheduledPage /></ProtectedRoute>} />
+                      <Route path="/budget" element={<ProtectedRoute><BudgetPage /></ProtectedRoute>} />
+                      <Route path="/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
+                      <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
+                      <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
+                      <Route path="/cards" element={<ProtectedRoute><CreditCardsPage /></ProtectedRoute>} />
+                      <Route path="/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
+                      <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
+                      <Route path="/import" element={<ProtectedRoute><ImportPage /></ProtectedRoute>} />
+                      <Route path="/market" element={<ProtectedRoute><MarketPage /></ProtectedRoute>} />
 
-                    <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                      <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                  <Toaster />
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                    <Toaster />
+                  </NotificationProvider>
                 </FinanceProvider>
               </MarketProvider>
             </GamificationProvider>

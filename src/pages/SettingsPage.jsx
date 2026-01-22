@@ -12,13 +12,15 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useGamification } from '@/context/GamificationContext';
 import { useFinance } from '@/context/FinanceContext';
-import { Download, Upload } from 'lucide-react';
+import { useNotifications } from '@/context/NotificationContext';
+import { Download, Upload, Bell, Zap } from 'lucide-react';
 import { useRef } from 'react';
 
 export const SettingsPage = () => {
     const { user, updateProfile, logout, autoLockMinutes, setAutoLockMinutes } = useIdentity();
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
     const { state: financeState, dispatch } = useFinance(); // Get access to finance state
+    const { permission, requestPermission, sendNotification, triggerMotivation } = useNotifications();
     const fileInputRef = useRef(null);
 
     const PET_OPTIONS = [
@@ -341,6 +343,46 @@ export const SettingsPage = () => {
                             </div>
                         </div>
                     )}
+                </CardContent>
+            </Card>
+
+            {/* Notification Settings (PWA) */}
+            <Card className="border-indigo-500/20 bg-indigo-50/10">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Bell className="h-5 w-5 text-indigo-500" />
+                        Notificaciones Inteligentes
+                    </CardTitle>
+                    <CardDescription>Activa recordatorios y mensajes motivacionales.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-background/50 border border-white/5">
+                        <div className="space-y-0.5">
+                            <Label className="text-base text-indigo-600 dark:text-indigo-400">Estado: {permission === 'granted' ? 'Activado' : permission === 'denied' ? 'Bloqueado' : 'Sin Configurar'}</Label>
+                            <p className="text-xs text-muted-foreground">
+                                {permission === 'granted'
+                                    ? "Recibirás alertas sobre tus metas y recordatorios de registro."
+                                    : "Actívalas para que VanttFlow te recuerde registrar tus gastos."}
+                            </p>
+                        </div>
+                        {permission !== 'granted' ? (
+                            <Button size="sm" onClick={requestPermission}>
+                                Activar
+                            </Button>
+                        ) : (
+                            <div className="flex gap-2">
+                                <Button variant="outline" size="sm" onClick={() => sendNotification("Prueba", "¡El sistema de notificaciones funciona!")}>
+                                    Probar
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={triggerMotivation} title="Mensaje Sorpresa">
+                                    <Zap size={16} className="text-yellow-500" />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                    <p className="text-[10px] text-muted-foreground italic">
+                        Nota: En iPhone, asegúrate de que la app esté añadida a Inicio para recibir notificaciones (Badge) correctamente.
+                    </p>
                 </CardContent>
             </Card>
 
