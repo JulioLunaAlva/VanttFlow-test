@@ -20,29 +20,39 @@ export const OfflineIndicator = () => {
         <AnimatePresence>
             {!isOnline && (
                 <motion.div
-                    initial={{ y: -100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -100, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    className="fixed top-0 left-0 right-0 bg-amber-500 text-white px-4 py-3 text-center text-sm font-bold z-[100] shadow-lg"
+                    initial={{ y: -100, opacity: 0, scale: 0.9 }}
+                    animate={{ y: 0, opacity: 1, scale: 1 }}
+                    exit={{ y: -100, opacity: 0, scale: 0.9 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    className="fixed top-[calc(env(safe-area-inset-top)+1rem)] left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:min-w-[320px] rounded-2xl z-[100] shadow-2xl"
                 >
-                    <div className="flex items-center justify-center gap-2">
-                        <WifiOff className="w-4 h-4" />
-                        <span>Sin conexión - Los cambios se guardan localmente</span>
+                    <div className="bg-amber-500/90 backdrop-blur-md text-white px-4 py-3 rounded-2xl border border-amber-400/50 flex items-center justify-center gap-3 shadow-amber-500/20">
+                        <div className="bg-white/20 p-1.5 rounded-full">
+                            <WifiOff className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-black tracking-tight leading-none">Sin conexión</span>
+                            <span className="text-[10px] font-medium opacity-90 leading-tight mt-0.5">Modo offline activado</span>
+                        </div>
                     </div>
                 </motion.div>
             )}
             {showOnlineMessage && isOnline && (
                 <motion.div
-                    initial={{ y: -100, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    exit={{ y: -100, opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    className="fixed top-0 left-0 right-0 bg-emerald-500 text-white px-4 py-3 text-center text-sm font-bold z-[100] shadow-lg"
+                    initial={{ y: -100, opacity: 0, scale: 0.9 }}
+                    animate={{ y: 0, opacity: 1, scale: 1 }}
+                    exit={{ y: -100, opacity: 0, scale: 0.9 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                    className="fixed top-[calc(env(safe-area-inset-top)+1rem)] left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:min-w-[320px] rounded-2xl z-[100] shadow-2xl"
                 >
-                    <div className="flex items-center justify-center gap-2">
-                        <Wifi className="w-4 h-4" />
-                        <span>Conexión restaurada</span>
+                    <div className="bg-emerald-600/90 backdrop-blur-md text-white px-4 py-3 rounded-2xl border border-emerald-500/50 flex items-center justify-center gap-3 shadow-emerald-500/20">
+                        <div className="bg-white/20 p-1.5 rounded-full">
+                            <Wifi className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="flex flex-col">
+                            <span className="text-sm font-black tracking-tight leading-none">Conexión restaurada</span>
+                            <span className="text-[10px] font-medium opacity-90 leading-tight mt-0.5">Sincronización en segundo plano</span>
+                        </div>
                     </div>
                 </motion.div>
             )}
