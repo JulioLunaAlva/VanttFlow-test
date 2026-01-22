@@ -5,10 +5,10 @@ import { toast } from 'sonner';
 const MarketContext = createContext();
 
 export const MarketProvider = ({ children }) => {
-    const [marketData, setMarketData] = useLocalStorage('market_data', {
+    const [marketData, setMarketData] = useLocalStorage('market_data_real', {
         usdMxn: { price: 20.35, change: 0.12, lastUpdate: null },
         btcUsd: { price: 98500, change: -1.5, lastUpdate: null },
-        nvdaStock: { price: 138.25, change: 2.3, lastUpdate: null }
+        ethUsd: { price: 2750, change: 1.2, lastUpdate: null }
     });
     const [loading, setLoading] = useState(false);
 
@@ -20,44 +20,42 @@ export const MarketProvider = ({ children }) => {
             const usdData = await usdResponse.json();
             const mxnRate = usdData.rates.MXN;
 
-            // 2. Fetch BTC/USD (CoinDesk)
+            // 2. Fetch BTC (CoinDesk)
             const btcResponse = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
             const btcData = await btcResponse.json();
             const btcPrice = btcData.bpi.USD.rate_float;
 
-            // 3. Simulated NVDA Stock (since most stock APIs require keys)
-            // In a real app, this would be an AlphaVantage or Finnhub call
-            const prevNvda = marketData.nvdaStock.price || 135.58;
-            const volatility = 0.02; // 2% 
-            const changePercent = (Math.random() - 0.45) * volatility; // Slightly bullish bias
-            const nvdaPrice = prevNvda * (1 + changePercent);
+            // 3. Fetch ETH (CoinCap API) - Real Data!
+            const ethResponse = await fetch('https://api.coincap.io/v2/assets/ethereum');
+            const ethData = await ethResponse.json();
+            const ethPrice = parseFloat(ethData.data.priceUsd);
+            const ethChange = parseFloat(ethData.data.changePercent24Hr);
 
-            setMarketData({
+            setMarketData(prev => ({
                 usdMxn: {
                     price: mxnRate,
-                    change: (mxnRate - (marketData.usdMxn.price || mxnRate)) / (marketData.usdMxn.price || 1) * 100,
+                    change: (mxnRate - (prev.usdMxn.price || mxnRate)) / (prev.usdMxn.price || 1) * 100,
                     lastUpdate: new Date().toISOString()
                 },
                 btcUsd: {
                     price: btcPrice,
-                    change: (btcPrice - (marketData.btcUsd.price || btcPrice)) / (marketData.btcUsd.price || 1) * 100,
+                    change: (btcPrice - (prev.btcUsd.price || btcPrice)) / (prev.btcUsd.price || 1) * 100,
                     lastUpdate: new Date().toISOString()
                 },
-                nvdaStock: {
-                    price: nvdaPrice,
-                    change: changePercent * 100,
+                ethUsd: {
+                    price: ethPrice,
+                    change: ethChange, // CoinCap gives 24h change directly
                     lastUpdate: new Date().toISOString()
                 }
-            });
-            console.log('Mercado actualizado:', newMarketData);
+            }));
         } catch (error) {
             console.error('Error fetching market data:', error);
-            // Si falla la red, al menos simulamos una pequeña variación para que no parezca muerto
+            // Fallback for offline mode: small variations to indicate "active" app but using last known real data
             const now = new Date().toISOString();
             setMarketData(prev => ({
-                usdMxn: { ...prev.usdMxn, price: prev.usdMxn.price * (1 + (Math.random() - 0.5) * 0.001), lastUpdate: now },
-                btcUsd: { ...prev.btcUsd, price: prev.btcUsd.price * (1 + (Math.random() - 0.5) * 0.01), lastUpdate: now },
-                nvdaStock: { ...prev.nvdaStock, price: prev.nvdaStock.price * (1 + (Math.random() - 0.5) * 0.005), lastUpdate: now }
+                usdMxn: { ...prev.usdMxn, lastUpdate: now },
+                btcUsd: { ...prev.btcUsd, lastUpdate: now },
+                ethUsd: { ...prev.ethUsd, lastUpdate: now }
             }));
         } finally {
             setLoading(false);

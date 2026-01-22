@@ -26,12 +26,12 @@ export const MarketTrendsWidget = () => {
             suffix: "K USD"
         },
         {
-            label: "NVIDIA",
-            value: marketData.nvdaStock.price.toFixed(0),
-            change: marketData.nvdaStock.change,
+            label: "Ethereum",
+            value: marketData.ethUsd.price.toFixed(2),
+            change: marketData.ethUsd.change,
             icon: Gem,
-            color: "text-blue-500",
-            bg: "bg-blue-500/10",
+            color: "text-purple-500",
+            bg: "bg-purple-500/10",
             suffix: " USD"
         },
     ];

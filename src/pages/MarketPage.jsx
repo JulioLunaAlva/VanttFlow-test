@@ -55,7 +55,7 @@ export const MarketPage = () => {
     const charts = useMemo(() => ({
         usd: generateChartData(marketData.usdMxn.price, 0.005),
         btc: generateChartData(marketData.btcUsd.price, 0.03),
-        nvda: generateChartData(marketData.nvdaStock.price, 0.015)
+        eth: generateChartData(marketData.ethUsd.price, 0.04)
     }), [marketData]);
 
     const stats = [
@@ -84,15 +84,15 @@ export const MarketPage = () => {
             prefix: "$"
         },
         {
-            title: "NVIDIA Corp.",
-            subtitle: "NVDA:NASDAQ",
-            value: marketData.nvdaStock.price.toFixed(2),
-            change: marketData.nvdaStock.change,
+            title: "Ethereum",
+            subtitle: "ETH/USD",
+            value: marketData.ethUsd.price.toLocaleString(),
+            change: marketData.ethUsd.change,
             icon: Gem,
-            color: "text-blue-500",
-            bg: "bg-blue-500/10",
-            chartColor: "#3b82f6",
-            data: charts.nvda,
+            color: "text-purple-500",
+            bg: "bg-purple-500/10",
+            chartColor: "#a855f7",
+            data: charts.eth,
             prefix: "$"
         }
     ];
