@@ -3,18 +3,20 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useFinance } from "@/context/FinanceContext";
 import { TrendingUp, Shield, CreditCard, PiggyBank, Award } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { useTranslation } from 'react-i18next';
 
 export const VanttScoreWidget = () => {
+    const { t } = useTranslation();
     const { getVanttScore } = useFinance();
     const { total, details } = getVanttScore();
 
-    let status = "Calculando...";
+    let status = t('dashboard.vantt_score.calculating');
     let statusColor = "text-muted-foreground";
 
-    if (total >= 850) { status = "Modo Leyenda 🏆"; statusColor = "text-yellow-500"; }
-    else if (total >= 700) { status = "Sólido 🦍"; statusColor = "text-emerald-500"; }
-    else if (total >= 500) { status = "En Camino 🚶"; statusColor = "text-blue-500"; }
-    else { status = "En Construcción 🚧"; statusColor = "text-orange-500"; }
+    if (total >= 850) { status = t('dashboard.vantt_score.legend'); statusColor = "text-yellow-500"; }
+    else if (total >= 700) { status = t('dashboard.vantt_score.solid'); statusColor = "text-emerald-500"; }
+    else if (total >= 500) { status = t('dashboard.vantt_score.on_track'); statusColor = "text-blue-500"; }
+    else { status = t('dashboard.vantt_score.building'); statusColor = "text-orange-500"; }
 
     const data = [
         { name: 'Score', value: total },
@@ -62,7 +64,7 @@ export const VanttScoreWidget = () => {
                     <div className="flex-1 space-y-3">
                         <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <Shield size={12} /> Liquidez
+                                <Shield size={12} /> {t('dashboard.vantt_score.liquidity')}
                             </div>
                             <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
                                 <div className="h-full bg-blue-500" style={{ width: `${(details.liquidity / 250) * 100}%` }} />
@@ -70,7 +72,7 @@ export const VanttScoreWidget = () => {
                         </div>
                         <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <CreditCard size={12} /> Deuda
+                                <CreditCard size={12} /> {t('dashboard.vantt_score.debt')}
                             </div>
                             <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
                                 <div className="h-full bg-purple-500" style={{ width: `${(details.debt / 250) * 100}%` }} />
@@ -78,7 +80,7 @@ export const VanttScoreWidget = () => {
                         </div>
                         <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <TrendingUp size={12} /> Crecimiento
+                                <TrendingUp size={12} /> {t('dashboard.vantt_score.growth')}
                             </div>
                             <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
                                 <div className="h-full bg-emerald-500" style={{ width: `${(details.growth / 250) * 100}%` }} />
@@ -86,7 +88,7 @@ export const VanttScoreWidget = () => {
                         </div>
                         <div className="flex items-center justify-between text-xs">
                             <div className="flex items-center gap-1.5 text-muted-foreground">
-                                <PiggyBank size={12} /> Ahorro
+                                <PiggyBank size={12} /> {t('dashboard.vantt_score.savings')}
                             </div>
                             <div className="h-1.5 w-16 bg-muted rounded-full overflow-hidden">
                                 <div className="h-full bg-amber-500" style={{ width: `${(details.savings / 250) * 100}%` }} />
@@ -95,7 +97,7 @@ export const VanttScoreWidget = () => {
                     </div>
                 </div>
                 <p className="text-[10px] text-center text-muted-foreground mt-2 italic">
-                    Mantén tus métricas en verde para subir de nivel.
+                    {t('dashboard.vantt_score.footer')}
                 </p>
             </CardContent>
         </Card>

@@ -37,5 +37,31 @@
     "prefer_related_applications": false,
     "related_applications": [],
     "lang": "es-MX",
-    "dir": "ltr"
+    "dir": "ltr",
+    "shortcuts": [
+        {
+            "name": "Nueva Transacción",
+            "short_name": "Nuevo",
+            "description": "Registra un gasto o ingreso rápidamente",
+            "url": "/transactions?action=new",
+            "icons": [
+                {
+                    "src": "/logo.png",
+                    "sizes": "192x192"
+                }
+            ]
+        },
+        {
+            "name": "Ver Dashboard",
+            "short_name": "Dashboard",
+            "description": "Tu resumen financiero",
+            "url": "/",
+            "icons": [
+                {
+                    "src": "/logo.png",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
 }

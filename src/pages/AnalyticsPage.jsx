@@ -6,13 +6,18 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus, BarChart2, LineChart as LineChartIcon } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { format, subMonths, isSameMonth, parseISO } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { es, enUS, ptBR, fr } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 export const AnalyticsPage = () => {
+    const { t, i18n } = useTranslation();
     const { transactions, selectedMonth, categories, netWorthHistory } = useFinance();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
     const { completeMission } = useGamification();
+
+    const localeMap = { es, en: enUS, pt: ptBR, fr };
+    const currentLocale = localeMap[i18n.language] || es;
 
     // Sort history by date to ensure correct chart rendering
     const chartData = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -89,9 +94,12 @@ export const AnalyticsPage = () => {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Analíticas Mensuales</h2>
+                    <h2 className="text-3xl font-bold tracking-tight">{t('analytics.title')}</h2>
                     <p className="text-muted-foreground capitalize">
-                        Comparando {format(currentMonthDate, 'MMMM yyyy', { locale: es })} vs {format(previousMonthDate, 'MMMM yyyy', { locale: es })}
+                        {t('analytics.comparing', {
+                            current: format(currentMonthDate, 'MMMM yyyy', { locale: currentLocale }),
+                            previous: format(previousMonthDate, 'MMMM yyyy', { locale: currentLocale })
+                        })}
                     </p>
                 </div>
             </div>
@@ -102,7 +110,7 @@ export const AnalyticsPage = () => {
             <Card className="overflow-hidden">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <LineChartIcon size={20} className="text-primary" /> Evolución de Patrimonio
+                        <LineChartIcon size={20} className="text-primary" /> {t('analytics.patrimony_evolution')}
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="h-[300px] w-full">
@@ -118,7 +126,7 @@ export const AnalyticsPage = () => {
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted))" />
                                 <XAxis
                                     dataKey="date"
-                                    tickFormatter={(val) => format(parseISO(val), 'dd MMM', { locale: es })}
+                                    tickFormatter={(val) => format(parseISO(val), 'dd MMM', { locale: currentLocale })}
                                     stroke="hsl(var(--muted-foreground))"
                                     fontSize={12}
                                 />
@@ -129,8 +137,8 @@ export const AnalyticsPage = () => {
                                 />
                                 <Tooltip
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
-                                    formatter={(value) => [new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(value), 'Patrimonio']}
-                                    labelFormatter={(label) => format(parseISO(label), 'dd MMMM yyyy', { locale: es })}
+                                    formatter={(value) => [new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value), t('analytics.patrimony')]}
+                                    labelFormatter={(label) => format(parseISO(label), 'dd MMMM yyyy', { locale: currentLocale })}
                                 />
                                 <Area
                                     type="monotone"
@@ -145,8 +153,8 @@ export const AnalyticsPage = () => {
                     ) : (
                         <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50">
                             <LineChartIcon size={48} className="mb-2" />
-                            <p>Tu historia financiera comienza hoy.</p>
-                            <p className="text-xs">Vuelve mañana para ver tu progreso.</p>
+                            <p>{t('analytics.empty_history')}</p>
+                            <p className="text-xs">{t('analytics.empty_history_sub')}</p>
                         </div>
                     )}
                 </CardContent>
@@ -156,34 +164,34 @@ export const AnalyticsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Gasto Total</CardTitle>
+                        <CardTitle className="text-sm font-medium">{t('analytics.total_expense')}</CardTitle>
                         <TrendingDown size={16} className={expenseVariation > 0 ? "text-red-500" : "text-green-500"} />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(currentExpense)}</div>
+                        <div className="text-2xl font-bold">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
                         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                             {expenseVariation > 0 ? <ArrowUpRight size={12} className="text-red-500" /> : <ArrowDownRight size={12} className="text-green-500" />}
                             <span className={expenseVariation > 0 ? "text-red-500 font-medium" : "text-green-500 font-medium"}>
                                 {Math.abs(expenseVariation).toFixed(1)}%
                             </span>
-                            vs mes anterior ({new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(previousExpense)})
+                            {t('analytics.vs_previous', { amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(previousExpense) })}
                         </p>
                     </CardContent>
                 </Card>
 
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Ingresos</CardTitle>
+                        <CardTitle className="text-sm font-medium">{t('analytics.income')}</CardTitle>
                         <TrendingUp size={16} className={incomeVariation >= 0 ? "text-green-500" : "text-red-500"} />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(currentIncome)}</div>
+                        <div className="text-2xl font-bold">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
                         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                             {incomeVariation >= 0 ? <ArrowUpRight size={12} className="text-green-500" /> : <ArrowDownRight size={12} className="text-red-500" />}
                             <span className={incomeVariation >= 0 ? "text-green-500 font-medium" : "text-red-500 font-medium"}>
                                 {Math.abs(incomeVariation).toFixed(1)}%
                             </span>
-                            vs mes anterior
+                            {t('analytics.vs_previous_short')}
                         </p>
                     </CardContent>
                 </Card>
@@ -194,11 +202,11 @@ export const AnalyticsPage = () => {
                     if (!highestIncrease || highestIncrease.diff <= 0) return (
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">Mayor Cambio</CardTitle>
+                                <CardTitle className="text-sm font-medium">{t('analytics.biggest_change')}</CardTitle>
                                 <Minus size={16} />
                             </CardHeader>
                             <CardContent className="py-6 text-center text-muted-foreground text-sm">
-                                Sin aumentos significativos.
+                                {t('analytics.no_significant_changes')}
                             </CardContent>
                         </Card>
                     );
@@ -206,13 +214,15 @@ export const AnalyticsPage = () => {
                     return (
                         <Card className="bg-destructive/10 border-destructive/20">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium text-destructive">Mayor Aumento</CardTitle>
+                                <CardTitle className="text-sm font-medium text-destructive">{t('analytics.biggest_increase')}</CardTitle>
                                 <TrendingUp size={16} className="text-destructive" />
                             </CardHeader>
                             <CardContent>
                                 <div className="text-lg font-bold truncate">{highestIncrease.name}</div>
                                 <p className="text-xs text-muted-foreground mt-1">
-                                    Gastaste <span className="font-bold text-destructive">+{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(highestIncrease.diff)}</span> más que el mes pasado.
+                                    {t('analytics.increase_desc', {
+                                        amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(highestIncrease.diff)
+                                    })}
                                 </p>
                             </CardContent>
                         </Card>
@@ -223,7 +233,7 @@ export const AnalyticsPage = () => {
             {/* Detailed Category Comparison */}
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><BarChart2 size={20} /> Desglose por Categoría</CardTitle>
+                    <CardTitle className="flex items-center gap-2"><BarChart2 size={20} /> {t('analytics.category_breakdown')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-6">
@@ -235,9 +245,9 @@ export const AnalyticsPage = () => {
                                         <span className="font-medium text-sm">{cat.name}</span>
                                     </div>
                                     <div className="text-right">
-                                        <span className="font-bold text-sm block">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(cat.current)}</span>
+                                        <span className="font-bold text-sm block">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
                                         <span className={`text-xs flex items-center justify-end gap-1 ${cat.diff > 0 ? 'text-red-500' : 'text-green-500'}`}>
-                                            {cat.diff > 0 ? '+' : ''}{new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency }).format(cat.diff)} ({cat.variation.toFixed(0)}%)
+                                            {cat.diff > 0 ? '+' : ''}{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.diff)} ({cat.variation.toFixed(0)}%)
                                         </span>
                                     </div>
                                 </div>
@@ -276,7 +286,7 @@ export const AnalyticsPage = () => {
                         ))}
                         {categoryInsights.length === 0 && (
                             <div className="text-center py-8 text-muted-foreground">
-                                No hay datos de gastos para comparar en este periodo.
+                                {t('analytics.no_data')}
                             </div>
                         )}
                     </div>

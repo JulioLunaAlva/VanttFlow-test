@@ -8,31 +8,33 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { TransactionForm } from '@/components/transactions/TransactionForm';
 import { motion } from 'framer-motion';
 import { triggerHaptic } from '@/utils/haptic';
+import { useTranslation } from 'react-i18next';
 
 export const MobileNav = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isMoreOpen, setIsMoreOpen] = useState(false);
 
     const menuSections = [
         {
-            title: "Herramientas Finanzas",
+            title: t('common.tools'),
             icon: Sparkles,
             items: [
-                { to: "/analytics", icon: BarChart3, label: "Analíticas", color: "blue" },
-                { to: "/market", icon: CandlestickChart, label: "Mercado", color: "emerald" },
-                { to: "/subscriptions", icon: Zap, label: "Suscripciones", color: "orange" },
-                { to: "/budget", icon: PieChart, label: "Presupuestos", color: "purple" },
-                { to: "/goals", icon: Target, label: "Metas", color: "pink" },
+                { to: "/analytics", icon: BarChart3, label: t('common.analytics'), color: "blue" },
+                { to: "/market", icon: CandlestickChart, label: t('common.market'), color: "emerald" },
+                { to: "/subscriptions", icon: Zap, label: t('common.subscriptions'), color: "orange" },
+                { to: "/budget", icon: PieChart, label: t('common.budget'), color: "purple" },
+                { to: "/goals", icon: Target, label: t('common.goals'), color: "pink" },
             ]
         },
         {
-            title: "Gestión",
+            title: t('common.system'),
             icon: Settings,
             items: [
-                { to: "/scheduled", icon: CalendarClock, label: "Pagos Programados", color: "emerald" },
-                { to: "/import", icon: Upload, label: "Importar", color: "indigo" },
-                { to: "/categories", icon: Tags, label: "Categorías", color: "amber" },
+                { to: "/scheduled", icon: CalendarClock, label: t('common.scheduled'), color: "emerald" },
+                { to: "/import", icon: Upload, label: t('common.import'), color: "indigo" },
+                { to: "/categories", icon: Tags, label: t('common.categories'), color: "amber" },
             ]
         }
     ];
@@ -50,7 +52,7 @@ export const MobileNav = () => {
                 {({ isActive }) => (
                     <>
                         <LayoutDashboard size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">Inicio</span>
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.home')}</span>
                     </>
                 )}
             </NavLink>
@@ -65,7 +67,7 @@ export const MobileNav = () => {
                 {({ isActive }) => (
                     <>
                         <Receipt size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">Movs</span>
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.movs')}</span>
                     </>
                 )}
             </NavLink>
@@ -100,7 +102,7 @@ export const MobileNav = () => {
                 {({ isActive }) => (
                     <>
                         <CreditCard size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">Cuentas</span>
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.cards')}</span>
                     </>
                 )}
             </NavLink>
@@ -115,7 +117,7 @@ export const MobileNav = () => {
                         )}
                     >
                         <Menu size={28} strokeWidth={isMoreOpen ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">Más</span>
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.more')}</span>
                     </button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="border-border/50">
@@ -123,7 +125,7 @@ export const MobileNav = () => {
                     <div className="absolute top-2 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-muted-foreground/30 rounded-full" />
 
                     <SheetHeader className="mb-6 mt-4">
-                        <SheetTitle className="text-2xl font-black tracking-tight">Menú</SheetTitle>
+                        <SheetTitle className="text-2xl font-black tracking-tight">{t('common.nav.menu')}</SheetTitle>
                         <p className="text-sm text-muted-foreground">Accede a todas las herramientas de VanttFlow</p>
                     </SheetHeader>
 
@@ -198,7 +200,7 @@ export const MobileNav = () => {
                                     <Settings className="w-6 h-6 text-slate-400" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-bold">Configuración</p>
+                                    <p className="text-sm font-bold">{t('common.settings')}</p>
                                     <p className="text-xs text-muted-foreground">Personaliza tu experiencia</p>
                                 </div>
                             </Link>

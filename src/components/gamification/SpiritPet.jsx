@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
-import { useGamification } from '@/context/GamificationContext';
+import { useMemo } from 'react';
 import { useFinance } from '@/context/FinanceContext';
+import { useGamification } from '@/context/GamificationContext';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const PET_CONFIGS = {
     fox: {
@@ -77,6 +78,7 @@ const PET_CONFIGS = {
 };
 
 export const SpiritPet = ({ size = 'md', showBubble = true, className }) => {
+    const { t } = useTranslation();
     const { selectedPet, isEnabled } = useGamification();
     const { budgets, transactions, summary: financeSummary } = useFinance();
 
@@ -144,7 +146,7 @@ export const SpiritPet = ({ size = 'md', showBubble = true, className }) => {
                 <div className="relative animate-in fade-in slide-in-from-left-2 duration-500 z-50">
                     <div className="bg-card/95 backdrop-blur-xl border border-border p-3 rounded-2xl rounded-tl-none shadow-xl max-w-[200px]">
                         <p className="text-xs font-medium text-foreground leading-relaxed italic">
-                            "{pet.messages[status]}"
+                            "{t(`dashboard.pets.${selectedPet}.${status}`)}"
                         </p>
                     </div>
                     {/* Speech bubble tail */}

@@ -3,20 +3,29 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useFinance } from "@/context/FinanceContext";
 import { format, isPast, isToday } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { enUS, es, ptBR, fr } from 'date-fns/locale';
 import { Check, X, Clock, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useIdentity } from '@/context/IdentityContext';
+
+const locales = { es, en: enUS, pt: ptBR, fr };
 export const PendingPaymentsWidget = () => {
+    const { t, i18n } = useTranslation();
+    const { user } = useIdentity();
     const { getScheduledForMonth, selectedMonth, processScheduledPayment } = useFinance();
     const scheduledItems = getScheduledForMonth(selectedMonth);
-    // Filter pending/active items for this month summary
+
     const pendingItems = scheduledItems.filter(i => i.state === 'pending' && i.status === 'active').sort((a, b) => a.dayOfMonth - b.dayOfMonth);
+
+    const currentLocale = locales[i18n.language.split('-')[0]] || es;
+
     if (scheduledItems.length === 0) return null;
     return (
         <Card className="col-span-full lg:col-span-1">
             <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium flex items-center justify-between">
-                    <span>Pagos Programados ({format(selectedMonth, 'MMMM')})</span>
-                    <span className="text-xs font-normal bg-muted px-2 py-1 rounded-full">{pendingItems.length} pendientes</span>
+                    <span>{t('dashboard.pending')} ({format(selectedMonth, 'MMMM', { locale: currentLocale })})</span>
+                    <span className="text-xs font-normal bg-muted px-2 py-1 rounded-full">{t('dashboard.pending_count', { count: pendingItems.length })}</span>
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -24,7 +33,7 @@ export const PendingPaymentsWidget = () => {
                     {pendingItems.length === 0 && (
                         <div className="flex flex-col items-center justify-center py-6 text-center text-sm text-green-600">
                             <Check className="h-8 w-8 mb-2 opacity-50" />
-                            <p>¡Todo al día este mes</p>
+                            <p>{t('dashboard.all_caught_up')}</p>
                         </div>
                     )}
                     {pendingItems.slice(0, 5).map(item => {
@@ -38,7 +47,7 @@ export const PendingPaymentsWidget = () => {
                                     <div>
                                         <p className="text-sm font-medium leading-none">{item.name}</p>
                                         <p className="text-xs text-muted-foreground mt-1">
-                                            {format(item.currentMonthDate, 'd MMM', { locale: es })} • {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(item.amount)}
+                                            {format(item.currentMonthDate, 'd MMM', { locale: currentLocale })} • {new Intl.NumberFormat('es-MX', { style: 'currency', currency: user?.currency || 'MXN' }).format(item.amount)}
                                         </p>
                                     </div>
                                 </div>
@@ -47,7 +56,7 @@ export const PendingPaymentsWidget = () => {
                                         size="icon"
                                         variant="ghost"
                                         className="h-7 w-7 text-green-600 hover:text-green-700 hover:bg-green-50"
-                                        title="Marcar Pagado"
+                                        title={t('dashboard.mark_paid')}
                                         onClick={() => processScheduledPayment(item, 'pay')}
                                     >
                                         <Check size={14} />
@@ -56,7 +65,7 @@ export const PendingPaymentsWidget = () => {
                                         size="icon"
                                         variant="ghost"
                                         className="h-7 w-7 text-muted-foreground hover:text-slate-600"
-                                        title="Omitir este mes"
+                                        title={t('dashboard.skip_month')}
                                         onClick={() => processScheduledPayment(item, 'skip')}
                                     >
                                         <X size={14} />

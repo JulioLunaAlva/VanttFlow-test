@@ -1,13 +1,27 @@
-import React from 'react';
-import { TransactionForm } from "@/components/transactions/TransactionForm";
 import { TransactionList } from "@/components/transactions/TransactionList";
+import { TransactionForm } from "@/components/transactions/TransactionForm";
+import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export const TransactionsPage = () => {
+    const { t } = useTranslation();
+    const location = useLocation();
+    const formRef = useRef(null);
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        if (params.get('action') === 'new' && formRef.current) {
+            formRef.current.scrollIntoView({ behavior: 'smooth' });
+            // Add a brief glow or pulse to the form if possible
+        }
+    }, [location]);
+
     return (
         <div className="space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight">Transacciones</h2>
+            <h2 className="text-3xl font-bold tracking-tight">{t('common.transactions')}</h2>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-1">
+                <div className="lg:col-span-1" ref={formRef}>
                     <TransactionForm />
                 </div>
                 <div className="lg:col-span-2">

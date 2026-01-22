@@ -10,7 +10,10 @@ const ICON_MAP = {
     CalendarClock,
     BarChart3,
 };
+import { useTranslation } from 'react-i18next';
+
 export const DailyMissionsWidget = () => {
+    const { t } = useTranslation();
     const { dailyMissions, isEnabled } = useGamification();
     if (!dailyMissions || dailyMissions.length === 0) return null;
     const completedCount = dailyMissions.filter(m => m.completed).length;
@@ -24,7 +27,7 @@ export const DailyMissionsWidget = () => {
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 text-muted-foreground">
                         <Target className="h-3 w-3 text-primary" />
-                        Misiones Diarias
+                        {t('dashboard.daily_missions')}
                     </CardTitle>
                     <span className="text-[10px] font-black text-primary/60 bg-primary/10 px-2 py-0.5 rounded-full">
                         {completedCount}/{dailyMissions.length}
@@ -56,7 +59,7 @@ export const DailyMissionsWidget = () => {
                                         "text-sm font-bold leading-tight truncate",
                                         mission.completed ? "text-primary/70 line-through decoration-2" : "text-foreground"
                                     )}>
-                                        {mission.title}
+                                        {t(`dashboard.missions.${mission.id}`)}
                                     </p>
                                     <div className="flex items-center gap-1.5 mt-0.5">
                                         <div className="w-1 h-1 rounded-full bg-primary/40" />
@@ -76,7 +79,7 @@ export const DailyMissionsWidget = () => {
                 </div>
                 <div className="mt-5 space-y-2">
                     <div className="flex items-center justify-between px-1">
-                        <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Progreso Diario</span>
+                        <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{t('dashboard.daily_progress')}</span>
                         <span className="text-[9px] font-black text-primary uppercase">{Math.round(progress)}%</span>
                     </div>
                     <div className="h-1.5 w-full bg-muted rounded-full overflow-hidden p-[1px] border border-border/20">

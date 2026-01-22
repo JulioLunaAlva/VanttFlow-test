@@ -12,10 +12,12 @@ import { MobileNav } from './MobileNav';
 import { AppTour } from '@/components/onboarding/AppTour';
 
 import { useIdentity } from "@/context/IdentityContext";
+import { useTranslation } from 'react-i18next';
 
 const Sidebar = ({ className }) => {
     const { exportData } = useFinance();
     const { user, privacyMode, setPrivacyMode } = useIdentity();
+    const { t } = useTranslation();
 
     return (
         <div className={cn(
@@ -62,7 +64,7 @@ const Sidebar = ({ className }) => {
                         </span>
                     </div>
                     <div className="min-w-0">
-                        <p className="text-xs font-black text-foreground truncate">Hola, {user?.name?.split(' ')[0] || 'Usuario'}</p>
+                        <p className="text-xs font-black text-foreground truncate">Hola, {user?.name?.split(' ')[0] || t('common.welcome')}</p>
                         <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Miembro Pro</p>
                     </div>
                 </div>
@@ -86,27 +88,27 @@ const Sidebar = ({ className }) => {
             </div>
 
             <nav className="flex-1 px-4 space-y-1.5 flex flex-col relative z-10 overflow-y-auto custom-scrollbar">
-                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">Principal</p>
-                <SidebarLink to="/" icon={LayoutDashboard} label="Dashboard" />
-                <SidebarLink to="/transactions" icon={Receipt} label="Transacciones" id="tour-transactions-nav" />
-                <SidebarLink to="/analytics" icon={BarChart3} label="Analíticas" />
-                <SidebarLink to="/market" icon={CandlestickChart} label="Mercado" />
+                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">{t('common.main_menu')}</p>
+                <SidebarLink to="/" icon={LayoutDashboard} label={t('common.dashboard')} />
+                <SidebarLink to="/transactions" icon={Receipt} label={t('common.transactions')} id="tour-transactions-nav" />
+                <SidebarLink to="/analytics" icon={BarChart3} label={t('common.analytics')} />
+                <SidebarLink to="/market" icon={CandlestickChart} label={t('common.market')} />
 
                 <div className="h-px bg-border/40 mx-4 my-4" />
 
-                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">Herramientas</p>
-                <SidebarLink to="/budget" icon={PieChart} label="Presupuestos" />
-                <SidebarLink to="/goals" icon={Target} label="Metas" />
-                <SidebarLink to="/scheduled" icon={CalendarClock} label="Pagos Programados" />
-                <SidebarLink to="/cards" icon={CreditCard} label="Tarjetas" />
-                <SidebarLink to="/subscriptions" icon={Zap} label="Suscripciones" />
+                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">{t('common.tools')}</p>
+                <SidebarLink to="/budget" icon={PieChart} label={t('common.budget')} />
+                <SidebarLink to="/goals" icon={Target} label={t('common.goals')} />
+                <SidebarLink to="/scheduled" icon={CalendarClock} label={t('common.scheduled')} />
+                <SidebarLink to="/cards" icon={CreditCard} label={t('common.cards')} />
+                <SidebarLink to="/subscriptions" icon={Zap} label={t('common.subscriptions')} />
 
                 <div className="h-px bg-border/40 mx-4 my-4" />
 
-                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">Sistema</p>
-                <SidebarLink to="/categories" icon={Tags} label="Categorías" />
-                <SidebarLink to="/import" icon={Upload} label="Importar" />
-                <SidebarLink to="/settings" icon={Settings} label="Configuración" />
+                <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">{t('common.system')}</p>
+                <SidebarLink to="/categories" icon={Tags} label={t('common.categories')} />
+                <SidebarLink to="/import" icon={Upload} label={t('common.import')} />
+                <SidebarLink to="/settings" icon={Settings} label={t('common.settings')} />
 
                 <div className="mt-8 mb-6 px-2">
                     <Button
@@ -117,7 +119,7 @@ const Sidebar = ({ className }) => {
                         <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center group-hover/export:bg-primary/20 transition-colors">
                             <Download size={16} />
                         </div>
-                        <span className="text-sm font-bold tracking-tight">Exportar CSV</span>
+                        <span className="text-sm font-bold tracking-tight">{t('common.export_csv')}</span>
                     </Button>
                 </div>
             </nav>
@@ -157,6 +159,7 @@ const SidebarLink = ({ to, icon: Icon, label, id }) => (
 );
 
 export const Layout = ({ children }) => {
+    const { t } = useTranslation();
     return (
         <div className="min-h-screen bg-background flex font-sans antialiased text-foreground">
             <AppTour />
@@ -181,8 +184,8 @@ export const Layout = ({ children }) => {
 
                 <div className="hidden xl:flex h-20 px-8 items-center justify-between border-b border-border/40">
                     <div className="flex flex-col">
-                        <h2 className="font-black text-2xl tracking-tighter">Panel de Control</h2>
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest -mt-1 opacity-60">Gestión de Finanzas Personales</span>
+                        <h2 className="font-black text-2xl tracking-tighter">{t('dashboard.title')}</h2>
+                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest -mt-1 opacity-60">{t('dashboard.subtitle')}</span>
                     </div>
                     <div className="flex items-center gap-6">
                         <MonthSelector />

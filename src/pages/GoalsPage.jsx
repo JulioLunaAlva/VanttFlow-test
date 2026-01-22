@@ -8,9 +8,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import confetti from 'canvas-confetti';
 import { cn } from "@/lib/utils";
+import { useTranslation } from 'react-i18next';
 
 export const GoalsPage = () => {
+    const { t, i18n } = useTranslation();
     const { goals, addGoal, updateGoal, deleteGoal } = useFinance();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
 
     // Add Funds Local State
@@ -111,32 +115,32 @@ export const GoalsPage = () => {
         <div className="space-y-8 max-w-5xl mx-auto p-4 md:p-0 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">Metas de Ahorro</h2>
-                    <p className="text-muted-foreground">Visualiza tus sueños y alcánzalos paso a paso.</p>
+                    <h2 className="text-3xl font-bold tracking-tight">{t('goals.title')}</h2>
+                    <p className="text-muted-foreground">{t('goals.subtitle')}</p>
                 </div>
 
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                     <DialogTrigger asChild>
                         <Button size="lg" className="shadow-lg gap-2 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 border-0">
-                            <Plus size={20} /> Nueva Meta
+                            <Plus size={20} /> {t('goals.new_goal')}
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>{editingGoal ? 'Editar Meta' : 'Nueva Meta Financiera'}</DialogTitle>
+                            <DialogTitle>{editingGoal ? t('goals.edit_goal') : t('goals.new_goal_title')}</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={handleCreateSubmit} className="space-y-4 pt-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Nombre de la Meta</label>
+                                <label className="text-sm font-medium">{t('goals.goal_name')}</label>
                                 <Input
-                                    placeholder="Ej. Viaje a Europa, Auto Nuevo..."
+                                    placeholder={t('goals.goal_placeholder')}
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Monto Objetivo</label>
+                                <label className="text-sm font-medium">{t('goals.target_amount')}</label>
                                 <MoneyInput
                                     value={targetAmount}
                                     onChange={setTargetAmount}
@@ -144,13 +148,13 @@ export const GoalsPage = () => {
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Ahorrado Actualmente (Opcional)</label>
+                                <label className="text-sm font-medium">{t('goals.current_saved')}</label>
                                 <MoneyInput
                                     value={currentSaved}
                                     onChange={setCurrentSaved}
                                 />
                             </div>
-                            <Button type="submit" className="w-full mt-4">Guardar Meta</Button>
+                            <Button type="submit" className="w-full mt-4">{t('goals.save_goal')}</Button>
                         </form>
                     </DialogContent>
                 </Dialog>
@@ -159,11 +163,11 @@ export const GoalsPage = () => {
                 <Dialog open={isAddFundsOpen} onOpenChange={setIsAddFundsOpen}>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Agregar Fondos: {selectedGoal?.name}</DialogTitle>
+                            <DialogTitle>{t('goals.add_funds')}: {selectedGoal?.name}</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={handleAddFunds} className="space-y-4 pt-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Monto a agregar</label>
+                                <label className="text-sm font-medium">{t('goals.add_funds_amount')}</label>
                                 <MoneyInput
                                     value={fundAmount}
                                     onChange={setFundAmount}
@@ -171,7 +175,7 @@ export const GoalsPage = () => {
                                     autoFocus
                                 />
                             </div>
-                            <Button type="submit" className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700">Registrar Ahorro</Button>
+                            <Button type="submit" className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700">{t('goals.register_saving')}</Button>
                         </form>
                     </DialogContent>
                 </Dialog>
@@ -212,10 +216,10 @@ export const GoalsPage = () => {
                                     <div className="flex justify-between items-end">
                                         <div>
                                             <p className="text-3xl font-bold tracking-tight">
-                                                {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(goal.currentSaved)}
+                                                {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.currentSaved)}
                                             </p>
                                             <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mt-1">
-                                                Meta: {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(goal.targetAmount)}
+                                                {t('goals.target_label', { amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.targetAmount) })}
                                             </p>
                                         </div>
                                         <div className="text-right">
@@ -247,9 +251,9 @@ export const GoalsPage = () => {
                                             onClick={() => openAddFunds(goal)}
                                         >
                                             {isCompleted ? (
-                                                <span className="flex items-center gap-2"><Trophy size={16} /> ¡Meta Cumplida! (Agregar extra)</span>
+                                                <span className="flex items-center gap-2"><Trophy size={16} /> {t('goals.goal_achieved')}</span>
                                             ) : (
-                                                <span className="flex items-center gap-2"><Rocket size={16} /> Agregar Fondos</span>
+                                                <span className="flex items-center gap-2"><Rocket size={16} /> {t('goals.add_funds')}</span>
                                             )}
                                         </Button>
                                     </div>
@@ -264,11 +268,11 @@ export const GoalsPage = () => {
                         <div className="bg-primary/10 p-6 rounded-full mb-6 ring-8 ring-primary/5">
                             <Target className="w-12 h-12 text-primary" />
                         </div>
-                        <h3 className="text-xl font-semibold mb-2">Sin metas definidas</h3>
+                        <h3 className="text-xl font-semibold mb-2">{t('goals.no_goals')}</h3>
                         <p className="text-muted-foreground max-w-sm mb-6">
-                            Define un objetivo financiero, visualízalo y nosotros te ayudaremos a alcanzarlo.
+                            {t('goals.no_goals_desc')}
                         </p>
-                        <Button onClick={() => setIsCreateDialogOpen(true)}>Crear mi primera meta</Button>
+                        <Button onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
                     </div>
                 )}
             </div>

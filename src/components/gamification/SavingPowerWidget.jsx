@@ -7,7 +7,10 @@ import { cn } from '@/lib/utils';
 import { Zap, ShieldCheck, Flame, TrendingUp, Sparkles, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 export const SavingPowerWidget = React.memo(() => {
+    const { t } = useTranslation();
     const { budgets, transactions, summary: financeSummary } = useFinance();
     const { isEnabled } = useGamification();
     const { user } = useIdentity();
@@ -17,7 +20,7 @@ export const SavingPowerWidget = React.memo(() => {
     const savingData = useMemo(() => {
         if (!budgets || budgets.length === 0) return {
             score: 0,
-            label: 'Crea un presupuesto para activar',
+            label: t('dashboard.setup_budget'),
             color: 'from-muted to-muted-foreground/20',
             glow: 'rgba(var(--muted), 0.2)',
             icon: Zap,
@@ -30,22 +33,22 @@ export const SavingPowerWidget = React.memo(() => {
         const totalExpenses = summary.expense;
         const savings = Math.max(0, totalBudget - totalExpenses);
         const score = Math.round((savings / totalBudget) * 100);
-        let label = 'Ahorrador Novato';
+        let label = t('dashboard.ranks.novice');
         let color = 'from-blue-400 to-indigo-600';
         let glow = 'rgba(59, 130, 246, 0.5)';
         let icon = Zap;
         if (score >= 90) {
-            label = 'Leyenda del Ahorro';
+            label = t('dashboard.ranks.legend');
             color = 'from-amber-400 via-orange-500 to-red-600';
             glow = 'rgba(245, 158, 11, 0.6)';
             icon = Flame;
         } else if (score >= 50) {
-            label = 'Guardián Financiero';
+            label = t('dashboard.ranks.guardian');
             color = 'from-emerald-400 to-teal-600';
             glow = 'rgba(16, 185, 129, 0.5)';
             icon = ShieldCheck;
         } else if (score >= 20) {
-            label = 'Estratega';
+            label = t('dashboard.ranks.strategist');
             color = 'from-blue-500 to-blue-700';
             glow = 'rgba(59, 130, 246, 0.5)';
             icon = TrendingUp;
@@ -75,10 +78,10 @@ export const SavingPowerWidget = React.memo(() => {
                     <div className="flex items-center justify-between">
                         <CardTitle className="text-sm font-black uppercase tracking-[0.2em] flex items-center gap-2 text-primary/80 anime:text-foreground gamer:text-primary">
                             <Zap className="h-4 w-4 text-primary animate-pulse" />
-                            Poder de Ahorro
+                            {t('dashboard.saving')}
                         </CardTitle>
                         <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[9px] font-black text-primary animate-pulse">
-                            EFICIENCIA ACTIVA
+                            {t('dashboard.active_efficiency')}
                         </div>
                     </div>
                 </CardHeader>
@@ -91,7 +94,7 @@ export const SavingPowerWidget = React.memo(() => {
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="text-4xl font-black tracking-tighter italic leading-none text-foreground"
                             >
-                                {score}% <span className="text-[10px] not-italic font-black text-foreground/60 uppercase ml-1 tracking-widest anime:text-foreground/80 gamer:text-primary/60">Eficiencia</span>
+                                {score}% <span className="text-[10px] not-italic font-black text-foreground/60 uppercase ml-1 tracking-widest anime:text-foreground/80 gamer:text-primary/60">{t('dashboard.efficiency')}</span>
                             </motion.h3>
                             <p className={cn(
                                 "text-[11px] font-black uppercase tracking-[0.2em] drop-shadow-sm",
@@ -151,7 +154,7 @@ export const SavingPowerWidget = React.memo(() => {
                                 onClick={() => navigate('/budget')}
                                 className="text-[10px] text-primary font-black uppercase tracking-widest mt-2 h-auto p-0 hover:underline"
                             >
-                                Configurar ahora <ArrowRight size={10} className="ml-1" />
+                                {t('dashboard.setup_now')} <ArrowRight size={10} className="ml-1" />
                             </Button>
                         </div>
                     ) : (
@@ -159,7 +162,7 @@ export const SavingPowerWidget = React.memo(() => {
                             <div className="p-4 rounded-2xl bg-muted/40 border border-border/40 backdrop-blur-sm hover:bg-muted/60 transition-colors group/stat">
                                 <p className="text-[9px] font-black uppercase text-foreground/60 tracking-widest mb-1.5 flex items-center gap-1.5 anime:text-foreground/70">
                                     <div className="w-1.5 h-1.5 rounded-full bg-foreground/30 anime:bg-foreground/40" />
-                                    Teórico
+                                    {t('dashboard.theoretical')}
                                 </p>
                                 <p className="text-lg font-black tracking-tight text-foreground">
                                     {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}
@@ -171,7 +174,7 @@ export const SavingPowerWidget = React.memo(() => {
                                 </div>
                                 <p className="text-[9px] font-black uppercase text-primary/80 tracking-widest mb-1.5 flex items-center gap-1.5 gamer:text-primary">
                                     <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse" />
-                                    Real
+                                    {t('dashboard.real')}
                                 </p>
                                 <p className="text-lg font-black text-primary tracking-tight">
                                     {new Intl.NumberFormat('es-MX', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(savings)}
@@ -195,7 +198,7 @@ export const SavingPowerWidget = React.memo(() => {
                                     ))}
                                 </div>
                                 <p className="text-[10px] font-black text-muted-foreground/70 italic tracking-tight">
-                                    {score > 80 ? '¡Disciplina legendaria!' : '¡Sigue así, vas ganando!'}
+                                    {score > 80 ? t('dashboard.legendary_discipline') : t('dashboard.keep_going')}
                                 </p>
                             </div>
                             <div className="text-[9px] font-black uppercase tracking-widest text-primary/60 animate-pulse text-foreground/40">

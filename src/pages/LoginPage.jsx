@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { LockKeyhole, Delete, Fingerprint } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export const LoginPage = () => {
     const { login, user, isAuthenticated } = useIdentity();
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [pin, setPin] = useState('');
     const [errorShake, setErrorShake] = useState(false);
@@ -40,7 +42,7 @@ export const LoginPage = () => {
                 setErrorShake(false);
                 setPin('');
             }, 500);
-            toast.error("PIN Incorrecto");
+            toast.error(t('auth.incorrect_pin'));
         } else {
             // Success sound or haptic could go here
         }
@@ -64,8 +66,8 @@ export const LoginPage = () => {
                         <img src="/logo.png" alt="VanttFlow" className="w-14 h-14 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" />
                     </div>
                     <div className="space-y-1">
-                        <h1 className="text-2xl font-bold tracking-tight">Hola, {user.name}</h1>
-                        <p className="text-blue-200/60 text-sm">Ingresa tu código de acceso</p>
+                        <h1 className="text-2xl font-bold tracking-tight">{t('auth.welcome_user', { name: user.name })}</h1>
+                        <p className="text-blue-200/60 text-sm">{t('auth.enter_pin')}</p>
                     </div>
                 </div>
 
@@ -75,8 +77,8 @@ export const LoginPage = () => {
                         <div
                             key={i}
                             className={`w-4 h-4 rounded-full transition-all duration-300 ${i < pin.length
-                                    ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)] scale-110'
-                                    : 'bg-white/10 scale-100'
+                                ? 'bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)] scale-110'
+                                : 'bg-white/10 scale-100'
                                 }`}
                         />
                     ))}
@@ -112,7 +114,7 @@ export const LoginPage = () => {
 
                 <div className="text-center pt-8">
                     <Button variant="link" size="sm" onClick={() => navigate('/setup')} className="text-white/30 text-xs hover:text-white/50">
-                        ¿Olvidaste tu PIN?
+                        {t('auth.forgot_pin')}
                     </Button>
                 </div>
             </div>

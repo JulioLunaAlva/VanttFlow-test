@@ -15,12 +15,15 @@ import { useFinance } from '@/context/FinanceContext';
 import { useNotifications } from '@/context/NotificationContext';
 import { Download, Upload, Bell, Zap } from 'lucide-react';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Languages } from 'lucide-react';
 
 export const SettingsPage = () => {
     const { user, updateProfile, logout, autoLockMinutes, setAutoLockMinutes } = useIdentity();
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
     const { state: financeState, dispatch } = useFinance(); // Get access to finance state
     const { permission, requestPermission, sendNotification, triggerMotivation } = useNotifications();
+    const { t, i18n } = useTranslation();
     const fileInputRef = useRef(null);
 
     const PET_OPTIONS = [
@@ -98,7 +101,7 @@ export const SettingsPage = () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        toast.success('Copia de seguridad descargada exitosamente');
+        toast.success(t('settings.export_success'));
     };
 
     const handleImport = (e) => {
@@ -110,13 +113,11 @@ export const SettingsPage = () => {
             try {
                 const data = JSON.parse(event.target.result);
 
-                // Basic validation
                 if (!data.identity) {
-                    throw new Error('Archivo de respaldo inválido: Falta identidad');
+                    throw new Error(t('settings.import_error'));
                 }
 
-                if (confirm('¿Reemplazar todos tus datos actuales con los del archivo? Se recargará la página.')) {
-                    // Finance
+                if (confirm(t('settings.import_confirm'))) {
                     if (data.transactions) localStorage.setItem('finance_transactions', JSON.stringify(data.transactions));
                     if (data.categories) localStorage.setItem('finance_categories', JSON.stringify(data.categories));
                     if (data.accounts) localStorage.setItem('finance_accounts', JSON.stringify(data.accounts));
@@ -125,11 +126,9 @@ export const SettingsPage = () => {
                     if (data.budgets) localStorage.setItem('finance_budgets', JSON.stringify(data.budgets));
                     if (data.goals) localStorage.setItem('finance_goals', JSON.stringify(data.goals));
 
-                    // Identity
                     localStorage.setItem('vantt_identity', JSON.stringify(data.identity));
                     if (data.privacyMode !== undefined) localStorage.setItem('vantt_privacy_mode', JSON.stringify(data.privacyMode));
 
-                    // Gamification
                     if (data.gamification) {
                         localStorage.setItem('gamification_enabled', JSON.stringify(data.gamification.enabled));
                         localStorage.setItem('gamification_selected_pet', JSON.stringify(data.gamification.pet));
@@ -141,34 +140,34 @@ export const SettingsPage = () => {
                         localStorage.setItem('gamification_missions_date', JSON.stringify(data.gamification.missionsDate));
                     }
 
-                    toast.success('Datos importados correctamente. Recargando...');
+                    toast.success(t('settings.import_success'));
                     setTimeout(() => window.location.reload(), 1500);
                 }
             } catch (error) {
                 console.error(error);
-                toast.error('Error al importar: Archivo corrupto o inválido');
+                toast.error(t('settings.import_error'));
             }
         };
         reader.readAsText(file);
-        e.target.value = null; // Reset input
+        e.target.value = null;
     };
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight">Configuración</h2>
+            <h2 className="text-3xl font-bold tracking-tight">{t('settings.title')}</h2>
 
             {/* Profile Section */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <User className="h-5 w-5" />
-                        Perfil e Identidad
+                        {t('settings.profile')}
                     </CardTitle>
-                    <CardDescription>Gestiona tu información personal y de seguridad.</CardDescription>
+                    <CardDescription>{t('settings.profile_desc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Nombre</Label>
+                        <Label htmlFor="name">{t('settings.name_label')}</Label>
                         <div className="relative">
                             <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
@@ -180,21 +179,21 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="email">Correo Electrónico (Opcional)</Label>
+                        <Label htmlFor="email">{t('settings.email_label')}</Label>
                         <div className="relative">
                             <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
                                 id="email"
                                 type="email"
                                 className="pl-9"
-                                placeholder="tu@email.com"
+                                placeholder={t('settings.email_placeholder')}
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                             />
                         </div>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="pin">PIN de Seguridad (4 dígitos)</Label>
+                        <Label htmlFor="pin">{t('settings.pin_label_setting')}</Label>
                         <div className="relative">
                             <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                             <Input
@@ -210,7 +209,7 @@ export const SettingsPage = () => {
                 </CardContent>
                 <CardFooter className="justify-end">
                     <Button onClick={handleSave} className="gap-2">
-                        <Save size={16} /> Guardar Cambios
+                        <Save size={16} /> {t('settings.save_changes_btn')}
                     </Button>
                 </CardFooter>
             </Card>
@@ -220,13 +219,13 @@ export const SettingsPage = () => {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Globe className="h-5 w-5" />
-                        Preferencias Regionales
+                        {t('settings.appearance')}
                     </CardTitle>
-                    <CardDescription>Ajusta la moneda y formatos.</CardDescription>
+                    <CardDescription>{t('settings.appearance_desc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid gap-2">
-                        <Label>Moneda Principal</Label>
+                        <Label>{t('settings.currency_label')}</Label>
                         <select
                             value={formData.currency}
                             onChange={e => setFormData({ ...formData, currency: e.target.value })}
@@ -238,27 +237,53 @@ export const SettingsPage = () => {
                             <option value="COP">Peso Colombiano (COP)</option>
                         </select>
                         <p className="text-xs text-muted-foreground">
-                            Nota: Cambiar la moneda no convierte los montos existentes, solo cambia el símbolo visual.
+                            {t('settings.currency_note')}
                         </p>
                     </div>
                     <Separator />
 
                     <div className="pt-2">
-                        <Label>Ayuda y Guía</Label>
+                        <Label>{t('settings.tour_label')}</Label>
                         <div className="mt-2 text-center p-6 border-2 border-dashed rounded-xl bg-muted/20">
                             <Sparkles className="w-8 h-8 text-primary mx-auto mb-2 opacity-50" />
-                            <p className="text-sm text-muted-foreground mb-4">¿Quieres volver a ver la guía interactiva de bienvenida?</p>
+                            <p className="text-sm text-muted-foreground mb-4">{t('settings.tour_desc')}</p>
                             <Button
                                 variant="outline"
                                 size="sm"
                                 onClick={() => {
                                     localStorage.removeItem('vanttflow_tour_completed');
-                                    toast.success("Tour reiniciado. Ve al Dashboard para comenzar.");
+                                    toast.success(t('settings.tour_success'));
                                 }}
                             >
-                                Reiniciar Tour de Bienvenida
+                                {t('settings.tour_restart')}
                             </Button>
                         </div>
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Language Settings */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Languages className="h-5 w-5" />
+                        {t('settings.language')}
+                    </CardTitle>
+                    <CardDescription>{t('settings.select_language')}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid gap-2">
+                        <Label>{t('settings.language')}</Label>
+                        <select
+                            value={i18n.language}
+                            onChange={e => i18n.changeLanguage(e.target.value)}
+                            className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                        >
+                            <option value="es">Español 🇪🇸</option>
+                            <option value="en">English 🇺🇸</option>
+                            <option value="pt">Português 🇧🇷</option>
+                            <option value="fr">Français 🇫🇷</option>
+                        </select>
                     </div>
                 </CardContent>
             </Card>
@@ -268,19 +293,19 @@ export const SettingsPage = () => {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Download className="h-5 w-5" />
-                        Respaldo y Portabilidad
+                        {t('settings.data')}
                     </CardTitle>
-                    <CardDescription>exporta tus datos para guardarlos seguros o impórtalos en otro dispositivo.</CardDescription>
+                    <CardDescription>{t('settings.data_desc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex gap-4">
                         <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
                             <Download size={18} />
-                            Exportar Datos (JSON)
+                            {t('settings.export_btn')}
                         </Button>
                         <Button variant="outline" className="flex-1 gap-2 h-12" onClick={() => fileInputRef.current?.click()}>
                             <Upload size={18} />
-                            Importar Respaldo
+                            {t('settings.import_btn')}
                         </Button>
                         <input
                             type="file"
@@ -298,15 +323,15 @@ export const SettingsPage = () => {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Sword className="h-5 w-5 text-primary" />
-                        Modo Espíritu (Gamificación)
+                        {t('settings.spirit_title')}
                     </CardTitle>
-                    <CardDescription>Convierte tus finanzas en una aventura RPG con niveles y logros.</CardDescription>
+                    <CardDescription>{t('settings.spirit_desc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-4 rounded-xl bg-background/50 border border-white/5">
                         <div className="space-y-0.5">
-                            <Label className="text-base">Habilitar Gamificación</Label>
-                            <p className="text-sm text-muted-foreground">Activa el sistema de XP, Niveles y Logros.</p>
+                            <Label className="text-base">{t('settings.spirit_enable')}</Label>
+                            <p className="text-sm text-muted-foreground">{t('dashboard.gamification_desc')}</p>
                         </div>
                         <Button
                             variant={isEnabled ? "default" : "outline"}
@@ -314,20 +339,20 @@ export const SettingsPage = () => {
                             onClick={() => setIsEnabled(!isEnabled)}
                             className="rounded-full px-6 transition-all"
                         >
-                            {isEnabled ? "Activado" : "Desactivado"}
+                            {isEnabled ? t('settings.spirit_on') : t('settings.spirit_off')}
                         </Button>
                     </div>
 
                     {isEnabled && (
                         <div className="pt-4 border-t border-white/5 animate-in fade-in slide-in-from-top-2">
-                            <Label className="text-sm mb-3 block">Elige tu Compañero Espiritual</Label>
+                            <Label className="text-sm mb-3 block">{t('settings.spirit_pet_label')}</Label>
                             <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                                 {PET_OPTIONS.map(pet => (
                                     <button
                                         key={pet.id}
                                         onClick={() => {
                                             setSelectedPet(pet.id);
-                                            toast.success(`Compañero cambiado a ${pet.name}`);
+                                            toast.success(t('settings.spirit_change_success', { name: pet.name }));
                                         }}
                                         className={cn(
                                             "flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all hover:scale-105 active:scale-95",
@@ -351,37 +376,39 @@ export const SettingsPage = () => {
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Bell className="h-5 w-5 text-indigo-500" />
-                        Notificaciones Inteligentes
+                        {t('settings.notifications')}
                     </CardTitle>
-                    <CardDescription>Activa recordatorios y mensajes motivacionales.</CardDescription>
+                    <CardDescription>{t('settings.notifications_desc')}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center justify-between p-4 rounded-xl bg-background/50 border border-white/5">
                         <div className="space-y-0.5">
-                            <Label className="text-base text-indigo-600 dark:text-indigo-400">Estado: {permission === 'granted' ? 'Activado' : permission === 'denied' ? 'Bloqueado' : 'Sin Configurar'}</Label>
+                            <Label className="text-base text-indigo-600 dark:text-indigo-400">
+                                {t('settings.notif_status')}: {permission === 'granted' ? t('settings.notif_status_on') : permission === 'denied' ? t('settings.notif_status_blocked') : t('settings.notif_status_off')}
+                            </Label>
                             <p className="text-xs text-muted-foreground">
                                 {permission === 'granted'
-                                    ? "Recibirás alertas sobre tus metas y recordatorios de registro."
-                                    : "Actívalas para que VanttFlow te recuerde registrar tus gastos."}
+                                    ? t('settings.notif_on_desc')
+                                    : t('settings.notif_off_desc')}
                             </p>
                         </div>
                         {permission !== 'granted' ? (
                             <Button size="sm" onClick={requestPermission}>
-                                Activar
+                                {t('settings.notif_activate_btn')}
                             </Button>
                         ) : (
                             <div className="flex gap-2">
-                                <Button variant="outline" size="sm" onClick={() => sendNotification("Prueba", "¡El sistema de notificaciones funciona!")}>
-                                    Probar
+                                <Button variant="outline" size="sm" onClick={() => sendNotification("Test", "The notification system works!")}>
+                                    {t('settings.notif_test_btn')}
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={triggerMotivation} title="Mensaje Sorpresa">
+                                <Button variant="ghost" size="icon" onClick={triggerMotivation} title="Surprise Message">
                                     <Zap size={16} className="text-yellow-500" />
                                 </Button>
                             </div>
                         )}
                     </div>
                     <p className="text-[10px] text-muted-foreground italic">
-                        Nota: En iPhone, asegúrate de que la app esté añadida a Inicio para recibir notificaciones (Badge) correctamente.
+                        {t('settings.notif_ios_note')}
                     </p>
                 </CardContent>
             </Card>
@@ -392,13 +419,13 @@ export const SettingsPage = () => {
                     <CardHeader>
                         <CardTitle className="text-red-600 dark:text-red-400 flex items-center gap-2">
                             <Trash2 className="h-5 w-5" />
-                            Zona de Peligro
+                            {t('settings.danger_title')}
                         </CardTitle>
-                        <CardDescription>Acciones destructivas e irreversibles.</CardDescription>
+                        <CardDescription>{t('settings.danger_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <Button variant="destructive" className="w-full" onClick={handleResetData}>
-                            Borrar todos los datos
+                            {t('settings.danger_btn')}
                         </Button>
                     </CardContent>
                 </Card>
@@ -407,29 +434,29 @@ export const SettingsPage = () => {
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <LogOut className="h-5 w-5" />
-                            Sesión y Seguridad
+                            {t('settings.session_title')}
                         </CardTitle>
-                        <CardDescription>Gestiona tu sesión actual.</CardDescription>
+                        <CardDescription>{t('settings.session_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="grid gap-2">
-                            <Label className="flex items-center gap-2"><Timer size={14} /> Bloqueo Automático (Inactividad)</Label>
+                            <Label className="flex items-center gap-2"><Timer size={14} /> {t('settings.autolock_label')}</Label>
                             <select
                                 value={autoLockMinutes}
                                 onChange={e => setAutoLockMinutes(Number(e.target.value))}
                                 className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                             >
-                                <option value={0}>Desactivado (Nunca)</option>
-                                <option value={1}>1 minuto</option>
-                                <option value={2}>2 minutos</option>
-                                <option value={5}>5 minutos (Recomendado)</option>
-                                <option value={15}>15 minutos</option>
-                                <option value={30}>30 minutos</option>
+                                <option value={0}>{t('settings.autolock_never')}</option>
+                                <option value={1}>{t('settings.autolock_min')}</option>
+                                <option value={2}>{t('settings.autolock_mins', { count: 2 })}</option>
+                                <option value={5}>{t('settings.autolock_mins', { count: 5 })}</option>
+                                <option value={15}>{t('settings.autolock_mins', { count: 15 })}</option>
+                                <option value={30}>{t('settings.autolock_mins', { count: 30 })}</option>
                             </select>
                         </div>
                         <Separator />
                         <Button variant="outline" className="w-full" onClick={logout}>
-                            Cerrar Sesión
+                            {t('settings.logout_btn')}
                         </Button>
                     </CardContent>
                 </Card>

@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, TrendingUp, Star, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useIdentity } from '@/context/IdentityContext';
+import { useTranslation } from 'react-i18next';
 
 export const LandingPage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { user } = useIdentity();
 
@@ -12,20 +14,20 @@ export const LandingPage = () => {
     const features = [
         {
             icon: Shield,
-            title: "Privado",
-            description: "Tus datos son solo tuyos.",
+            title: t('landing.features.privacy.title', 'Privado'),
+            description: t('landing.features.privacy.desc', 'Tus datos son solo tuyos.'),
             color: "text-emerald-400"
         },
         {
             icon: TrendingUp,
-            title: "Inteligente",
-            description: "Analiza cada movimiento.",
+            title: t('landing.features.smart.title', 'Inteligente'),
+            description: t('landing.features.smart.desc', 'Analiza cada movimiento.'),
             color: "text-blue-400"
         },
         {
             icon: Star,
-            title: "Premium",
-            description: "Interfaz de alto nivel.",
+            title: t('landing.features.premium.title', 'Premium'),
+            description: t('landing.features.premium.desc', 'Interfaz de alto nivel.'),
             color: "text-yellow-400"
         }
     ];
@@ -63,17 +65,17 @@ export const LandingPage = () => {
 
                     <div className="space-y-4">
                         <h1 className="text-5xl sm:text-7xl md:text-[7.5rem] leading-[0.9] md:leading-[0.85] font-black tracking-[-0.07em] mb-4 select-none drop-shadow-2xl">
-                            <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Vantt</span>
-                            <span className="bg-gradient-to-b from-blue-500 to-blue-600 bg-clip-text text-transparent italic px-1">Flow</span>
+                            <span className="bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">{t('landing.brand_first', 'Vantt')}</span>
+                            <span className="bg-gradient-to-b from-blue-500 to-blue-600 bg-clip-text text-transparent italic px-1">{t('landing.brand_second', 'Flow')}</span>
                         </h1>
                         <p className="text-lg md:text-2xl text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed px-4">
-                            Reimagina tu libertad financiera con <span className="text-white font-bold">inteligencia</span> y <span className="text-white font-bold">estilo</span>.
+                            {t('landing.subtitle_hero', 'Reimagina tu libertad financiera con inteligencia y estilo.')}
                         </p>
 
                         <div className="pt-2 flex justify-center">
                             <span className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#1e293b]/50 border border-blue-500/20 text-blue-500 text-[11px] font-black tracking-[0.25em] uppercase shadow-lg shadow-blue-500/5 backdrop-blur-md">
                                 <Zap className="w-4 h-4 fill-current" />
-                                VENTAJA + FLUJO
+                                {t('landing.hero_tag', 'VENTAJA + FLUJO')}
                             </span>
                         </div>
                     </div>
@@ -86,7 +88,7 @@ export const LandingPage = () => {
                         onClick={handleAction}
                         className="h-16 px-12 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xl shadow-2xl shadow-blue-900/40 hover:shadow-blue-600/50 hover:-translate-y-1 transition-all duration-300"
                     >
-                        {user ? 'Continuar' : 'Empezar'}
+                        {user ? t('common.continue', 'Continuar') : t('common.start', 'Empezar')}
                         <ArrowRight className="ml-2 w-6 h-6 border-l pl-2" />
                     </Button>
                 </div>

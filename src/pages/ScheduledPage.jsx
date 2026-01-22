@@ -9,9 +9,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
+import { useTranslation } from 'react-i18next';
+import { useIdentity } from "@/context/IdentityContext";
 
 export const ScheduledPage = () => {
+    const { t, i18n } = useTranslation();
     const { scheduledPayments, addScheduledPayment, toggleScheduledStatus, deleteScheduledPayment, categories, accounts } = useFinance();
+    const { user } = useIdentity();
+    const currency = user?.currency || 'MXN';
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     // Form State
@@ -49,22 +54,22 @@ export const ScheduledPage = () => {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold tracking-tight">Pagos Programados</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{t('scheduled.title')}</h2>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="gap-2"><Plus size={16} /> Nuevo Recurrente</Button>
+                        <Button className="gap-2"><Plus size={16} /> {t('scheduled.new_recurrent')}</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
-                            <DialogTitle>Nuevo Pago Programado (Mensual)</DialogTitle>
+                            <DialogTitle>{t('scheduled.new_payment_dialog')}</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
                             <div className="grid grid-cols-2 gap-4">
-                                <Button type="button" variant={type === 'income' ? 'default' : 'outline'} onClick={() => setType('income')}>Ingreso</Button>
-                                <Button type="button" variant={type === 'expense' ? 'destructive' : 'outline'} onClick={() => setType('expense')}>Gasto</Button>
+                                <Button type="button" variant={type === 'income' ? 'default' : 'outline'} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
+                                <Button type="button" variant={type === 'expense' ? 'destructive' : 'outline'} onClick={() => setType('expense')}>{t('scheduled.expense')}</Button>
                             </div>
 
-                            <Input placeholder="Nombre (ej. Renta, Netflix)" value={name} onChange={e => setName(e.target.value)} required />
+                            <Input placeholder={t('subscriptions.name_placeholder')} value={name} onChange={e => setName(e.target.value)} required />
 
                             <div className="flex gap-2 p-1 bg-muted rounded-lg">
                                 <Button
@@ -73,7 +78,7 @@ export const ScheduledPage = () => {
                                     className="flex-1 h-8 text-xs"
                                     onClick={() => setFrequency('monthly')}
                                 >
-                                    Mensual (Recurrente)
+                                    {t('scheduled.monthly_recurrent')}
                                 </Button>
                                 <Button
                                     type="button"
@@ -81,20 +86,20 @@ export const ScheduledPage = () => {
                                     className="flex-1 h-8 text-xs"
                                     onClick={() => setFrequency('one-time')}
                                 >
-                                    Pago Único
+                                    {t('scheduled.one_time')}
                                 </Button>
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
-                                <Input type="number" placeholder="Monto" value={amount} onChange={e => setAmount(e.target.value)} required />
+                                <Input type="number" placeholder={t('scheduled.amount_label')} value={amount} onChange={e => setAmount(e.target.value)} required />
                                 {frequency === 'monthly' ? (
                                     <>
                                         <div className="flex items-center gap-2 border rounded px-3">
-                                            <span className="text-sm text-muted-foreground whitespace-nowrap">Día del mes:</span>
+                                            <span className="text-sm text-muted-foreground whitespace-nowrap">{t('scheduled.day_of_month')}</span>
                                             <Input type="number" min="1" max="31" value={dayOfMonth} onChange={e => setDayOfMonth(e.target.value)} className="border-0 focus-visible:ring-0 px-0" required />
                                         </div>
                                         <div className="col-span-2">
-                                            <p className="text-xs text-muted-foreground mb-1">Fecha Fin (Opcional - dejar vacío para indefinido):</p>
+                                            <p className="text-xs text-muted-foreground mb-1">{t('scheduled.end_date_label')}</p>
                                             <DatePicker value={endDate} onChange={e => setEndDate(e.target.value)} />
                                         </div>
                                     </>
@@ -107,17 +112,17 @@ export const ScheduledPage = () => {
                                 categories={categories.filter(c => c.type === type || c.type === 'both')}
                                 value={categoryId}
                                 onChange={setCategoryId}
-                                placeholder="Categoría"
+                                placeholder={t('scheduled.category_placeholder')}
                             />
 
                             <AccountSelect
                                 accounts={accounts}
                                 value={accountId}
                                 onChange={setAccountId}
-                                placeholder="Cuenta de Cargo/Abono"
+                                placeholder={t('scheduled.account_placeholder')}
                             />
 
-                            <Button type="submit" className="w-full">Guardar Programación</Button>
+                            <Button type="submit" className="w-full">{t('scheduled.save_btn')}</Button>
                         </form>
                     </DialogContent>
                 </Dialog>
@@ -138,12 +143,12 @@ export const ScheduledPage = () => {
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold">
-                                    {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(payment.amount)}
+                                    {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
                                 </div>
                                 <p className="text-xs text-muted-foreground mt-1">
                                     {payment.frequency === 'monthly'
-                                        ? `Día ${payment.dayOfMonth} de cada mes`
-                                        : `Fecha: ${payment.descDate}`} • {payment.type === 'income' ? 'Ingreso' : 'Gasto'}
+                                        ? t('scheduled.day_of_month_short', { day: payment.dayOfMonth })
+                                        : t('scheduled.date_label', { date: payment.descDate })} • {payment.type === 'income' ? t('scheduled.income') : t('scheduled.expense')}
                                 </p>
                                 <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
                                     <span style={{ color: category?.color }}>{category?.name}</span>
@@ -151,11 +156,11 @@ export const ScheduledPage = () => {
                                 </div>
 
                                 <div className="mt-4 flex gap-2 justify-end border-t pt-2">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toggleScheduledStatus(payment.id)} title={payment.status === 'active' ? "Pausar" : "Reactivar"}>
+                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toggleScheduledStatus(payment.id)} title={payment.status === 'active' ? t('subscriptions.pause') : t('subscriptions.reactivate')}>
                                         <Power size={14} className={payment.status === 'active' ? "text-orange-500" : "text-green-500"} />
                                     </Button>
                                     <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => {
-                                        if (window.confirm('¿Borrar programación? Esto no borra transacciones pasadas.')) deleteScheduledPayment(payment.id);
+                                        if (window.confirm(t('scheduled.delete_confirm'))) deleteScheduledPayment(payment.id);
                                     }}>
                                         <Trash2 size={14} />
                                     </Button>
@@ -167,8 +172,8 @@ export const ScheduledPage = () => {
                 {scheduledPayments.length === 0 && (
                     <div className="col-span-full text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
                         <Calendar className="mx-auto h-12 w-12 opacity-50 mb-2" />
-                        <p>No tienes pagos programados</p>
-                        <p className="text-sm">Agrega renta, suscripciones, etc.</p>
+                        <p>{t('scheduled.no_scheduled')}</p>
+                        <p className="text-sm">{t('scheduled.no_scheduled_desc')}</p>
                     </div>
                 )}
             </div>

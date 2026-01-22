@@ -265,7 +265,7 @@ export const FinanceProvider = ({ children }) => {
     const simulatePurchase = (amount) => {
         const forecast = getForecast();
         const cost = parseFloat(amount);
-        if (isNaN(cost) || cost <= 0) return { status: 'invalid', message: 'Ingresa un monto válido.' };
+        if (isNaN(cost) || cost <= 0) return { status: 'invalid', messageKey: 'dashboard.oracle.msg_invalid' };
 
         const remainingAfterPurchase = forecast.forecastBalance - cost;
 
@@ -277,7 +277,7 @@ export const FinanceProvider = ({ children }) => {
         if (remainingAfterPurchase < 0) {
             return {
                 status: 'danger',
-                message: '¡PELIGRO! Si compras esto, no completarás para tus pagos programados del mes.',
+                messageKey: 'dashboard.oracle.msg_danger',
                 remaining: remainingAfterPurchase
             };
         }
@@ -287,14 +287,14 @@ export const FinanceProvider = ({ children }) => {
         if (buffer < 0.10) {
             return {
                 status: 'warning',
-                message: 'CUIDADO. Te quedarás con muy poco margen para imprevistos.',
+                messageKey: 'dashboard.oracle.msg_warning',
                 remaining: remainingAfterPurchase
             };
         }
 
         return {
             status: 'safe',
-            message: 'APROBADO. Tu salud financiera se mantiene estable.',
+            messageKey: 'dashboard.oracle.msg_safe',
             remaining: remainingAfterPurchase
         };
     };

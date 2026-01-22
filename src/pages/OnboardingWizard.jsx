@@ -10,8 +10,10 @@ import { useFinance } from '@/context/FinanceContext';
 import { useGamification } from '@/context/GamificationContext';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export const OnboardingWizard = () => {
+    const { t } = useTranslation();
     const { register } = useIdentity();
     const { addAccount, updateAccount } = useFinance();
     const { setSelectedPet } = useGamification();
@@ -27,19 +29,19 @@ export const OnboardingWizard = () => {
     });
 
     const PET_OPTIONS = [
-        { id: 'fox', emoji: '🦊', name: 'Zorro', desc: 'Astuto' },
-        { id: 'dog', emoji: '🐶', name: 'Perro', desc: 'Leal' },
-        { id: 'shinobi', emoji: '🥷', name: 'Shinobi', desc: 'Sigiloso' },
-        { id: 'chief', emoji: '🛡️', name: 'Spartan', desc: 'Fuerte' }
+        { id: 'fox', emoji: '🦊', name: t('dashboard.pets.fox.name'), desc: t('onboarding.pets.fox_desc') },
+        { id: 'dog', emoji: '🐶', name: t('dashboard.pets.dog.name'), desc: t('onboarding.pets.dog_desc') },
+        { id: 'shinobi', emoji: '🥷', name: t('dashboard.pets.shinobi.name'), desc: t('onboarding.pets.shinobi_desc') },
+        { id: 'chief', emoji: '🛡️', name: t('dashboard.pets.chief.name'), desc: t('onboarding.pets.chief_desc') }
     ];
 
     const handleNext = () => {
         if (step === 1) {
-            if (!formData.name) return toast.error('El nombre es requerido');
+            if (!formData.name) return toast.error(t('onboarding.error_name'));
             setStep(2);
         } else if (step === 2) {
-            if (formData.pin.length < 4) return toast.error('El PIN debe tener 4 dígitos');
-            if (formData.pin !== formData.confirmPin) return toast.error('Los PINs no coinciden');
+            if (formData.pin.length < 4) return toast.error(t('onboarding.error_pin_length'));
+            if (formData.pin !== formData.confirmPin) return toast.error(t('onboarding.error_pin_mismatch'));
             setStep(3);
         } else if (step === 3) {
             setStep(4);
@@ -88,16 +90,16 @@ export const OnboardingWizard = () => {
                         {step === 1 && (
                             <div className="space-y-6 animate-in slide-in-from-right-4 fade-in">
                                 <div className="text-center">
-                                    <h2 className="text-2xl font-bold">Vamos a conocerte</h2>
-                                    <p className="text-muted-foreground">¿Cómo te gustaría que te llamemos?</p>
+                                    <h2 className="text-2xl font-bold">{t('onboarding.step1_title')}</h2>
+                                    <p className="text-muted-foreground">{t('onboarding.step1_subtitle')}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Tu Nombre</Label>
+                                    <Label>{t('onboarding.name_label')}</Label>
                                     <div className="relative">
                                         <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                         <Input
                                             className="pl-9"
-                                            placeholder="Ej. Alex"
+                                            placeholder={t('onboarding.name_placeholder')}
                                             value={formData.name}
                                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                                             autoFocus
@@ -110,12 +112,12 @@ export const OnboardingWizard = () => {
                         {step === 2 && (
                             <div className="space-y-6 animate-in slide-in-from-right-4 fade-in">
                                 <div className="text-center">
-                                    <h2 className="text-2xl font-bold">Protege tu espacio</h2>
-                                    <p className="text-muted-foreground">Crea un PIN de 4 dígitos para acceder.</p>
+                                    <h2 className="text-2xl font-bold">{t('onboarding.step2_title')}</h2>
+                                    <p className="text-muted-foreground">{t('onboarding.step2_subtitle')}</p>
                                 </div>
                                 <div className="space-y-4">
                                     <div className="space-y-2">
-                                        <Label>PIN de Acceso</Label>
+                                        <Label>{t('onboarding.pin_label')}</Label>
                                         <div className="relative">
                                             <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                             <Input
@@ -130,7 +132,7 @@ export const OnboardingWizard = () => {
                                         </div>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label>Confirmar PIN</Label>
+                                        <Label>{t('onboarding.confirm_pin_label')}</Label>
                                         <div className="relative">
                                             <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                             <Input
@@ -150,8 +152,8 @@ export const OnboardingWizard = () => {
                         {step === 3 && (
                             <div className="space-y-6 animate-in slide-in-from-right-4 fade-in">
                                 <div className="text-center">
-                                    <h2 className="text-2xl font-bold">Modo Aventura ⚔️</h2>
-                                    <p className="text-muted-foreground">Elige tu compañero para esta misión financiera.</p>
+                                    <h2 className="text-2xl font-bold">{t('onboarding.step3_title')}</h2>
+                                    <p className="text-muted-foreground">{t('onboarding.step3_subtitle')}</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
@@ -173,7 +175,7 @@ export const OnboardingWizard = () => {
                                     ))}
                                 </div>
                                 <p className="text-xs text-center text-muted-foreground">
-                                    Subirás de nivel registrando gastos diarios.
+                                    {t('onboarding.level_up_info')}
                                 </p>
                             </div>
                         )}
@@ -181,24 +183,24 @@ export const OnboardingWizard = () => {
                         {step === 4 && (
                             <div className="space-y-6 animate-in slide-in-from-right-4 fade-in">
                                 <div className="text-center">
-                                    <h2 className="text-2xl font-bold">Punto de Partida</h2>
-                                    <p className="text-muted-foreground">¿Con cuánto dinero efectivo cuentas hoy?</p>
+                                    <h2 className="text-2xl font-bold">{t('onboarding.step4_title')}</h2>
+                                    <p className="text-muted-foreground">{t('onboarding.step4_subtitle')}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Efectivo Actual (Opcional)</Label>
+                                    <Label>{t('onboarding.initial_balance_label')}</Label>
                                     <div className="relative">
                                         <Wallet className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                                         <Input
                                             type="number"
                                             className="pl-9 text-lg"
-                                            placeholder="0.00"
+                                            placeholder={t('onboarding.initial_balance_placeholder')}
                                             value={formData.initialBalance}
                                             onChange={e => setFormData({ ...formData, initialBalance: e.target.value })}
                                             autoFocus
                                         />
                                     </div>
                                     <p className="text-xs text-muted-foreground mt-2">
-                                        No te preocupes, puedes agregar tus cuentas bancarias y tarjetas más tarde en el Dashboard.
+                                        {t('onboarding.initial_balance_info')}
                                     </p>
                                 </div>
                             </div>
@@ -209,31 +211,31 @@ export const OnboardingWizard = () => {
                                 <div className="mx-auto w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-4 animate-bounce">
                                     <BrainCircuit className="w-10 h-10 text-emerald-400" />
                                 </div>
-                                <h2 className="text-2xl font-bold">Inteligencia Activada</h2>
+                                <h2 className="text-2xl font-bold">{t('onboarding.step5_title')}</h2>
                                 <div className="space-y-4 text-left p-4 bg-white/5 rounded-xl border border-white/10">
                                     <div className="flex items-start gap-3">
                                         <Shield className="w-5 h-5 text-blue-400 mt-0.5" />
                                         <div>
-                                            <h4 className="font-bold text-sm">VanttScore</h4>
-                                            <p className="text-xs text-muted-foreground">Tu calificación de salud financiera en tiempo real.</p>
+                                            <h4 className="font-bold text-sm">{t('onboarding.vanttscore_title')}</h4>
+                                            <p className="text-xs text-muted-foreground">{t('onboarding.vanttscore_desc')}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <BrainCircuit className="w-5 h-5 text-purple-400 mt-0.5" />
                                         <div>
-                                            <h4 className="font-bold text-sm">El Oráculo</h4>
-                                            <p className="text-xs text-muted-foreground">Pregúntale antes de comprar para saber si te alcanza.</p>
+                                            <h4 className="font-bold text-sm">{t('onboarding.oracle_title')}</h4>
+                                            <p className="text-xs text-muted-foreground">{t('onboarding.oracle_desc')}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <p className="text-sm text-yellow-500/80 font-medium">
-                                    ¡Estás listo para dominar tus finanzas!
+                                    {t('onboarding.ready_to_dominate')}
                                 </p>
                             </div>
                         )}
 
                         <Button onClick={handleNext} className="w-full h-12 text-lg rounded-xl">
-                            {step === 5 ? 'Comenzar VanttFlow' : 'Continuar'} <ArrowRight className="ml-2" />
+                            {step === 5 ? t('onboarding.start_button') : t('onboarding.continue_button')} <ArrowRight className="ml-2" />
                         </Button>
                     </CardContent>
                 </Card>

@@ -4,11 +4,13 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, DollarSign, Coins, Gem, CandlestickChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 export const MarketTrendsWidget = () => {
+    const { t } = useTranslation();
     const { marketData, loading } = useMarket();
     const items = [
         {
-            label: "Dólar",
+            label: t('dashboard.dollar'),
             value: marketData.usdMxn.price.toFixed(2),
             change: marketData.usdMxn.change,
             icon: DollarSign,
@@ -17,7 +19,7 @@ export const MarketTrendsWidget = () => {
             suffix: " MXN"
         },
         {
-            label: "Bitcoin",
+            label: t('dashboard.bitcoin'),
             value: (marketData.btcUsd.price / 1000).toFixed(1),
             change: marketData.btcUsd.change,
             icon: Coins,
@@ -26,7 +28,7 @@ export const MarketTrendsWidget = () => {
             suffix: "K USD"
         },
         {
-            label: "Ethereum",
+            label: t('dashboard.ethereum'),
             value: marketData.ethUsd.price.toFixed(2),
             change: marketData.ethUsd.change,
             icon: Gem,
@@ -50,9 +52,9 @@ export const MarketTrendsWidget = () => {
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 text-muted-foreground">
                         <CandlestickChart className="h-3 w-3 text-primary" />
-                        Pulsos del Mercado
+                        {t('dashboard.market_pulses')}
                     </CardTitle>
-                    <Link to="/market" className="text-[10px] font-black text-primary hover:underline uppercase tracking-tighter"> Ver todo </Link>
+                    <Link to="/market" className="text-[10px] font-black text-primary hover:underline uppercase tracking-tighter"> {t('dashboard.view_all')} </Link>
                 </div>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col justify-between pt-0">
@@ -84,9 +86,9 @@ export const MarketTrendsWidget = () => {
                     <div className="absolute -right-4 -bottom-4 opacity-5 pointer-events-none transition-transform group-hover/tip:scale-125 duration-700">
                         <TrendingUp size={60} />
                     </div>
-                    <p className="text-[9px] font-bold text-primary/80 uppercase tracking-widest mb-1">Mercado Inteligente</p>
+                    <p className="text-[9px] font-bold text-primary/80 uppercase tracking-widest mb-1">{t('dashboard.smart_market')}</p>
                     <p className="text-[10px] text-foreground/70 leading-tight font-medium">
-                        El peso está fuerte hoy. Es un buen momento para liquidar deudas en dólares.
+                        {t('dashboard.market_tip')}
                     </p>
                 </div>
             </CardContent>

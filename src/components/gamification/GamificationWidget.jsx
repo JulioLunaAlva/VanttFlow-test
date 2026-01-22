@@ -22,6 +22,7 @@ const ARCH_ICONS = {
 };
 
 export const GamificationWidget = React.memo(() => {
+    const { t } = useTranslation();
     const { currentLevel, nextLevel, achievements, isEnabled, xp } = useGamification();
     const [selectedArch, setSelectedArch] = React.useState(null);
 
@@ -39,10 +40,10 @@ export const GamificationWidget = React.memo(() => {
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-sm font-black uppercase tracking-[0.2em] flex items-center gap-2 text-primary/80">
                         <Sword className="h-4 w-4" />
-                        Rango Financiero
+                        {t('dashboard.gamification')}
                     </CardTitle>
                     <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-bold text-primary animate-pulse">
-                        SISTEMA ACTIVO
+                        {t('dashboard.active_system')}
                     </div>
                 </div>
             </CardHeader>
@@ -56,16 +57,16 @@ export const GamificationWidget = React.memo(() => {
                     <div className="flex-1 min-w-0">
                         <div className="flex items-baseline justify-between gap-2 max-w-full">
                             <h3 className="font-black text-2xl tracking-tight leading-tight truncate bg-gradient-to-r from-foreground via-foreground to-foreground/50 bg-clip-text text-transparent">
-                                {currentLevel.title}
+                                {t(`dashboard.levels.l${currentLevel.level}`)}
                             </h3>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
                             <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-500 border border-amber-500/20">
                                 <Star size={12} className="fill-amber-500" />
-                                <span className="text-[10px] font-black uppercase">Nivel {currentLevel.level}</span>
+                                <span className="text-[10px] font-black uppercase">{t('dashboard.level_label')} {currentLevel.level}</span>
                             </div>
                             <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
-                                {xp} / {nextLevel?.minXp || 'MAX'} XP
+                                {t('dashboard.xp_to_next', { xp, next: nextLevel?.minXp || 'MAX' })}
                             </span>
                         </div>
                     </div>
@@ -77,7 +78,7 @@ export const GamificationWidget = React.memo(() => {
 
                 <div className="pt-4 border-t border-border/50">
                     <div className="flex items-center justify-between text-[11px] mb-4">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest opacity-70">Logros del Camino</span>
+                        <span className="text-muted-foreground font-bold uppercase tracking-widest opacity-70">{t('dashboard.ach_tracker')}</span>
                         <Dialog>
                             <DialogTrigger asChild>
                                 <button className="font-black text-primary hover:text-foreground transition-all flex items-center gap-1 group/btn">
@@ -87,9 +88,9 @@ export const GamificationWidget = React.memo(() => {
                             </DialogTrigger>
                             <DialogContent className="max-w-md bg-card/95 backdrop-blur-2xl border-border/50">
                                 <DialogHeader>
-                                    <DialogTitle className="text-2xl font-black italic tracking-tighter">TU SALA DE TROFEOS</DialogTitle>
+                                    <DialogTitle className="text-2xl font-black italic tracking-tighter">{t('dashboard.trophy_room')}</DialogTitle>
                                     <DialogDescription className="text-sm font-medium text-muted-foreground">
-                                        Cada logro es un paso firme hacia tu libertad financiera.
+                                        {t('dashboard.trophy_desc')}
                                     </DialogDescription>
                                 </DialogHeader>
                                 <div className="space-y-4 mt-6 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
@@ -122,13 +123,13 @@ export const GamificationWidget = React.memo(() => {
                                                     ) : <Lock size={20} />}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <h4 className="font-black text-sm uppercase tracking-wide">{ach.name}</h4>
-                                                    <p className="text-xs text-muted-foreground font-medium mt-1">{ach.description}</p>
+                                                    <h4 className="font-black text-sm uppercase tracking-wide">{t(`dashboard.achievements.${ach.id}_name`)}</h4>
+                                                    <p className="text-xs text-muted-foreground font-medium mt-1">{t(`dashboard.achievements.${ach.id}_desc`)}</p>
                                                 </div>
                                                 {ach.unlocked && (
                                                     <div className="shrink-0">
                                                         <div className="text-[9px] font-black italic text-primary uppercase bg-primary/20 px-3 py-1 rounded-full border border-primary/30 shadow-sm">
-                                                            LOGRADO
+                                                            {t('dashboard.achieved')}
                                                         </div>
                                                     </div>
                                                 )}
@@ -171,9 +172,9 @@ export const GamificationWidget = React.memo(() => {
                                                 <div className={cn("p-1.5 rounded-lg", ach.unlocked ? "bg-amber-500/20 text-amber-600 dark:text-amber-500" : "bg-muted text-muted-foreground")}>
                                                     <Icon size={12} />
                                                 </div>
-                                                <p className="text-[10px] font-black uppercase text-foreground tracking-widest">{ach.name}</p>
+                                                <p className="text-[10px] font-black uppercase text-foreground tracking-widest">{t(`dashboard.achievements.${ach.id}_name`)}</p>
                                             </div>
-                                            <p className="text-[9px] text-muted-foreground font-medium leading-[1.4]">{ach.description}</p>
+                                            <p className="text-[9px] text-muted-foreground font-medium leading-[1.4]">{t(`dashboard.achievements.${ach.id}_desc`)}</p>
                                             <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-card rotate-45 border-r border-b border-border" />
                                         </div>
                                     )}

@@ -3,26 +3,38 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useFinance } from "@/context/FinanceContext";
 import { ArrowUpRight, ArrowDownLeft, ArrowRightLeft } from 'lucide-react';
 import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import { enUS, es, ptBR, fr } from 'date-fns/locale';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useIdentity } from '@/context/IdentityContext';
+
+const locales = { es, en: enUS, pt: ptBR, fr };
 export const RecentActivityWidget = () => {
+    const { t, i18n } = useTranslation();
+    const { user } = useIdentity();
     const { filteredTransactions, categories } = useFinance();
     const navigate = useNavigate();
+
+    const currentLocale = locales[i18n.language.split('-')[0]] || es;
     // Get last 5 transactions (assuming filteredTransactions is sorted desc, which it usually is from context/backend, if not we sort)
     // Actually FinanceContext sorts them? Let's assume yes or sort here.
     const recent = [...filteredTransactions]
         .sort((a, b) => new Date(b.date) - new Date(a.date))
         .slice(0, 5);
+
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
+        return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: user?.currency || 'MXN'
+        }).format(amount);
     };
     return (
         <Card className="h-full flex flex-col">
             <CardHeader className="pb-3 flex flex-row items-center justify-between">
-                <CardTitle className="text-lg font-medium">Actividad Reciente</CardTitle>
+                <CardTitle className="text-lg font-medium">{t('dashboard.activity')}</CardTitle>
                 <Button variant="link" className="text-xs h-auto p-0" onClick={() => navigate('/transactions')}>
-                    Ver todo
+                    {t('dashboard.view_all')}
                 </Button>
             </CardHeader>
             <CardContent className="flex-1 overflow-auto">
@@ -32,8 +44,8 @@ export const RecentActivityWidget = () => {
                             <div className="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
                                 <ArrowUpRight size={20} className="rotate-45" />
                             </div>
-                            <p className="text-sm font-medium">Sin actividad este mes</p>
-                            <p className="text-xs text-muted-foreground">Tus últimas 5 transacciones aparecerán aquí.</p>
+                            <p className="text-sm font-medium">{t('dashboard.no_activity')}</p>
+                            <p className="text-xs text-muted-foreground">{t('dashboard.activity_hint')}</p>
                         </div>
                     ) : (
                         recent.map(t => (
@@ -50,7 +62,7 @@ export const RecentActivityWidget = () => {
                                     <div>
                                         <p className="text-sm font-medium line-clamp-1">{t.description}</p>
                                         <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                            {format(new Date(t.date), 'dd MMM', { locale: es })}
+                                            {format(new Date(t.date), 'dd MMM', { locale: currentLocale })}
                                             {t.category && (
                                                 <span
                                                     className="w-2 h-2 rounded-full inline-block ml-1"
