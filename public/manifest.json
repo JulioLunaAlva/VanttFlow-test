@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 {
     "name": "VanttFlow - Tu Libertad Financiera",
     "short_name": "VanttFlow",
@@ -39,7 +39,6 @@
     "related_applications": [],
     "lang": "es-MX",
     "dir": "ltr"
-=======
 {
     "name": "VanttFlow - Tu Libertad Financiera",
     "short_name": "VanttFlow",
@@ -80,5 +79,5 @@
     "related_applications": [],
     "lang": "es-MX",
     "dir": "ltr"
->>>>>>> 5514d7732ec911852e1fd69f7bbfd09383699edc
+
 }

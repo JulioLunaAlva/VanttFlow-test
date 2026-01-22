@@ -46,5 +46,11 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant('anime', '.anime &');
+      addVariant('gamer', '.gamer &');
+      addVariant('pink', '.pink &');
+    }
+  ],
 }
