@@ -20,16 +20,15 @@ export const MarketProvider = ({ children }) => {
             const usdData = await usdResponse.json();
             const mxnRate = usdData.rates.MXN;
 
-            // 2. Fetch BTC (CoinDesk)
-            const btcResponse = await fetch('https://api.coindesk.com/v1/bpi/currentprice.json');
-            const btcData = await btcResponse.json();
-            const btcPrice = btcData.bpi.USD.rate_float;
+            // 2 & 3. Fetch BTC and ETH (CoinGecko) - More reliable
+            const cryptoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+            const cryptoData = await cryptoResponse.json();
 
-            // 3. Fetch ETH (CoinCap API) - Real Data!
-            const ethResponse = await fetch('https://api.coincap.io/v2/assets/ethereum');
-            const ethData = await ethResponse.json();
-            const ethPrice = parseFloat(ethData.data.priceUsd);
-            const ethChange = parseFloat(ethData.data.changePercent24Hr);
+            const btcPrice = cryptoData.bitcoin.usd;
+            const btcChange = cryptoData.bitcoin.usd_24h_change;
+
+            const ethPrice = cryptoData.ethereum.usd;
+            const ethChange = cryptoData.ethereum.usd_24h_change;
 
             setMarketData(prev => ({
                 usdMxn: {
@@ -39,12 +38,12 @@ export const MarketProvider = ({ children }) => {
                 },
                 btcUsd: {
                     price: btcPrice,
-                    change: (btcPrice - (prev.btcUsd.price || btcPrice)) / (prev.btcUsd.price || 1) * 100,
+                    change: btcChange,
                     lastUpdate: new Date().toISOString()
                 },
                 ethUsd: {
                     price: ethPrice,
-                    change: ethChange, // CoinCap gives 24h change directly
+                    change: ethChange,
                     lastUpdate: new Date().toISOString()
                 }
             }));
