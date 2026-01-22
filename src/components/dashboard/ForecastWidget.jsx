@@ -18,25 +18,29 @@ export const ForecastWidget = () => {
         : (forecast.forecastBalance > 0 ? 1 : 0);
 
     const statusColor = forecast.forecastBalance < 0
-        ? "text-red-500"
-        : (bufferRatio < 0.2 ? "text-yellow-500" : "text-emerald-500");
+        ? "text-red-600 dark:text-red-400"
+        : (bufferRatio < 0.2 ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400");
 
-    const bgColor = forecast.forecastBalance < 0
-        ? "bg-red-50 dark:bg-red-900/20"
-        : (bufferRatio < 0.2 ? "bg-yellow-50 dark:bg-yellow-900/20" : "bg-emerald-50 dark:bg-emerald-900/20");
+    // Instead of full background color, we use subtle borders and a very light tint that respects the theme
+    // We use 'bg-card' as base to ensure it matches the theme (dark/light/pink/gamer)
+    // We add a colored border-l-4 (left border) to indicate status clearly without overwhelming the card
 
-    const borderColor = forecast.forecastBalance < 0
-        ? "border-red-200 dark:border-red-900/50"
-        : (bufferRatio < 0.2 ? "border-yellow-200 dark:border-yellow-900/50" : "border-emerald-200 dark:border-emerald-900/50");
+    const borderClass = forecast.forecastBalance < 0
+        ? "border-l-red-500"
+        : (bufferRatio < 0.2 ? "border-l-amber-500" : "border-l-emerald-500");
+
+    const tintClass = forecast.forecastBalance < 0
+        ? "bg-red-50/50 dark:bg-red-900/10"
+        : (bufferRatio < 0.2 ? "bg-amber-50/50 dark:bg-amber-900/10" : "bg-emerald-50/50 dark:bg-emerald-900/10");
 
     return (
-        <Card className={`h-full border-2 ${borderColor} ${bgColor} transition-colors duration-500`}>
+        <Card className={`h-full border-l-[6px] shadow-sm ${borderClass} ${tintClass}`}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
                     Proyección Fin de Mes
                 </CardTitle>
-                {forecast.forecastBalance < 0 ? <AlertTriangle className="h-4 w-4 text-red-500" /> : <CheckCircle className="h-4 w-4 text-emerald-500" />}
+                {forecast.forecastBalance < 0 ? <AlertTriangle className="h-4 w-4 text-red-500" /> : <CheckCircle className={`h-4 w-4 ${statusColor}`} />}
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
