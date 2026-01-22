@@ -12,6 +12,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'logo.png', 'vite.svg'],
       manifest: false, // Using existing manifest.json
       workbox: {
+        maximumFileSizeToCacheInBytes: 3000000,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
         runtimeCaching: [
           {
