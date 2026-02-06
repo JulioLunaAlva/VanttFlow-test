@@ -42,7 +42,7 @@ export const PendingPaymentsWidget = () => {
                             <p>{t('dashboard.all_caught_up')}</p>
                         </div>
                     )}
-                    {pendingItems.slice(0, 5).map(item => {
+                    {pendingItems.map(item => {
                         const isLate = isPast(item.currentMonthDate) && isToday(item.currentMonthDate);
                         return (
                             <div key={item.id} className="flex items-center justify-between p-2 border rounded-md bg-card shadow-sm">
