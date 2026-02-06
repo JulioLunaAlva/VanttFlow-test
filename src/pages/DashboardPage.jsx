@@ -12,6 +12,7 @@ import { MarketTrendsWidget } from '@/components/dashboard/MarketTrendsWidget';
 import { ForecastWidget } from '@/components/dashboard/ForecastWidget';
 import { VanttScoreWidget } from '@/components/dashboard/VanttScoreWidget';
 import { OracleWidget } from '@/components/dashboard/OracleWidget';
+import { AccountsWidget } from '@/components/dashboard/AccountsWidget';
 import { Button } from "@/components/ui/button";
 import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -41,6 +42,7 @@ const WIDGETS_CONFIG = [
     { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
     { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
+    { id: 'accounts_breakdown', component: AccountsWidget, labelKey: 'dashboard.accounts_breakdown', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
     { id: 'oracle', component: OracleWidget, labelKey: 'dashboard.oracle', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
     { id: 'activity', component: RecentActivityWidget, labelKey: 'dashboard.activity', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'expenses', component: ExpensePieChart, labelKey: 'dashboard.expenses', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
@@ -81,9 +83,11 @@ export const DashboardPage = () => {
         }
     }, []);
 
-    const saveOrder = (newOrder) => {
+    const saveOrder = (newOrder, persist = false) => {
         setOrder(newOrder);
-        localStorage.setItem('dashboard_layout', JSON.stringify(newOrder));
+        if (persist) {
+            localStorage.setItem('dashboard_layout', JSON.stringify(newOrder));
+        }
     };
 
     const toggleVisibility = (id) => {
@@ -102,7 +106,7 @@ export const DashboardPage = () => {
             const temp = newOrder[index];
             newOrder[index] = newOrder[newIndex];
             newOrder[newIndex] = temp;
-            saveOrder(newOrder);
+            saveOrder(newOrder, true); // Persist on manual move (arrows)
         }
     };
 
@@ -110,7 +114,7 @@ export const DashboardPage = () => {
         const defaultOrder = WIDGETS_CONFIG.map(w => w.id);
         const defaultVisibility = {};
         WIDGETS_CONFIG.forEach(w => defaultVisibility[w.id] = true);
-        saveOrder(defaultOrder);
+        saveOrder(defaultOrder, true);
         setVisibility(defaultVisibility);
         localStorage.setItem('dashboard_visibility', JSON.stringify(defaultVisibility));
         toast.info(t("dashboard.reset_toast"));
@@ -134,6 +138,8 @@ export const DashboardPage = () => {
     const handleDragEnd = (e) => {
         e.target.style.opacity = '1';
         setDraggedItem(null);
+        // Persist when the drag officially ends
+        localStorage.setItem('dashboard_layout', JSON.stringify(order));
     };
 
     const handleDragOver = (e, index) => {
@@ -150,7 +156,7 @@ export const DashboardPage = () => {
         newOrder.splice(index, 0, item);
 
         setDraggedItem(index);
-        saveOrder(newOrder);
+        saveOrder(newOrder, false); // Don't persist on every move
     };
 
     return (

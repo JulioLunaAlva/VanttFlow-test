@@ -34,8 +34,8 @@ export const LoginPage = () => {
         setPin(prev => prev.slice(0, -1));
     };
 
-    const handleLogin = (code) => {
-        const success = login(code);
+    const handleLogin = async (code) => {
+        const success = await login(code);
         if (!success) {
             setErrorShake(true);
             setTimeout(() => {

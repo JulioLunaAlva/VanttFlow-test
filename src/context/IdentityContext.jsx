@@ -11,9 +11,31 @@ export const IdentityProvider = ({ children }) => {
     const [privacyMode, setPrivacyMode] = useLocalStorage('vantt_privacy_mode', false);
     const [autoLockMinutes, setAutoLockMinutes] = useLocalStorage('vantt_auto_lock', 5); // Default 5 mins
 
-    const login = (pin) => {
+    const hashPin = async (pin) => {
+        if (!pin) return null;
+        const encoder = new TextEncoder();
+        const data = encoder.encode(pin);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
+    };
+
+    const login = async (pin) => {
         if (!user) return false;
-        if (user.pin === pin) {
+
+        const inputHash = await hashPin(pin);
+
+        // Check for plain text legacy PIN (migration)
+        if (user.pin.length === 4 && user.pin === pin) {
+            setIsAuthenticated(true);
+            // Migrate to hash immediately
+            setUser(prev => ({ ...prev, pin: inputHash }));
+            toast.success(`Bienvenido (Perfil actualizado), ${user.name}`);
+            return true;
+        }
+
+        if (user.pin === inputHash) {
             setIsAuthenticated(true);
             toast.success(`Bienvenido de nuevo, ${user.name}`);
             return true;
@@ -21,10 +43,11 @@ export const IdentityProvider = ({ children }) => {
         return false;
     };
 
-    const register = (name, pin, currency = 'MXN') => {
+    const register = async (name, pin, currency = 'MXN') => {
+        const hashedPin = await hashPin(pin);
         const newUser = {
             name,
-            pin,
+            pin: hashedPin,
             currency,
             onboardingCompleted: true,
             createdAt: new Date().toISOString()
@@ -40,8 +63,12 @@ export const IdentityProvider = ({ children }) => {
         toast.info('Sesión cerrada');
     };
 
-    const updateProfile = (updates) => {
-        setUser(prev => ({ ...prev, ...updates }));
+    const updateProfile = async (updates) => {
+        const finalUpdates = { ...updates };
+        if (updates.pin && updates.pin.length === 4) {
+            finalUpdates.pin = await hashPin(updates.pin);
+        }
+        setUser(prev => ({ ...prev, ...finalUpdates }));
         toast.success('Perfil actualizado');
     };
 

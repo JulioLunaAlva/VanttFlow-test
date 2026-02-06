@@ -27,7 +27,7 @@ export const DailyMissionsWidget = () => {
                 <div className="flex items-center justify-between">
                     <CardTitle className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2 text-muted-foreground">
                         <Target className="h-3 w-3 text-primary" />
-                        {t('dashboard.daily_missions')}
+                        {t('dashboard.missions_title')}
                     </CardTitle>
                     <span className="text-[10px] font-black text-primary/60 bg-primary/10 px-2 py-0.5 rounded-full">
                         {completedCount}/{dailyMissions.length}

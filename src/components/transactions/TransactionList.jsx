@@ -11,6 +11,7 @@ import { EditTransactionDialog } from './EditTransactionDialog';
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { TransactionImageViewer } from './TransactionImageViewer';
+import * as Icons from 'lucide-react';
 
 export const TransactionList = () => {
     const { filteredTransactions, deleteTransaction, accounts, categories } = useFinance();
@@ -145,9 +146,15 @@ export const TransactionList = () => {
                                             )}
                                             {t.category && (
                                                 <span
-                                                    className="text-[10px] px-2 py-0.5 rounded-full text-white ml-1"
+                                                    className="text-[10px] px-2 py-0.5 rounded-full text-white ml-1 flex items-center gap-1"
                                                     style={{ backgroundColor: t.category === 'transfer' ? '#2563eb' : (categories.find(c => c.id === t.category)?.color || '#94a3b8') }}
                                                 >
+                                                    {(() => {
+                                                        if (t.category === 'transfer') return <ArrowRightLeft size={10} />;
+                                                        const cat = categories.find(c => c.id === t.category);
+                                                        const Icon = Icons[cat?.icon] || Icons.HelpCircle;
+                                                        return <Icon size={10} />;
+                                                    })()}
                                                     {t.category === 'transfer' ? 'Transferencia' : (categories.find(c => c.id === t.category)?.name || 'Otros')}
                                                 </span>
                                             )}

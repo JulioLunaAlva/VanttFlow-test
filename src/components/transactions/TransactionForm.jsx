@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { useFinance } from "@/context/FinanceContext";
 import { PlusCircle, Upload, X, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
+import { toast } from "sonner";
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
@@ -12,7 +13,7 @@ import { DatePicker } from "@/components/ui/DatePicker";
 import { cn } from "@/lib/utils";
 
 export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "Agregar" }) => {
-    const { addTransaction, editTransaction, categories, accounts } = useFinance();
+    const { addTransaction, editTransaction, categories, accounts, transactions, addInstallments } = useFinance();
     const uniqueId = useId();
     const [amount, setAmount] = useState(initialData?.amount || '');
     const [description, setDescription] = useState(initialData?.description || '');
@@ -22,6 +23,11 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
     const [targetAccountId, setTargetAccountId] = useState(initialData?.targetAccountId || '');
     const [date, setDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]);
     const [attachment, setAttachment] = useState(initialData?.attachment || null); // { name, base64 }
+
+    // Installments status
+    const [isInstallments, setIsInstallments] = useState(false);
+    const [installmentCount, setInstallmentCount] = useState(3);
+    const [installmentFrequency, setInstallmentFrequency] = useState('monthly');
 
     useEffect(() => {
         if (initialData) {
@@ -62,6 +68,38 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
         }
     }, [accounts]);
 
+    // Smart Categorization Logic
+    useEffect(() => {
+        if (initialData || !description || description.length < 3 || category) return;
+
+        const timer = setTimeout(() => {
+            const matches = transactions.filter(t =>
+                t.description.toLowerCase().includes(description.toLowerCase()) &&
+                t.type === type &&
+                t.category
+            );
+
+            if (matches.length > 0) {
+                // Find the most frequent category for this description
+                const counts = matches.reduce((acc, t) => {
+                    acc[t.category] = (acc[t.category] || 0) + 1;
+                    return acc;
+                }, {});
+
+                const mostFrequent = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+                if (mostFrequent) {
+                    setCategory(mostFrequent);
+                    toast.info(`Sugerencia: Categoría "${categories.find(c => c.id === mostFrequent)?.name}" aplicada automáticamente`, {
+                        duration: 2000,
+                        position: 'bottom-right'
+                    });
+                }
+            }
+        }, 500); // Debounce to avoid jumping while typing
+
+        return () => clearTimeout(timer);
+    }, [description, type, transactions, initialData]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!amount || !description) return;
@@ -79,6 +117,11 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
 
         if (initialData) {
             editTransaction(initialData.id, transactionData);
+        } else if (isInstallments && type === 'expense') {
+            addInstallments(transactionData, {
+                count: parseInt(installmentCount),
+                frequency: installmentFrequency
+            });
         } else {
             addTransaction(transactionData);
         }
@@ -199,17 +242,17 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
                     </div>
 
                     {/* Attachment Section */}
-                    <div className="space-y-2">
+                    <div className="space-y-2 pb-4">
                         {!attachment ? (
                             <div className="flex items-center gap-2">
-                                <Input
+                                <input
                                     id={`file-upload-${uniqueId}`}
                                     type="file"
                                     accept="image/*"
                                     className="hidden"
                                     onChange={handleFileChange}
                                 />
-                                <Button type="button" variant="outline" size="sm" className="w-full text-muted-foreground dashed border-dashed" onClick={() => document.getElementById(`file-upload-${uniqueId}`).click()}>
+                                <Button type="button" variant="outline" size="sm" className="w-full text-muted-foreground border-dashed" onClick={() => document.getElementById(`file-upload-${uniqueId}`).click()}>
                                     <Upload size={16} className="mr-2" /> Adjuntar comprobante/foto
                                 </Button>
                             </div>
@@ -220,7 +263,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
                                     <span className="truncate max-w-[150px]">{attachment.name}</span>
                                     {attachment.base64 && (
                                         <a href={attachment.base64} download={attachment.name} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline ml-2">
-                                            (Ver/Descargar)
+                                            (Ver)
                                         </a>
                                     )}
                                 </div>
@@ -231,8 +274,63 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel = "
                         )}
                     </div>
 
+                    {/* Installments Section */}
+                    {type === 'expense' && !initialData && (
+                        <div className="pt-2 border-t border-border/40 pb-4">
+                            <div className="flex items-center justify-between mb-3">
+                                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                    <PlusCircle size={14} className={cn(isInstallments ? "text-primary" : "text-muted-foreground")} />
+                                    Diferir en parcialidades
+                                </label>
+                                <button
+                                    type="button"
+                                    onClick={() => setIsInstallments(!isInstallments)}
+                                    className={cn(
+                                        "w-10 h-5 rounded-full transition-colors relative",
+                                        isInstallments ? "bg-primary" : "bg-muted"
+                                    )}
+                                >
+                                    <div className={cn(
+                                        "absolute top-1 w-3 h-3 rounded-full bg-white transition-all",
+                                        isInstallments ? "right-1" : "left-1"
+                                    )} />
+                                </button>
+                            </div>
+
+                            {isInstallments && (
+                                <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase px-1">Núm. de pagos</label>
+                                        <Input
+                                            type="number"
+                                            min="2"
+                                            max="48"
+                                            value={installmentCount}
+                                            onChange={(e) => setInstallmentCount(e.target.value)}
+                                            className="h-9 text-sm"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] font-bold text-muted-foreground uppercase px-1">Frecuencia</label>
+                                        <select
+                                            value={installmentFrequency}
+                                            onChange={(e) => setInstallmentFrequency(e.target.value)}
+                                            className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+                                        >
+                                            <option value="monthly">Mensual</option>
+                                            <option value="fortnightly">Quincenal</option>
+                                        </select>
+                                    </div>
+                                    <p className="col-span-2 text-[10px] text-muted-foreground italic px-1">
+                                        Se registrará el monto total en tu historial y se crearán {installmentCount} pagos programados de {new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount / installmentCount)} cada uno.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     <Button type="submit" className="w-full gap-2">
-                        <PlusCircle size={16} /> Agregar
+                        <PlusCircle size={16} /> {submitLabel}
                     </Button>
                 </form>
             </CardContent>

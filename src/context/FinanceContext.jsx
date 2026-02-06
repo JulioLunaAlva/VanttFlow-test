@@ -113,7 +113,6 @@ export const FinanceProvider = ({ children }) => {
         gainXp(15, 'Organizando tus finanzas');
         unlockAchievement('budget_master');
         completeMission('check_budget');
-        completeMission('check_budget');
     };
 
     // --- NET WORTH LOGIC ---
@@ -286,7 +285,9 @@ export const FinanceProvider = ({ children }) => {
         const forecast = getForecast();
         const scoreData = getVanttScore();
         const { income, expense } = summary;
+        const monthKey = format(selectedMonth, 'yyyy-MM');
 
+        // 1. Critical Forecast
         if (forecast.forecastBalance < 0) {
             recommendations.push({
                 id: 'critical_forecast',
@@ -296,11 +297,12 @@ export const FinanceProvider = ({ children }) => {
             });
         }
 
+        // 2. Budget Proactivity (Alert at 75% instead of 90%)
         const budgetStatus = getBudgetStatus();
-        const overBudget = budgetStatus.find(b => b.percentage > 90);
+        const overBudget = budgetStatus.find(b => b.percentage > 75);
         if (overBudget) {
             recommendations.push({
-                id: 'budget_limit',
+                id: 'budget_alert',
                 type: 'warning',
                 title_key: 'ai.advice.budget_limit_title',
                 desc_key: 'ai.advice.budget_limit_desc',
@@ -308,7 +310,24 @@ export const FinanceProvider = ({ children }) => {
             });
         }
 
-        if (income > 0 && (expense / income) > 0.9) {
+        // 3. Spending Trends (AI Insight)
+        const spendingAnalysis = getSpendingAnalysis();
+        const topTrend = spendingAnalysis.trends.find(t => t.percentageChange > 20);
+        if (topTrend) {
+            recommendations.push({
+                id: 'spending_trend',
+                type: 'info',
+                title_key: 'ai.advice.trend_increase_title',
+                desc_key: 'ai.advice.trend_increase_desc',
+                params: {
+                    category: categories.find(c => c.id === topTrend.categoryId)?.name,
+                    percentage: Math.round(topTrend.percentageChange)
+                }
+            });
+        }
+
+        // 4. Low Savings
+        if (income > 0 && (expense / income) > 0.85) {
             recommendations.push({
                 id: 'low_savings',
                 type: 'warning',
@@ -317,7 +336,8 @@ export const FinanceProvider = ({ children }) => {
             });
         }
 
-        if (scoreData.total > 700) {
+        // 5. Success Score
+        if (scoreData.total > 750) {
             recommendations.push({
                 id: 'great_score',
                 type: 'success',
@@ -338,6 +358,38 @@ export const FinanceProvider = ({ children }) => {
         return recommendations.slice(0, 3);
     };
 
+    const getSpendingAnalysis = () => {
+        const monthKey = format(selectedMonth, 'yyyy-MM');
+        const currentMonthTransactions = filteredTransactions.filter(t => t.type === 'expense');
+
+        // Group by category
+        const categoryTotals = currentMonthTransactions.reduce((acc, t) => {
+            acc[t.category] = (acc[t.category] || 0) + Number(t.amount);
+            return acc;
+        }, {});
+
+        // Simple trend analysis (compare with last week or average if possible)
+        // Here we'll just return top categories and a mock trend for now or 
+        // compare vs budget if available
+        const trends = Object.entries(categoryTotals).map(([catId, total]) => {
+            const budget = budgets.find(b => b.categoryId === catId && b.monthKey === monthKey);
+            const budgetAmount = budget ? budget.amount : 0;
+            const percentageUsed = budgetAmount > 0 ? (total / budgetAmount) * 100 : 0;
+
+            return {
+                categoryId: catId,
+                total,
+                percentageChange: percentageUsed > 100 ? (percentageUsed - 100) : 0 // Simplified trend
+            };
+        });
+
+        return {
+            totalSpent: currentMonthTransactions.reduce((acc, t) => acc + Number(t.amount), 0),
+            categoryTotals,
+            trends: trends.sort((a, b) => b.total - a.total)
+        };
+    };
+
     // --- ORACLE LOGIC ---
     const simulatePurchase = (amount) => {
         const forecast = getForecast();
@@ -345,11 +397,6 @@ export const FinanceProvider = ({ children }) => {
         if (isNaN(cost) || cost <= 0) return { status: 'invalid', messageKey: 'dashboard.oracle.msg_invalid' };
 
         const remainingAfterPurchase = forecast.forecastBalance - cost;
-
-        // Logic:
-        // 1. If remaining < 0 -> DANGER (Can't pay bills)
-        // 2. If remaining < 10% of total balance -> WARNING (Living on edge)
-        // 3. Otherwise -> SAFE
 
         if (remainingAfterPurchase < 0) {
             return {
@@ -361,7 +408,7 @@ export const FinanceProvider = ({ children }) => {
 
         const buffer = forecast.currentBalance > 0 ? (remainingAfterPurchase / forecast.currentBalance) : 0;
 
-        if (buffer < 0.10) {
+        if (buffer < 0.15) { // Increased safety buffer to 15%
             return {
                 status: 'warning',
                 messageKey: 'dashboard.oracle.msg_warning',
@@ -421,11 +468,11 @@ export const FinanceProvider = ({ children }) => {
             .reduce((acc, curr) => acc + Number(curr.amount), 0);
 
         const expense = filteredTransactions
-            .filter(t => t.type === 'expense')
+            .filter(t => t.type === 'expense' && !t.isInstallmentTotal)
             .reduce((acc, curr) => acc + Number(curr.amount), 0);
 
         const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + Number(curr.amount), 0);
-        const totalExpense = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + Number(curr.amount), 0);
+        const totalExpense = transactions.filter(t => t.type === 'expense' && !t.isInstallmentTotal).reduce((acc, curr) => acc + Number(curr.amount), 0);
 
         const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
         const balance = initialBalancesSum + totalIncome - totalExpense;
@@ -536,22 +583,30 @@ export const FinanceProvider = ({ children }) => {
         return true;
     };
 
-    const getAccountBalance = (accountId) => {
-        const account = accounts.find(a => a.id === accountId);
-        if (!account) return 0;
+    const allBalances = useMemo(() => {
+        const balances = {};
+        accounts.forEach(acc => {
+            balances[acc.id] = acc.initialBalance || 0;
+        });
 
-        const balance = account.initialBalance + transactions
-            .filter(t => t.accountId === accountId || t.targetAccountId === accountId)
-            .reduce((acc, t) => {
-                if (t.type === 'income') return acc + Number(t.amount);
-                if (t.type === 'expense') return acc - Number(t.amount);
-                if (t.type === 'transfer') {
-                    if (t.accountId === accountId) return acc - Number(t.amount); // Outgoing
-                    if (t.targetAccountId === accountId) return acc + Number(t.amount); // Incoming
-                }
-                return acc;
-            }, 0);
-        return balance;
+        transactions.forEach(t => {
+            if (t.isInstallmentTotal) return; // Skip informational total records
+
+            const amount = Number(t.amount);
+            if (t.type === 'income' && balances[t.accountId] !== undefined) {
+                balances[t.accountId] += amount;
+            } else if (t.type === 'expense' && balances[t.accountId] !== undefined) {
+                balances[t.accountId] -= amount;
+            } else if (t.type === 'transfer') {
+                if (balances[t.accountId] !== undefined) balances[t.accountId] -= amount;
+                if (balances[t.targetAccountId] !== undefined) balances[t.targetAccountId] += amount;
+            }
+        });
+        return balances;
+    }, [transactions, accounts]);
+
+    const getAccountBalance = (accountId) => {
+        return allBalances[accountId] || 0;
     };
 
     const getCreditCardStatus = (accountId) => {
@@ -588,17 +643,74 @@ export const FinanceProvider = ({ children }) => {
 
     // --- LOGICA DE PAGOS PROGRAMADOS ---
     const addScheduledPayment = (payment) => {
+        let startMonthKey = format(new Date(), 'yyyy-MM');
+        let endMonthKey = payment.endDate ? format(parseISO(payment.endDate), 'yyyy-MM') : null;
+
+        if (payment.frequency === 'one-time' && payment.descDate) {
+            const date = parseISO(payment.descDate);
+            startMonthKey = format(date, 'yyyy-MM');
+            endMonthKey = startMonthKey; // One-time only exists in its specific month
+        }
+
         const newPayment = {
             ...payment,
             id: crypto.randomUUID(),
             createdAt: Date.now(),
             status: 'active',
-            startMonthKey: format(new Date(), 'yyyy-MM'),
-            endMonthKey: payment.endDate ? format(parseISO(payment.endDate), 'yyyy-MM') : null
+            startMonthKey,
+            endMonthKey
         };
         setScheduledPayments(prev => [...prev, newPayment]);
-        toast.success('Pago programado creado');
-        completeMission('add_scheduled');
+        return newPayment;
+    };
+
+    /**
+     * Registra un gasto en parcialidades.
+     * El primer pago se registra como transacción inmediata.
+     * Los siguientes se registran como pagos programados.
+     */
+    const addInstallments = (transaction, installmentOptions) => {
+        const { count, frequency } = installmentOptions;
+        if (!count || count <= 1) {
+            addTransaction(transaction);
+            return;
+        }
+
+        const amountPerInstallment = Number((transaction.amount / count).toFixed(2));
+
+        // 1. Registro del TOTAL (Informativo, no afecta saldo para evitar duplicidad)
+        addTransaction({
+            ...transaction,
+            description: `${transaction.description} (Total de compra a ${count} meses)`,
+            isInstallmentTotal: true, // Flag para ignorar en cálculos de saldo
+            installmentMetadata: { count, frequency, amountPerInstallment }
+        });
+
+        // 2. Programar como un único registro maestro que se proyecta
+        const startDate = transaction.date ? parseISO(transaction.date) : new Date();
+
+        // Calcular fecha fin aproximada para el endMonthKey
+        let endDate = new Date(startDate);
+        if (frequency === 'monthly') {
+            endDate.setMonth(startDate.getMonth() + (count - 1));
+        } else {
+            endDate.setDate(startDate.getDate() + ((count - 1) * 15));
+        }
+
+        addScheduledPayment({
+            name: transaction.description,
+            amount: amountPerInstallment,
+            type: 'expense',
+            categoryId: transaction.category,
+            accountId: transaction.accountId,
+            frequency: frequency, // 'monthly' o 'fortnightly'
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            totalInstallments: count,
+            isInstallmentMaster: true
+        });
+
+        toast.success(`Compra registrada por un total de ${new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(transaction.amount)} en ${count} pagos.`);
     };
 
     const toggleScheduledStatus = (id) => {
@@ -616,22 +728,74 @@ export const FinanceProvider = ({ children }) => {
         const monthKey = format(monthDate, 'yyyy-MM');
 
         return scheduledPayments.filter(p => {
+            if (p.status === 'paused') return false;
+            // Regla general de rango de meses
             if (p.startMonthKey > monthKey) return false;
             if (p.endMonthKey && p.endMonthKey < monthKey) return false;
+
             return true;
-        }).map(p => {
-            const instance = paymentInstances.find(i => i.scheduledPaymentId === p.id && i.monthKey === monthKey);
+        }).flatMap(p => {
             const daysInMonth = lastDayOfMonth(monthDate).getDate();
-            const day = Math.min(p.dayOfMonth, daysInMonth);
+            const instances = [];
+
+            // Caso especial: Compra a meses (Installment Master)
+            if (p.isInstallmentMaster) {
+                const startDate = parseISO(p.startDate);
+                let currentIteration = 0;
+                let currentDate = new Date(startDate);
+
+                // Proyectar fechas hasta encontrar las que caen en este mes
+                while (currentIteration < p.totalInstallments) {
+                    const currentMonthKey = format(currentDate, 'yyyy-MM');
+
+                    if (currentMonthKey === monthKey) {
+                        const instanceIdMatch = paymentInstances.find(i =>
+                            i.scheduledPaymentId === p.id &&
+                            i.installmentIndex === currentIteration &&
+                            i.monthKey === monthKey
+                        );
+
+                        instances.push({
+                            ...p,
+                            name: `${p.name} (${currentIteration + 1}/${p.totalInstallments})`,
+                            currentMonthDate: new Date(currentDate),
+                            installmentIndex: currentIteration,
+                            state: instanceIdMatch ? instanceIdMatch.state : 'pending',
+                            instanceId: instanceIdMatch?.id
+                        });
+                    }
+
+                    if (currentMonthKey > monthKey) break; // Ya nos pasamos del mes buscado
+
+                    // Siguiente fecha
+                    if (p.frequency === 'monthly') {
+                        currentDate.setMonth(startDate.getMonth() + (++currentIteration));
+                    } else if (p.frequency === 'fortnightly') {
+                        currentDate.setDate(startDate.getDate() + (++currentIteration * 15));
+                    } else {
+                        break; // Evitar loop infinito si falta frecuencia
+                    }
+                }
+                return instances;
+            }
+
+            // Caso base: Recurrentes tradicionales (mensual o one-time en su mes)
+            let day = p.dayOfMonth;
+            if (!day && p.descDate) {
+                day = parseISO(p.descDate).getDate();
+            }
+            day = Math.min(day || 1, daysInMonth);
             const date = setDate(monthDate, day);
 
-            return {
+            const instanceIdMatch = paymentInstances.find(i => i.scheduledPaymentId === p.id && i.monthKey === monthKey);
+
+            return [{
                 ...p,
                 currentMonthDate: date,
-                state: instance ? instance.state : 'pending',
-                instanceId: instance?.id,
-                generatedTransactionId: instance?.generatedTransactionId
-            };
+                state: instanceIdMatch ? instanceIdMatch.state : 'pending',
+                instanceId: instanceIdMatch?.id,
+                generatedTransactionId: instanceIdMatch?.generatedTransactionId
+            }];
         });
     };
 
@@ -641,12 +805,14 @@ export const FinanceProvider = ({ children }) => {
         if (action === 'pay') {
             const transactionStr = {
                 amount: payment.amount,
-                description: `${payment.name} (Programado)`,
+                description: `${payment.name} (Pago)`,
                 type: payment.type,
                 category: payment.categoryId,
                 accountId: payment.accountId,
                 date: dateISO || payment.currentMonthDate.toISOString(),
-                isScheduled: true
+                isScheduled: true,
+                scheduledPaymentId: payment.id,
+                installmentIndex: payment.installmentIndex
             };
             const transId = crypto.randomUUID();
             const newTransaction = { ...transactionStr, id: transId, createdAt: new Date().toISOString() };
@@ -655,23 +821,39 @@ export const FinanceProvider = ({ children }) => {
             const newInstance = {
                 id: crypto.randomUUID(),
                 scheduledPaymentId: payment.id,
+                installmentIndex: payment.installmentIndex,
                 monthKey,
                 state: 'paid',
                 generatedTransactionId: transId,
                 resolvedAt: Date.now()
             };
-            setPaymentInstances(prev => [...prev.filter(i => !(i.scheduledPaymentId === payment.id && i.monthKey === monthKey)), newInstance]);
+            setPaymentInstances(prev => [
+                ...prev.filter(i => {
+                    const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
+                    const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
+                    return !(isSamePayment && isSameInstallment);
+                }),
+                newInstance
+            ]);
             toast.success('Pago registrado');
             gainXp(30, 'Responsabilidad cumplida');
         } else if (action === 'skip') {
             const newInstance = {
                 id: crypto.randomUUID(),
                 scheduledPaymentId: payment.id,
+                installmentIndex: payment.installmentIndex,
                 monthKey,
                 state: 'skipped',
                 resolvedAt: Date.now()
             };
-            setPaymentInstances(prev => [...prev.filter(i => !(i.scheduledPaymentId === payment.id && i.monthKey === monthKey)), newInstance]);
+            setPaymentInstances(prev => [
+                ...prev.filter(i => {
+                    const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
+                    const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
+                    return !(isSamePayment && isSameInstallment);
+                }),
+                newInstance
+            ]);
             toast.success('Pago omitido');
         }
     };
@@ -732,7 +914,9 @@ export const FinanceProvider = ({ children }) => {
         getForecast,
         getVanttScore,
         getAIRecommendations,
-        simulatePurchase
+        getSpendingAnalysis,
+        simulatePurchase,
+        addInstallments
     }), [
         transactions,
         filteredTransactions,

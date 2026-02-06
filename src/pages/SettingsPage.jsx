@@ -43,11 +43,11 @@ export const SettingsPage = () => {
         currency: user?.currency || 'MXN'
     });
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!formData.name) return toast.error('El nombre es requerido');
         if (formData.pin.length < 4) return toast.error('El PIN debe tener 4 dígitos');
 
-        updateProfile({
+        await updateProfile({
             name: formData.name,
             email: formData.email,
             pin: formData.pin,
@@ -104,6 +104,18 @@ export const SettingsPage = () => {
         toast.success(t('settings.export_success'));
     };
 
+    const validateBackupData = (data) => {
+        if (!data || typeof data !== 'object') return false;
+        // Check for required root structure
+        const requiredKeys = ['identity', 'transactions', 'categories', 'accounts'];
+        if (!requiredKeys.every(key => Object.prototype.hasOwnProperty.call(data, key))) return false;
+        if (!data.identity.name || !data.identity.pin) return false;
+        if (!Array.isArray(data.transactions)) return false;
+        if (!Array.isArray(data.categories)) return false;
+        if (!Array.isArray(data.accounts)) return false;
+        return true;
+    };
+
     const handleImport = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -113,38 +125,50 @@ export const SettingsPage = () => {
             try {
                 const data = JSON.parse(event.target.result);
 
-                if (!data.identity) {
-                    throw new Error(t('settings.import_error'));
+                if (!validateBackupData(data)) {
+                    toast.error(t('settings.import_invalid_format') || 'Formato de archivo inválido o corrupto');
+                    return;
                 }
 
                 if (confirm(t('settings.import_confirm'))) {
-                    if (data.transactions) localStorage.setItem('finance_transactions', JSON.stringify(data.transactions));
-                    if (data.categories) localStorage.setItem('finance_categories', JSON.stringify(data.categories));
-                    if (data.accounts) localStorage.setItem('finance_accounts', JSON.stringify(data.accounts));
-                    if (data.scheduledPayments) localStorage.setItem('finance_scheduled', JSON.stringify(data.scheduledPayments));
-                    if (data.paymentInstances) localStorage.setItem('finance_scheduled_instances', JSON.stringify(data.paymentInstances));
-                    if (data.budgets) localStorage.setItem('finance_budgets', JSON.stringify(data.budgets));
-                    if (data.goals) localStorage.setItem('finance_goals', JSON.stringify(data.goals));
+                    // Start atomic-like update by verifying keys first
+                    const backupKeys = {
+                        'finance_transactions': data.transactions,
+                        'finance_categories': data.categories,
+                        'finance_accounts': data.accounts,
+                        'finance_scheduled': data.scheduledPayments || [],
+                        'finance_scheduled_instances': data.paymentInstances || [],
+                        'finance_budgets': data.budgets || [],
+                        'finance_goals': data.goals || [],
+                        'market_data_real': data.market || null,
+                        'vantt_identity': data.identity,
+                        'vantt_privacy_mode': data.privacyMode ?? false
+                    };
 
-                    localStorage.setItem('vantt_identity', JSON.stringify(data.identity));
-                    if (data.privacyMode !== undefined) localStorage.setItem('vantt_privacy_mode', JSON.stringify(data.privacyMode));
-
+                    // Gamification
                     if (data.gamification) {
-                        localStorage.setItem('gamification_enabled', JSON.stringify(data.gamification.enabled));
-                        localStorage.setItem('gamification_selected_pet', JSON.stringify(data.gamification.pet));
-                        localStorage.setItem('gamification_xp', JSON.stringify(data.gamification.xp));
-                        localStorage.setItem('gamification_achievements', JSON.stringify(data.gamification.achievements));
-                        localStorage.setItem('gamification_last_login', JSON.stringify(data.gamification.lastLogin));
-                        localStorage.setItem('gamification_streak', JSON.stringify(data.gamification.streak));
-                        localStorage.setItem('gamification_daily_missions', JSON.stringify(data.gamification.missions));
-                        localStorage.setItem('gamification_missions_date', JSON.stringify(data.gamification.missionsDate));
+                        backupKeys['gamification_enabled'] = data.gamification.enabled ?? true;
+                        backupKeys['gamification_selected_pet'] = data.gamification.pet || "fox";
+                        backupKeys['gamification_xp'] = data.gamification.xp || 0;
+                        backupKeys['gamification_achievements'] = data.gamification.achievements || [];
+                        backupKeys['gamification_last_login'] = data.gamification.lastLogin;
+                        backupKeys['gamification_streak'] = data.gamification.streak || 0;
+                        backupKeys['gamification_daily_missions'] = data.gamification.missions || [];
+                        backupKeys['gamification_missions_date'] = data.gamification.missionsDate;
                     }
+
+                    // Apply all to localStorage
+                    Object.entries(backupKeys).forEach(([key, value]) => {
+                        if (value !== null && value !== undefined) {
+                            localStorage.setItem(key, JSON.stringify(value));
+                        }
+                    });
 
                     toast.success(t('settings.import_success'));
                     setTimeout(() => window.location.reload(), 1500);
                 }
             } catch (error) {
-                console.error(error);
+                console.error('Import error:', error);
                 toast.error(t('settings.import_error'));
             }
         };

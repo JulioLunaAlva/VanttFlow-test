@@ -69,7 +69,7 @@ export const ForecastWidget = () => {
                         </div>
                         {forecast.estimatedDailyExpenses > 0 && (
                             <div className="flex justify-between items-center text-muted-foreground opacity-80 italic">
-                                <span>Gasto Diario Est. (x{new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate()} días):</span>
+                                <span>{t('dashboard.daily_expense_est')} (x{new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate()} {t('dashboard.days_left')}):</span>
                                 <span>-{new Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(forecast.estimatedDailyExpenses)}</span>
                             </div>
                         )}

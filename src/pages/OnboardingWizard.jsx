@@ -52,9 +52,9 @@ export const OnboardingWizard = () => {
         }
     };
 
-    const finishSetup = () => {
+    const finishSetup = async () => {
         // 1. Create Identity
-        register(formData.name, formData.pin, 'MXN');
+        await register(formData.name, formData.pin, 'MXN');
 
         // 2. Create Initial Account (Assuming FinanceContext is available and empty)
         // We might want to clear existing data if resetting? For now we append.

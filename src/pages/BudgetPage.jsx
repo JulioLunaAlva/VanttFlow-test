@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogD
 import { Progress } from "@/components/ui/progress";
 import { Plus, Wallet, AlertCircle } from 'lucide-react';
 import { BudgetCard } from '@/components/budget/BudgetCard';
+import { CategorySelect } from '@/components/ui/CategorySelect';
 import { cn } from "@/lib/utils";
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
@@ -156,16 +157,12 @@ export const BudgetPage = () => {
                                     {categories.find(c => c.id === editingBudget.categoryId)?.name}
                                 </div>
                             ) : (
-                                <select
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                <CategorySelect
+                                    categories={unbudgetedCategories}
                                     value={selectedCategoryId}
-                                    onChange={(e) => setSelectedCategoryId(e.target.value)}
-                                >
-                                    <option value="">{t('budget.select_category')}</option>
-                                    {unbudgetedCategories.map(c => (
-                                        <option key={c.id} value={c.id}>{c.name}</option>
-                                    ))}
-                                </select>
+                                    onChange={setSelectedCategoryId}
+                                    placeholder={t('budget.select_category')}
+                                />
                             )}
                         </div>
                         <div className="space-y-2">

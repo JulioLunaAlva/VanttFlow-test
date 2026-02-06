@@ -5,9 +5,11 @@ import { useFinance } from "@/context/FinanceContext";
 import { PieChart as PieChartIcon, TrendingDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIdentity } from "@/context/IdentityContext";
+import { useTranslation } from 'react-i18next';
 export const ExpensePieChart = React.memo(() => {
     const { filteredTransactions, categories } = useFinance();
     const { user } = useIdentity();
+    const { t } = useTranslation();
     const currency = user?.currency || 'MXN';
     const [activeIndex, setActiveIndex] = useState(null);
     const data = React.useMemo(() => {
@@ -68,7 +70,7 @@ export const ExpensePieChart = React.memo(() => {
                         {formatCurrency(data.value)}
                     </p>
                     <p className="text-xs text-foreground/50 mt-1">
-                        {formatPercent(data.value)} del total
+                        {formatPercent(data.value)} {t('dashboard.pie_chart.of_total')}
                     </p>
                 </motion.div>
             );
@@ -122,9 +124,9 @@ export const ExpensePieChart = React.memo(() => {
                         <TrendingDown className="w-5 h-5 text-rose-500" />
                     </div>
                     <div>
-                        <CardTitle className="text-base font-black tracking-tight">Gastos por Categoría</CardTitle>
+                        <CardTitle className="text-base font-black tracking-tight">{t('dashboard.pie_chart.title')}</CardTitle>
                         <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider mt-0.5">
-                            Distribución de gastos
+                            {t('dashboard.pie_chart.subtitle')}
                         </p>
                     </div>
                 </div>
@@ -147,9 +149,9 @@ export const ExpensePieChart = React.memo(() => {
                             </motion.div>
                         </div>
                         <div className="space-y-2">
-                            <p className="text-sm font-black text-foreground/60">Sin gastos registrados</p>
+                            <p className="text-sm font-black text-foreground/60">{t('dashboard.pie_chart.no_data')}</p>
                             <p className="text-xs text-foreground/40 max-w-[200px]">
-                                Tus gastos por categoría aparecerán aquí cuando registres transacciones
+                                {t('dashboard.pie_chart.no_data_desc')}
                             </p>
                         </div>
                     </motion.div>
@@ -243,7 +245,7 @@ export const ExpensePieChart = React.memo(() => {
                                             >
                                                 <div className="space-y-1">
                                                     <p className="text-[9px] font-bold uppercase tracking-widest text-foreground/40">
-                                                        Total
+                                                        {t('dashboard.pie_chart.total_label')}
                                                     </p>
                                                     <p className="text-2xl font-black tracking-tighter text-rose-500 leading-none">
                                                         {formatCurrency(total)}

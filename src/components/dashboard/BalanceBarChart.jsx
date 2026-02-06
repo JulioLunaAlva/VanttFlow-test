@@ -5,7 +5,7 @@ import { useFinance } from "@/context/FinanceContext";
 import { TrendingUp, TrendingDown, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useIdentity } from "@/context/IdentityContext";
-export const BalanceBarChart = () => {
+export const BalanceBarChart = React.memo(() => {
     const { summary } = useFinance();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
@@ -199,4 +199,4 @@ export const BalanceBarChart = () => {
             </CardContent>
         </Card>
     );
-};
+});

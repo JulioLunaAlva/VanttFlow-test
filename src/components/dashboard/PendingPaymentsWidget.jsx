@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useFinance } from "@/context/FinanceContext";
 import { format, isPast, isToday } from 'date-fns';
@@ -25,7 +26,12 @@ export const PendingPaymentsWidget = () => {
             <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-medium flex items-center justify-between">
                     <span>{t('dashboard.pending')} ({format(selectedMonth, 'MMMM', { locale: currentLocale })})</span>
-                    <span className="text-xs font-normal bg-muted px-2 py-1 rounded-full">{t('dashboard.pending_count', { count: pendingItems.length })}</span>
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs font-normal bg-muted px-2 py-1 rounded-full">{t('dashboard.pending_count', { count: pendingItems.length })}</span>
+                        <Button variant="link" className="text-[10px] h-auto p-0 font-black uppercase text-primary" asChild>
+                            <Link to="/scheduled">{t('dashboard.view_all')}</Link>
+                        </Button>
+                    </div>
                 </CardTitle>
             </CardHeader>
             <CardContent>

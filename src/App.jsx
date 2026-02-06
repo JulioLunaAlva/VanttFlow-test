@@ -9,7 +9,7 @@ import { BudgetPage } from "@/pages/BudgetPage";
 import { GoalsPage } from "@/pages/GoalsPage";
 import { ReportsPage } from "@/pages/ReportsPage";
 import { CategoriesPage } from "@/pages/CategoriesPage";
-import { CreditCardsPage } from "@/pages/CreditCardsPage";
+import { AccountsPage } from "@/pages/AccountsPage";
 import { SubscriptionsPage } from "@/pages/SubscriptionsPage";
 import { AnalyticsPage } from "@/pages/AnalyticsPage";
 import { ImportPage } from "@/pages/ImportPage";
@@ -79,7 +79,7 @@ function App() {
                       <Route path="/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
                       <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
                       <Route path="/categories" element={<ProtectedRoute><CategoriesPage /></ProtectedRoute>} />
-                      <Route path="/cards" element={<ProtectedRoute><CreditCardsPage /></ProtectedRoute>} />
+                      <Route path="/accounts" element={<ProtectedRoute><AccountsPage /></ProtectedRoute>} />
                       <Route path="/subscriptions" element={<ProtectedRoute><SubscriptionsPage /></ProtectedRoute>} />
                       <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
                       <Route path="/import" element={<ProtectedRoute><ImportPage /></ProtectedRoute>} />

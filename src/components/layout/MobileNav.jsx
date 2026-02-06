@@ -1,20 +1,95 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { LayoutDashboard, Receipt, CreditCard, Menu, Plus, Zap, BarChart3, Target, CalendarClock, Upload, Tags, PieChart, Settings, CandlestickChart, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Receipt, CreditCard, Menu, Plus, Zap, BarChart3, Target, CalendarClock, Upload, Tags, PieChart, Settings, CandlestickChart, Sparkles, Landmark } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { TransactionForm } from '@/components/transactions/TransactionForm';
-import { motion } from 'framer-motion';
+import { CategoryForm } from '@/components/categories/CategoryForm';
+import { AccountForm } from '@/components/accounts/AccountForm';
+import { GoalForm } from '@/components/goals/GoalForm';
+import { motion, AnimatePresence } from 'framer-motion';
 import { triggerHaptic } from '@/utils/haptic';
 import { useTranslation } from 'react-i18next';
+import { useFinance } from '@/context/FinanceContext';
 
 export const MobileNav = () => {
     const { t } = useTranslation();
+    const { addAccount, addGoal, addCategory } = useFinance();
     const location = useLocation();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isMoreOpen, setIsMoreOpen] = useState(false);
+    const [isQuickActionMenuOpen, setIsQuickActionMenuOpen] = useState(false);
+    const [activeAction, setActiveAction] = useState('transaction'); // 'transaction', 'account', 'goal', 'category'
+
+    // Long Press Logic
+    const [longPressTimer, setLongPressTimer] = useState(null);
+
+    const handleTouchStart = (e) => {
+        // Prevent context menu on some browsers if needed
+        const timer = setTimeout(() => {
+            triggerHaptic('heavy');
+            setIsQuickActionMenuOpen(true);
+            setLongPressTimer(null);
+        }, 600);
+        setLongPressTimer(timer);
+    };
+
+    const handleTouchEnd = (e) => {
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            setLongPressTimer(null);
+            // Short tap: default action
+            setActiveAction('transaction');
+            setIsAddOpen(true);
+            triggerHaptic('light');
+        }
+    };
+
+    const handleActionClick = (action) => {
+        setActiveAction(action);
+        setIsQuickActionMenuOpen(false);
+        setIsAddOpen(true);
+        triggerHaptic('medium');
+    };
+
+    const getActionContent = () => {
+        switch (activeAction) {
+            case 'account':
+                return {
+                    title: t('common.quick_actions.new_account'),
+                    component: <AccountForm onSubmit={(data) => { addAccount(data); setIsAddOpen(false); }} onCancel={() => setIsAddOpen(false)} />
+                };
+            case 'goal':
+                return {
+                    title: t('common.quick_actions.new_goal'),
+                    component: <GoalForm onSubmit={(data) => { addGoal(data); setIsAddOpen(false); }} onCancel={() => setIsAddOpen(false)} />
+                };
+            case 'category':
+                return {
+                    title: t('common.quick_actions.new_category'),
+                    component: <CategoryForm onSubmit={(data) => { addCategory(data); setIsAddOpen(false); }} onCancel={() => setIsAddOpen(false)} />
+                };
+            default:
+                return {
+                    title: t('common.quick_actions.new_transaction'),
+                    component: <TransactionForm onSuccess={() => setIsAddOpen(false)} />
+                };
+        }
+    };
+
+    const QuickActionButton = ({ icon: Icon, label, color, onClick }) => (
+        <button
+            onClick={onClick}
+            className="flex flex-col items-center gap-4 p-6 rounded-[28px] bg-muted/20 border-2 border-transparent hover:border-primary/50 hover:bg-primary/5 transition-all active:scale-95 group"
+        >
+            <div className={`w-14 h-14 rounded-2xl bg-${color}-500/10 flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <Icon className={`w-8 h-8 text-${color}-500`} />
+            </div>
+            <span className="text-xs font-black uppercase tracking-wider text-center">{label}</span>
+        </button>
+    );
 
     const menuSections = [
         {
@@ -72,28 +147,80 @@ export const MobileNav = () => {
                 )}
             </NavLink>
 
-            {/* Center Action Button */}
+            {/* Center Action Button with Long Press */}
             <div id="tour-add" className="relative -top-6">
+                <Button
+                    size="icon"
+                    className="h-16 w-16 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] bg-primary text-primary-foreground hover:bg-primary/90 border-4 border-background active:scale-95 transition-transform select-none touch-none"
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                    onMouseDown={handleTouchStart}
+                    onMouseUp={handleTouchEnd}
+                    onMouseLeave={() => longPressTimer && (clearTimeout(longPressTimer), setLongPressTimer(null))}
+                >
+                    <Plus size={36} />
+                </Button>
+
+                {/* Quick Action Selection Menu (Sheet) */}
+                <Sheet open={isQuickActionMenuOpen} onOpenChange={setIsQuickActionMenuOpen}>
+                    <SheetContent side="bottom" className="rounded-t-[32px] border-t-2 border-primary/20 bg-background/98 backdrop-blur-xl p-0">
+                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-muted-foreground/20 rounded-full" />
+                        <div className="px-6 pt-10 pb-12">
+                            <SheetHeader className="mb-8">
+                                <SheetTitle className="text-2xl font-black tracking-tight text-center flex items-center justify-center gap-3">
+                                    <Sparkles className="text-primary animate-pulse" size={24} />
+                                    {t('common.quick_actions.title')}
+                                </SheetTitle>
+                            </SheetHeader>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <QuickActionButton
+                                    icon={Receipt}
+                                    label={t('common.quick_actions.new_transaction')}
+                                    color="emerald"
+                                    onClick={() => handleActionClick('transaction')}
+                                />
+                                <QuickActionButton
+                                    icon={Landmark}
+                                    label={t('common.quick_actions.new_account')}
+                                    color="blue"
+                                    onClick={() => handleActionClick('account')}
+                                />
+                                <QuickActionButton
+                                    icon={Target}
+                                    label={t('common.quick_actions.new_goal')}
+                                    color="purple"
+                                    onClick={() => handleActionClick('goal')}
+                                />
+                                <QuickActionButton
+                                    icon={Tags}
+                                    label={t('common.quick_actions.new_category')}
+                                    color="amber"
+                                    onClick={() => handleActionClick('category')}
+                                />
+                            </div>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+
+                {/* Form Dialog */}
                 <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                    <DialogTrigger asChild>
-                        <Button
-                            size="icon"
-                            className="h-16 w-16 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] bg-primary text-primary-foreground hover:bg-primary/90 border-4 border-background active:scale-95 transition-transform"
-                            onClick={() => triggerHaptic('medium')}
-                        >
-                            <Plus size={36} />
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="p-4 max-h-[90vh] overflow-y-auto">
-                        <h2 className="text-lg font-bold mb-4">Nueva Transacción</h2>
-                        <TransactionForm onSuccess={() => setIsAddOpen(false)} />
+                    <DialogContent className="p-6 max-h-[90vh] overflow-y-auto rounded-[32px] border-none shadow-2xl">
+                        <DialogHeader className="mb-2">
+                            <DialogTitle className="text-2xl font-black tracking-tighter">
+                                {getActionContent().title}
+                            </DialogTitle>
+                        </DialogHeader>
+                        <div className="mt-2">
+                            {getActionContent().component}
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>
 
             {/* Right Side */}
             <NavLink
-                to="/cards"
+                to="/accounts"
                 className={({ isActive }) => cn(
                     "flex flex-col items-center justify-center w-14 h-full transition-colors",
                     isActive ? "text-primary scale-110" : "text-muted-foreground hover:text-foreground"

@@ -7,17 +7,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import {
-    Wallet, Laptop, TrendingUp, Utensils, Car, Home, Zap, Gamepad2,
-    CarFront, Heart, GraduationCap, ShoppingBag, CreditCard, Gift,
-    Dog, Plane, MoreHorizontal, DollarSign
-} from 'lucide-react';
-
-const ICON_MAP = {
-    Wallet, Laptop, TrendingUp, Utensils, Car, Home, Zap, Gamepad2,
-    CarFront, Heart, GraduationCap, ShoppingBag, CreditCard, Gift,
-    Dog, Plane, MoreHorizontal, DollarSign
-};
+import * as Icons from 'lucide-react';
 
 export function CategorySelect({ categories, value, onChange, placeholder = "Seleccionar categoría..." }) {
     const [open, setOpen] = useState(false)
@@ -38,8 +28,8 @@ export function CategorySelect({ categories, value, onChange, placeholder = "Sel
                                 className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
                                 style={{ backgroundColor: selectedCategory.color }}
                             >
-                                {ICON_MAP[selectedCategory.icon] ?
-                                    React.createElement(ICON_MAP[selectedCategory.icon], { size: 14 }) :
+                                {Icons[selectedCategory.icon] ?
+                                    React.createElement(Icons[selectedCategory.icon], { size: 14 }) :
                                     selectedCategory.name.charAt(0)
                                 }
                             </div>
@@ -73,8 +63,8 @@ export function CategorySelect({ categories, value, onChange, placeholder = "Sel
                                 className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs shrink-0"
                                 style={{ backgroundColor: category.color }}
                             >
-                                {ICON_MAP[category.icon] ?
-                                    React.createElement(ICON_MAP[category.icon], { size: 16 }) :
+                                {Icons[category.icon] ?
+                                    React.createElement(Icons[category.icon], { size: 16 }) :
                                     category.name.charAt(0)
                                 }
                             </div>

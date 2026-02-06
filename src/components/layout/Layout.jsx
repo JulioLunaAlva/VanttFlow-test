@@ -1,7 +1,7 @@
 import React from 'react';
 import { LayoutDashboard, Receipt, Wallet, Menu, CalendarClock, PieChart, Target, Download, BarChart3, Tags, CreditCard, Zap, Upload, Settings, ChevronRight, CandlestickChart, Eye, EyeOff } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { MonthSelector } from './MonthSelector';
 import { ModeToggle } from "@/components/ui/ModeToggle";
@@ -30,7 +30,7 @@ const Sidebar = ({ className }) => {
             <div className="absolute bottom-40 -right-20 w-48 h-48 bg-blue-600/5 rounded-full blur-[60px] pointer-events-none" />
 
             <div className="p-8 pb-3 flex items-center justify-between relative z-10">
-                <div className="flex items-center gap-4">
+                <Link to="/" className="flex items-center gap-4 group/logo-link">
                     <div className="relative group/logo">
                         <div className="absolute inset-0 bg-primary/20 blur-lg rounded-xl opacity-0 group-hover/logo:opacity-100 transition-opacity" />
                         <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-xl relative z-10 shadow-lg border border-white/10" />
@@ -41,7 +41,7 @@ const Sidebar = ({ className }) => {
                         </h1>
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 -mt-1">Financial Spirit</span>
                     </div>
-                </div>
+                </Link>
                 <div className="flex items-center gap-2">
                     <Button
                         variant="ghost"
@@ -101,7 +101,7 @@ const Sidebar = ({ className }) => {
                 <SidebarLink to="/budget" icon={PieChart} label={t('common.budget')} />
                 <SidebarLink to="/goals" icon={Target} label={t('common.goals')} />
                 <SidebarLink to="/scheduled" icon={CalendarClock} label={t('common.scheduled')} />
-                <SidebarLink to="/cards" icon={CreditCard} label={t('common.cards')} />
+                <SidebarLink to="/accounts" icon={CreditCard} label={t('common.cards') || 'Cuentas'} />
                 <SidebarLink to="/subscriptions" icon={Zap} label={t('common.subscriptions')} />
 
                 <div className="h-px bg-border/40 mx-4 my-4" />
@@ -168,12 +168,12 @@ export const Layout = ({ children }) => {
 
             <div className="flex-1 flex flex-col pb-20 md:pb-0 min-w-0"> {/* Padding bottom for Mobile Nav */}
                 <header className="pt-safe border-b bg-card/70 backdrop-blur-xl px-5 flex items-center justify-between xl:hidden sticky top-0 z-40">
-                    <div className="flex items-center gap-2 h-16">
+                    <Link to="/" className="flex items-center gap-2 h-16 active:opacity-70 transition-opacity">
                         <img src="/logo.png" alt="Logo" className="w-6 h-6 rounded-lg shadow-sm" />
                         <span className="font-black text-xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
                             VanttFlow
                         </span>
-                    </div>
+                    </Link>
                     <div className="flex items-center gap-4">
                         <LevelProgress variant="compact" className="w-32" />
                         <div className="h-8 w-[1.5px] bg-border/40 mx-1 hidden xs:block rotate-[15deg]" />

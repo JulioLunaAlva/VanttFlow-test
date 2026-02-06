@@ -8,6 +8,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { format, subMonths, isSameMonth, parseISO } from 'date-fns';
 import { es, enUS, ptBR, fr } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
+import { cn } from "@/lib/utils";
 
 export const AnalyticsPage = () => {
     const { t, i18n } = useTranslation();
@@ -159,6 +160,94 @@ export const AnalyticsPage = () => {
                     )}
                 </CardContent>
             </Card>
+
+            {/* Income vs Expenses Legend */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <Card className="lg:col-span-2">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <BarChart2 size={20} className="text-primary" /> {t('analytics.cash_flow_title') || 'Flujo de Caja Histórico'}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="h-[300px]">
+                        {(() => {
+                            const last6Months = Array.from({ length: 6 }).map((_, i) => subMonths(new Date(), i)).reverse();
+                            const flowData = last6Months.map(monthDate => {
+                                const mData = transactions.filter(t => isSameMonth(parseISO(t.date), monthDate));
+                                return {
+                                    name: format(monthDate, 'MMM', { locale: currentLocale }),
+                                    income: calculateTotal(mData, 'income'),
+                                    expense: calculateTotal(mData, 'expense')
+                                };
+                            });
+
+                            return (
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={flowData}>
+                                        <defs>
+                                            <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#10b981" stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                                            </linearGradient>
+                                            <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.1} />
+                                                <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted))" />
+                                        <XAxis dataKey="name" fontSize={12} stroke="hsl(var(--muted-foreground))" />
+                                        <YAxis fontSize={12} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `$${v}`} />
+                                        <Tooltip
+                                            contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 8px 24px rgba(0,0,0,0.15)', background: 'hsl(var(--card))' }}
+                                            formatter={(v) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency }).format(v)}
+                                        />
+                                        <Area type="monotone" dataKey="income" stroke="#10b981" fillOpacity={1} fill="url(#colorIncome)" strokeWidth={2} />
+                                        <Area type="monotone" dataKey="expense" stroke="#ef4444" fillOpacity={1} fill="url(#colorExpense)" strokeWidth={2} />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            );
+                        })()}
+                    </CardContent>
+                </Card>
+
+                {/* Savings Insight card - alongside chart */}
+                <Card className="flex flex-col">
+                    <CardHeader>
+                        <CardTitle className="text-base font-bold text-center">{t('analytics.savings_summary') || 'Resumen de Ahorro'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="flex-1 flex flex-col items-center justify-center space-y-4">
+                        <div className="text-center">
+                            <p className="text-xs text-muted-foreground uppercase tracking-widest font-black mb-1">{t('analytics.net_savings') || 'Ahorro Neto (Este Mes)'}</p>
+                            <p className={cn(
+                                "text-4xl font-black tracking-tighter",
+                                currentIncome - currentExpense >= 0 ? "text-emerald-500" : "text-rose-500"
+                            )}>
+                                {new Intl.NumberFormat(i18n.language, { style: 'currency', currency }).format(currentIncome - currentExpense)}
+                            </p>
+                        </div>
+                        <div className="w-full h-2 bg-muted rounded-full overflow-hidden flex">
+                            {currentIncome > 0 && (
+                                <>
+                                    <div
+                                        className="h-full bg-rose-500 transition-all duration-1000"
+                                        style={{ width: `${Math.min(100, (currentExpense / currentIncome) * 100)}%` }}
+                                    />
+                                    <div
+                                        className="h-full bg-emerald-500 transition-all duration-1000"
+                                        style={{ width: `${Math.max(0, 100 - (currentExpense / currentIncome) * 100)}%` }}
+                                    />
+                                </>
+                            )}
+                        </div>
+                        <p className="text-[10px] text-center text-muted-foreground">
+                            {currentIncome > 0
+                                ? `${((currentExpense / currentIncome) * 100).toFixed(1)}% ${t('analytics.of_income_spent') || 'de tus ingresos han sido gastados'}`
+                                : t('analytics.no_income_data') || 'Sin datos de ingresos para este mes'
+                            }
+                        </p>
+                    </CardContent>
+                </Card>
+            </div>
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

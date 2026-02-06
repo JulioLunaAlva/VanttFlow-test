@@ -34,14 +34,35 @@ export const VanttAIChat = () => {
         const userMessage = { role: 'user', content: text };
         setMessages(prev => [...prev, userMessage]);
 
-        // 1. Check for advice intent
-        const lowerInput = text.toLowerCase();
-        const adviceKeywords = ['consejo', 'tip', 'ayuda', 'cómo voy', 'como voy', 'advice', 'how am i', 'health', 'salud', 'status'];
+        // 1. Process with Enhanced Parser
+        const suggestion = parseAISuggestion(text, categories);
 
-        if (adviceKeywords.some(kw => lowerInput.includes(kw))) {
-            const recommendations = getAIRecommendations();
-            if (recommendations.length > 0) {
-                // Return each recommendation as a separate bubble or a single block
+        if (!suggestion || suggestion.intent === 'unknown') {
+            setMessages(prev => [...prev, {
+                role: 'ai',
+                content: t('ai.dont_understand', { defaultValue: 'No estoy seguro de haber entendido. Intenta algo como "Gasté 50 en comida" o "¿Cuánto he gastado?".' })
+            }]);
+            return;
+        }
+
+        // 2. Handle Intents
+        switch (suggestion.intent) {
+            case 'query_spending':
+                const analysis = getSpendingAnalysis();
+                const topCats = analysis.trends.slice(0, 3).map(t => {
+                    const name = categories.find(c => c.id === t.categoryId)?.name || t.categoryId;
+                    return `• ${name}: ${new Intl.NumberFormat(undefined, { style: 'currency', currency: 'MXN' }).format(t.total)}`;
+                }).join('\n');
+
+                setMessages(prev => [...prev, {
+                    role: 'ai',
+                    content: `### RESUMEN DE GASTOS\nHas gastado un total de **${new Intl.NumberFormat(undefined, { style: 'currency', currency: 'MXN' }).format(analysis.totalSpent)}** este mes.\n\n**Tus categorías principales:**\n${topCats}`
+                }]);
+                break;
+
+            case 'query_status':
+            case 'query_limits':
+                const recommendations = getAIRecommendations();
                 const formattedRecommendations = recommendations.map(rec => {
                     const title = t(rec.title_key);
                     const desc = t(rec.desc_key, rec.params || {});
@@ -52,24 +73,23 @@ export const VanttAIChat = () => {
                     role: 'ai',
                     content: formattedRecommendations
                 }]);
-                return;
-            }
-        }
+                break;
 
-        // 2. Process for transaction logging
-        const suggestion = parseAISuggestion(text, categories);
+            case 'log':
+                if (suggestion.amount) {
+                    setSuggestedTransaction(suggestion);
+                    setMessages(prev => [...prev, {
+                        role: 'ai',
+                        content: t('ai.suggestion_msg', { defaultValue: 'He detectado una transacción. ¿Quieres registrarla?' })
+                    }]);
+                }
+                break;
 
-        if (suggestion && suggestion.amount) {
-            setSuggestedTransaction(suggestion);
-            setMessages(prev => [...prev, {
-                role: 'ai',
-                content: t('ai.suggestion_msg', { defaultValue: 'He detectado una transacción. ¿Quieres registrarla?' })
-            }]);
-        } else {
-            setMessages(prev => [...prev, {
-                role: 'ai',
-                content: t('ai.dont_understand', { defaultValue: 'No estoy seguro de haber entendido. Intenta algo como "Gasté 50 en comida".' })
-            }]);
+            default:
+                setMessages(prev => [...prev, {
+                    role: 'ai',
+                    content: t('ai.dont_understand')
+                }]);
         }
     };
 
@@ -227,6 +247,14 @@ export const VanttAIChat = () => {
                                         <Button
                                             variant="outline"
                                             size="sm"
+                                            onClick={() => processInput(t('ai.advice.how_am_i'))}
+                                            className="grow-0 shrink-0 h-7 rounded-full text-[10px] font-black uppercase border-primary/20 bg-primary/5 hover:bg-primary/10"
+                                        >
+                                            {t('ai.advice.how_am_i')}
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
                                             onClick={() => processInput(t('ai.advice.ask_advice'))}
                                             className="grow-0 shrink-0 h-7 rounded-full text-[10px] font-black uppercase border-primary/20 bg-primary/5 hover:bg-primary/10"
                                         >
@@ -235,10 +263,18 @@ export const VanttAIChat = () => {
                                         <Button
                                             variant="outline"
                                             size="sm"
-                                            onClick={() => processInput(t('ai.advice.how_am_i'))}
+                                            onClick={() => processInput(t('ai.advice.check_budget'))}
                                             className="grow-0 shrink-0 h-7 rounded-full text-[10px] font-black uppercase border-primary/20 bg-primary/5 hover:bg-primary/10"
                                         >
-                                            {t('ai.advice.how_am_i')}
+                                            {t('ai.advice.check_budget')}
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => processInput(t('ai.advice.view_analytics'))}
+                                            className="grow-0 shrink-0 h-7 rounded-full text-[10px] font-black uppercase border-primary/20 bg-primary/5 hover:bg-primary/10"
+                                        >
+                                            {t('ai.advice.view_analytics')}
                                         </Button>
                                     </div>
                                     <div className="flex gap-2">

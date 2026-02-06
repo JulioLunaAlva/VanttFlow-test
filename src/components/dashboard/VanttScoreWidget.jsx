@@ -28,7 +28,7 @@ export const VanttScoreWidget = () => {
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                     <Award className="h-4 w-4 text-purple-500" />
-                    VanttScore
+                    {t('dashboard.vanttscore')}
                 </CardTitle>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full bg-muted ${statusColor}`}>{status}</span>
             </CardHeader>

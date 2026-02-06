@@ -5,9 +5,11 @@ import { TrendingUp, TrendingDown, DollarSign, Coins, Gem, CandlestickChart } fr
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+
 export const MarketTrendsWidget = () => {
     const { t } = useTranslation();
     const { marketData, loading } = useMarket();
+
     const items = [
         {
             label: t('dashboard.dollar'),
@@ -37,6 +39,16 @@ export const MarketTrendsWidget = () => {
             suffix: " USD"
         },
     ];
+
+    const getMarketTip = () => {
+        const { usdMxn, btcUsd, ethUsd } = marketData;
+        if (usdMxn.change > 2) return t('dashboard.market_tips.usd_high');
+        if (usdMxn.price < 19.5) return t('dashboard.market_tips.usd_stable');
+        if (btcUsd.change > 5 || ethUsd.change > 5) return t('dashboard.market_tips.crypto_up');
+        if (btcUsd.change < -5 || ethUsd.change < -5) return t('dashboard.market_tips.crypto_down');
+        return t('dashboard.market_tips.low_volatility');
+    };
+
     if (loading && marketData.usdMxn.price) {
         return (
             <Card className="h-full animate-pulse border-border/40 bg-card/40">
@@ -46,6 +58,7 @@ export const MarketTrendsWidget = () => {
             </Card>
         );
     }
+
     return (
         <Card className="overflow-hidden border-border/50 bg-card/40 backdrop-blur-xl group hover:shadow-[0_0_30px_rgba(var(--primary),0.1)] transition-all duration-500 flex flex-col h-full">
             <CardHeader className="pb-3">
@@ -88,7 +101,7 @@ export const MarketTrendsWidget = () => {
                     </div>
                     <p className="text-[9px] font-bold text-primary/80 uppercase tracking-widest mb-1">{t('dashboard.smart_market')}</p>
                     <p className="text-[10px] text-foreground/70 leading-tight font-medium">
-                        {t('dashboard.market_tip')}
+                        {getMarketTip()}
                     </p>
                 </div>
             </CardContent>
