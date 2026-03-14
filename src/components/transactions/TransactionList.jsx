@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { cn, parseLocalDateStr } from '@/lib/utils';
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { EditTransactionDialog } from './EditTransactionDialog';
 import { CategorySelect } from "@/components/ui/CategorySelect";
@@ -39,7 +40,7 @@ export const TransactionList = () => {
     const displayedTransactions = filteredTransactions.filter(t => {
         const matchesSearch = t.description.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = filterCategory ? t.category === filterCategory : true;
-        const matchesDate = filterDate ? format(new Date(t.date), 'yyyy-MM-dd') === filterDate : true;
+        const matchesDate = filterDate ? format(parseLocalDateStr(t.date), 'yyyy-MM-dd') === filterDate : true;
         return matchesSearch && matchesCategory && matchesDate;
     });
 
@@ -125,7 +126,7 @@ export const TransactionList = () => {
                                     <div>
                                         <p className="font-medium">{t.description}</p>
                                         <div className="flex items-center gap-2 flex-wrap text-sm text-muted-foreground">
-                                            <span>{format(new Date(t.date), 'dd MMM', { locale: es })}</span>
+                                            <span>{format(parseLocalDateStr(t.date), 'dd MMM', { locale: es })}</span>
                                             <span>•</span>
                                             {t.type === 'transfer' ? (
                                                 <span className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400">

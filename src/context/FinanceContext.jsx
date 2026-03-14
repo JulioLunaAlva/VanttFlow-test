@@ -3,7 +3,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO, format, setDate, min, lastDayOfMonth, isSameMonth } from 'date-fns';
 import { toast } from 'sonner';
 import { useGamification } from './GamificationContext';
-import { toLocalDateStr } from '@/lib/utils';
+import { toLocalDateStr, parseLocalDateStr } from '@/lib/utils';
 
 const FinanceContext = createContext();
 
@@ -144,7 +144,7 @@ export const FinanceProvider = ({ children }) => {
             ...transactions.map(t => {
                 const categoryName = categories.find(c => c.id === t.category)?.name || 'Otros';
                 const accountName = accounts.find(a => a.id === t.accountId)?.name || 'General';
-                const date = t.date ? format(parseISO(t.date), 'dd/MM/yyyy') : '';
+                const date = t.date ? format(parseLocalDateStr(t.date), 'dd/MM/yyyy') : '';
                 return `"${date}","${t.description}","${t.amount}","${t.type === 'income' ? 'Ingreso' : 'Gasto'}","${categoryName}","${accountName}"`;
             })
         ].join('\n');
@@ -197,7 +197,7 @@ export const FinanceProvider = ({ children }) => {
             t.type === 'expense' &&
             !t.isScheduled &&
             t.date &&
-            parseISO(t.date) >= thirtyDaysAgo
+            parseLocalDateStr(t.date) >= thirtyDaysAgo
         );
 
         if (recentExpenses.length === 0) return 0;
@@ -224,7 +224,7 @@ export const FinanceProvider = ({ children }) => {
                 return true;
             }
             if (p.frequency === 'one-time') {
-                return new Date(p.descDate) >= today && isSameMonth(new Date(p.descDate), today);
+                return parseLocalDateStr(p.descDate) >= today && isSameMonth(parseLocalDateStr(p.descDate), today);
             }
             return false;
         });
@@ -295,7 +295,7 @@ export const FinanceProvider = ({ children }) => {
 
         // 3. Growth (Net Worth Trend) - Max 200
         if (netWorthHistory.length >= 2) {
-            const sorted = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const sorted = [...netWorthHistory].sort((a, b) => parseLocalDateStr(a.date) - parseLocalDateStr(b.date));
             const latest = sorted[sorted.length - 1];
             const prev = sorted[sorted.length - 2];
             if (Number(latest.balance) >= Number(prev.balance)) {
@@ -323,7 +323,7 @@ export const FinanceProvider = ({ children }) => {
         let disciplineScore = 0;
         const lastTrans = transactions[0];
         if (lastTrans && lastTrans.createdAt) {
-            const daysSinceLast = (Date.now() - new Date(lastTrans.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+            const daysSinceLast = (Date.now() - new Date(lastTrans.createdAt || lastTrans.date).getTime()) / (1000 * 60 * 60 * 24);
             if (daysSinceLast < 2) disciplineScore += 100;
             else if (daysSinceLast < 5) disciplineScore += 60;
         }
@@ -520,7 +520,7 @@ export const FinanceProvider = ({ children }) => {
 
         return transactions.filter(t => {
             if (!t.date) return false;
-            return isWithinInterval(parseISO(t.date), { start, end });
+            return isWithinInterval(parseLocalDateStr(t.date), { start, end });
         });
     }, [transactions, selectedMonth]);
 
@@ -574,7 +574,7 @@ export const FinanceProvider = ({ children }) => {
         };
 
         if (transaction.type === 'expense') {
-            const date = transaction.date ? parseISO(transaction.date) : new Date();
+            const date = transaction.date ? parseLocalDateStr(transaction.date) : new Date();
             const monthKey = format(date, 'yyyy-MM');
             const budget = budgets.find(b => b.monthKey === monthKey && b.categoryId === transaction.category);
 
@@ -707,10 +707,10 @@ export const FinanceProvider = ({ children }) => {
     // --- LOGICA DE PAGOS PROGRAMADOS ---
     const addScheduledPayment = (payment) => {
         let startMonthKey = format(new Date(), 'yyyy-MM');
-        let endMonthKey = payment.endDate ? format(parseISO(payment.endDate), 'yyyy-MM') : null;
+        let endMonthKey = payment.endDate ? format(parseLocalDateStr(payment.endDate), 'yyyy-MM') : null;
 
         if (payment.frequency === 'one-time' && payment.descDate) {
-            const date = parseISO(payment.descDate);
+            const date = parseLocalDateStr(payment.descDate);
             startMonthKey = format(date, 'yyyy-MM');
             endMonthKey = startMonthKey; // One-time only exists in its specific month
         }
@@ -750,7 +750,7 @@ export const FinanceProvider = ({ children }) => {
         });
 
         // 2. Programar como un único registro maestro que se proyecta
-        const startDate = transaction.date ? parseISO(transaction.date) : new Date();
+        const startDate = transaction.date ? parseLocalDateStr(transaction.date) : new Date();
 
         // Calcular fecha fin aproximada para el endMonthKey
         let endDate = new Date(startDate);
@@ -803,7 +803,7 @@ export const FinanceProvider = ({ children }) => {
 
             // Caso especial: Compra a meses (Installment Master)
             if (p.isInstallmentMaster) {
-                const startDate = parseISO(p.startDate);
+                const startDate = parseLocalDateStr(p.startDate);
                 let currentIteration = 0;
                 let currentDate = new Date(startDate);
 
@@ -845,7 +845,7 @@ export const FinanceProvider = ({ children }) => {
             // Caso base: Recurrentes tradicionales (mensual o one-time en su mes)
             let day = p.dayOfMonth;
             if (!day && p.descDate) {
-                day = parseISO(p.descDate).getDate();
+                day = parseLocalDateStr(p.descDate).getDate();
             }
             day = Math.min(day || 1, daysInMonth);
             const date = setDate(monthDate, day);

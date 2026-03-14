@@ -18,3 +18,18 @@ export function toLocalDateStr(date = new Date()) {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
+
+/**
+ * Parses a YYYY-MM-DD string into a local Date object.
+ * Prevents timezone shift bugs for negative UTC offsets.
+ * @param {string} dateStr - The date string, e.g., "2026-03-13"
+ * @returns {Date} - A Date object exactly at local noon to avoid any boundary shifts.
+ */
+export function parseLocalDateStr(dateStr) {
+    if (!dateStr) return new Date();
+    // If it already has time components, just parse it naturally
+    if (dateStr.includes('T')) return new Date(dateStr);
+    // Append T12:00:00 to lock it to local time midday
+    return new Date(`${dateStr}T12:00:00`);
+}
+

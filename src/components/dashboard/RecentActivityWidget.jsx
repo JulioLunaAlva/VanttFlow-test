@@ -1,13 +1,15 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useFinance } from "@/context/FinanceContext";
 import { ArrowUpRight, ArrowDownLeft, ArrowRightLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { enUS, es, ptBR, fr } from 'date-fns/locale';
-import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useIdentity } from '@/context/IdentityContext';
+import { cn, parseLocalDateStr } from '@/lib/utils';
 
 const locales = { es, en: enUS, pt: ptBR, fr };
 export const RecentActivityWidget = () => {
@@ -17,10 +19,9 @@ export const RecentActivityWidget = () => {
     const navigate = useNavigate();
 
     const currentLocale = locales[i18n.language.split('-')[0]] || es;
-    // Get last 5 transactions (assuming filteredTransactions is sorted desc, which it usually is from context/backend, if not we sort)
-    // Actually FinanceContext sorts them? Let's assume yes or sort here.
-    const recent = [...filteredTransactions]
-        .sort((a, b) => new Date(b.date) - new Date(a.date))
+    // Get the most recent 5 transactions
+    const recentTransactions = [...filteredTransactions]
+        .sort((a, b) => parseLocalDateStr(b.date) - parseLocalDateStr(a.date))
         .slice(0, 5);
 
     const formatCurrency = (amount) => {
@@ -39,7 +40,7 @@ export const RecentActivityWidget = () => {
             </CardHeader>
             <CardContent className="flex-1 overflow-auto">
                 <div className="space-y-4">
-                    {recent.length === 0 ? (
+                    {recentTransactions.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-8 text-center space-y-2 opacity-40">
                             <div className="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
                                 <ArrowUpRight size={20} className="rotate-45" />
@@ -48,7 +49,7 @@ export const RecentActivityWidget = () => {
                             <p className="text-xs text-muted-foreground">{t('dashboard.activity_hint')}</p>
                         </div>
                     ) : (
-                        recent.map(t => (
+                        recentTransactions.map(t => (
                             <div key={t.id} className="flex items-center justify-between">
                                 <div className="flex items-center gap-3">
                                     <div className={`p-1.5 rounded-full ${t.type === 'income' ? 'bg-green-100 text-green-600' :
@@ -60,14 +61,17 @@ export const RecentActivityWidget = () => {
                                                 <ArrowRightLeft size={14} />}
                                     </div>
                                     <div>
-                                        <p className="text-sm font-medium line-clamp-1">{t.description}</p>
-                                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                                            {format(new Date(t.date), 'dd MMM', { locale: currentLocale })}
+                                        <p className="font-bold text-sm tracking-tight truncate leading-tight group-hover:text-primary transition-colors">{t.description}</p>
+                                        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/60 mt-1 flex items-center gap-1.5">
+                                            {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}
                                             {t.category && (
-                                                <span
-                                                    className="w-2 h-2 rounded-full inline-block ml-1"
-                                                    style={{ backgroundColor: categories.find(c => c.id === t.category)?.color || '#ccc' }}
-                                                />
+                                                <>
+                                                    <span className="w-1 h-1 rounded-full bg-border" />
+                                                    <span
+                                                        className="w-2 h-2 rounded-full inline-block"
+                                                        style={{ backgroundColor: categories.find(c => c.id === t.category)?.color || '#ccc' }}
+                                                    />
+                                                </>
                                             )}
                                         </p>
                                     </div>

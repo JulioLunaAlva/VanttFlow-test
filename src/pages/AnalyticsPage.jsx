@@ -5,10 +5,10 @@ import { useGamification } from "@/context/GamificationContext";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { ArrowUpRight, ArrowDownRight, TrendingUp, TrendingDown, Minus, BarChart2, LineChart as LineChartIcon } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { format, subMonths, isSameMonth, parseISO } from 'date-fns';
+import { format, subMonths, isSameMonth } from 'date-fns';
 import { es, enUS, ptBR, fr } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
-import { cn } from "@/lib/utils";
+import { cn, parseLocalDateStr } from "@/lib/utils";
 
 export const AnalyticsPage = () => {
     const { t, i18n } = useTranslation();
@@ -21,7 +21,7 @@ export const AnalyticsPage = () => {
     const currentLocale = localeMap[i18n.language] || es;
 
     // Sort history by date to ensure correct chart rendering
-    const chartData = [...netWorthHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+    const chartData = [...netWorthHistory].sort((a, b) => parseLocalDateStr(a.date) - parseLocalDateStr(b.date));
 
 
     React.useEffect(() => {
@@ -34,7 +34,7 @@ export const AnalyticsPage = () => {
 
     // 2. Filter Data
     const getMonthData = (date) => {
-        return transactions.filter(t => isSameMonth(parseISO(t.date), date));
+        return transactions.filter(t => isSameMonth(parseLocalDateStr(t.date), date));
     };
 
     const currentData = getMonthData(currentMonthDate);
@@ -127,7 +127,7 @@ export const AnalyticsPage = () => {
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--muted))" />
                                 <XAxis
                                     dataKey="date"
-                                    tickFormatter={(val) => format(parseISO(val), 'dd MMM', { locale: currentLocale })}
+                                    tickFormatter={(val) => format(parseLocalDateStr(val), 'dd MMM', { locale: currentLocale })}
                                     stroke="hsl(var(--muted-foreground))"
                                     fontSize={12}
                                 />
@@ -139,7 +139,7 @@ export const AnalyticsPage = () => {
                                 <Tooltip
                                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
                                     formatter={(value) => [new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value), t('analytics.patrimony')]}
-                                    labelFormatter={(label) => format(parseISO(label), 'dd MMMM yyyy', { locale: currentLocale })}
+                                    labelFormatter={(label) => format(parseLocalDateStr(label), 'dd MMMM yyyy', { locale: currentLocale })}
                                 />
                                 <Area
                                     type="monotone"
@@ -173,7 +173,7 @@ export const AnalyticsPage = () => {
                         {(() => {
                             const last6Months = Array.from({ length: 6 }).map((_, i) => subMonths(new Date(), i)).reverse();
                             const flowData = last6Months.map(monthDate => {
-                                const mData = transactions.filter(t => isSameMonth(parseISO(t.date), monthDate));
+                                const mData = transactions.filter(t => isSameMonth(parseLocalDateStr(t.date), monthDate));
                                 return {
                                     name: format(monthDate, 'MMM', { locale: currentLocale }),
                                     income: calculateTotal(mData, 'income'),
