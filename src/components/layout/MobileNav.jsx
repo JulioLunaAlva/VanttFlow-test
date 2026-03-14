@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
-import { LayoutDashboard, Receipt, CreditCard, Menu, Plus, Zap, BarChart3, Target, CalendarClock, Upload, Tags, PieChart, Settings, CandlestickChart, Sparkles, BookOpen } from 'lucide-react';
+import { LayoutDashboard, Receipt, CreditCard, Menu, Plus, Zap, BarChart3, Target, CalendarClock, Upload, Tags, PieChart, Settings, CandlestickChart, Sparkles, BookOpen, Landmark } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
