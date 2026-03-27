@@ -77,6 +77,6 @@ export const getAIBudgetAdvice = async (summary, language = "es") => {
         return JSON.parse(response.text());
     } catch (error) {
         console.error("Gemini Advice Error:", error);
-        return null;
+        return { error: error.message || "Unknown API Error" };
     }
 };

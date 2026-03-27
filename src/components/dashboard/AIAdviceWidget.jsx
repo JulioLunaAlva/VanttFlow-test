@@ -22,11 +22,15 @@ export const AIAdviceWidget = () => {
         setIsLoading(true);
         try {
             const data = await getAIBudgetAdvice(summary);
-            if (data && Array.isArray(data)) {
+            if (data && data.error) {
+                setAdvice([`API Error: ${data.error}`]);
+            } else if (data && Array.isArray(data)) {
                 setAdvice(data);
+            } else {
+                setAdvice(["No se pudo obtener asesoramiento en este momento."]);
             }
-        } catch (error) {
-            console.error("Error fetching AI advice:", error);
+        } catch (err) {
+            setAdvice(["Error al conectar con VanttAI."]);
         } finally {
             setIsLoading(false);
         }
