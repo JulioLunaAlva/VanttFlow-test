@@ -14,24 +14,21 @@ export const AutoBackup = () => {
             const now = new Date();
             const today = now.toISOString().split('T')[0];
 
-            // Only prompt if we haven't already today
-            if (lastBackupStr !== today) {
-                toast("¿Generar respaldo de seguridad?", {
-                    description: "Se guardará una copia de tus finanzas en un archivo JSON.",
-                    action: {
-                        label: "Guardar",
-                        onClick: () => {
-                            const success = exportData();
-                            if (success) {
-                                localStorage.setItem('last_auto_backup', today);
-                                toast.success("Respaldo generado con éxito.");
-                            }
+            // Simple prompt on every load as requested
+            toast("¿Generar respaldo de seguridad?", {
+                description: "Se guardará una copia de tus finanzas en un archivo JSON.",
+                action: {
+                    label: "Guardar",
+                    onClick: () => {
+                        const success = exportData();
+                        if (success) {
+                            toast.success("Respaldo generado con éxito.");
                         }
-                    },
-                    icon: <Download size={18} />,
-                    duration: 10000, // Show for 10 seconds
-                });
-            }
+                    }
+                },
+                icon: <Download size={18} />,
+                duration: 10000, 
+            });
         };
 
         // Delay slightly to not compete with initial load animations
