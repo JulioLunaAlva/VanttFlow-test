@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { useFinance } from "@/context/FinanceContext";
-import { PlusCircle, Upload, X, Image as ImageIcon, CheckCircle2, Sparkles } from 'lucide-react';
+import { PlusCircle, Upload, X, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
 import { toast } from "sonner";
 import { MoneyInput } from "@/components/ui/MoneyInput";
 import { CategorySelect } from "@/components/ui/CategorySelect";
@@ -14,7 +14,7 @@ import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { cn } from "@/lib/utils";
 import { toLocalDateStr } from "@/lib/utils";
-import { scanReceipt } from "@/utils/gemini";
+
 
 export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) => {
     const { addTransaction, editTransaction, categories, accounts, transactions, addInstallments } = useFinance();
@@ -35,8 +35,6 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
     const [installmentCount, setInstallmentCount] = useState(3);
     const [installmentFrequency, setInstallmentFrequency] = useState('monthly');
 
-    // AI Scanning status
-    const [isScanning, setIsScanning] = useState(false);
 
     useEffect(() => {
         if (initialData) {
@@ -160,38 +158,10 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
             };
             reader.readAsDataURL(file);
 
-            // 2. Ask if user wants to scan with AI
-            if (window.confirm("¿Quieres que VanttAI escanee este ticket para llenar los datos automáticamente?")) {
-                handleScan(file);
-            }
+            
         }
     };
 
-    const handleScan = async (file) => {
-        setIsScanning(true);
-        const toastId = toast.loading("VanttAI está analizando tu ticket...");
-        try {
-            const data = await scanReceipt(file);
-            if (data) {
-                if (data.amount) setAmount(data.amount.toString());
-                if (data.description) setDescription(data.description);
-                if (data.date) setDate(data.date);
-                if (data.category && type !== 'transfer') {
-                    const foundCat = categories.find(c => 
-                        c.id === data.category.toLowerCase() || 
-                        c.name.toLowerCase().includes(data.category.toLowerCase())
-                    );
-                    if (foundCat) setCategory(foundCat.id);
-                }
-                toast.success("¡Datos extraídos con éxito!", { id: toastId });
-            }
-        } catch (error) {
-            console.error("Scan error:", error);
-            toast.error("VanttAI no pudo leer este ticket. Asegúrate de tener tu API Key configurada.", { id: toastId });
-        } finally {
-            setIsScanning(false);
-        }
-    };
 
     return (
         <Card>
@@ -298,18 +268,12 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                     variant="outline" 
                                     size="sm" 
                                     className={cn(
-                                        "w-full text-muted-foreground border-dashed h-12",
-                                        isScanning && "animate-pulse border-primary text-primary"
+                                        "w-full text-muted-foreground border-dashed h-12"
                                     )} 
                                     onClick={() => document.getElementById(`file-upload-${uniqueId}`).click()}
-                                    disabled={isScanning}
                                 >
-                                    {isScanning ? (
-                                        <Sparkles size={16} className="mr-2 animate-spin" />
-                                    ) : (
-                                        <Upload size={16} className="mr-2" />
-                                    )}
-                                    {isScanning ? "Escaneando..." : t('transactions.attach_receipt')}
+                                    <Upload size={16} className="mr-2" />
+                                    {t('transactions.attach_receipt')}
                                 </Button>
                             </div>
                         ) : (
