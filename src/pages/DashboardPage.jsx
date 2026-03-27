@@ -78,12 +78,15 @@ export const DashboardPage = () => {
         const savedIds = new Set(order);
 
         // Si hay discrepancia (nuevos widgets), resetear/mezclar
-        if (order.length !== WIDGETS_CONFIG.length || !order.every(id => currentIds.has(id))) {
+        console.log("VanttAI Diagnostic - WIDGETS:", WIDGETS_CONFIG.length, "ORDER:", order.length);
+        if (order.length < WIDGETS_CONFIG.length || !order.includes('ai_advice')) {
+            const currentIds = new Set(WIDGETS_CONFIG.map(w => w.id));
             const validSaved = order.filter(id => currentIds.has(id));
-            const newItems = WIDGETS_CONFIG.filter(w => !savedIds.has(w.id)).map(w => w.id);
-            setOrder([...validSaved, ...newItems]);
+            const newItems = WIDGETS_CONFIG.filter(w => !order.includes(w.id)).map(w => w.id);
+            console.log("VanttAI Diagnostic - Adding missing widgets:", newItems);
+            setOrder(['ai_advice', ...validSaved.filter(id => id !== 'ai_advice'), ...newItems.filter(id => id !== 'ai_advice')]);
         }
-    }, []);
+    }, [order.length]);
 
     const saveOrder = (newOrder, persist = false) => {
         setOrder(newOrder);

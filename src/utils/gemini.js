@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "";
+console.log("VanttAI - Gemini Engine Loaded. Key Present:", !!API_KEY);
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 /**
