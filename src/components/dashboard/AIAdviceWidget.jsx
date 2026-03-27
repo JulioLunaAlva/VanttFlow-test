@@ -5,11 +5,18 @@ import { useFinance } from '@/context/FinanceContext';
 import { getAIBudgetAdvice } from '@/utils/gemini';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from "@/lib/utils";
 
 export const AIAdviceWidget = () => {
     const { summary } = useFinance();
     const [advice, setAdvice] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [hasKey, setHasKey] = useState(!!import.meta.env.VITE_GEMINI_API_KEY);
+
+    useEffect(() => {
+        // Double check key availability on mount
+        setHasKey(!!import.meta.env.VITE_GEMINI_API_KEY);
+    }, []);
 
     const fetchAdvice = async () => {
         setIsLoading(true);
@@ -36,8 +43,9 @@ export const AIAdviceWidget = () => {
         <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-indigo-500/5 backdrop-blur-xl group">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                 <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                    <Sparkles className="text-primary animate-pulse" size={16} />
+                    <Sparkles className={cn(hasKey ? "text-primary animate-pulse" : "text-muted-foreground")} size={16} />
                     VanttAI Advisor
+                    {!hasKey && <span className="text-[10px] text-red-500 font-bold ml-2">Offline</span>}
                 </CardTitle>
                 <Button 
                     variant="ghost" 
