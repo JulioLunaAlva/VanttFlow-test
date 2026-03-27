@@ -28,6 +28,7 @@ import { MarketProvider } from "@/context/MarketContext";
 import { NotificationProvider } from '@/context/NotificationContext';
 import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { AutoBackup } from "@/components/common/AutoBackup";
 
 // Wrapper for protected routes
 const ProtectedRoute = ({ children }) => {
@@ -101,6 +102,7 @@ function App() {
         {/* PWA Components */}
         <OfflineIndicator />
         <InstallPrompt />
+        <AutoBackup />
       </ErrorBoundary>
     </BrowserRouter>
   );
