@@ -101,6 +101,7 @@ const Sidebar = ({ className }) => {
                 <p className="px-4 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 mb-2">{t('common.tools')}</p>
                 <SidebarLink to="/budget" icon={PieChart} label={t('common.budget')} />
                 <SidebarLink to="/goals" icon={Target} label={t('common.goals')} />
+                <SidebarLink to="/calendar" icon={CalendarClock} label={t('common.calendar') || 'Calendario'} />
                 <SidebarLink to="/notes" icon={BookOpen} label={t('common.notes') || 'Cuaderno'} />
                 <SidebarLink to="/scheduled" icon={CalendarClock} label={t('common.scheduled')} />
                 <SidebarLink to="/accounts" icon={CreditCard} label={t('common.cards') || 'Cuentas'} />

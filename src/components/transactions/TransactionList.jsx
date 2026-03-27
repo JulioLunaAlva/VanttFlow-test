@@ -14,8 +14,10 @@ import { DatePicker } from "@/components/ui/DatePicker";
 import { TransactionImageViewer } from './TransactionImageViewer';
 import * as Icons from 'lucide-react';
 
+import { TransactionItem } from './TransactionItem';
+
 export const TransactionList = () => {
-    const { filteredTransactions, deleteTransaction, accounts, categories } = useFinance();
+    const { filteredTransactions, accounts, categories, formatCurrency } = useFinance();
     const [editingTransaction, setEditingTransaction] = React.useState(null);
 
     // Filtros
@@ -24,17 +26,7 @@ export const TransactionList = () => {
     const [filterDate, setFilterDate] = React.useState('');
     const [showFilters, setShowFilters] = React.useState(false);
 
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(amount);
-    };
-
     const getAccountName = (id) => accounts.find(a => a.id === id)?.name || 'Desconocida';
-
-    const handleDelete = (id) => {
-        if (window.confirm('¿Estás seguro de eliminar esta transacción?')) {
-            deleteTransaction(id);
-        }
-    };
 
     // Filter Logic
     const displayedTransactions = filteredTransactions.filter(t => {
@@ -108,87 +100,16 @@ export const TransactionList = () => {
             <CardContent>
                 <div className="space-y-4">
                     {displayedTransactions.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">
+                        <p className="text-center text-muted-foreground py-8 font-bold text-sm">
                             {filteredTransactions.length === 0 ? "No hay transacciones este mes." : "No se encontraron resultados con los filtros actuales."}
                         </p>
                     ) : (
                         displayedTransactions.map((t) => (
-                            <div key={t.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors">
-                                <div className="flex items-center gap-4">
-                                    <div className={`p-2 rounded-full ${t.type === 'income' ? 'bg-green-100 text-green-600' :
-                                        t.type === 'expense' ? 'bg-red-100 text-red-600' :
-                                            'bg-blue-100 text-blue-600'
-                                        }`}>
-                                        {t.type === 'income' ? <ArrowUpRight size={20} /> :
-                                            t.type === 'expense' ? <ArrowDownLeft size={20} /> :
-                                                <ArrowRightLeft size={20} />}
-                                    </div>
-                                    <div>
-                                        <p className="font-medium">{t.description}</p>
-                                        <div className="flex items-center gap-2 flex-wrap text-sm text-muted-foreground">
-                                            <span>{format(parseLocalDateStr(t.date), 'dd MMM', { locale: es })}</span>
-                                            <span>•</span>
-                                            {t.type === 'transfer' ? (
-                                                <span className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400">
-                                                    {getAccountName(t.accountId)} <ArrowRightLeft size={10} /> {getAccountName(t.targetAccountId)}
-                                                </span>
-                                            ) : (
-                                                <span>{getAccountName(t.accountId)}</span>
-                                            )}
-                                            {t.attachment && (
-                                                <TransactionImageViewer
-                                                    attachment={t.attachment}
-                                                    trigger={
-                                                        <button className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors cursor-pointer ml-2 active:scale-95">
-                                                            <ImageIcon size={14} />
-                                                        </button>
-                                                    }
-                                                />
-                                            )}
-                                            {t.category && (
-                                                <span
-                                                    className="text-[10px] px-2 py-0.5 rounded-full text-white ml-1 flex items-center gap-1"
-                                                    style={{ backgroundColor: t.category === 'transfer' ? '#2563eb' : (categories.find(c => c.id === t.category)?.color || '#94a3b8') }}
-                                                >
-                                                    {(() => {
-                                                        if (t.category === 'transfer') return <ArrowRightLeft size={10} />;
-                                                        const cat = categories.find(c => c.id === t.category);
-                                                        const Icon = Icons[cat?.icon] || Icons.HelpCircle;
-                                                        return <Icon size={10} />;
-                                                    })()}
-                                                    {t.category === 'transfer' ? 'Transferencia' : (categories.find(c => c.id === t.category)?.name || 'Otros')}
-                                                </span>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-4">
-                                    <span className={`font-bold ${t.type === 'income' ? 'text-green-600' :
-                                        t.type === 'expense' ? 'text-red-600' :
-                                            'text-blue-600'
-                                        }`}>
-                                        {t.type === 'income' ? '+' : t.type === 'expense' ? '-' : ''}{formatCurrency(t.amount)}
-                                    </span>
-                                    <div className="flex gap-1">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-muted-foreground hover:text-foreground"
-                                            onClick={() => setEditingTransaction(t)}
-                                        >
-                                            <Edit2 size={16} />
-                                        </Button>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="text-muted-foreground hover:text-destructive"
-                                            onClick={() => handleDelete(t.id)}
-                                        >
-                                            <Trash2 size={16} />
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
+                            <TransactionItem 
+                                key={t.id} 
+                                transaction={t} 
+                                onEdit={(tx) => setEditingTransaction(tx)}
+                            />
                         ))
                     )}
                 </div>

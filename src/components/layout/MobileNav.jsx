@@ -221,7 +221,7 @@ export const MobileNav = () => {
 
             {/* Right Side */}
             <NavLink
-                to="/accounts"
+                to="/calendar"
                 className={({ isActive }) => cn(
                     "flex flex-col items-center justify-center w-14 h-full transition-colors",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
@@ -229,8 +229,8 @@ export const MobileNav = () => {
             >
                 {({ isActive }) => (
                     <>
-                        <CreditCard size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.cards')}</span>
+                        <CalendarClock size={28} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.calendar') || 'Calendario'}</span>
                     </>
                 )}
             </NavLink>

@@ -16,9 +16,9 @@ import { ImportPage } from "@/pages/ImportPage";
 import { MarketPage } from "@/pages/MarketPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { LoginPage } from "@/pages/LoginPage";
-import { OnboardingWizard } from "@/pages/OnboardingWizard";
 import { SettingsPage } from "@/pages/SettingsPage";
 import { NotesPage } from "@/pages/NotesPage";
+import { TransactionsCalendarPage } from "@/pages/TransactionsCalendarPage";
 
 import { Toaster } from "sonner";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -89,6 +89,7 @@ function App() {
 
                       <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
                       <Route path="/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
+                      <Route path="/calendar" element={<ProtectedRoute><TransactionsCalendarPage /></ProtectedRoute>} />
 
                       <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
