@@ -27,7 +27,10 @@ export const scanReceipt = async (file) => {
     }
 
     try {
-        const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ 
+            model: "models/gemini-1.5-flash",
+            generationConfig: { responseMimeType: "application/json" }
+        });
         const imagePart = await fileToGenerativePart(file);
 
         const prompt = `
@@ -39,16 +42,12 @@ export const scanReceipt = async (file) => {
                 "category": string (suggested category like Food, Shopping, Transport, Utilities, etc.),
                 "type": "expense"
             }
-            Only return the JSON object, nothing else. If you cannot find a value, use null.
+            Only return the JSON object. If you cannot find a value, use null.
         `;
 
         const result = await model.generateContent([prompt, imagePart]);
         const response = await result.response;
-        const text = response.text();
-        
-        // Clean the response in case Gemini adds markdown backticks
-        const jsonStr = text.replace(/```json|```/g, "").trim();
-        return JSON.parse(jsonStr);
+        return JSON.parse(response.text());
     } catch (error) {
         console.error("Gemini Scan Error:", error);
         throw error;
@@ -62,24 +61,20 @@ export const getAIBudgetAdvice = async (summary, language = "es") => {
     if (!API_KEY) return null;
     console.log("VanttAI - Requesting Budget Advice...");
     try {
-        const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ 
+            model: "models/gemini-1.5-flash",
+            generationConfig: { responseMimeType: "application/json" }
+        });
         const prompt = `
-            Eres un asesor financiero experto y proactivo para la app VanttFlow.
-            Analiza el siguiente resumen mensual:
-            Ingresos: ${summary.income}
-            Gastos: ${summary.expense}
-            Balance: ${summary.balance}
-            
-            Genera 2 consejos tácticos y breves (máximo 15 palabras cada uno) en idioma ${language}.
-            Enfócate en ahorro y eficiencia.
-            Devuélvelos como un array de strings en formato JSON: ["Consejo 1", "Consejo 2"]
+            Eres un asesor financiero experto para la app VanttFlow.
+            Analiza este resumen: Ingresos: ${summary.income}, Gastos: ${summary.expense}, Balance: ${summary.balance}.
+            Genera 2 consejos tácticos breves (máximo 15 palabras) en idioma ${language}.
+            Responde ÚNICAMENTE con un array de strings en formato JSON: ["Consejo 1", "Consejo 2"]
         `;
 
-        const result = await model.generateContent(prompt);
+        const result = await model.generateContent([prompt]);
         const response = await result.response;
-        const text = response.text();
-        const jsonStr = text.replace(/```json|```/g, "").trim();
-        return JSON.parse(jsonStr);
+        return JSON.parse(response.text());
     } catch (error) {
         console.error("Gemini Advice Error:", error);
         return null;
