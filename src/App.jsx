@@ -92,6 +92,9 @@ function App() {
                       <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                     <Toaster />
+                    <div className="fixed bottom-2 right-2 text-[8px] opacity-20 pointer-events-none z-[9999] select-none">
+                      VanttFlow AI v3.0.1-DEBUG
+                    </div>
                   </NotificationProvider>
                 </FinanceProvider>
               </MarketProvider>
