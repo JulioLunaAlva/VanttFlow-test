@@ -27,10 +27,7 @@ export const scanReceipt = async (file) => {
     }
 
     try {
-        const model = genAI.getGenerativeModel({ 
-            model: "models/gemini-1.5-flash",
-            generationConfig: { responseMimeType: "application/json" }
-        });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const imagePart = await fileToGenerativePart(file);
 
         const prompt = `
@@ -47,7 +44,9 @@ export const scanReceipt = async (file) => {
 
         const result = await model.generateContent([prompt, imagePart]);
         const response = await result.response;
-        return JSON.parse(response.text());
+        const text = response.text();
+        const jsonStr = text.replace(/```json|```/g, "").trim();
+        return JSON.parse(jsonStr);
     } catch (error) {
         console.error("Gemini Scan Error:", error);
         throw error;
@@ -61,10 +60,7 @@ export const getAIBudgetAdvice = async (summary, language = "es") => {
     if (!API_KEY) return null;
     console.log("VanttAI - Requesting Budget Advice...");
     try {
-        const model = genAI.getGenerativeModel({ 
-            model: "models/gemini-1.5-flash",
-            generationConfig: { responseMimeType: "application/json" }
-        });
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const prompt = `
             Eres un asesor financiero experto para la app VanttFlow.
             Analiza este resumen: Ingresos: ${summary.income}, Gastos: ${summary.expense}, Balance: ${summary.balance}.
@@ -74,7 +70,9 @@ export const getAIBudgetAdvice = async (summary, language = "es") => {
 
         const result = await model.generateContent([prompt]);
         const response = await result.response;
-        return JSON.parse(response.text());
+        const text = response.text();
+        const jsonStr = text.replace(/```json|```/g, "").trim();
+        return JSON.parse(jsonStr);
     } catch (error) {
         console.error("Gemini Advice Error:", error);
         return { error: error.message || "Unknown API Error" };
