@@ -25,7 +25,7 @@ import {
     Plus
 } from 'lucide-react';
 import { useFinance } from '@/context/FinanceContext';
-import { cn } from '@/lib/utils';
+import { cn, parseLocalDateStr } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TransactionItem } from '@/components/transactions/TransactionItem';
@@ -58,12 +58,13 @@ export const TransactionsCalendarPage = () => {
     const transactionsByDate = useMemo(() => {
         const grouped = {};
         transactions.forEach(tx => {
-            const dateStr = format(parseISO(tx.date), 'yyyy-MM-dd');
+            if (!tx.date) return;
+            const dateStr = format(parseLocalDateStr(tx.date), 'yyyy-MM-dd');
             if (!grouped[dateStr]) grouped[dateStr] = { income: 0, expense: 0, items: [] };
             
             if (tx.type === 'income') {
                 grouped[dateStr].income += Number(tx.amount);
-            } else {
+            } else if (tx.type === 'expense') {
                 grouped[dateStr].expense += Number(tx.amount);
             }
             grouped[dateStr].items.push(tx);
