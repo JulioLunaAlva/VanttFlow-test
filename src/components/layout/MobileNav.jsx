@@ -116,19 +116,19 @@ export const MobileNav = () => {
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-md border-t flex items-center justify-between px-6 z-50 pb-safe shadow-lg">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-background/95 backdrop-blur-md border-t flex items-center justify-between px-6 z-50 pb-safe shadow-lg">
             {/* Left Side */}
             <NavLink
                 to="/"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
+                    "flex flex-col items-center justify-center w-14 h-full transition-all duration-300",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
                 {({ isActive }) => (
                     <>
-                        <LayoutDashboard size={24} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[10px] mt-1 font-bold">{t('common.nav.home')}</span>
+                        <LayoutDashboard size={28} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.home')}</span>
                     </>
                 )}
             </NavLink>
@@ -136,30 +136,30 @@ export const MobileNav = () => {
             <NavLink
                 to="/transactions"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
+                    "flex flex-col items-center justify-center w-14 h-full transition-all duration-300",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
                 {({ isActive }) => (
                     <>
-                        <Receipt size={24} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[10px] mt-1 font-bold">{t('common.nav.movs')}</span>
+                        <Receipt size={28} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.movs')}</span>
                     </>
                 )}
             </NavLink>
 
             {/* Center Action Button */}
-            <div id="tour-add" className="relative -top-3">
+            <div id="tour-add" className="relative -top-5">
                 <Button
                     size="icon"
-                    className="h-14 w-14 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all select-none touch-none border-4 border-background"
+                    className="h-16 w-16 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all select-none touch-none border-4 border-background"
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
                     onMouseDown={handleTouchStart}
                     onMouseUp={handleTouchEnd}
                     onMouseLeave={() => longPressTimer && (clearTimeout(longPressTimer), setLongPressTimer(null))}
                 >
-                    <Plus size={32} />
+                    <Plus size={36} />
                 </Button>
 
                 {/* Quick Action Selection Menu (Sheet) */}
@@ -224,7 +224,7 @@ export const MobileNav = () => {
                 to="/accounts"
                 className={({ isActive }) => cn(
                     "flex flex-col items-center justify-center w-14 h-full transition-colors",
-                    isActive ? "text-primary scale-110" : "text-muted-foreground hover:text-foreground"
+                    isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                 )}
             >
                 {({ isActive }) => (
@@ -241,7 +241,7 @@ export const MobileNav = () => {
                     <button
                         className={cn(
                             "flex flex-col items-center justify-center w-14 h-full transition-colors outline-none",
-                            isMoreOpen ? "text-primary scale-110" : "text-muted-foreground hover:text-foreground"
+                            isMoreOpen ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                         )}
                     >
                         <Menu size={28} strokeWidth={isMoreOpen ? 2.5 : 2} />

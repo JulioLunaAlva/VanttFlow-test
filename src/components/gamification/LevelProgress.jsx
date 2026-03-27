@@ -14,24 +14,19 @@ export const LevelProgress = ({ variant = 'full', showTitle = true, className })
 
     if (variant === 'compact') {
         return (
-            <div className={cn("flex flex-col gap-1 select-none", className)}>
-                <div className="flex items-center justify-between gap-2">
+            <div className={cn("flex flex-col gap-0.5 select-none", className)}>
+                <div className="flex items-center justify-between gap-1">
                     <div className="flex items-center gap-1">
-                        <div className="relative">
-                            <Star size={10} className="text-amber-500 fill-amber-500 animate-pulse" />
-                            <div className="absolute inset-0 bg-amber-500/20 blur-[4px] rounded-full" />
-                        </div>
-                        <span className="text-[10px] font-black italic text-foreground tracking-tighter">L{currentLevel.level}</span>
+                        <Star size={8} className="text-amber-500 fill-amber-500" />
+                        <span className="text-[10px] font-black italic text-foreground tracking-tighter shrink-0">L{currentLevel.level}</span>
                     </div>
-                    <span className="text-[8px] font-bold text-muted-foreground/80 tracking-widest">{xp} XP</span>
+                    <span className="text-[7px] font-black text-muted-foreground/60 uppercase tracking-tighter shrink-0">{xp} XP</span>
                 </div>
-                <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted border border-border/30">
+                <div className="relative h-1 w-full overflow-hidden rounded-full bg-muted border border-border/20">
                     <div
-                        className="h-full relative overflow-hidden rounded-full bg-gradient-to-r from-blue-500 via-primary to-purple-500 shadow-[0_0_8px_rgba(var(--primary),0.2)] transition-all duration-1000 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+                        className="h-full relative overflow-hidden rounded-full bg-gradient-to-r from-blue-500 to-primary transition-all duration-1000"
                         style={{ width: `${progress}%` }}
-                    >
-                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent)] animate-[shimmer_2s_infinite]" />
-                    </div>
+                    ></div>
                 </div>
             </div>
         );

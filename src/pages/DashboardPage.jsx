@@ -168,7 +168,7 @@ export const DashboardPage = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
+        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-0">
             <div className="flex justify-between items-center bg-card/50 p-4 rounded-xl border backdrop-blur">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">{t('common.dashboard')}</h2>

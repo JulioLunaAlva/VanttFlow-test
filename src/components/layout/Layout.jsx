@@ -169,20 +169,20 @@ export const Layout = ({ children }) => {
             <AppTour />
             <Sidebar className="hidden xl:flex" />
 
-            <div className="flex-1 flex flex-col pb-20 md:pb-0 min-w-0"> {/* Padding bottom for Mobile Nav */}
-                <header className="pt-safe border-b bg-card/70 backdrop-blur-xl px-5 flex items-center justify-between xl:hidden sticky top-0 z-40">
-                    <Link to="/" className="flex items-center gap-2 h-16 active:opacity-70 transition-opacity">
-                        <img src="/logo.png" alt="Logo" className="w-6 h-6 rounded-lg shadow-sm" />
+            <div className="flex-1 flex flex-col pb-24 md:pb-0 min-w-0"> {/* Adjusted padding bottom for larger Mobile Nav */}
+                <header className="pt-safe border-b bg-card/70 backdrop-blur-xl px-5 flex items-center justify-between xl:hidden sticky top-0 z-40 h-20">
+                    <Link to="/" className="flex items-center gap-3 active:opacity-70 transition-opacity">
+                        <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-xl shadow-md" />
                         <span className="font-black text-xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
                             VanttFlow
                         </span>
                     </Link>
-                    <div className="flex items-center gap-4">
-                        <LevelProgress variant="compact" className="w-32" />
-                        <div className="h-8 w-[1.5px] bg-border/40 mx-1 hidden xs:block rotate-[15deg]" />
-                        <div className="h-8 w-[1.5px] bg-border/40 mx-1 hidden xs:block rotate-[15deg]" />
-                        <SidebarPrivacyToggle />
-                        <ModeToggle id="tour-theme-toggle-mobile" />
+                    <div className="flex items-center gap-3">
+                        <LevelProgress variant="compact" className="w-28 xs:w-36" />
+                        <div className="flex items-center gap-1.5 ml-1">
+                            <SidebarPrivacyToggle />
+                            <ModeToggle id="tour-theme-toggle-mobile" />
+                        </div>
                     </div>
                 </header>
 
@@ -196,12 +196,12 @@ export const Layout = ({ children }) => {
                     </div>
                 </div>
 
-                {/* Mobile Tablet Header Sub-Nav */}
-                <div className="xl:hidden p-4 pb-2 border-b border-border/20 bg-muted/10">
-                    <div className="flex items-center justify-between">
+                {/* Mobile Tablet Header Sub-Nav - More spacing and clarity */}
+                <div className="xl:hidden p-5 pb-4 border-b border-border/10 bg-muted/20">
+                    <div className="flex items-center justify-between gap-4">
                         <div className="flex flex-col">
-                            <h2 className="font-bold text-sm">Resumen Mensual</h2>
-                            <p className="text-[10px] text-muted-foreground">Enero 2026</p>
+                            <h2 className="font-black text-base tracking-tight">{t('dashboard.title')}</h2>
+                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">General</p>
                         </div>
                         <MonthSelector />
                     </div>
