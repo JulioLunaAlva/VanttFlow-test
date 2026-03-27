@@ -362,21 +362,26 @@ textarea {
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Better touch targets - minimum 44x44px */
-  button,
-  a,
+  /* Force base font size for inputs to prevent iOS zoom */
   input,
   select,
-  textarea {
-    min-height: 44px;
-    min-width: 44px;
+  textarea,
+  .text-sm-input {
+    font-size: 16px !important;
+    line-height: 1.5;
   }
 
-  /* Prevent zoom on input focus (iOS) */
-  input,
-  select,
-  textarea {
-    font-size: 16px;
+  /* Better touch targets - minimum 44x44px for main interactive elements */
+  button:not(.h-auto),
+  .btn-mobile-target {
+    min-height: 48px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  /* Desktop-like inputs usually feel too small on touch, adding a bit more height */
+  .h-9 {
+    height: 3rem !important; /* ~48px */
   }
 }
 

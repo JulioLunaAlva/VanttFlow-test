@@ -22,14 +22,14 @@ import { useTranslation } from 'react-i18next';
 const WelcomeHeader = () => {
     const { t } = useTranslation();
     return (
-        <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border border-blue-500/20 p-8 rounded-3xl backdrop-blur-xl animate-in fade-in zoom-in duration-700">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-20 h-20 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-                    <span className="text-4xl">🚀</span>
+        <div className="bg-gradient-to-r from-blue-600/20 to-indigo-600/20 border border-blue-500/20 p-4 md:p-8 rounded-3xl backdrop-blur-xl animate-in fade-in zoom-in duration-700">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                <div className="w-14 h-14 md:w-20 md:h-20 bg-blue-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
+                    <span className="text-2xl md:text-4xl">🚀</span>
                 </div>
-                <div className="text-center md:text-left space-y-2">
-                    <h3 className="text-2xl font-bold">{t('dashboard.welcome_title')}</h3>
-                    <p className="text-slate-400 max-w-lg">
+                <div className="text-center md:text-left space-y-1">
+                    <h3 className="text-xl md:text-2xl font-bold">{t('dashboard.welcome_title')}</h3>
+                    <p className="text-slate-400 text-xs md:text-sm max-w-lg">
                         {t('dashboard.welcome_desc')}
                     </p>
                 </div>
