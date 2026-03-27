@@ -116,19 +116,19 @@ export const MobileNav = () => {
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-background/95 backdrop-blur border-t flex items-center justify-between px-6 z-50 pb-safe">
+        <div className="md:hidden oracle-hide fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-6 right-6 h-18 glass rounded-[2.5rem] flex items-center justify-between px-6 z-50 shadow-2xl border-white/20">
             {/* Left Side */}
             <NavLink
                 to="/"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
-                    isActive ? "text-primary scale-110" : "text-muted-foreground hover:text-foreground"
+                    "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
+                    isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                 )}
             >
                 {({ isActive }) => (
                     <>
-                        <LayoutDashboard size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.home')}</span>
+                        <LayoutDashboard size={24} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="text-[10px] mt-1 font-bold">{t('common.nav.home')}</span>
                     </>
                 )}
             </NavLink>
@@ -136,36 +136,36 @@ export const MobileNav = () => {
             <NavLink
                 to="/transactions"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
-                    isActive ? "text-primary scale-110" : "text-muted-foreground hover:text-foreground"
+                    "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
+                    isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                 )}
             >
                 {({ isActive }) => (
                     <>
-                        <Receipt size={28} strokeWidth={isActive ? 2.5 : 2} />
-                        <span className="text-[11px] mt-1 font-bold">{t('common.nav.movs')}</span>
+                        <Receipt size={24} strokeWidth={isActive ? 2.5 : 2} />
+                        <span className="text-[10px] mt-1 font-bold">{t('common.nav.movs')}</span>
                     </>
                 )}
             </NavLink>
 
             {/* Center Action Button with Long Press */}
-            <div id="tour-add" className="relative -top-6">
+            <div id="tour-add" className="relative -top-1">
                 <Button
                     size="icon"
-                    className="h-16 w-16 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] bg-primary text-primary-foreground hover:bg-primary/90 border-4 border-background active:scale-95 transition-transform select-none touch-none"
+                    className="h-14 w-14 rounded-2xl shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-90 transition-all select-none touch-none"
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
                     onMouseDown={handleTouchStart}
                     onMouseUp={handleTouchEnd}
                     onMouseLeave={() => longPressTimer && (clearTimeout(longPressTimer), setLongPressTimer(null))}
                 >
-                    <Plus size={36} />
+                    <Plus size={32} />
                 </Button>
 
                 {/* Quick Action Selection Menu (Sheet) */}
                 <Sheet open={isQuickActionMenuOpen} onOpenChange={setIsQuickActionMenuOpen}>
-                    <SheetContent side="bottom" className="rounded-t-[32px] border-t-2 border-primary/20 bg-background/98 backdrop-blur-xl p-0">
-                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-muted-foreground/20 rounded-full" />
+                    <SheetContent side="bottom" className="rounded-t-[2.5rem] border-t border-white/20 glass p-0 overflow-hidden">
+                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-foreground/10 rounded-full" />
                         <div className="px-6 pt-10 pb-12">
                             <SheetHeader className="mb-8">
                                 <SheetTitle className="text-2xl font-black tracking-tight text-center flex items-center justify-center gap-3">

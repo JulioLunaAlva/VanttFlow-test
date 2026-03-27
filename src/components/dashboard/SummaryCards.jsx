@@ -20,51 +20,51 @@ export const SummaryCards = React.memo(() => {
     };
 
     return (
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-            <Card id="tour-balance" className="sm:col-span-2 md:col-span-1 overflow-hidden border-border/50 bg-card/40 backdrop-blur-xl group transition-all duration-500 hover:shadow-lg anime:border-2 gamer:border-primary/30">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-8">
+            <Card id="tour-balance" className="sm:col-span-2 md:col-span-1 group">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-[10px] font-black uppercase tracking-widest text-foreground/60 anime:text-foreground/80">{t('summary.total_balance')}</CardTitle>
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                        <DollarSign className="h-4 w-4 text-primary" />
+                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.total_balance')}</CardTitle>
+                    <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center transition-transform group-hover:scale-110">
+                        <DollarSign className="h-5 w-5 text-primary" />
                     </div>
                 </CardHeader>
                 <CardContent className="pb-4 md:pb-6">
-                    <div className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
+                    <div className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
                         <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                     </div>
-                    <p className="text-[9px] md:text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
+                    <p className="text-[11px] font-medium text-muted-foreground/60 mt-2 uppercase tracking-wider">
                         {t('summary.current_status')}
                     </p>
                 </CardContent>
             </Card>
-            <Card className="overflow-hidden border-border/50 bg-card/40 backdrop-blur-xl group transition-all duration-500 hover:shadow-lg anime:border-2 hover:border-emerald-500/30">
+            <Card className="group">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-[10px] font-black uppercase tracking-widest text-foreground/60 anime:text-foreground/80">{t('summary.income')}</CardTitle>
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                        <ArrowUpCircle className="h-4 w-4 text-emerald-500" />
+                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.income')}</CardTitle>
+                    <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center transition-transform group-hover:scale-110">
+                        <ArrowUpCircle className="h-5 w-5 text-emerald-500" />
                     </div>
                 </CardHeader>
                 <CardContent className="pb-4 md:pb-6">
-                    <div className="text-xl md:text-3xl font-black tracking-tighter text-emerald-600 dark:text-emerald-400 anime:text-emerald-700">
+                    <div className="text-2xl md:text-4xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400">
                         <PrivacyBlur intensity="lg">{formatCurrency(income)}</PrivacyBlur>
                     </div>
-                    <p className="text-[9px] md:text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
+                    <p className="text-[11px] font-medium text-muted-foreground/60 mt-2 uppercase tracking-wider">
                         {t('summary.total_in')}
                     </p>
                 </CardContent>
             </Card>
-            <Card className="overflow-hidden border-border/50 bg-card/40 backdrop-blur-xl group transition-all duration-500 hover:shadow-lg anime:border-2 hover:border-destructive/30">
+            <Card className="group">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-[10px] font-black uppercase tracking-widest text-foreground/60 anime:text-foreground/80">{t('summary.expense')}</CardTitle>
-                    <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center">
-                        <ArrowDownCircle className="h-4 w-4 text-destructive" />
+                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.expense')}</CardTitle>
+                    <div className="w-10 h-10 rounded-2xl bg-destructive/10 flex items-center justify-center transition-transform group-hover:scale-110">
+                        <ArrowDownCircle className="h-5 w-5 text-destructive" />
                     </div>
                 </CardHeader>
                 <CardContent className="pb-4 md:pb-6">
-                    <div className="text-xl md:text-3xl font-black tracking-tighter text-destructive dark:text-red-400 anime:text-red-700">
+                    <div className="text-2xl md:text-4xl font-bold tracking-tight text-destructive dark:text-red-400">
                         <PrivacyBlur intensity="lg">{formatCurrency(expense)}</PrivacyBlur>
                     </div>
-                    <p className="text-[9px] md:text-[10px] font-bold text-foreground/40 mt-1 uppercase tracking-tighter">
+                    <p className="text-[11px] font-medium text-muted-foreground/60 mt-2 uppercase tracking-wider">
                         {t('summary.total_out')}
                     </p>
                 </CardContent>

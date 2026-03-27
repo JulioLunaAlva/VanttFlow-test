@@ -13,7 +13,6 @@ import { ForecastWidget } from '@/components/dashboard/ForecastWidget';
 import { VanttScoreWidget } from '@/components/dashboard/VanttScoreWidget';
 import { OracleWidget } from '@/components/dashboard/OracleWidget';
 import { AccountsWidget } from '@/components/dashboard/AccountsWidget';
-import { AIAdviceWidget } from '@/components/dashboard/AIAdviceWidget';
 import { Button } from "@/components/ui/button";
 import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -40,7 +39,6 @@ const WelcomeHeader = () => {
 };
 
 const WIDGETS_CONFIG = [
-    { id: 'ai_advice', component: AIAdviceWidget, labelKey: 'dashboard.ai_advice', className: 'lg:col-span-3 md:col-span-2' },
     { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
     { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
@@ -78,13 +76,13 @@ export const DashboardPage = () => {
         const savedIds = new Set(order);
 
         // Si hay discrepancia (nuevos widgets), resetear/mezclar
-        const hasMissing = order.length < WIDGETS_CONFIG.length || !order.includes('ai_advice');
+        const hasMissing = order.length < WIDGETS_CONFIG.length;
         if (hasMissing) {
             const validSaved = order.filter(id => currentIds.has(id));
             const newItems = WIDGETS_CONFIG.filter(w => !order.includes(w.id)).map(w => w.id);
-            setOrder(['ai_advice', ...validSaved.filter(id => id !== 'ai_advice'), ...newItems.filter(id => id !== 'ai_advice')]);
+            setOrder([...validSaved, ...newItems]);
         }
-    }, []);
+    }, [order.length]);
 
     const saveOrder = (newOrder, persist = false) => {
         setOrder(newOrder);
@@ -193,9 +191,8 @@ export const DashboardPage = () => {
 
             {isNewUser && <WelcomeHeader />}
 
-            <SummaryCards />
-
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+            {/* Widgets Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-8">
                 {order.map((widgetId, index) => {
                     const widgetConfig = WIDGETS_CONFIG.find(w => w.id === widgetId);
                     if (!widgetConfig) return null;
