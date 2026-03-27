@@ -27,7 +27,7 @@ export const scanReceipt = async (file) => {
     }
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
         const imagePart = await fileToGenerativePart(file);
 
         const prompt = `
@@ -60,9 +60,9 @@ export const scanReceipt = async (file) => {
  */
 export const getAIBudgetAdvice = async (summary, language = "es") => {
     if (!API_KEY) return null;
-
+    console.log("VanttAI - Requesting Budget Advice...");
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-flash" });
         const prompt = `
             Eres un asesor financiero experto y proactivo para la app VanttFlow.
             Analiza el siguiente resumen mensual:
