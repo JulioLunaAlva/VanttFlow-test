@@ -13,6 +13,7 @@ import { ForecastWidget } from '@/components/dashboard/ForecastWidget';
 import { VanttScoreWidget } from '@/components/dashboard/VanttScoreWidget';
 import { OracleWidget } from '@/components/dashboard/OracleWidget';
 import { AccountsWidget } from '@/components/dashboard/AccountsWidget';
+import { AIAdviceWidget } from '@/components/dashboard/AIAdviceWidget';
 import { Button } from "@/components/ui/button";
 import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
@@ -39,6 +40,7 @@ const WelcomeHeader = () => {
 };
 
 const WIDGETS_CONFIG = [
+    { id: 'ai_advice', component: AIAdviceWidget, labelKey: 'dashboard.ai_advice', className: 'lg:col-span-3 md:col-span-2' },
     { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
     { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
     { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
