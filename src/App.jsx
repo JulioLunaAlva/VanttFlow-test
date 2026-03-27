@@ -16,6 +16,7 @@ import { ImportPage } from "@/pages/ImportPage";
 import { MarketPage } from "@/pages/MarketPage";
 import { LandingPage } from "@/pages/LandingPage";
 import { LoginPage } from "@/pages/LoginPage";
+import { OnboardingWizard } from "@/pages/OnboardingWizard";
 import { SettingsPage } from "@/pages/SettingsPage";
 import { NotesPage } from "@/pages/NotesPage";
 import { TransactionsCalendarPage } from "@/pages/TransactionsCalendarPage";
