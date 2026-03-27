@@ -116,13 +116,13 @@ export const MobileNav = () => {
     ];
 
     return (
-        <div className="md:hidden oracle-hide fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] left-6 right-6 h-18 glass rounded-[2.5rem] flex items-center justify-between px-6 z-50 shadow-2xl border-white/20">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-background/95 backdrop-blur-md border-t flex items-center justify-between px-6 z-50 pb-safe shadow-lg">
             {/* Left Side */}
             <NavLink
                 to="/"
                 className={({ isActive }) => cn(
                     "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
-                    isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
+                    isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
                 {({ isActive }) => (
@@ -137,7 +137,7 @@ export const MobileNav = () => {
                 to="/transactions"
                 className={({ isActive }) => cn(
                     "flex flex-col items-center justify-center w-12 h-full transition-all duration-300",
-                    isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
+                    isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
                 {({ isActive }) => (
@@ -148,11 +148,11 @@ export const MobileNav = () => {
                 )}
             </NavLink>
 
-            {/* Center Action Button with Long Press */}
-            <div id="tour-add" className="relative -top-1">
+            {/* Center Action Button */}
+            <div id="tour-add" className="relative -top-3">
                 <Button
                     size="icon"
-                    className="h-14 w-14 rounded-2xl shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-90 transition-all select-none touch-none"
+                    className="h-14 w-14 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all select-none touch-none border-4 border-background"
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
                     onMouseDown={handleTouchStart}
@@ -164,7 +164,7 @@ export const MobileNav = () => {
 
                 {/* Quick Action Selection Menu (Sheet) */}
                 <Sheet open={isQuickActionMenuOpen} onOpenChange={setIsQuickActionMenuOpen}>
-                    <SheetContent side="bottom" className="rounded-t-[2.5rem] border-t border-white/20 glass p-0 overflow-hidden">
+                    <SheetContent side="bottom" className="rounded-t-[2rem] border-t bg-background/98 backdrop-blur-xl p-0 overflow-hidden">
                         <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-foreground/10 rounded-full" />
                         <div className="px-6 pt-10 pb-12">
                             <SheetHeader className="mb-8">

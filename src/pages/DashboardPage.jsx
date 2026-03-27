@@ -72,6 +72,13 @@ export const DashboardPage = () => {
 
     // Validar si hay nuevos widgets que no estan en el orden guardado
     useEffect(() => {
+        // Forcibly remove ai_advice if it persisted in localStorage
+        const sanitizedOrder = order.filter(id => id !== 'ai_advice');
+        if (sanitizedOrder.length !== order.length) {
+            setOrder(sanitizedOrder);
+            return; // State update will trigger re-run
+        }
+
         const currentIds = new Set(WIDGETS_CONFIG.map(w => w.id));
         const savedIds = new Set(order);
 

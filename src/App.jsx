@@ -62,12 +62,6 @@ function App() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        {/* Ambient background effects */}
-        <div className="ambient-glow">
-          <div className="glow-point glow-1 animate-pulse-glow" />
-          <div className="glow-point glow-2 animate-pulse-glow" style={{ animationDelay: '-4s' }} />
-        </div>
-        
         <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
           <IdentityProvider>
             <GamificationProvider>
