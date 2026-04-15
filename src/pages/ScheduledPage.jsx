@@ -52,128 +52,180 @@ export const ScheduledPage = () => {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold tracking-tight">{t('scheduled.title')}</h2>
+    return (
+        <div className="space-y-8 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
+                <div>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+                        {t('scheduled.title')}
+                    </h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        {t('scheduled.subtitle') || 'Automatización De Pagos Recurrentes'}
+                    </p>
+                </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="gap-2"><Plus size={16} /> {t('scheduled.new_recurrent')}</Button>
+                        <Button className="mt-4 md:mt-0 shadow-2xl gap-2 rounded-2xl h-12 font-black px-6 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                            <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" /> 
+                            {t('scheduled.new_recurrent')}
+                        </Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="glass-premium border-white/10 max-w-lg">
                         <DialogHeader>
-                            <DialogTitle>{t('scheduled.new_payment_dialog')}</DialogTitle>
+                            <DialogTitle className="text-2xl font-black tracking-tighter">{t('scheduled.new_payment_dialog')}</DialogTitle>
                         </DialogHeader>
-                        <form onSubmit={handleSubmit} className="space-y-4 pt-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <Button type="button" variant={type === 'income' ? 'default' : 'outline'} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
-                                <Button type="button" variant={type === 'expense' ? 'destructive' : 'outline'} onClick={() => setType('expense')}>{t('scheduled.expense')}</Button>
+                        <form onSubmit={handleSubmit} className="space-y-6 pt-4">
+                            <div className="grid grid-cols-2 gap-4 p-1 bg-white/5 rounded-2xl border border-white/5">
+                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'income' ? "bg-emerald-500 text-white shadow-lg" : "hover:bg-white/5")} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
+                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'expense' ? "bg-rose-500 text-white shadow-lg" : "hover:bg-white/5")} onClick={() => setType('expense')}>{t('scheduled.expense')}</Button>
                             </div>
 
-                            <Input placeholder={t('subscriptions.name_placeholder')} value={name} onChange={e => setName(e.target.value)} required />
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Concepto</Label>
+                                <Input placeholder={t('subscriptions.name_placeholder')} value={name} onChange={e => setName(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5 px-4 font-bold" />
+                            </div>
 
-                            <div className="flex gap-2 p-1 bg-muted rounded-lg">
+                            <div className="flex gap-2 p-1 bg-white/5 border border-white/5 rounded-2xl">
                                 <Button
                                     type="button"
-                                    variant={frequency === 'monthly' ? 'default' : 'ghost'}
-                                    className="flex-1 h-8 text-xs"
+                                    variant="ghost"
+                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'monthly' ? "bg-primary text-white" : "text-muted-foreground")}
                                     onClick={() => setFrequency('monthly')}
                                 >
                                     {t('scheduled.monthly_recurrent')}
                                 </Button>
                                 <Button
                                     type="button"
-                                    variant={frequency === 'one-time' ? 'default' : 'ghost'}
-                                    className="flex-1 h-8 text-xs"
+                                    variant="ghost"
+                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'one-time' ? "bg-primary text-white" : "text-muted-foreground")}
                                     onClick={() => setFrequency('one-time')}
                                 >
                                     {t('scheduled.one_time')}
                                 </Button>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-4">
-                                <Input type="number" placeholder={t('scheduled.amount_label')} value={amount} onChange={e => setAmount(e.target.value)} required />
+                            <div className="grid grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.amount_label')}</Label>
+                                    <Input type="number" step="0.01" value={amount} onChange={e => setAmount(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5 px-4 font-black text-xl" />
+                                </div>
                                 {frequency === 'monthly' ? (
-                                    <>
-                                        <div className="flex items-center gap-2 border rounded px-3">
-                                            <span className="text-sm text-muted-foreground whitespace-nowrap">{t('scheduled.day_of_month')}</span>
-                                            <Input type="number" min="1" max="31" value={dayOfMonth} onChange={e => setDayOfMonth(e.target.value)} className="border-0 focus-visible:ring-0 px-0" required />
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.day_of_month')}</Label>
+                                        <div className="flex items-center gap-2 h-12 rounded-2xl border border-white/10 bg-white/5 px-4">
+                                            <Calendar className="w-4 h-4 text-primary" />
+                                            <Input type="number" min="1" max="31" value={dayOfMonth} onChange={e => setDayOfMonth(e.target.value)} className="border-0 focus-visible:ring-0 px-0 font-black text-lg bg-transparent" required />
                                         </div>
-                                        <div className="col-span-2">
-                                            <p className="text-xs text-muted-foreground mb-1">{t('scheduled.end_date_label')}</p>
-                                            <DatePicker value={endDate} onChange={e => setEndDate(e.target.value)} />
-                                        </div>
-                                    </>
+                                    </div>
                                 ) : (
-                                    <DatePicker value={specificDate} onChange={e => setSpecificDate(e.target.value)} required />
+                                    <div className="space-y-2">
+                                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.date')}</Label>
+                                        <DatePicker value={specificDate} onChange={e => setSpecificDate(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5" />
+                                    </div>
                                 )}
                             </div>
 
-                            <CategorySelect
-                                categories={categories.filter(c => c.type === type || c.type === 'both')}
-                                value={categoryId}
-                                onChange={setCategoryId}
-                                placeholder={t('scheduled.category_placeholder')}
-                            />
+                            {frequency === 'monthly' && (
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.end_date_label')}</Label>
+                                    <DatePicker value={endDate} onChange={e => setEndDate(e.target.value)} className="h-12 rounded-2xl border-white/10 bg-white/5" />
+                                </div>
+                            )}
 
-                            <AccountSelect
-                                accounts={accounts}
-                                value={accountId}
-                                onChange={setAccountId}
-                                placeholder={t('scheduled.account_placeholder')}
-                            />
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Categoría</Label>
+                                    <CategorySelect
+                                        categories={categories.filter(c => c.type === type || c.type === 'both')}
+                                        value={categoryId}
+                                        onChange={setCategoryId}
+                                        placeholder={t('scheduled.category_placeholder')}
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Cuenta</Label>
+                                    <AccountSelect
+                                        accounts={accounts}
+                                        value={accountId}
+                                        onChange={setAccountId}
+                                        placeholder={t('scheduled.account_placeholder')}
+                                    />
+                                </div>
+                            </div>
 
-                            <Button type="submit" className="w-full">{t('scheduled.save_btn')}</Button>
+                            <Button type="submit" className="w-full h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-95">
+                                {t('scheduled.save_btn')}
+                            </Button>
                         </form>
                     </DialogContent>
                 </Dialog>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {scheduledPayments.map(payment => {
                     const category = categories.find(c => c.id === payment.categoryId);
                     const account = accounts.find(c => c.id === payment.accountId);
 
                     return (
-                        <Card key={payment.id} className={`relative ${payment.status === 'paused' ? 'opacity-60 grayscale' : ''}`}>
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium">
-                                    {payment.name}
-                                </CardTitle>
-                                <div className={`h-2 w-2 rounded-full ${payment.status === 'active' ? 'bg-green-500' : 'bg-gray-300'}`} />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold">
-                                    {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
+                        <div key={payment.id} className={cn(
+                            "glass-card card-glow border-white/10 overflow-hidden group transition-all duration-500 hover:-translate-y-2",
+                            payment.status === 'paused' && "opacity-60 grayscale scale-95"
+                        )}>
+                            <div className="p-6 border-b border-white/5">
+                                <div className="flex items-center justify-between mb-4">
+                                    <span style={{ color: category?.color }} className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                                        {category?.name}
+                                    </span>
+                                    <div className={cn(
+                                        "w-2 h-2 rounded-full",
+                                        payment.status === 'active' ? (payment.type === 'income' ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" : "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]") : "bg-muted"
+                                    )} />
                                 </div>
-                                <p className="text-xs text-muted-foreground mt-1">
+                                <h3 className="text-xl font-black tracking-tighter text-white mb-1 group-hover:translate-x-1 transition-transform duration-500">{payment.name}</h3>
+                                <div className="flex items-center gap-2 text-muted-foreground/60 text-[10px] font-black uppercase tracking-widest">
+                                    <Calendar size={12} className="text-primary" />
                                     {payment.frequency === 'monthly'
                                         ? t('scheduled.day_of_month_short', { day: payment.dayOfMonth })
-                                        : t('scheduled.date_label', { date: payment.descDate })} • {payment.type === 'income' ? t('scheduled.income') : t('scheduled.expense')}
-                                </p>
-                                <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-                                    <span style={{ color: category?.color }}>{category?.name}</span>
-                                    <span>{account?.name}</span>
+                                        : t('scheduled.date_label', { date: payment.descDate })}
                                 </div>
-
-                                <div className="mt-4 flex gap-2 justify-end border-t pt-2">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => toggleScheduledStatus(payment.id)} title={payment.status === 'active' ? t('subscriptions.pause') : t('subscriptions.reactivate')}>
-                                        <Power size={14} className={payment.status === 'active' ? "text-orange-500" : "text-green-500"} />
-                                    </Button>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => {
-                                        if (window.confirm(t('scheduled.delete_confirm'))) deleteScheduledPayment(payment.id);
-                                    }}>
-                                        <Trash2 size={14} />
-                                    </Button>
+                            </div>
+                            
+                            <div className="p-6 space-y-4">
+                                <div className={cn(
+                                    "text-3xl font-black tracking-tight",
+                                    payment.type === 'income' ? "text-emerald-400" : "text-white"
+                                )}>
+                                    {payment.type === 'income' ? '+' : '-'} {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
                                 </div>
-                            </CardContent>
-                        </Card>
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/5">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500/50" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest opacity-60 truncate max-w-[100px]">{account?.name}</span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all" onClick={() => toggleScheduledStatus(payment.id)}>
+                                            <Power size={18} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white/5 hover:bg-rose-500/20 border border-white/5 group/del" onClick={() => {
+                                            if (window.confirm(t('scheduled.delete_confirm'))) deleteScheduledPayment(payment.id);
+                                        }}>
+                                            <Trash2 size={18} className="text-muted-foreground group-hover/del:text-rose-500 transition-colors" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     );
                 })}
                 {scheduledPayments.length === 0 && (
-                    <div className="col-span-full text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                        <Calendar className="mx-auto h-12 w-12 opacity-50 mb-2" />
-                        <p>{t('scheduled.no_scheduled')}</p>
-                        <p className="text-sm">{t('scheduled.no_scheduled_desc')}</p>
+                    <div className="col-span-full py-20 glass-card border-dashed border-white/10 text-center flex flex-col items-center justify-center space-y-4">
+                        <div className="w-20 h-20 rounded-[2.5rem] bg-white/5 flex items-center justify-center border border-white/10 text-muted-foreground/20">
+                            <Calendar size={40} />
+                        </div>
+                        <div>
+                            <p className="text-xl font-black tracking-tighter text-white">{t('scheduled.no_scheduled')}</p>
+                            <p className="text-xs text-muted-foreground/60 font-medium px-4">{t('scheduled.no_scheduled_desc')}</p>
+                        </div>
                     </div>
                 )}
             </div>

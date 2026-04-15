@@ -87,44 +87,44 @@ export const CategoriesPage = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center glass-card p-6 border-white/10 mb-2">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">{t('categories.title')}</h2>
-                    <p className="text-muted-foreground">{t('categories.subtitle')}</p>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('categories.title')}</h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">{t('categories.subtitle')}</p>
                 </div>
-                <Button onClick={handleOpenCreate} className="gap-2">
-                    <Plus size={16} /> {t('categories.new_category')}
+                <Button onClick={handleOpenCreate} className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                    <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('categories.new_category')}
                 </Button>
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <div className="flex bg-muted p-1 rounded-lg w-full sm:w-auto">
+            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between glass-card p-4 border-white/5">
+                <div className="flex bg-white/5 p-1 rounded-2xl w-full lg:w-auto border border-white/5">
                     <button
                         onClick={() => setFilterType('all')}
-                        className={cn("px-4 py-2 text-sm font-medium rounded-md transition-all", filterType === 'all' ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground")}
+                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all", filterType === 'all' ? "glass-premium shadow-xl text-primary" : "text-muted-foreground/40 hover:text-foreground hover:bg-white/5")}
                     >
                         {t('categories.all')}
                     </button>
                     <button
                         onClick={() => setFilterType('income')}
-                        className={cn("px-4 py-2 text-sm font-medium rounded-md transition-all flex items-center gap-2", filterType === 'income' ? "bg-background shadow-sm text-emerald-600" : "text-muted-foreground hover:text-foreground")}
+                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all flex items-center gap-2", filterType === 'income' ? "glass-premium shadow-xl text-emerald-500" : "text-muted-foreground/40 hover:text-emerald-500/60 hover:bg-white/5")}
                     >
-                        {t('categories.income')}
+                        <ArrowUpCircle size={14} /> {t('categories.income')}
                     </button>
                     <button
                         onClick={() => setFilterType('expense')}
-                        className={cn("px-4 py-2 text-sm font-medium rounded-md transition-all flex items-center gap-2", filterType === 'expense' ? "bg-background shadow-sm text-red-600" : "text-muted-foreground hover:text-foreground")}
+                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all flex items-center gap-2", filterType === 'expense' ? "glass-premium shadow-xl text-rose-500" : "text-muted-foreground/40 hover:text-rose-500/60 hover:bg-white/5")}
                     >
-                        {t('categories.expense')}
+                        <ArrowDownCircle size={14} /> {t('categories.expense')}
                     </button>
                 </div>
-                <div className="relative w-full sm:w-64">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <div className="relative w-full lg:w-80">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/40" />
                     <Input
                         placeholder={t('categories.search_placeholder')}
-                        className="pl-9"
+                        className="pl-12 h-12 rounded-2xl bg-white/5 border-white/5 focus-visible:ring-primary focus-visible:border-primary/50 text-sm font-medium"
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
@@ -132,35 +132,35 @@ export const CategoriesPage = () => {
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {filteredCategories.map(category => (
-                    <Card key={category.id} className="group hover:border-primary/50 transition-colors">
-                        <CardContent className="p-4 flex items-center justify-between">
+                    <div key={category.id} className="glass-card card-glow group relative border-white/10 transition-all duration-500 hover:scale-[1.03]">
+                        <div className="p-5 flex items-center justify-between">
                             <div className="flex items-center gap-4">
-                                <div className="h-12 w-12 rounded-xl flex items-center justify-center bg-muted/50" style={{ backgroundColor: `${category.color}20` }}>
+                                <div className="h-14 w-14 rounded-2xl flex items-center justify-center glass-premium border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: `${category.color}20` }}>
                                     {renderIcon(category.icon, category.color)}
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold">{category.name}</h3>
-                                    <span className={cn("text-xs px-2 py-0.5 rounded-full capitalize",
-                                        category.type === 'income' ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" :
-                                            category.type === 'expense' ? "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" :
-                                                "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                                <div className="min-w-0">
+                                    <h3 className="font-black text-sm tracking-tight truncate mb-1">{category.name}</h3>
+                                    <span className={cn("text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full",
+                                        category.type === 'income' ? "bg-emerald-500/10 text-emerald-500" :
+                                            category.type === 'expense' ? "bg-rose-500/10 text-rose-500" :
+                                                "bg-primary/10 text-primary"
                                     )}>
                                         {category.type === 'income' ? t('categories.income_single') : category.type === 'expense' ? t('categories.expense_single') : t('categories.both')}
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleOpenEdit(category)}>
-                                    <Edit2 size={14} />
+                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 rounded-lg" onClick={() => handleOpenEdit(category)}>
+                                    <Edit2 size={14} className="opacity-50" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => handleDelete(category.id)}>
-                                    <Trash2 size={14} />
+                                <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-500 hover:bg-rose-500/5 rounded-lg" onClick={() => handleDelete(category.id)}>
+                                    <Trash2 size={14} className="opacity-50" />
                                 </Button>
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </div>
                 ))}
             </div>
 

@@ -48,43 +48,45 @@ export const AccountsPage = () => {
         };
 
         return (
-            <Card key={account.id} className="overflow-hidden hover:shadow-xl transition-all group relative border-none shadow-md">
-                <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+        return (
+            <div key={account.id} className="glass-card card-glow overflow-hidden group relative border-white/10">
+                <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
                         size="icon"
                         variant="secondary"
-                        className="h-8 w-8 bg-white/20 hover:bg-white/40 text-white backdrop-blur-md border border-white/20"
+                        className="h-9 w-9 bg-white/10 hover:bg-white/30 text-white backdrop-blur-xl border border-white/20 rounded-xl"
                         onClick={() => setEditingAccount(account)}
                     >
-                        <Edit2 size={14} />
+                        <Edit2 size={16} />
                     </Button>
                 </div>
 
                 <div
-                    className="h-36 p-6 text-white flex flex-col justify-between relative overflow-hidden"
+                    className="h-44 p-8 text-white flex flex-col justify-between relative overflow-hidden"
                     style={{
                         background: `linear-gradient(135deg, ${account.color || '#1e293b'} 0%, #000000 100%)`,
                     }}
                 >
                     <div className="flex justify-between items-start z-10">
                         <div>
-                            <p className="opacity-70 text-[10px] font-black uppercase tracking-widest">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
-                            <h3 className="font-black text-xl tracking-tighter truncate pr-8">{account.name}</h3>
+                            <p className="opacity-60 text-[8px] font-black uppercase tracking-[0.2em]">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
+                            <h3 className="font-black text-2xl tracking-tighter truncate pr-8 mt-1">{account.name}</h3>
                         </div>
-                        <div className="p-2 bg-white/10 rounded-xl backdrop-blur-md">
-                            <CreditCard className="w-5 h-5 opacity-80" />
+                        <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-xl border border-white/10 shadow-2xl">
+                            <CreditCard className="w-6 h-6 opacity-90" />
                         </div>
                     </div>
-                    <div className="z-10">
-                        <p className="text-[10px] opacity-60 font-bold uppercase tracking-tighter">{t('accounts.current_debt') || 'Deuda Actual'}</p>
-                        <p className="text-3xl font-black tracking-tighter font-mono">
+                    
+                    <div className="z-10 mt-auto">
+                        <p className="text-[8px] opacity-60 font-black uppercase tracking-[0.2em] mb-1">{t('accounts.current_debt') || 'Deuda Actual'}</p>
+                        <p className="text-4xl font-black tracking-tighter font-mono">
                             <PrivacyBlur intensity="md">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
                     </div>
 
-                    {/* Decorative abstract elements */}
-                    <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-3xl"></div>
+                    {/* Premium Abstract Elements */}
+                    <div className="absolute top-[-20%] right-[-10%] w-48 h-48 bg-white opacity-10 rounded-full blur-[80px]" />
+                    <div className="absolute bottom-[-10%] left-[-10%] w-32 h-32 bg-primary/20 rounded-full blur-[60px]" />
                 </div>
 
                 <CardContent className="p-6 space-y-6 bg-card/50 backdrop-blur-sm">
@@ -125,55 +127,58 @@ export const AccountsPage = () => {
         const balance = getAccountBalance(account.id);
 
         return (
-            <Card key={account.id} className="overflow-hidden hover:shadow-xl transition-all group relative border-none shadow-md bg-card/40 backdrop-blur-xl border-l-4" style={{ borderLeftColor: account.color || '#10b981' }}>
-                <div className="absolute top-3 right-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
+        return (
+            <div key={account.id} className="glass-card card-glow group relative border-white/10 flex flex-col h-full">
+                <div className="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-8 w-8 hover:bg-muted"
+                        className="h-9 w-9 hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10"
                         onClick={() => setEditingAccount(account)}
                     >
-                        <Edit2 size={14} />
+                        <Edit2 size={16} />
                     </Button>
                 </div>
-                <CardContent className="p-6">
-                    <div className="flex flex-col gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="p-3 rounded-2xl bg-muted/50 border border-border/10 shadow-inner group-hover:scale-110 transition-transform">
-                                {account.type === 'cash' ? <Banknote size={20} className="text-emerald-500" /> :
-                                    account.type === 'investment' ? <TrendingUp size={20} className="text-blue-500" /> :
-                                        <Landmark size={20} className="text-primary" />}
-                            </div>
-                            <div className="min-w-0">
-                                <h3 className="font-black text-lg tracking-tight truncate leading-tight">{account.name}</h3>
-                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1">
-                                    {account.type === 'cash' ? t('accounts.cash') || 'Efectivo' :
-                                        account.type === 'investment' ? t('accounts.investment') || 'Inversión' :
-                                            t('accounts.debit_short') || 'Cta. Débito'}
-                                </p>
-                            </div>
+                <div className="p-8 space-y-6 flex-1 flex flex-col">
+                    <div className="flex items-center gap-5">
+                        <div className="p-4 rounded-2xl glass-premium border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                            {account.type === 'cash' ? <Banknote size={24} className="text-emerald-500" /> :
+                                account.type === 'investment' ? <TrendingUp size={24} className="text-blue-500" /> :
+                                    <Landmark size={24} className="text-primary" />}
                         </div>
-
-                        <div className="pt-2">
-                            <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-tighter mb-0.5">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
-                            <p className={`text-2xl font-black tracking-tighter ${balance < 0 ? 'text-rose-500' : 'text-foreground'}`}>
-                                <PrivacyBlur intensity="md">{formatCurrency(balance)}</PrivacyBlur>
+                        <div className="min-w-0">
+                            <h3 className="font-black text-xl tracking-tight truncate leading-tight">{account.name}</h3>
+                            <p className="text-[10px] font-black text-muted-foreground opacity-50 uppercase tracking-[0.2em] mt-1">
+                                {account.type === 'cash' ? t('accounts.cash') || 'Efectivo' :
+                                    account.type === 'investment' ? t('accounts.investment') || 'Inversión' :
+                                        t('accounts.debit_short') || 'Cta. Débito'}
                             </p>
                         </div>
                     </div>
-                </CardContent>
-            </Card>
+
+                    <div className="pt-6 mt-auto">
+                        <p className="text-[9px] font-black text-muted-foreground opacity-40 uppercase tracking-[0.2em] mb-1.5">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
+                        <p className={`text-4xl font-black tracking-tighter ${balance < 0 ? 'text-rose-500' : 'text-foreground'}`}>
+                            <PrivacyBlur intensity="md">{formatCurrency(balance)}</PrivacyBlur>
+                        </p>
+                    </div>
+                </div>
+                <div className="h-1.5 w-full" style={{ backgroundColor: account.color || '#10b981', opacity: 0.3 }} />
+            </div>
+        );
         );
     };
 
     return (
-        <div className="space-y-8 max-w-5xl mx-auto p-4 md:p-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
                 <div>
-                    <h2 className="text-4xl font-black tracking-tighter bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text text-transparent">
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
                         {t('accounts.title') || 'Mis Cuentas'}
                     </h2>
-                    <p className="text-muted-foreground font-medium">{t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        {t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}
+                    </p>
                 </div>
                 <div className="flex items-center gap-2">
                     <AccountManager />

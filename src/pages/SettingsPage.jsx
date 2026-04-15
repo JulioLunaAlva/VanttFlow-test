@@ -177,19 +177,37 @@ export const SettingsPage = () => {
     };
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold tracking-tight">{t('settings.title')}</h2>
+        <div className="space-y-8 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-4xl mx-auto">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
+                <div>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+                        {t('settings.title')}
+                    </h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        Configuración y Personalización
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="glass-premium px-4 py-2 rounded-2xl border-white/10 text-primary font-black text-[10px] tracking-widest uppercase">
+                        V1.2 BETA
+                    </div>
+                </div>
+            </div>
 
             {/* Profile Section */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <User className="h-5 w-5" />
-                        {t('settings.profile')}
-                    </CardTitle>
-                    <CardDescription>{t('settings.profile_desc')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+            <div className="glass-card card-glow border-white/10 overflow-hidden">
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                            <User size={20} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tighter">{t('settings.profile')}</h3>
+                            <p className="text-xs text-muted-foreground/60">{t('settings.profile_desc')}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6 space-y-6">
                     <div className="grid gap-2">
                         <Label htmlFor="name">{t('settings.name_label')}</Label>
                         <div className="relative">
@@ -230,24 +248,28 @@ export const SettingsPage = () => {
                             />
                         </div>
                     </div>
-                </CardContent>
-                <CardFooter className="justify-end">
-                    <Button onClick={handleSave} className="gap-2">
-                        <Save size={16} /> {t('settings.save_changes_btn')}
+                </div>
+                <div className="p-6 bg-white/5 border-t border-white/5 flex justify-end">
+                    <Button onClick={handleSave} className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                        <Save size={18} /> {t('settings.save_changes_btn')}
                     </Button>
-                </CardFooter>
-            </Card>
+                </div>
+            </div>
 
             {/* Preferences Section */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Globe className="h-5 w-5" />
-                        {t('settings.appearance')}
-                    </CardTitle>
-                    <CardDescription>{t('settings.appearance_desc')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+            <div className="glass-card border-white/10 overflow-hidden">
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                            <Globe size={20} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tighter">{t('settings.appearance')}</h3>
+                            <p className="text-xs text-muted-foreground/60">{t('settings.appearance_desc')}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6 space-y-6">
                     <div className="grid gap-2">
                         <Label>{t('settings.currency_label')}</Label>
                         <select
@@ -284,24 +306,29 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                 </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Language Settings */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Languages className="h-5 w-5" />
-                        {t('settings.language')}
-                    </CardTitle>
-                    <CardDescription>{t('settings.select_language')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
+            <div className="glass-card border-white/10 overflow-hidden">
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                            <Languages size={20} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tighter">{t('settings.language')}</h3>
+                            <p className="text-xs text-muted-foreground/60">{t('settings.select_language')}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6">
                     <div className="grid gap-2">
-                        <Label>{t('settings.language')}</Label>
+                        <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('settings.language')}</Label>
                         <select
                             value={i18n.language}
                             onChange={e => i18n.changeLanguage(e.target.value)}
-                            className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                            className="flex h-12 w-full items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none cursor-pointer"
                         >
                             <option value="es">Español 🇪🇸</option>
                             <option value="en">English 🇺🇸</option>
@@ -309,25 +336,29 @@ export const SettingsPage = () => {
                             <option value="fr">Français 🇫🇷</option>
                         </select>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Data Management Section */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Download className="h-5 w-5" />
-                        {t('settings.data')}
-                    </CardTitle>
-                    <CardDescription>{t('settings.data_desc')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="flex gap-4">
-                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
+            <div className="glass-card border-white/10 overflow-hidden">
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
+                            <Download size={20} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tighter">{t('settings.data')}</h3>
+                            <p className="text-xs text-muted-foreground/60">{t('settings.data_desc')}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6 space-y-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <Button variant="outline" className="flex-1 gap-2 h-14 rounded-2xl border-white/10 hover:bg-white/5 font-black uppercase text-[10px] tracking-widest" onClick={handleExport}>
                             <Download size={18} />
                             {t('settings.export_btn')}
                         </Button>
-                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={() => fileInputRef.current?.click()}>
+                        <Button variant="outline" className="flex-1 gap-2 h-14 rounded-2xl border-white/10 hover:bg-white/5 font-black uppercase text-[10px] tracking-widest" onClick={() => fileInputRef.current?.click()}>
                             <Upload size={18} />
                             {t('settings.import_btn')}
                         </Button>
@@ -339,38 +370,45 @@ export const SettingsPage = () => {
                             accept=".json"
                         />
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Gamification Settings */}
-            <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-card to-primary/5">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Sword className="h-5 w-5 text-primary" />
-                        {t('settings.spirit_title')}
-                    </CardTitle>
-                    <CardDescription>{t('settings.spirit_desc')}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-4 rounded-xl bg-background/50 border border-white/5">
-                        <div className="space-y-0.5">
-                            <Label className="text-base">{t('settings.spirit_enable')}</Label>
-                            <p className="text-sm text-muted-foreground">{t('dashboard.gamification_desc')}</p>
+            <div className="glass-card card-glow border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-transparent overflow-hidden">
+                <div className="p-6 border-b border-white/5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary animate-pulse-slow">
+                            <Sword size={20} />
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-black tracking-tighter text-primary">{t('settings.spirit_title')}</h3>
+                            <p className="text-xs text-muted-foreground/60">{t('settings.spirit_desc')}</p>
+                        </div>
+                    </div>
+                </div>
+                <div className="p-6 space-y-6">
+                    <div className="flex items-center justify-between p-5 rounded-2xl glass-premium border-white/10">
+                        <div className="space-y-1">
+                            <Label className="text-base font-black tracking-tight">{t('settings.spirit_enable')}</Label>
+                            <p className="text-xs text-muted-foreground/60">{t('dashboard.gamification_desc')}</p>
                         </div>
                         <Button
                             variant={isEnabled ? "default" : "outline"}
                             size="sm"
                             onClick={() => setIsEnabled(!isEnabled)}
-                            className="rounded-full px-6 transition-all"
+                            className={cn(
+                                "rounded-full px-8 h-10 font-black tracking-widest text-[9px] uppercase transition-all duration-500",
+                                isEnabled ? "shadow-lg shadow-primary/20" : "border-white/10"
+                            )}
                         >
                             {isEnabled ? t('settings.spirit_on') : t('settings.spirit_off')}
                         </Button>
                     </div>
 
                     {isEnabled && (
-                        <div className="pt-4 border-t border-white/5 animate-in fade-in slide-in-from-top-2">
-                            <Label className="text-sm mb-3 block">{t('settings.spirit_pet_label')}</Label>
-                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                        <div className="pt-6 border-t border-white/5 animate-in fade-in slide-in-from-top-4 duration-700">
+                            <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 mb-4 block px-1">{t('settings.spirit_pet_label')}</Label>
+                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
                                 {PET_OPTIONS.map(pet => (
                                     <button
                                         key={pet.id}
@@ -379,21 +417,21 @@ export const SettingsPage = () => {
                                             toast.success(t('settings.spirit_change_success', { name: pet.name }));
                                         }}
                                         className={cn(
-                                            "flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all hover:scale-105 active:scale-95",
+                                            "flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all duration-500 hover:scale-110 active:scale-90",
                                             selectedPet === pet.id
-                                                ? "border-primary bg-primary/10 shadow-[0_0_10px_rgba(59,130,246,0.3)]"
-                                                : "border-transparent bg-background/50 grayscale opacity-60 hover:opacity-100 hover:grayscale-0"
+                                                ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(59,130,246,0.3)] scale-105"
+                                                : "border-transparent glass-card grayscale opacity-40 hover:opacity-100 hover:grayscale-0"
                                         )}
                                     >
-                                        <span className="text-2xl mb-1">{pet.emoji}</span>
-                                        <span className="text-[8px] font-bold uppercase truncate w-full text-center">{pet.name}</span>
+                                        <span className="text-3xl mb-1.5">{pet.emoji}</span>
+                                        <span className="text-[7px] font-black uppercase truncate w-full text-center tracking-tighter">{pet.name}</span>
                                     </button>
                                 ))}
                             </div>
                         </div>
                     )}
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Notification Settings (PWA) */}
             <Card className="border-indigo-500/20 bg-indigo-50/10">

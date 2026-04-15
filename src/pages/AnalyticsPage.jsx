@@ -92,11 +92,11 @@ export const AnalyticsPage = () => {
     }).sort((a, b) => b.current - a.current); // Sort by highest spending this month
 
     return (
-        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">{t('analytics.title')}</h2>
-                    <p className="text-muted-foreground capitalize">
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('analytics.title')}</h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
                         {t('analytics.comparing', {
                             current: format(currentMonthDate, 'MMMM yyyy', { locale: currentLocale }),
                             previous: format(previousMonthDate, 'MMMM yyyy', { locale: currentLocale })
@@ -108,12 +108,12 @@ export const AnalyticsPage = () => {
 
 
             {/* Patrimony Evolution Chart */}
-            <Card className="overflow-hidden">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+            <div className="glass-card card-glow overflow-hidden mb-8">
+                <div className="p-6 border-b border-border/10">
+                    <h3 className="flex items-center gap-2 text-lg font-black tracking-tight">
                         <LineChartIcon size={20} className="text-primary" /> {t('analytics.patrimony_evolution')}
-                    </CardTitle>
-                </CardHeader>
+                    </h3>
+                </div>
                 <CardContent className="h-[300px] w-full">
                     {chartData.length > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
@@ -250,40 +250,40 @@ export const AnalyticsPage = () => {
             </div>
 
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">{t('analytics.total_expense')}</CardTitle>
-                        <TrendingDown size={16} className={expenseVariation > 0 ? "text-red-500" : "text-green-500"} />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
-                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                            {expenseVariation > 0 ? <ArrowUpRight size={12} className="text-red-500" /> : <ArrowDownRight size={12} className="text-green-500" />}
-                            <span className={expenseVariation > 0 ? "text-red-500 font-medium" : "text-green-500 font-medium"}>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="glass-card card-glow p-6">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('analytics.total_expense')}</p>
+                        <TrendingDown size={18} className={expenseVariation > 0 ? "text-red-500" : "text-emerald-500"} />
+                    </div>
+                    <div className="mt-4">
+                        <div className="text-3xl font-black tracking-tighter">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                            {expenseVariation > 0 ? <ArrowUpRight size={14} className="text-red-500" /> : <ArrowDownRight size={14} className="text-emerald-500" />}
+                            <span className={expenseVariation > 0 ? "text-red-500" : "text-emerald-500"}>
                                 {Math.abs(expenseVariation).toFixed(1)}%
                             </span>
-                            {t('analytics.vs_previous', { amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(previousExpense) })}
+                            <span className="text-muted-foreground/50">{t('analytics.vs_previous_short')}</span>
                         </p>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
 
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">{t('analytics.income')}</CardTitle>
-                        <TrendingUp size={16} className={incomeVariation >= 0 ? "text-green-500" : "text-red-500"} />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
-                        <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                            {incomeVariation >= 0 ? <ArrowUpRight size={12} className="text-green-500" /> : <ArrowDownRight size={12} className="text-red-500" />}
-                            <span className={incomeVariation >= 0 ? "text-green-500 font-medium" : "text-red-500 font-medium"}>
+                <div className="glass-card card-glow p-6">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('analytics.income')}</p>
+                        <TrendingUp size={18} className={incomeVariation >= 0 ? "text-emerald-500" : "text-red-500"} />
+                    </div>
+                    <div className="mt-4">
+                        <div className="text-3xl font-black tracking-tighter">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest mt-2 flex items-center gap-1.5">
+                            {incomeVariation >= 0 ? <ArrowUpRight size={14} className="text-emerald-500" /> : <ArrowDownRight size={14} className="text-red-500" />}
+                            <span className={incomeVariation >= 0 ? "text-emerald-500" : "text-red-500"}>
                                 {Math.abs(incomeVariation).toFixed(1)}%
                             </span>
-                            {t('analytics.vs_previous_short')}
+                            <span className="text-muted-foreground/50">{t('analytics.vs_previous_short')}</span>
                         </p>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
 
                 {/* Insight Card: Highest Increase */}
                 {(() => {

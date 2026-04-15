@@ -65,68 +65,86 @@ export const BudgetPage = () => {
     };
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
+    return (
+        <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
+                <div>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+                        {t('budget.title') || 'Mi Presupuesto'}
+                    </h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        {t('budget.subtitle') || 'Planifica y controla tus gastos mensuales'}
+                    </p>
+                </div>
+                <div className="flex items-center gap-3">
+                     <Button onClick={handleOpenCreate} disabled={unbudgetedCategories.length === 0} className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                        <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('budget.set_budget')}
+                    </Button>
+                </div>
+            </div>
+
             {/* Header Summary */}
             <div className="grid gap-6 md:grid-cols-3">
-                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 rounded-full blur-3xl -mr-12 -mt-12 transition-all group-hover:bg-primary/20" />
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">{t('budget.total_budget')}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                <div className="glass-card card-glow p-6 group">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('budget.total_budget')}</p>
+                        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/20">
+                            <Wallet className="h-6 w-6 text-primary" />
+                        </div>
+                    </div>
+                    <div className="mt-4">
                         <div className="text-3xl font-black tracking-tighter">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}</div>
-                        <p className="text-[10px] font-medium text-primary/60 mt-1 uppercase tracking-wider">{t('budget.monthly_planning')}</p>
-                    </CardContent>
-                </Card>
+                        <p className="text-[9px] font-black text-muted-foreground/50 mt-1 uppercase tracking-widest leading-none">{t('budget.monthly_planning')}</p>
+                    </div>
+                </div>
 
-                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">{t('budget.accumulated_consumption')}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                <div className="glass-card card-glow p-6 group">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('budget.accumulated_consumption')}</p>
+                    </div>
+                    <div className="mt-4">
                         <div className="text-3xl font-black tracking-tighter text-foreground">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalSpent)}</div>
-                        <div className="mt-4 space-y-1.5">
-                            <div className="flex justify-between items-center text-[10px] font-black uppercase">
-                                <span className="opacity-40">Progreso General</span>
+                        <div className="mt-4 space-y-2">
+                            <div className="flex justify-between items-center text-[9px] font-black uppercase tracking-widest pr-1">
+                                <span className="text-muted-foreground/40">Progreso General</span>
                                 <span className={cn(totalProgress > 90 ? "text-red-500" : "text-emerald-500")}>{totalProgress.toFixed(0)}%</span>
                             </div>
-                            <div className="h-1.5 w-full bg-slate-900/40 rounded-full overflow-hidden border border-white/5">
+                            <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
                                 <div
-                                    className={cn("h-full transition-all duration-1000 ease-out", totalProgress > 90 ? "bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.3)]" : "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.3)]")}
+                                    className={cn("h-full transition-all duration-1000 ease-out rounded-full shadow-[0_0_15px_rgba(var(--primary),0.2)]", totalProgress > 90 ? "bg-red-500" : "bg-primary")}
                                     style={{ width: `${Math.min(totalProgress, 100)}%` }}
                                 />
                             </div>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </div>
 
-                <Card className="bg-card/40 backdrop-blur-xl border-white/5 shadow-xl ring-1 ring-black/5 dark:ring-black/20 overflow-hidden relative group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/10 rounded-full blur-3xl -mr-12 -mt-12 transition-all group-hover:bg-emerald-500/20" />
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] opacity-60">{t('budget.available_capital')}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                <div className="glass-card card-glow p-6 group">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('budget.available_capital')}</p>
+                        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-emerald-500/20">
+                            <AlertCircle className="h-6 w-6 text-emerald-500" />
+                        </div>
+                    </div>
+                    <div className="mt-4">
                         <div className="text-3xl font-black tracking-tighter text-emerald-500">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(Math.max(0, totalBudget - totalSpent))}</div>
-                        <p className="text-[10px] font-medium text-emerald-500/60 mt-1 uppercase tracking-wider">{t('budget.operating_margin')}</p>
-                    </CardContent>
-                </Card>
+                        <p className="text-[9px] font-black text-emerald-500/40 mt-1 uppercase tracking-widest leading-none">{t('budget.operating_margin')}</p>
+                    </div>
+                </div>
             </div>
 
-            {/* Action Bar */}
-            <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold">{t('budget.category_detail')}</h2>
-                <Button onClick={handleOpenCreate} disabled={unbudgetedCategories.length === 0}>
-                    <Plus className="mr-2 h-4 w-4" /> {t('budget.set_budget')}
-                </Button>
+            <div className="flex justify-between items-center px-2">
+                <h3 className="text-2xl font-black tracking-tighter">{t('budget.category_detail')}</h3>
             </div>
 
-            {/* Budgets Grid */}
             {budgetStatus.length === 0 ? (
-                <div className="text-center py-12 border-2 border-dashed rounded-xl bg-muted/50">
-                    <Wallet className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium">{t('budget.no_budgets')}</h3>
-                    <p className="text-muted-foreground mb-4">{t('budget.no_budgets_desc')}</p>
-                    <Button onClick={handleOpenCreate}>{t('budget.start_btn')}</Button>
+                <div className="text-center py-20 glass-card border-dashed border-white/10">
+                    <div className="glass-premium p-8 rounded-[2rem] mb-6 shadow-2xl border-white/10 animate-bounce-slow">
+                        <Wallet className="mx-auto h-16 w-16 text-primary drop-shadow-lg" />
+                    </div>
+                    <h3 className="text-2xl font-black tracking-tighter mb-2">{t('budget.no_budgets')}</h3>
+                    <p className="text-muted-foreground max-w-sm mb-8 font-medium">{t('budget.no_budgets_desc')}</p>
+                    <Button onClick={handleOpenCreate} size="lg" className="rounded-2xl h-12 px-8 font-black shadow-xl shadow-primary/20">{t('budget.start_btn')}</Button>
                 </div>
             ) : (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

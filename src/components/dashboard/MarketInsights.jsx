@@ -6,59 +6,65 @@ import { cn } from '@/lib/utils';
 export const MarketInsights = ({ data }) => {
     return (
         <div className="space-y-6 py-4">
-            <div className="flex items-center gap-3 p-4 rounded-2xl bg-primary/5 border border-primary/10">
-                <div className="p-2 rounded-xl bg-primary/10 text-primary">
-                    <Brain size={20} />
+            <div className="flex items-center gap-3 p-5 rounded-2xl glass-premium border-white/10">
+                <div className="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center animate-pulse-slow">
+                    <Sparkles size={24} />
                 </div>
                 <div>
-                    <h4 className="text-sm font-black uppercase tracking-wider text-primary">VanttFlow AI Engine v1.2</h4>
-                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Análisis predictivo basado en tus gastos</p>
+                    <h4 className="text-base font-black tracking-tighter text-white">Market Intelligence v2.5</h4>
+                    <p className="text-[9px] text-muted-foreground font-black uppercase tracking-[0.2em]">Análisis Proyectado & Oportunidades</p>
                 </div>
             </div>
+            
             <div className="space-y-4">
-                <div className="p-5 rounded-2xl border border-border/40 bg-card/50 space-y-3 relative overflow-hidden group">
-                    <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:scale-125 transition-transform duration-700">
-                        <Sparkles size={100} />
+                <div className="p-6 rounded-2xl glass-card card-glow border-white/10 space-y-4 relative overflow-hidden group">
+                    <div className="absolute -right-8 -bottom-8 opacity-5 group-hover:scale-125 transition-transform duration-1000">
+                        <TrendingUp size={120} />
                     </div>
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-black uppercase tracking-widest text-emerald-500 flex items-center gap-2">
-                            <TrendingUp size={14} />
-                            Oportunidad de Ahorro
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 flex items-center gap-2">
+                            <Zap size={14} className="fill-current" />
+                            Oportunidad Detectada
                         </span>
-                        <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-500 px-2 py-1 rounded-full">ALTA</span>
+                        <span className="text-[9px] font-black bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full border border-emerald-500/20 tracking-widest">CRÍTICA</span>
                     </div>
-                    <h3 className="text-lg font-black tracking-tight leading-tight">Adquisición Anticipada de Divisas</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                        Detectamos suscripciones mensuales por **$45.00 USD**. El peso está en un máximo semanal frente al dólar. Comprar $100 USD hoy podría ahorrarte un **4.2%** en cargos transaccionales el resto del mes.
+                    <h3 className="text-xl font-black tracking-tighter leading-tight text-white group-hover:translate-x-1 transition-transform duration-500">Adquisición Anticipada de Divisas</h3>
+                    <p className="text-sm text-slate-400 leading-relaxed font-medium">
+                        Detectamos suscripciones mensuales por **$45.00 USD**. El peso está en un máximo semanal frente al dólar. Comprar hoy podría asegurarte un ahorro del **4.2%** proyectado.
                     </p>
                 </div>
-                <div className="p-5 rounded-2xl border border-border/40 bg-card/50 space-y-4">
+
+                <div className="p-6 rounded-2xl glass-card border-white/5 space-y-5">
                     <div className="flex justify-between items-center">
-                        <span className="text-xs font-black uppercase tracking-widest text-primary/60">Confianza de la Predicción</span>
-                        <span className="text-xs font-black">92%</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Precisión del Modelo</span>
+                        <span className="text-xs font-black text-primary">94.8%</span>
                     </div>
-                    <Progress value={92} className="h-1.5" />
-                    <div className="flex items-center gap-4 pt-2">
-                        <div className="flex-1 space-y-1">
-                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Ahorro Estimado</p>
-                            <p className="text-lg font-black text-emerald-500">+$12.50 USD</p>
+                    <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                         <div className="h-full bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-1000" style={{ width: '94.8%' }} />
+                    </div>
+                    <div className="grid grid-cols-2 gap-6 pt-2">
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-50">Impacto Estimado</p>
+                            <p className="text-xl font-black text-emerald-400">+$12.50 USD</p>
                         </div>
-                        <div className="flex-1 space-y-1">
-                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Ventana de Acción</p>
-                            <p className="text-lg font-black">48 Horas</p>
+                        <div className="space-y-1">
+                            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-50">Ventana Crítica</p>
+                            <p className="text-xl font-black text-white">48 Horas</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-4 rounded-2xl bg-blue-600/5 border border-blue-600/10 flex items-start gap-3">
-                    <ShieldCheck size={18} className="text-blue-500 mt-0.5 shrink-0" />
-                    <p className="text-xs text-blue-500/80 font-medium leading-relaxed italic">
-                        "Basado en tus patrones de gasto en 'Tecnología' y 'Viajes', esta predicción tiene un factor de riesgo bajo."
+
+                <div className="p-4 rounded-2xl bg-blue-500/5 border border-blue-500/10 flex items-start gap-3">
+                    <ShieldCheck size={18} className="text-blue-400 mt-0.5 shrink-0" />
+                    <p className="text-[11px] text-blue-400/80 font-black tracking-tight leading-relaxed italic">
+                        "Análisis ejecutado localmente basado en tus patrones de gasto histórico en tecnología y servicios digitales."
                     </p>
                 </div>
             </div>
-            <Button className="w-full h-12 rounded-2xl bg-primary shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform font-black uppercase tracking-widest text-xs">
+
+            <Button className="w-full h-14 rounded-2xl bg-primary text-white shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all font-black uppercase tracking-widest text-[10px]">
                 Ejecutar Plan de Ahorro
-                <ArrowRight size={16} className="ml-2" />
+                <ArrowRight size={18} className="ml-2" />
             </Button>
         </div>
     );

@@ -11,19 +11,13 @@ import { LevelProgress } from '@/components/gamification/LevelProgress';
 import { SpiritPet } from '@/components/gamification/SpiritPet';
 import { MobileNav } from './MobileNav';
 import { AppTour } from '@/components/onboarding/AppTour';
-import { VanttAIChat } from '@/components/ai/VanttAIChat';
 
 import { useIdentity } from "@/context/IdentityContext";
 import { useTranslation } from 'react-i18next';
 
-const Sidebar = ({ className }) => {
-    const { exportData } = useFinance();
-    const { user, privacyMode, setPrivacyMode } = useIdentity();
-    const { t } = useTranslation();
-
     return (
         <div className={cn(
-            "w-72 bg-card border-r h-full flex flex-col relative overflow-hidden transition-all duration-300",
+            "w-72 glass-premium h-full flex flex-col relative overflow-hidden transition-all duration-300",
             className
         )}>
             {/* Premium Sidebar Background - Subtle Gradient Glow */}
@@ -141,10 +135,10 @@ const SidebarLink = ({ to, icon: Icon, label, id }) => (
         to={to}
         id={id}
         className={({ isActive }) => cn(
-            "flex items-center justify-between px-4 py-2.5 rounded-2xl text-sm font-bold transition-all duration-300 group",
+            "flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-500 group relative",
             isActive
-                ? "bg-primary text-primary-foreground shadow-[0_4px_12px_rgba(var(--primary),0.3)] scale-[1.02]"
-                : "text-muted-foreground hover:bg-muted/60 hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-[0_8px_24px_rgba(var(--primary),0.4)] scale-[1.02] border-white/20"
+                : "text-muted-foreground hover:bg-white/5 hover:text-foreground border-transparent"
         )}
     >
         <div className="flex items-center gap-3">
@@ -171,7 +165,7 @@ export const Layout = ({ children }) => {
             <Sidebar className="hidden xl:flex" />
 
             <div className="flex-1 flex flex-col pb-24 md:pb-0 min-w-0"> {/* Adjusted padding bottom for larger Mobile Nav */}
-                <header className="pt-safe border-b bg-card/70 backdrop-blur-xl px-5 flex items-center justify-between xl:hidden sticky top-0 z-40 h-20">
+                <header className="pt-safe border-b glass-premium px-5 flex items-center justify-between xl:hidden sticky top-0 z-40 h-20">
                     <Link to="/" className="flex items-center gap-3 active:opacity-70 transition-opacity">
                         <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-xl shadow-md" />
                         <span className="font-black text-xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
@@ -227,7 +221,6 @@ export const Layout = ({ children }) => {
 
                 <MobileNav />
             </div>
-            <VanttAIChat />
         </div>
     );
 };

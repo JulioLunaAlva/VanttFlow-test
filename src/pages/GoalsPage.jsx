@@ -127,17 +127,21 @@ export const GoalsPage = () => {
     };
 
     return (
-        <div className="space-y-8 max-w-5xl mx-auto p-4 md:p-0 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
                 <div>
-                    <h2 className="text-3xl font-bold tracking-tight">{t('goals.title')}</h2>
-                    <p className="text-muted-foreground">{t('goals.subtitle')}</p>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+                        {t('goals.title')}
+                    </h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        {t('goals.subtitle')}
+                    </p>
                 </div>
 
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button size="lg" className="shadow-lg gap-2 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 border-0">
-                            <Plus size={20} /> {t('goals.new_goal')}
+                        <Button size="lg" className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                            <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('goals.new_goal')}
                         </Button>
                     </DialogTrigger>
                     <DialogContent>
@@ -212,31 +216,34 @@ export const GoalsPage = () => {
                     const isCompleted = progress >= 100;
 
                     return (
-                        <Card key={goal.id} className={cn(
-                            "relative overflow-hidden transition-all duration-300 hover:shadow-xl border-t-4",
-                            isCompleted ? "border-t-yellow-400 bg-gradient-to-b from-yellow-500/10 to-transparent" : "border-t-primary"
+                        <div key={goal.id} className={cn(
+                            "glass-card card-glow relative overflow-hidden transition-all duration-500 hover:scale-[1.02] border-white/10",
+                            isCompleted ? "bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent border-yellow-500/30" : ""
                         )}>
                             {isCompleted && (
-                                <div className="absolute top-0 right-0 p-2">
-                                    <Star className="text-yellow-400 fill-yellow-400 animate-pulse" size={24} />
-                                </div>
+                                <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-500/10 rounded-full blur-3xl animate-pulse" />
                             )}
 
-                            <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
-                                <CardTitle className="text-xl font-bold truncate flex items-center gap-2">
-                                    {isCompleted ? <Trophy className="text-yellow-500" size={24} /> : <Target className="text-primary" size={24} />}
-                                    {goal.name}
-                                </CardTitle>
+                            <div className="p-6 pb-2 flex flex-row items-center justify-between space-y-0">
+                                <div className="text-xl font-black tracking-tighter truncate flex items-center gap-3">
+                                    <div className={cn(
+                                        "w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl border border-white/10",
+                                        isCompleted ? "bg-yellow-500/20 text-yellow-500" : "bg-primary/10 text-primary"
+                                    )}>
+                                        {isCompleted ? <Trophy size={24} /> : <Target size={24} />}
+                                    </div>
+                                    <span className="truncate">{goal.name}</span>
+                                </div>
                                 <div className="flex gap-1">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-foreground" onClick={() => handleEdit(goal)}>
+                                    <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:bg-white/5 rounded-xl" onClick={() => handleEdit(goal)}>
                                         <Edit2 size={16} />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-red-500" onClick={() => deleteGoal(goal.id)}>
+                                    <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-red-500 hover:bg-red-500/5 rounded-xl" onClick={() => deleteGoal(goal.id)}>
                                         <Trash2 size={16} />
                                     </Button>
                                 </div>
-                            </CardHeader>
-                            <CardContent>
+                            </div>
+                            <div className="p-6 pt-4">
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-end">
                                         <div>
@@ -255,15 +262,15 @@ export const GoalsPage = () => {
                                     </div>
 
                                     {/* Custom Progress Bar */}
-                                    <div className="h-4 w-full bg-secondary rounded-full overflow-hidden shadow-inner">
+                                    <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
                                         <div
                                             className={cn(
-                                                "h-full transition-all duration-1000 ease-out relative",
-                                                isCompleted ? "bg-gradient-to-r from-yellow-400 to-orange-500" : "bg-gradient-to-r from-blue-500 to-purple-600"
+                                                "h-full transition-all duration-1000 ease-out relative rounded-full shadow-[0_0_15px_rgba(var(--primary),0.3)]",
+                                                isCompleted ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]" : "bg-gradient-to-r from-primary to-blue-400"
                                             )}
                                             style={{ width: `${Math.min(progress, 100)}%` }}
                                         >
-                                            <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
+                                            <div className="absolute inset-0 bg-white/20 animate-pulse" />
                                         </div>
                                     </div>
 
@@ -289,17 +296,18 @@ export const GoalsPage = () => {
                 })}
 
                 {(!goals || goals.length === 0) && (
-                    <div className="col-span-full py-16 flex flex-col items-center justify-center text-center border-2 border-dashed border-muted-foreground/25 rounded-xl bg-muted/5">
-                        <div className="bg-primary/10 p-6 rounded-full mb-6 ring-8 ring-primary/5">
-                            <Target className="w-12 h-12 text-primary" />
+                        <div className="col-span-full py-20 flex flex-col items-center justify-center text-center glass-card border-dashed border-white/10">
+                            <div className="glass-premium p-8 rounded-[2rem] mb-6 shadow-2xl border-white/10 animate-bounce-slow">
+                                <Target className="w-16 h-16 text-primary drop-shadow-lg" />
+                            </div>
+                            <h3 className="text-2xl font-black tracking-tighter mb-2">{t('goals.no_goals')}</h3>
+                            <p className="text-muted-foreground max-w-sm mb-8 font-medium">
+                                {t('goals.no_goals_desc')}
+                            </p>
+                            <Button size="lg" className="rounded-2xl h-12 px-8 font-black shadow-xl shadow-primary/20" onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
                         </div>
-                        <h3 className="text-xl font-semibold mb-2">{t('goals.no_goals')}</h3>
-                        <p className="text-muted-foreground max-w-sm mb-6">
-                            {t('goals.no_goals_desc')}
-                        </p>
-                        <Button onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </div>
     );

@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
 @layer base {
   :root {
-    --background: 210 20% 98%;
+    --background: 220 33% 98%;
     --foreground: 224 71% 4%;
  
     --card: 0 0% 100%;
@@ -13,7 +15,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71% 4%;
  
-    --primary: 221.2 83.2% 53.3%;
+    --primary: 262.1 83.3% 57.8%; /* Premium Violet */
     --primary-foreground: 210 40% 98%;
  
     --secondary: 210 40% 96.1%;
@@ -22,17 +24,17 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 262.1 83.3% 57.8%;
+    --accent-foreground: 210 40% 98%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
  
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262.1 83.3% 57.8%;
  
-    --radius: 0.75rem;
+    --radius: 1rem;
   }
  
   .dark {
@@ -40,14 +42,14 @@
     --background: 224 71% 4%;
     --foreground: 213 31% 91%;
  
-    --card: 224 71% 8%;
+    --card: 224 71% 4%; /* Unified with background for glass effect */
     --card-foreground: 213 31% 91%;
  
-    --popover: 224 71% 8%;
+    --popover: 224 71% 6%;
     --popover-foreground: 213 31% 91%;
  
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 263.4 70% 50.4%; /* Deep Premium Violet */
+    --primary-foreground: 210 40% 98%;
  
     --secondary: 222.2 47.4% 11.2%;
     --secondary-foreground: 210 40% 98%;
@@ -55,7 +57,7 @@
     --muted: 223 47% 11%;
     --muted-foreground: 215.4 16.3% 56.9%;
  
-    --accent: 216 34% 17%;
+    --accent: 263.4 70% 50.4%;
     --accent-foreground: 210 40% 98%;
  
     --destructive: 0 62.8% 30.6%;
@@ -63,7 +65,7 @@
  
     --border: 216 34% 17%;
     --input: 216 34% 17%;
-    --ring: 224.3 76.3% 48%;
+    --ring: 263.4 70% 50.4%;
   }
 
   .pink {
@@ -206,15 +208,27 @@
 
   body {
     @apply bg-background text-foreground;
-    /* Allow vertical scrolling but prevent horizontal overflow */
+    font-family: 'Outfit', sans-serif;
+    /* Premium Background Gradient */
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(263, 70%, 50%, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(221, 83%, 53%, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
+
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     user-select: none;
-    /* Ensure body takes full height */
     min-height: 100vh;
     min-height: -webkit-fill-available;
+  }
+
+  .dark body {
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(263, 70%, 50%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(221, 83%, 53%, 0.1) 0px, transparent 50%),
+      linear-gradient(to bottom, hsl(224, 71%, 4%), hsl(224, 71%, 2%));
   }
 
   /* Specific rule for portals and overlays to allow scrolling and interaction */
@@ -289,19 +303,32 @@ textarea {
   animation: pulse-glow 8s ease-in-out infinite;
 }
 
-/* Glassmorphism 2.0 - Solid in Light Mode, Glass in Dark */
-.glass {
-  @apply bg-card dark:backdrop-blur-xl dark:bg-black/40 border border-border dark:border-white/10;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+/* Glassmorphism Premium */
+.glass-premium {
+  @apply bg-white/70 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-xl;
 }
 
 .glass-card {
-  @apply bg-card rounded-[1rem] overflow-hidden border border-border transition-all duration-300;
+  @apply glass-premium rounded-[2rem] overflow-hidden transition-all duration-500 hover:scale-[1.01] hover:shadow-2xl hover:border-primary/30;
 }
 
-.glass-card:hover {
-  @apply border-primary/20;
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+.card-glow {
+  position: relative;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(45deg, hsl(var(--primary)), transparent, hsl(var(--primary)));
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.card-glow:hover::before {
+  opacity: 0.2;
 }
 
 /* Ambient Background Lights - Disabled for now to keep it clean */

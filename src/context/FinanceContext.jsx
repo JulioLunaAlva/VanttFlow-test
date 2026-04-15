@@ -342,85 +342,6 @@ export const FinanceProvider = ({ children }) => {
         return { total: score, details };
     };
 
-    // --- AI ADVICE LOGIC ---
-    const getAIRecommendations = () => {
-        const recommendations = [];
-        const forecast = getForecast();
-        const scoreData = getVanttScore();
-        const { income, expense } = summary;
-        const monthKey = format(selectedMonth, 'yyyy-MM');
-
-        // 1. Critical Forecast
-        if (forecast.forecastBalance < 0) {
-            recommendations.push({
-                id: 'critical_forecast',
-                type: 'danger',
-                title_key: 'ai.advice.danger_forecast_title',
-                desc_key: 'ai.advice.danger_forecast_desc'
-            });
-        }
-
-        // 2. Budget Proactivity (Alert at 75% instead of 90%)
-        const budgetStatus = getBudgetStatus();
-        const overBudget = budgetStatus.find(b => b.percentage > 75);
-        if (overBudget) {
-            recommendations.push({
-                id: 'budget_alert',
-                type: 'warning',
-                title_key: 'ai.advice.budget_limit_title',
-                desc_key: 'ai.advice.budget_limit_desc',
-                params: { category: categories.find(c => c.id === overBudget.categoryId)?.name }
-            });
-        }
-
-        // 3. Spending Trends (AI Insight)
-        const spendingAnalysis = getSpendingAnalysis();
-        const topTrend = spendingAnalysis.trends.find(t => t.percentageChange > 20);
-        if (topTrend) {
-            recommendations.push({
-                id: 'spending_trend',
-                type: 'info',
-                title_key: 'ai.advice.trend_increase_title',
-                desc_key: 'ai.advice.trend_increase_desc',
-                params: {
-                    category: categories.find(c => c.id === topTrend.categoryId)?.name,
-                    percentage: Math.round(topTrend.percentageChange)
-                }
-            });
-        }
-
-        // 4. Low Savings
-        if (income > 0 && (expense / income) > 0.85) {
-            recommendations.push({
-                id: 'low_savings',
-                type: 'warning',
-                title_key: 'ai.advice.low_savings_title',
-                desc_key: 'ai.advice.low_savings_desc'
-            });
-        }
-
-        // 5. Success Score
-        if (scoreData.total > 750) {
-            recommendations.push({
-                id: 'great_score',
-                type: 'success',
-                title_key: 'ai.advice.great_score_title',
-                desc_key: 'ai.advice.great_score_desc'
-            });
-        }
-
-        if (recommendations.length === 0) {
-            recommendations.push({
-                id: 'default',
-                type: 'info',
-                title_key: 'ai.advice.default_title',
-                desc_key: 'ai.advice.default_desc'
-            });
-        }
-
-        return recommendations.slice(0, 3);
-    };
-
     const getSpendingAnalysis = () => {
         const monthKey = format(selectedMonth, 'yyyy-MM');
         const currentMonthTransactions = filteredTransactions.filter(t => t.type === 'expense');
@@ -520,7 +441,9 @@ export const FinanceProvider = ({ children }) => {
 
         return transactions.filter(t => {
             if (!t.date) return false;
-            return isWithinInterval(parseLocalDateStr(t.date), { start, end });
+            // Ensure we use the local date parsing to avoid TZ shifts
+            const txDate = parseLocalDateStr(t.date);
+            return isWithinInterval(txDate, { start, end });
         });
     }, [transactions, selectedMonth]);
 

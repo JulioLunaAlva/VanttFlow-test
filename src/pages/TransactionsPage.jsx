@@ -9,27 +9,37 @@ export const TransactionsPage = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const formRef = useRef(null);
-
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         if (params.get('action') === 'new' && formRef.current) {
             formRef.current.scrollIntoView({ behavior: 'smooth' });
-            // Add a brief glow or pulse to the form if possible
         }
     }, [location]);
 
     return (
-        <div className="space-y-6">
-            <h2 className="text-3xl font-bold tracking-tight">{t('common.transactions')}</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className={cn(
-                    "lg:col-span-1 transition-all duration-1000",
-                    new URLSearchParams(location.search).get('action') === 'new' && "ring-4 ring-primary/20 rounded-xl animate-pulse shadow-[0_0_30px_rgba(59,130,246,0.3)]"
-                )} ref={formRef}>
-                    <TransactionForm />
+        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4">
+            <div className="flex justify-between items-center glass-card p-6 border-white/10 mb-2">
+                <div>
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('common.transactions')}</h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                        {t('transactions.manage_desc') || 'Historial y registro de movimientos'}
+                    </p>
                 </div>
-                <div className="lg:col-span-2">
-                    <TransactionList />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20 md:pb-8">
+                <div className={cn(
+                    "lg:col-span-4 transition-all duration-1000",
+                    new URLSearchParams(location.search).get('action') === 'new' && "ring-4 ring-primary ring-offset-4 rounded-[2rem] animate-pulse shadow-[0_0_50px_rgba(var(--primary),0.3)]"
+                )} ref={formRef}>
+                    <div className="glass-card card-glow h-full">
+                        <TransactionForm />
+                    </div>
+                </div>
+                <div className="lg:col-span-8">
+                    <div className="glass-card card-glow h-full">
+                        <TransactionList />
+                    </div>
                 </div>
             </div>
         </div>

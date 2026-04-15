@@ -60,14 +60,16 @@ export const TransactionsCalendarPage = () => {
         transactions.forEach(tx => {
             if (!tx.date) return;
             const dateStr = format(parseLocalDateStr(tx.date), 'yyyy-MM-dd');
-            if (!grouped[dateStr]) grouped[dateStr] = { income: 0, expense: 0, items: [] };
+            if (!grouped[dateStr]) grouped[dateStr] = { income: 0, expense: 0, transfer: 0, items: [] };
             
             if (tx.type === 'income') {
                 grouped[dateStr].income += Number(tx.amount);
             } else if (tx.type === 'expense') {
                 grouped[dateStr].expense += Number(tx.amount);
+            } else if (tx.type === 'transfer') {
+                grouped[dateStr].transfer += Number(tx.amount);
             }
-            grouped[dateStr].items.push(tx);
+            grouped[tx.date.includes('T') ? format(parseLocalDateStr(tx.date), 'yyyy-MM-dd') : tx.date].items.push(tx);
         });
         return grouped;
     }, [transactions]);
@@ -84,21 +86,21 @@ export const TransactionsCalendarPage = () => {
 
     // Header component
     const renderHeader = () => (
-        <div className="flex items-center justify-between mb-6 px-1">
+        <div className="flex items-center justify-between glass-card p-6 border-white/10 mb-8">
             <div className="flex flex-col">
-                <h2 className="text-2xl font-black tracking-tighter capitalize">
+                <h2 className="text-4xl font-black tracking-tighter capitalize text-foreground">
                     {format(currentMonth, 'MMMM yyyy', { locale })}
                 </h2>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/50">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
                     {t('common.calendar_view') || 'Vista de Calendario'}
                 </p>
             </div>
-            <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={prevMonth} className="rounded-xl h-10 w-10">
-                    <ChevronLeft size={20} />
+            <div className="flex items-center gap-3">
+                <Button variant="outline" size="icon" onClick={prevMonth} className="rounded-2xl h-11 w-11 shadow-lg shadow-black/5 hover:bg-primary/10 hover:text-primary transition-all duration-300">
+                    <ChevronLeft size={22} />
                 </Button>
-                <Button variant="outline" size="icon" onClick={nextMonth} className="rounded-xl h-10 w-10">
-                    <ChevronRight size={20} />
+                <Button variant="outline" size="icon" onClick={nextMonth} className="rounded-2xl h-11 w-11 shadow-lg shadow-black/5 hover:bg-primary/10 hover:text-primary transition-all duration-300">
+                    <ChevronRight size={22} />
                 </Button>
             </div>
         </div>
@@ -121,8 +123,9 @@ export const TransactionsCalendarPage = () => {
     // Calendar grid
     const renderCells = () => {
         return (
-            <div className="grid grid-cols-7 gap-px bg-border/20 rounded-2xl overflow-hidden border border-border/40 mb-8 shadow-sm bg-background">
-                {calendarDays.map((day) => {
+            <div className="glass-premium rounded-[2rem] overflow-hidden border-white/10 mb-8 shadow-2xl card-glow">
+                <div className="grid grid-cols-7">
+                    {calendarDays.map((day) => {
                     const dateStr = format(day, 'yyyy-MM-dd');
                     const dayData = transactionsByDate[dateStr];
                     const isSelected = isSameDay(day, selectedDate);
@@ -134,10 +137,10 @@ export const TransactionsCalendarPage = () => {
                             key={day.toString()}
                             onClick={() => setSelectedDate(day)}
                             className={cn(
-                                "relative min-h-[70px] xs:min-h-[85px] p-2 bg-background transition-all cursor-pointer select-none group",
-                                !isCurrentMonth && "bg-muted/5 opacity-30",
-                                isSelected && "bg-primary/5 ring-1 ring-inset ring-primary/20",
-                                isToday && !isSelected && "bg-accent/5"
+                                "relative min-h-[80px] xs:min-h-[100px] p-2 bg-background/40 transition-all cursor-pointer select-none group border-r border-b border-border/10 last:border-r-0",
+                                !isCurrentMonth && "bg-muted/5 opacity-10",
+                                isSelected && "bg-primary/10 ring-2 ring-inset ring-primary/40 rounded-xl z-10",
+                                isToday && !isSelected && "bg-accent/10"
                             )}
                         >
                             <span className={cn(
@@ -150,22 +153,29 @@ export const TransactionsCalendarPage = () => {
 
                             {dayData && (
                                 <div className="mt-auto flex flex-col gap-1">
-                                    {dayData.income > 0 && (
-                                        <div className="flex items-center gap-1">
+                                    <div className="flex flex-wrap gap-0.5">
+                                        {dayData.income > 0 && (
                                             <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.5)]" />
+                                        )}
+                                        {dayData.expense > 0 && (
+                                            <div className="w-1 h-1 rounded-full bg-destructive shadow-[0_0_4px_rgba(239,68,68,0.5)]" />
+                                        )}
+                                        {dayData.transfer > 0 && (
+                                            <div className="w-1 h-1 rounded-full bg-blue-500 shadow-[0_0_4px_rgba(59,130,246,0.5)]" />
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        {dayData.income > 0 && (
                                             <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 hidden xs:inline">
                                                 +{formatCurrency(dayData.income, { compact: true })}
                                             </span>
-                                        </div>
-                                    )}
-                                    {dayData.expense > 0 && (
-                                        <div className="flex items-center gap-1">
-                                            <div className="w-1 h-1 rounded-full bg-destructive shadow-[0_0_4px_rgba(239,68,68,0.5)]" />
+                                        )}
+                                        {dayData.expense > 0 && (
                                             <span className="text-[8px] font-black text-destructive hidden xs:inline">
                                                 -{formatCurrency(dayData.expense, { compact: true })}
                                             </span>
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
                                 </div>
                             )}
 

@@ -21,54 +21,63 @@ export const SummaryCards = React.memo(() => {
 
     return (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-8">
-            <Card id="tour-balance" className="group">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.total_balance')}</CardTitle>
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center transition-transform group-hover:scale-110">
-                        <DollarSign className="h-5 w-5 text-primary" />
+            <div id="tour-balance" className="glass-card card-glow p-6 group">
+                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.total_balance')}</p>
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/20">
+                        <DollarSign className="h-6 w-6 text-primary" />
                     </div>
-                </CardHeader>
-                <CardContent className="pb-4 md:pb-6">
-                    <div className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+                </div>
+                <div className="mt-4">
+                    <div className="text-3xl md:text-5xl font-black tracking-tighter text-foreground drop-shadow-sm">
                         <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                     </div>
-                    <p className="text-[11px] font-medium text-foreground/50 mt-2 uppercase tracking-wider">
-                        {t('summary.current_status')}
-                    </p>
-                </CardContent>
-            </Card>
-            <Card className="group">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.income')}</CardTitle>
-                    <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center transition-transform group-hover:scale-110">
-                        <ArrowUpCircle className="h-5 w-5 text-emerald-500" />
+                    <div className="flex items-center gap-2 mt-4">
+                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                            {t('summary.current_status')}
+                        </p>
                     </div>
-                </CardHeader>
-                <CardContent className="pb-4 md:pb-6">
-                    <div className="text-2xl md:text-4xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400">
+                </div>
+            </div>
+            <div className="glass-card card-glow p-6 group">
+                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.income')}</p>
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-emerald-500/20">
+                        <ArrowUpCircle className="h-6 w-6 text-emerald-500" />
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <div className="text-2xl md:text-4xl font-black tracking-tighter text-emerald-600 dark:text-emerald-400 drop-shadow-sm">
                         <PrivacyBlur intensity="lg">{formatCurrency(income)}</PrivacyBlur>
                     </div>
-                    <p className="text-[11px] font-medium text-foreground/50 mt-2 uppercase tracking-wider">
-                        {t('summary.total_in')}
-                    </p>
-                </CardContent>
-            </Card>
-            <Card className="group">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xs font-semibold uppercase tracking-tight text-muted-foreground">{t('summary.expense')}</CardTitle>
-                    <div className="w-10 h-10 rounded-xl bg-destructive/10 flex items-center justify-center transition-transform group-hover:scale-110">
-                        <ArrowDownCircle className="h-5 w-5 text-destructive" />
+                    <div className="flex items-center gap-2 mt-4">
+                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                            {t('summary.total_in')}
+                        </p>
                     </div>
-                </CardHeader>
-                <CardContent className="pb-4 md:pb-6">
-                    <div className="text-2xl md:text-4xl font-bold tracking-tight text-destructive dark:text-red-400">
+                </div>
+            </div>
+            <div className="glass-card card-glow p-6 group">
+                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.expense')}</p>
+                    <div className="w-12 h-12 rounded-2xl bg-destructive/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-destructive/20">
+                        <ArrowDownCircle className="h-6 w-6 text-destructive" />
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <div className="text-2xl md:text-4xl font-black tracking-tighter text-destructive dark:text-red-400 drop-shadow-sm">
                         <PrivacyBlur intensity="lg">{formatCurrency(expense)}</PrivacyBlur>
                     </div>
-                    <p className="text-[11px] font-medium text-foreground/50 mt-2 uppercase tracking-wider">
-                        {t('summary.total_out')}
-                    </p>
-                </CardContent>
-            </Card>
+                    <div className="flex items-center gap-2 mt-4">
+                        <div className="h-1.5 w-1.5 rounded-full bg-destructive" />
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
+                            {t('summary.total_out')}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 });

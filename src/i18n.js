@@ -356,33 +356,6 @@ const resources = {
                 income_label: "Ingresos",
                 expense_label: "Gastos"
             },
-            ai: {
-                title: "VanttAI",
-                coach: "Asistente Financiero",
-                placeholder: "¿Qué gastaste hoy?",
-                benefits: "Ahorra tiempo y obtén consejos personalizados.",
-                ask_button: "Consultar IA",
-                welcome_msg: "¡Hola! Soy VanttAI. Puedo ayudarte a registrar gastos rápido o darte consejos. ¿Qué tienes en mente?",
-                suggestion_msg: "He detectado una transacción en tu mensaje. ¿Quieres que la registre?",
-                dont_understand: "No estoy seguro de haber entendido. Intenta algo como 'Gasté 50 en comida' o 'Recibí 100 de sueldo'.",
-                transaction_logged: "¡Entendido! He registrado la transacción en tus finanzas.",
-                confirm_transaction: "CONFIRMAR REGISTRO",
-                online: "SISTEMA ACTIVO",
-                advice: {
-                    danger_forecast_title: "¡Alerta de Liquidez!",
-                    danger_forecast_desc: "Tu proyección indica un balance negativo para fin de mes. Revisa tus gastos no esenciales.",
-                    budget_limit_title: "Presupuesto al Límite",
-                    budget_limit_desc: "Has usado casi todo tu presupuesto en {{category}}. ¡Cuidado con los gastos extra!",
-                    low_savings_title: "Poder de Ahorro Bajo",
-                    low_savings_desc: "Estás gastando más del 90% de tus ingresos. Intenta reducir gastos hormiga.",
-                    great_score_title: "¡Salud Financiera Excelente!",
-                    great_score_desc: "Tu VanttScore está por las nubes. Sigue así, vas por buen camino.",
-                    default_title: "Consejo del Día",
-                    default_desc: "Registra todos tus gastos, por pequeños que sean, para tener una proyección más exacta.",
-                    ask_advice: "Dame un consejo",
-                    how_am_i: "¿Cómo van mis finanzas?"
-                }
-            },
             onboarding: {
                 step1_title: "¡Bienvenido a VanttFlow!",
                 step1_subtitle: "¿Cómo quieres que te llamemos?",
@@ -885,33 +858,6 @@ const resources = {
                     income_label: "Income",
                     expense_label: "Expenses"
                 },
-                ai: {
-                    title: "VanttAI",
-                    coach: "Financial Assistant",
-                    placeholder: "What did you spend today?",
-                    benefits: "Save time and get personalized advice.",
-                    ask_button: "Consult AI",
-                    welcome_msg: "Hi! I'm VanttAI. I can help you log expenses quickly or give you advice. What's on your mind?",
-                    suggestion_msg: "I detected a transaction in your message. Should I log it?",
-                    dont_understand: "I'm not sure I understood. Try something like 'Spent 50 on food' or 'Received 100 as salary'.",
-                    transaction_logged: "Got it! I've logged the transaction in your finances.",
-                    confirm_transaction: "CONFIRM LOG",
-                    online: "SYSTEM ACTIVE",
-                    advice: {
-                        danger_forecast_title: "Liquidity Alert!",
-                        danger_forecast_desc: "Your projection shows a negative balance for the end of the month. Review your non-essential spending.",
-                        budget_limit_title: "Budget at Limit",
-                        budget_limit_desc: "You've used almost all your budget in {{category}}. Watch out for extra expenses!",
-                        low_savings_title: "Low Saving Power",
-                        low_savings_desc: "You're spending more than 90% of your income. Try reducing small daily expenses.",
-                        great_score_title: "Excellent Financial Health!",
-                        great_score_desc: "Your VanttScore is through the roof. Keep it up, you're on the right track.",
-                        default_title: "Tip of the Day",
-                        default_desc: "Log all your expenses, no matter how small, for a more accurate projection.",
-                        ask_advice: "Give me a tip",
-                        how_am_i: "How are my finances?"
-                    }
-                },
                 onboarding: {
                     step1_title: "Let's get to know you",
                     step1_subtitle: "What should we call you?",
@@ -1402,39 +1348,6 @@ const resources = {
                     vs: "vs",
                     others: "Outros"
                 },
-                reports: {
-                    title: "Relatórios Avançados",
-                    comparative_title: "Comparativo Semestral (Receitas vs Despesas)",
-                    income_label: "Receitas",
-                    expense_label: "Despesas"
-                },
-                ai: {
-                    title: "VanttAI",
-                    coach: "Assistente Financiero",
-                    placeholder: "O que você gastou hoje?",
-                    benefits: "Economize tempo e obtenha conselhos personalizados.",
-                    ask_button: "Consultar IA",
-                    welcome_msg: "Olá! Eu sou a VanttAI. Posso te ajudar a registrar gastos rapidamente ou dar conselhos. O que você tem em mente?",
-                    suggestion_msg: "Detectei uma transação na sua mensagem. Quer que eu registre?",
-                    dont_understand: "Não tenho certeza se entendi. Tente algo como 'Gastei 50 em comida' ou 'Recebi 100 de salário'.",
-                    transaction_logged: "Entendido! Registrei a transação em suas finanzas.",
-                    confirm_transaction: "CONFIRMAR REGISTRO",
-                    online: "SISTEMA ATIVO",
-                    advice: {
-                        danger_forecast_title: "Alerta de Liquidez!",
-                        danger_forecast_desc: "Sua projeção indica um saldo negativo para o fim do mês. Revise seus gastos não essenciais.",
-                        budget_limit_title: "Orçamento no Limite",
-                        budget_limit_desc: "Você usou quase todo o seu orçamento em {{category}}. Cuidado com gastos extras!",
-                        low_savings_title: "Baixo Poder de Poupança",
-                        low_savings_desc: "Você está gastando mais de 90% da sua renda. Tente reduzir pequenos gastos diários.",
-                        great_score_title: "Excelente Saúde Financeira!",
-                        great_score_desc: "Seu VanttScore está nas alturas. Continue assim, você está no caminho certo.",
-                        default_title: "Dica do Dia",
-                        default_desc: "Registre todos os seus gastos, por menores que sejam, para ter uma projeção mais precisa.",
-                        ask_advice: "Me dê um conselho",
-                        how_am_i: "Como estão minhas finanças?"
-                    }
-                },
                 onboarding: {
                     step1_title: "Bem-vindo ao VanttFlow!",
                     step1_subtitle: "Como quer que te chamemos?",
@@ -1914,8 +1827,7 @@ const resources = {
                     empty_history_sub: "Effectuez des transactions pour voir votre évolution.",
                     total_expense: "Dépense Totale",
                     vs_previous: "vs mois précédent ({{amount}})",
-                    income: "Revenus",
-                    vs_previous_short: "vs mois précédent",
+                        vs_previous_short: "vs mois précédent",
                     biggest_change: "Changement le plus significatif",
                     no_significant_changes: "Aucun changement significatif ce mois-ci.",
                     biggest_increase: "Plus Forte Augmentation",
@@ -1930,33 +1842,6 @@ const resources = {
                     comparative_title: "Comparaison Semestrielle (Revenus vs Dépenses)",
                     income_label: "Revenus",
                     expense_label: "Dépenses"
-                },
-                ai: {
-                    title: "VanttAI",
-                    coach: "Coach Financier",
-                    placeholder: "Qu'avez-vous dépensé aujourd'hui ?",
-                    benefits: "Gagnez du temps et obtenez des conseils personnalisés.",
-                    ask_button: "Consulter l'IA",
-                    welcome_msg: "Bonjour ! Je suis VanttAI. Je peux vous aider à enregistrer vos dépenses rapidement ou vous donner des conseils. Qu'avez-vous en tête ?",
-                    suggestion_msg: "J'ai détecté une transaction dans votre message. Voulez-vous que je l'enregistre ?",
-                    dont_understand: "Je ne suis pas sûr d'avoir compris. Essayez quelque chose comme 'J'ai dépensé 50 en nourriture' ou 'J'ai reçu 100 de salaire'.",
-                    transaction_logged: "Compris ! J'ai enregistré la transaction dans vos finances.",
-                    confirm_transaction: "CONFIRMER L'ENREGISTREMENT",
-                    online: "SYSTÈME ACTIF",
-                    advice: {
-                        danger_forecast_title: "Alerte de Liquidité !",
-                        danger_forecast_desc: "Votre projection indique un solde négatif pour la fin du mois. Révisez vos dépenses non essentielles.",
-                        budget_limit_title: "Budget à la Limite",
-                        budget_limit_desc: "Vous avez utilisé presque tout votre budget en {{category}}. Attention aux dépenses supplémentaires !",
-                        low_savings_title: "Faible Pouvoir d'Épargne",
-                        low_savings_desc: "Vous dépensez plus de 90 % de vos revenus. Essayez de réduire les petites dépenses quotidiennes.",
-                        great_score_title: "Excellente Santé Financière !",
-                        great_score_desc: "Votre VanttScore est au sommet. Continuez ainsi, vous êtes sur la bonne voie.",
-                        default_title: "Conseil du Jour",
-                        default_desc: "Enregistrez toutes vos dépenses, même les plus petites, pour une projection plus précise.",
-                        ask_advice: "Donne-moi un conseil",
-                        how_am_i: "Où en sont mes finances ?"
-                    }
                 },
                 onboarding: {
                     step1_title: "Bienvenue sur VanttFlow !",
