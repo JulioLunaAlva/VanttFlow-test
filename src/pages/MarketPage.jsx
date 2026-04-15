@@ -98,7 +98,6 @@ export const MarketPage = () => {
     ];
 
     return (
-    return (
         <div className="space-y-8 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header section with glassmorphism */}
             <div className="relative p-10 rounded-[2.5rem] glass-premium border-white/10 overflow-hidden group">
