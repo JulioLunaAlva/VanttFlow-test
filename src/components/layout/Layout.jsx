@@ -12,8 +12,10 @@ import { SpiritPet } from '@/components/gamification/SpiritPet';
 import { MobileNav } from './MobileNav';
 import { AppTour } from '@/components/onboarding/AppTour';
 
-import { useIdentity } from "@/context/IdentityContext";
-import { useTranslation } from 'react-i18next';
+const Sidebar = ({ className }) => {
+    const { t } = useTranslation();
+    const { user, privacyMode, setPrivacyMode } = useIdentity();
+    const { exportData } = useFinance();
 
     return (
         <div className={cn(
