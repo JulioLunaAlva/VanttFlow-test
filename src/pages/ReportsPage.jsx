@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useFinance } from "@/context/FinanceContext";
 import { useIdentity } from "@/context/IdentityContext";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { subMonths, format, startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
+import { subMonths, format } from 'date-fns';
 import { es, enUS, ptBR, fr } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 

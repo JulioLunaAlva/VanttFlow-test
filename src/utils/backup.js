@@ -24,7 +24,7 @@ export const exportData = () => {
             if (value) {
                 try {
                     data[key] = JSON.parse(value);
-                } catch (e) {
+                } catch {
                     data[key] = value;
                 }
             }

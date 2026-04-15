@@ -17,27 +17,32 @@ export const TransactionsPage = () => {
     }, [location]);
 
     return (
-        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4">
-            <div className="flex justify-between items-center glass-card p-6 border-white/10 mb-2">
-                <div>
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('common.transactions')}</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+        <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative z-10">
+                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">{t('common.transactions')}</h2>
+                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                         {t('transactions.manage_desc') || 'Historial y registro de movimientos'}
                     </p>
                 </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-20 md:pb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-24 md:pb-8">
                 <div className={cn(
-                    "lg:col-span-4 transition-all duration-1000",
-                    new URLSearchParams(location.search).get('action') === 'new' && "ring-4 ring-primary ring-offset-4 rounded-[2rem] animate-pulse shadow-[0_0_50px_rgba(var(--primary),0.3)]"
+                    "lg:col-span-4 transition-all duration-1000 relative group",
+                    new URLSearchParams(location.search).get('action') === 'new' && "animate-pulse"
                 )} ref={formRef}>
-                    <div className="glass-card card-glow h-full">
+                    {new URLSearchParams(location.search).get('action') === 'new' && (
+                        <div className="absolute -inset-1 bg-primary/20 blur-2xl rounded-[3rem] -z-10 animate-pulse" />
+                    )}
+                    <div className="glass-premium h-full rounded-[3rem] border-white/10 overflow-hidden active:scale-98 transition-transform duration-500">
                         <TransactionForm />
                     </div>
                 </div>
                 <div className="lg:col-span-8">
-                    <div className="glass-card card-glow h-full">
+                    <div className="glass-premium h-full rounded-[3.5rem] border-white/10 overflow-hidden">
                         <TransactionList />
                     </div>
                 </div>

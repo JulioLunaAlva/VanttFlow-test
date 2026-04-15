@@ -11,9 +11,7 @@ import {
     isSameMonth, 
     isSameDay, 
     addDays, 
-    eachDayOfInterval,
-    parseISO,
-    isEqual
+    eachDayOfInterval
 } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { 
@@ -50,9 +48,12 @@ export const TransactionsCalendarPage = () => {
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
 
+    const startTime = startDate.getTime();
+    const endTime = endDate.getTime();
+
     const calendarDays = useMemo(() => {
         return eachDayOfInterval({ start: startDate, end: endDate });
-    }, [startDate, endDate]);
+    }, [startTime, endTime]);
 
     // Group transactions by date for the calendar view
     const transactionsByDate = useMemo(() => {
@@ -86,21 +87,33 @@ export const TransactionsCalendarPage = () => {
 
     // Header component
     const renderHeader = () => (
-        <div className="flex items-center justify-between glass-card p-6 border-white/10 mb-8">
-            <div className="flex flex-col">
-                <h2 className="text-4xl font-black tracking-tighter capitalize text-foreground">
+        <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-8 group relative overflow-hidden active:scale-95 transition-all duration-500">
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="relative z-10">
+                <h2 className="text-5xl font-black tracking-tighter capitalize text-white drop-shadow-2xl">
                     {format(currentMonth, 'MMMM yyyy', { locale })}
                 </h2>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                     {t('common.calendar_view') || 'Vista de Calendario'}
                 </p>
             </div>
-            <div className="flex items-center gap-3">
-                <Button variant="outline" size="icon" onClick={prevMonth} className="rounded-2xl h-11 w-11 shadow-lg shadow-black/5 hover:bg-primary/10 hover:text-primary transition-all duration-300">
-                    <ChevronLeft size={22} />
+            <div className="flex items-center gap-4 mt-6 md:mt-0 relative z-10">
+                <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={prevMonth} 
+                    className="glass-premium border-white/20 hover:border-primary/50 bg-white/5 text-white h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
+                >
+                    <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform" />
                 </Button>
-                <Button variant="outline" size="icon" onClick={nextMonth} className="rounded-2xl h-11 w-11 shadow-lg shadow-black/5 hover:bg-primary/10 hover:text-primary transition-all duration-300">
-                    <ChevronRight size={22} />
+                <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={nextMonth} 
+                    className="glass-premium border-white/20 hover:border-primary/50 bg-white/5 text-white h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
+                >
+                    <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
             </div>
         </div>
@@ -112,19 +125,20 @@ export const TransactionsCalendarPage = () => {
         const date = startOfWeek(new Date());
         for (let i = 0; i < 7; i++) {
             days.push(
-                <div key={i} className="text-center text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 py-2">
+                <div key={i} className="text-center text-[11px] font-black uppercase tracking-[0.3em] text-white/20 py-4 drop-shadow-sm">
                     {format(addDays(date, i), 'eee', { locale })}
                 </div>
             );
         }
-        return <div className="grid grid-cols-7 mb-2">{days}</div>;
+        return <div className="grid grid-cols-7 mb-4 px-2">{days}</div>;
     };
 
     // Calendar grid
     const renderCells = () => {
         return (
-            <div className="glass-premium rounded-[2rem] overflow-hidden border-white/10 mb-8 shadow-2xl card-glow">
-                <div className="grid grid-cols-7">
+            <div className="glass-premium rounded-[3rem] overflow-hidden border-white/10 mb-10 shadow-3xl relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                <div className="grid grid-cols-7 relative z-10">
                     {calendarDays.map((day) => {
                     const dateStr = format(day, 'yyyy-MM-dd');
                     const dayData = transactionsByDate[dateStr];
@@ -137,41 +151,42 @@ export const TransactionsCalendarPage = () => {
                             key={day.toString()}
                             onClick={() => setSelectedDate(day)}
                             className={cn(
-                                "relative min-h-[80px] xs:min-h-[100px] p-2 bg-background/40 transition-all cursor-pointer select-none group border-r border-b border-border/10 last:border-r-0",
-                                !isCurrentMonth && "bg-muted/5 opacity-10",
-                                isSelected && "bg-primary/10 ring-2 ring-inset ring-primary/40 rounded-xl z-10",
-                                isToday && !isSelected && "bg-accent/10"
+                                "relative min-h-[100px] xs:min-h-[120px] p-4 bg-white/[0.02] transition-all duration-500 cursor-pointer select-none group border-r border-b border-white/5 last:border-r-0 hover:bg-white/[0.05]",
+                                !isCurrentMonth && "bg-black/20 opacity-20 hover:opacity-40",
+                                isSelected && "bg-primary/10 !opacity-100 z-10 shadow-[inset_0_0_20px_rgba(var(--primary),0.2)]",
+                                isToday && !isSelected && "bg-white/[0.08]"
                             )}
                         >
                             <span className={cn(
-                                "text-xs font-bold",
-                                isToday && "text-primary px-1.5 py-0.5 rounded-full bg-primary/10",
-                                !isCurrentMonth && "text-muted-foreground"
+                                "text-sm font-black tracking-tighter drop-shadow-md transition-all duration-500",
+                                isToday && "text-primary px-2.5 py-1 rounded-xl bg-primary/10 shadow-glow",
+                                !isCurrentMonth && "text-white/20",
+                                isSelected && "scale-125 inline-block"
                             )}>
                                 {format(day, 'd')}
                             </span>
 
                             {dayData && (
-                                <div className="mt-auto flex flex-col gap-1">
-                                    <div className="flex flex-wrap gap-0.5">
+                                <div className="mt-4 flex flex-col gap-2">
+                                    <div className="flex flex-wrap gap-1">
                                         {dayData.income > 0 && (
-                                            <div className="w-1 h-1 rounded-full bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.5)]" />
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-glow animate-pulse" />
                                         )}
                                         {dayData.expense > 0 && (
-                                            <div className="w-1 h-1 rounded-full bg-destructive shadow-[0_0_4px_rgba(239,68,68,0.5)]" />
+                                            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-glow" />
                                         )}
                                         {dayData.transfer > 0 && (
-                                            <div className="w-1 h-1 rounded-full bg-blue-500 shadow-[0_0_4px_rgba(59,130,246,0.5)]" />
+                                            <div className="w-1.5 h-1.5 rounded-full bg-primary/50 shadow-glow" />
                                         )}
                                     </div>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col gap-0.5 mt-auto">
                                         {dayData.income > 0 && (
-                                            <span className="text-[8px] font-black text-emerald-600 dark:text-emerald-400 hidden xs:inline">
+                                            <span className="text-[9px] font-black text-emerald-500/80 tracking-tighter hidden sm:inline truncate">
                                                 +{formatCurrency(dayData.income, { compact: true })}
                                             </span>
                                         )}
                                         {dayData.expense > 0 && (
-                                            <span className="text-[8px] font-black text-destructive hidden xs:inline">
+                                            <span className="text-[9px] font-black text-rose-500/80 tracking-tighter hidden sm:inline truncate">
                                                 -{formatCurrency(dayData.expense, { compact: true })}
                                             </span>
                                         )}
@@ -181,12 +196,16 @@ export const TransactionsCalendarPage = () => {
 
                             {/* Active indicator */}
                             {isSelected && (
-                                <div className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-primary" />
+                                <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                             )}
+                            
+                            {/* Hover effect light */}
+                            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10" />
                         </div>
                     );
                 })}
             </div>
+        </div>
         );
     };
 
@@ -194,36 +213,36 @@ export const TransactionsCalendarPage = () => {
         <div className="space-y-6 pb-24 md:pb-0 animate-in fade-in slide-in-from-bottom-4 duration-700 pt-4">
             {renderHeader()}
             
-            <Card className="border-none shadow-none bg-transparent">
-                <CardContent className="p-0">
+            <div className="bg-transparent">
+                <div className="p-0">
                     {renderDaysOfWeek()}
                     {renderCells()}
-                </CardContent>
-            </Card>
+                </div>
+            </div>
 
             {/* Selected Day Details */}
-            <div className="space-y-4">
-                <div className="flex items-center justify-between px-1">
-                    <h3 className="text-lg font-black tracking-tight capitalize">
+            <div className="space-y-6 pt-6">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-4">
+                    <h3 className="text-3xl font-black tracking-tighter capitalize text-white drop-shadow-lg">
                         {isSameDay(selectedDate, new Date()) ? t('common.today') : format(selectedDate, 'eeee d MMMM', { locale })}
                     </h3>
                     <div className="flex gap-4">
                         {selectedDaySummary.income > 0 && (
-                            <div className="flex items-center gap-1.5">
-                                <ArrowUpCircle size={14} className="text-emerald-500" />
-                                <span className="text-xs font-black text-emerald-600">{formatCurrency(selectedDaySummary.income)}</span>
+                            <div className="glass-premium bg-emerald-500/10 border-emerald-500/20 px-6 py-2 rounded-2xl flex items-center gap-3 shadow-glow">
+                                <ArrowUpCircle size={18} className="text-emerald-500" />
+                                <span className="text-sm font-black text-emerald-500 tracking-tighter">{formatCurrency(selectedDaySummary.income)}</span>
                             </div>
                         )}
                         {selectedDaySummary.expense > 0 && (
-                            <div className="flex items-center gap-1.5">
-                                <ArrowDownCircle size={14} className="text-destructive" />
-                                <span className="text-xs font-black text-destructive">{formatCurrency(selectedDaySummary.expense)}</span>
+                            <div className="glass-premium bg-rose-500/10 border-rose-500/20 px-6 py-2 rounded-2xl flex items-center gap-3 shadow-glow">
+                                <ArrowDownCircle size={18} className="text-rose-500" />
+                                <span className="text-sm font-black text-rose-500 tracking-tighter">{formatCurrency(selectedDaySummary.expense)}</span>
                             </div>
                         )}
                     </div>
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-4 px-2">
                     {selectedDateTransactions.length > 0 ? (
                         selectedDateTransactions.map(tx => (
                             <TransactionItem 
@@ -233,11 +252,17 @@ export const TransactionsCalendarPage = () => {
                             />
                         ))
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-12 text-center bg-muted/20 rounded-[2rem] border border-dashed border-border/60">
-                            <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
-                                <CalendarIcon className="text-muted-foreground/40" size={24} />
+                        <div className="text-center py-20 glass-premium rounded-[3rem] border-2 border-dashed border-white/10 mt-4 active:scale-98 transition-all duration-500 flex flex-col items-center justify-center group overflow-hidden relative">
+                            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-white/10 animate-bounce-slow inline-block bg-primary/5 relative z-10">
+                                <CalendarIcon className="mx-auto h-16 w-16 text-white/20 drop-shadow-glow" />
                             </div>
-                            <p className="text-sm font-bold text-muted-foreground/60">{t('transactions.no_movements') || 'Sin movimientos este día'}</p>
+                            <div className="text-center max-w-sm relative z-10 px-6">
+                                <h3 className="text-2xl font-black tracking-tighter text-white/40 mb-2 drop-shadow-2xl">{t('transactions.no_movements') || 'Sin movimientos este día'}</h3>
+                                <p className="text-white/10 font-black uppercase tracking-[0.2em] text-[10px]">
+                                    Selecciona otro día para ver su actividad
+                                </p>
+                            </div>
                         </div>
                     )}
                 </div>

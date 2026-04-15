@@ -6,6 +6,7 @@ import { PieChart as PieChartIcon, TrendingDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useIdentity } from "@/context/IdentityContext";
 import { useTranslation } from 'react-i18next';
+import { cn } from "@/lib/utils";
 export const ExpensePieChart = React.memo(() => {
     const { filteredTransactions, categories } = useFinance();
     const { user } = useIdentity();
@@ -114,51 +115,52 @@ export const ExpensePieChart = React.memo(() => {
         setActiveIndex(null);
     };
     return (
-        <Card className="h-full overflow-hidden border-border/50 bg-gradient-to-br from-card/40 via-card/60 to-card/40 backdrop-blur-xl group transition-all duration-500 hover:shadow-2xl anime:border-2">
-            {/* Decorative gradient orbs */}
-            <div className="absolute -top-24 -left-24 w-48 h-48 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
-            <CardHeader className="relative z-10">
+        <div className="h-full flex flex-col relative group overflow-hidden">
+            {/* Background mystical glow */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[60px] group-hover:bg-rose-500/20 transition-all duration-700" />
+            
+            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-500/20 to-rose-500/10 flex items-center justify-center backdrop-blur-sm border border-rose-500/20">
-                        <TrendingDown className="w-5 h-5 text-rose-500" />
-                    </div>
+                    <span className="p-2 rounded-xl bg-rose-500/10 text-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
+                        <TrendingDown size={20} />
+                    </span>
                     <div>
-                        <CardTitle className="text-base font-black tracking-tight">{t('dashboard.pie_chart.title')}</CardTitle>
-                        <p className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider mt-0.5">
+                        <h3 className="text-xl font-black tracking-tight leading-none">{t('dashboard.pie_chart.title')}</h3>
+                        <p className="text-[10px] font-black text-muted-foreground/40 uppercase tracking-widest mt-1">
                             {t('dashboard.pie_chart.subtitle')}
                         </p>
                     </div>
                 </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
+            </div>
+            
+            <div className="p-6 flex-1 flex flex-col relative z-10">
                 {data.length === 0 ? (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="h-[300px] flex flex-col items-center justify-center text-center space-y-6 p-8"
+                        className="flex-1 flex flex-col items-center justify-center text-center space-y-6"
                     >
-                        <div className="relative">
-                            <div className="absolute inset-0 bg-rose-500/10 blur-2xl rounded-full" />
+                        <div className="relative group/empty">
+                            <div className="absolute inset-0 bg-rose-500/5 blur-[40px] rounded-full group-hover/empty:bg-rose-500/10 transition-all duration-700" />
                             <motion.div
                                 animate={{ rotate: 360 }}
-                                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                                className="relative"
+                                transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                                className="relative p-6 bg-white/5 rounded-full border border-white/10"
                             >
-                                <PieChartIcon className="w-16 h-16 text-foreground/20" strokeWidth={1.5} />
+                                <PieChartIcon className="w-12 h-12 text-muted-foreground/20" strokeWidth={1.5} />
                             </motion.div>
                         </div>
                         <div className="space-y-2">
-                            <p className="text-sm font-black text-foreground/60">{t('dashboard.pie_chart.no_data')}</p>
-                            <p className="text-xs text-foreground/40 max-w-[200px]">
+                            <p className="text-sm font-black uppercase tracking-tight opacity-60">{t('dashboard.pie_chart.no_data')}</p>
+                            <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest max-w-[200px] leading-relaxed">
                                 {t('dashboard.pie_chart.no_data_desc')}
                             </p>
                         </div>
                     </motion.div>
                 ) : (
-                    <div className="space-y-4">
+                    <div className="flex-1 flex flex-col">
                         {/* Chart Container */}
-                        <div className="h-[240px] w-full relative">
+                        <div className="flex-1 min-h-[220px] w-full relative group/chart">
                             <ResponsiveContainer width="100%" height="100%">
                                 <PieChart>
                                     <defs>
@@ -180,87 +182,119 @@ export const ExpensePieChart = React.memo(() => {
                                         data={data}
                                         cx="50%"
                                         cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={90}
-                                        paddingAngle={2}
+                                        innerRadius={70}
+                                        outerRadius={95}
+                                        paddingAngle={4}
                                         dataKey="value"
                                         onMouseEnter={onPieEnter}
                                         onMouseLeave={onPieLeave}
-                                        animationDuration={800}
-                                        animationEasing="ease-out"
+                                        animationDuration={1000}
+                                        animationEasing="ease-in-out"
+                                        stroke="none"
                                     >
                                         {data.map((entry, index) => (
                                             <Cell
                                                 key={`cell-${index}`}
                                                 fill={`url(#gradient-${index})`}
-                                                stroke="none"
-                                                className="transition-all duration-300 hover:opacity-80 outline-none cursor-pointer"
+                                                className="transition-all duration-500 outline-none cursor-pointer drop-shadow-[0_0_8px_rgba(255,255,255,0.05)]"
                                                 style={{
-                                                    filter: activeIndex === index ? 'brightness(1.2)' : 'brightness(1)',
-                                                    transform: activeIndex === index ? 'scale(1.05)' : 'scale(1)',
-                                                    transformOrigin: 'center'
+                                                    filter: activeIndex === index ? 'brightness(1.1) saturate(1.2)' : 'brightness(0.9) saturate(0.8)',
+                                                    opacity: activeIndex !== null && activeIndex !== index ? 0.3 : 1,
                                                 }}
                                             />
                                         ))}
                                     </Pie>
-                                    {/* Tooltip disabled - using center label instead */}
                                 </PieChart>
                             </ResponsiveContainer>
-                            {/* Center label - COMPLETELY REDESIGNED */}
+                            
+                            {/* Center label */}
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="w-[120px] h-[120px] flex items-center justify-center">
+                                <div className="p-4 rounded-full glass-premium border border-white/5 w-32 h-32 flex items-center justify-center shadow-2xl">
                                     <AnimatePresence mode="wait">
                                         {activeIndex !== null ? (
                                             <motion.div
                                                 key={`selected-${activeIndex}`}
-                                                initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: -10 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="text-center w-full px-2"
+                                                initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                                exit={{ opacity: 0, scale: 0.8, y: -10 }}
+                                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                                                className="text-center"
                                             >
-                                                <div className="space-y-1">
-                                                    <p className="text-[8px] font-bold uppercase tracking-widest text-foreground/40 truncate">
-                                                        {data[activeIndex]?.name}
-                                                    </p>
-                                                    <p
-                                                        className="text-2xl font-black tracking-tighter leading-none"
-                                                        style={{ color: data[activeIndex]?.color }}
-                                                    >
-                                                        {formatCurrency(data[activeIndex]?.value)}
-                                                    </p>
-                                                    <p className="text-[9px] font-semibold text-foreground/50">
-                                                        {formatPercent(data[activeIndex]?.value)}
-                                                    </p>
-                                                </div>
+                                                <p className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 truncate max-w-[80px]">
+                                                    {data[activeIndex]?.name}
+                                                </p>
+                                                <p
+                                                    className="text-xl font-black tracking-tighter leading-none my-1"
+                                                    style={{ color: data[activeIndex]?.color }}
+                                                >
+                                                    {formatCurrency(data[activeIndex]?.value)}
+                                                </p>
+                                                <p className="text-[10px] font-black tracking-[0.1em] opacity-40">
+                                                    {formatPercent(data[activeIndex]?.value)}
+                                                </p>
                                             </motion.div>
                                         ) : (
                                             <motion.div
                                                 key="total"
-                                                initial={{ opacity: 0, y: 10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                exit={{ opacity: 0, y: -10 }}
-                                                transition={{ duration: 0.2 }}
+                                                initial={{ opacity: 0, scale: 1.1 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 1.1 }}
                                                 className="text-center"
                                             >
-                                                <div className="space-y-1">
-                                                    <p className="text-[9px] font-bold uppercase tracking-widest text-foreground/40">
-                                                        {t('dashboard.pie_chart.total_label')}
-                                                    </p>
-                                                    <p className="text-2xl font-black tracking-tighter text-rose-500 leading-none">
-                                                        {formatCurrency(total)}
-                                                    </p>
-                                                </div>
+                                                <p className="text-[8px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 mb-1">
+                                                    {t('dashboard.pie_chart.total_label')}
+                                                </p>
+                                                <p className="text-2xl font-black tracking-tighter text-rose-500 leading-none drop-shadow-[0_0_10px_rgba(244,63,94,0.3)]">
+                                                    {formatCurrency(total)}
+                                                </p>
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
                                 </div>
                             </div>
                         </div>
-                        <CustomLegend payload={data} />
+                        
+                        {/* Custom Legend */}
+                        <div className="grid grid-cols-2 gap-3 mt-6">
+                            {data.map((entry, index) => (
+                                <motion.button
+                                    key={`legend-${index}`}
+                                    initial={{ opacity: 0, x: -5 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: index * 0.05 }}
+                                    onClick={() => setActiveIndex(activeIndex === index ? null : index)}
+                                    className={cn(
+                                        "flex items-center gap-3 p-2.5 rounded-2xl border transition-all duration-300",
+                                        activeIndex === index 
+                                            ? "bg-white/10 border-white/20 shadow-lg scale-[1.02]" 
+                                            : "bg-white/5 border-white/5 hover:border-white/10 opacity-70 hover:opacity-100"
+                                    )}
+                                >
+                                    <div
+                                        className="w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-transform duration-500"
+                                        style={{ 
+                                            backgroundColor: entry.color,
+                                            boxShadow: activeIndex === index ? `0 0 15px ${entry.color}40` : 'none',
+                                            transform: activeIndex === index ? 'scale(1.2)' : 'scale(1)'
+                                        }}
+                                    />
+                                    <div className="flex-1 min-w-0 text-left">
+                                        <p className="text-[10px] font-black uppercase tracking-wider text-foreground/80 truncate">
+                                            {entry.name}
+                                        </p>
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-[9px] font-bold opacity-40">{formatPercent(entry.value)}</p>
+                                        </div>
+                                    </div>
+                                </motion.button>
+                            ))}
+                        </div>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+            
+            {/* Background elements */}
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-rose-500/5 rounded-full blur-[100px]" />
+        </div>
     );
 });

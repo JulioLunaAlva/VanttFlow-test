@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cn } from "@/lib/utils";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,20 +53,21 @@ export const ScheduledPage = () => {
     };
 
     return (
-    return (
-        <div className="space-y-8 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
-                <div>
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+        <div className="space-y-10 pb-32 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative z-10">
+                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">
                         {t('scheduled.title')}
                     </h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                         {t('scheduled.subtitle') || 'Automatización De Pagos Recurrentes'}
                     </p>
                 </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="mt-4 md:mt-0 shadow-2xl gap-2 rounded-2xl h-12 font-black px-6 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                        <Button className="mt-6 md:mt-0 glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 relative z-10">
                             <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" /> 
                             {t('scheduled.new_recurrent')}
                         </Button>

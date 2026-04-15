@@ -87,44 +87,68 @@ export const CategoriesPage = () => {
     };
 
     return (
-        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-8">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center glass-card p-6 border-white/10 mb-2">
-                <div>
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('categories.title')}</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">{t('categories.subtitle')}</p>
+        <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-24 md:pb-8">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative z-10">
+                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">{t('categories.title')}</h2>
+                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
+                        {t('categories.subtitle')}
+                    </p>
                 </div>
-                <Button onClick={handleOpenCreate} className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
-                    <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('categories.new_category')}
+                <Button 
+                    onClick={handleOpenCreate} 
+                    className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 group transition-all duration-500 hover:scale-105 active:scale-95 mt-6 md:mt-0"
+                >
+                    <Plus size={22} className="group-hover:rotate-90 transition-transform duration-500 text-primary shadow-glow" /> 
+                    <span className="tracking-tight">{t('categories.new_category')}</span>
                 </Button>
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between glass-card p-4 border-white/5">
-                <div className="flex bg-white/5 p-1 rounded-2xl w-full lg:w-auto border border-white/5">
+            <div className="flex flex-col lg:flex-row gap-8 items-center justify-between glass-premium p-6 rounded-[2.5rem] border-white/5 bg-white/5 backdrop-blur-3xl">
+                <div className="flex bg-black/20 p-1.5 rounded-2xl w-full lg:w-auto border border-white/5 shadow-inner">
                     <button
                         onClick={() => setFilterType('all')}
-                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all", filterType === 'all' ? "glass-premium shadow-xl text-primary" : "text-muted-foreground/40 hover:text-foreground hover:bg-white/5")}
+                        className={cn(
+                            "px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all duration-500", 
+                            filterType === 'all' 
+                                ? "glass-premium bg-primary/20 text-primary shadow-glow" 
+                                : "text-white/20 hover:text-white/40 hover:bg-white/5"
+                        )}
                     >
                         {t('categories.all')}
                     </button>
                     <button
                         onClick={() => setFilterType('income')}
-                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all flex items-center gap-2", filterType === 'income' ? "glass-premium shadow-xl text-emerald-500" : "text-muted-foreground/40 hover:text-emerald-500/60 hover:bg-white/5")}
+                        className={cn(
+                            "px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all duration-500 flex items-center gap-3", 
+                            filterType === 'income' 
+                                ? "glass-premium bg-emerald-500/20 text-emerald-500 shadow-glow" 
+                                : "text-white/20 hover:text-emerald-500/60 hover:bg-white/5"
+                        )}
                     >
-                        <ArrowUpCircle size={14} /> {t('categories.income')}
+                        <ArrowUpCircle size={14} className={cn(filterType === 'income' && "shadow-glow")} /> {t('categories.income')}
                     </button>
                     <button
                         onClick={() => setFilterType('expense')}
-                        className={cn("px-6 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all flex items-center gap-2", filterType === 'expense' ? "glass-premium shadow-xl text-rose-500" : "text-muted-foreground/40 hover:text-rose-500/60 hover:bg-white/5")}
+                        className={cn(
+                            "px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] rounded-xl transition-all duration-500 flex items-center gap-3", 
+                            filterType === 'expense' 
+                                ? "glass-premium bg-rose-500/20 text-rose-500 shadow-glow" 
+                                : "text-white/20 hover:text-rose-500/60 hover:bg-white/5"
+                        )}
                     >
                         <ArrowDownCircle size={14} /> {t('categories.expense')}
                     </button>
                 </div>
-                <div className="relative w-full lg:w-80">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/40" />
+                <div className="relative w-full lg:w-96 group">
+                    <div className="absolute inset-0 bg-primary/5 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20 group-focus-within:text-primary transition-colors" />
                     <Input
                         placeholder={t('categories.search_placeholder')}
-                        className="pl-12 h-12 rounded-2xl bg-white/5 border-white/5 focus-visible:ring-primary focus-visible:border-primary/50 text-sm font-medium"
+                        className="pl-14 h-14 rounded-2xl bg-black/20 border-white/5 focus-visible:ring-primary/50 focus-visible:border-primary/50 text-sm font-black tracking-tight text-white placeholder:text-white/10 border-white/5 shadow-inner"
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
@@ -132,31 +156,35 @@ export const CategoriesPage = () => {
             </div>
 
             {/* Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-8">
                 {filteredCategories.map(category => (
-                    <div key={category.id} className="glass-card card-glow group relative border-white/10 transition-all duration-500 hover:scale-[1.03]">
-                        <div className="p-5 flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="h-14 w-14 rounded-2xl flex items-center justify-center glass-premium border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: `${category.color}20` }}>
-                                    {renderIcon(category.icon, category.color)}
+                    <div key={category.id} className="glass-premium rounded-[2.5rem] border-white/10 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                        <div className="p-8 flex items-center justify-between relative z-10">
+                            <div className="flex items-center gap-6">
+                                <div className="h-16 w-16 rounded-[1.5rem] flex items-center justify-center glass-premium border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: `${category.color}15` }}>
+                                    <div className="transform transition-transform duration-700 group-hover:rotate-[360deg] drop-shadow-glow">
+                                        {renderIcon(category.icon, category.color)}
+                                    </div>
                                 </div>
                                 <div className="min-w-0">
-                                    <h3 className="font-black text-sm tracking-tight truncate mb-1">{category.name}</h3>
-                                    <span className={cn("text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 rounded-full",
-                                        category.type === 'income' ? "bg-emerald-500/10 text-emerald-500" :
-                                            category.type === 'expense' ? "bg-rose-500/10 text-rose-500" :
-                                                "bg-primary/10 text-primary"
+                                    <h3 className="font-black text-lg tracking-tighter text-white truncate mb-1 drop-shadow-md">{category.name}</h3>
+                                    <span className={cn(
+                                        "text-[9px] font-black uppercase tracking-[0.3em] px-3 py-1 rounded-full border shadow-glow",
+                                        category.type === 'income' ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" :
+                                            category.type === 'expense' ? "bg-rose-500/10 text-rose-500 border-rose-500/20" :
+                                                "bg-primary/10 text-primary border-primary/20"
                                     )}>
                                         {category.type === 'income' ? t('categories.income_single') : category.type === 'expense' ? t('categories.expense_single') : t('categories.both')}
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
-                                <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-white/5 rounded-lg" onClick={() => handleOpenEdit(category)}>
-                                    <Edit2 size={14} className="opacity-50" />
+                            <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-4 group-hover:translate-x-0">
+                                <Button variant="ghost" size="icon" className="h-10 w-10 hover:bg-white/10 rounded-xl glass-premium border-white/5" onClick={() => handleOpenEdit(category)}>
+                                    <Edit2 size={16} className="text-white/40 group-hover:text-primary transition-colors" />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-8 w-8 text-rose-500 hover:bg-rose-500/5 rounded-lg" onClick={() => handleDelete(category.id)}>
-                                    <Trash2 size={14} className="opacity-50" />
+                                <Button variant="ghost" size="icon" className="h-10 w-10 text-rose-500 hover:bg-rose-500/10 rounded-xl glass-premium border-white/5" onClick={() => handleDelete(category.id)}>
+                                    <Trash2 size={16} className="opacity-50 group-hover:opacity-100 transition-opacity" />
                                 </Button>
                             </div>
                         </div>

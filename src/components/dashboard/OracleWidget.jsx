@@ -20,58 +20,87 @@ export const OracleWidget = () => {
     };
 
     return (
-        <Card className="h-full border-2 border-indigo-500/20 bg-indigo-50/10 dark:bg-indigo-900/10">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <BrainCircuit className="h-4 w-4 text-indigo-500" />
+        <div className="h-full flex flex-col relative overflow-hidden group">
+            {/* Background mystical glow */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-[60px] group-hover:bg-indigo-500/20 transition-all duration-700" />
+            
+            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+                <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
+                    <span className="p-2 rounded-xl bg-indigo-500/10 text-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                        <BrainCircuit size={20} />
+                    </span>
                     {t('dashboard.oracle.title')}
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
+                </h3>
+            </div>
+            
+            <div className="p-6 flex-1 relative z-10">
                 {!result ? (
-                    <form onSubmit={handleConsult} className="space-y-4">
-                        <p className="text-xs text-muted-foreground">
+                    <form onSubmit={handleConsult} className="space-y-6">
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 leading-relaxed">
                             {t('dashboard.oracle.analysis')}
                         </p>
-                        <div className="flex gap-2">
-                            <Input
-                                type="number"
-                                placeholder={t('dashboard.oracle.ask_placeholder')}
-                                value={amount}
-                                onChange={e => setAmount(e.target.value)}
-                                className="h-9 text-xs"
-                            />
-                            <Button size="sm" type="submit" className="h-9 bg-indigo-600 hover:bg-indigo-700">
-                                <ArrowRight size={16} />
+                        <div className="flex gap-3">
+                            <div className="relative flex-1">
+                                <Input
+                                    type="number"
+                                    placeholder={t('dashboard.oracle.ask_placeholder')}
+                                    value={amount}
+                                    onChange={e => setAmount(e.target.value)}
+                                    className="h-12 bg-white/5 border-white/10 rounded-2xl pl-4 pr-10 font-bold focus:ring-indigo-500/50"
+                                />
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-white/20 uppercase tracking-widest pointer-events-none">
+                                    MXN
+                                </div>
+                            </div>
+                            <Button 
+                                size="icon" 
+                                type="submit" 
+                                className="h-12 w-12 bg-indigo-600 hover:bg-indigo-500 shadow-[0_0_20px_rgba(79,70,229,0.3)] rounded-2xl transition-all hover:scale-105 active:scale-95"
+                            >
+                                <ArrowRight size={20} />
                             </Button>
                         </div>
                     </form>
                 ) : (
-                    <div className="space-y-3 animate-in fade-in zoom-in duration-300">
-                        <div className={`p-3 rounded-lg flex items-start gap-3 ${result.status === 'safe' ? 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-200' :
-                            result.status === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200' :
-                                'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200'
-                            }`}>
-                            {result.status === 'safe' ? <ThumbsUp className="mt-0.5 shrink-0" size={18} /> :
-                                result.status === 'warning' ? <AlertTriangle className="mt-0.5 shrink-0" size={18} /> :
-                                    <ThumbsDown className="mt-0.5 shrink-0" size={18} />}
-
-                            <div className="space-y-1">
-                                <p className="text-xs font-bold leading-none">
-                                    {result.status === 'safe' ? t('dashboard.oracle.verdict_safe') :
-                                        result.status === 'warning' ? t('dashboard.oracle.verdict_warn') :
-                                            t('dashboard.oracle.verdict_danger')}
-                                </p>
-                                <p className="text-[10px] leading-tight opacity-90">
-                                    {t(result.messageKey)}
-                                </p>
+                    <div className="space-y-4 animate-in fade-in zoom-in duration-500">
+                        <div className={`p-5 rounded-[2rem] border relative overflow-hidden ${
+                            result.status === 'safe' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-500' :
+                            result.status === 'warning' ? 'bg-amber-500/5 border-amber-500/20 text-amber-500' :
+                            'bg-rose-500/5 border-rose-500/20 text-rose-500'
+                        }`}>
+                            <div className="flex items-start gap-4 relative z-10">
+                                <div className={`p-3 rounded-2xl shadow-lg border ${
+                                    result.status === 'safe' ? 'bg-emerald-500/10 border-emerald-500/20' :
+                                    result.status === 'warning' ? 'bg-amber-500/10 border-amber-500/20' :
+                                    'bg-rose-500/10 border-rose-500/20'
+                                }`}>
+                                    {result.status === 'safe' ? <ThumbsUp size={24} /> :
+                                        result.status === 'warning' ? <AlertTriangle size={24} /> :
+                                            <ThumbsDown size={24} />}
+                                </div>
+                                <div className="space-y-1 pt-1">
+                                    <h4 className="font-black text-lg tracking-tight uppercase">
+                                        {result.status === 'safe' ? t('dashboard.oracle.verdict_safe') :
+                                            result.status === 'warning' ? t('dashboard.oracle.verdict_warn') :
+                                                t('dashboard.oracle.verdict_danger')}
+                                    </h4>
+                                    <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-relaxed">
+                                        {t(result.messageKey)}
+                                    </p>
+                                </div>
                             </div>
+                            
+                            {/* Inner glow */}
+                            <div className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full blur-[40px] opacity-20 ${
+                                result.status === 'safe' ? 'bg-emerald-500' :
+                                result.status === 'warning' ? 'bg-amber-500' :
+                                'bg-rose-500'
+                            }`} />
                         </div>
 
                         <Button
-                            variant="ghost"
-                            size="sm"
-                            className="w-full h-7 text-xs text-muted-foreground hover:text-foreground"
+                            variant="secondary"
+                            className="w-full h-12 rounded-2xl bg-white/5 border-white/10 font-bold text-[10px] uppercase tracking-widest hover:bg-white/10"
                             onClick={() => {
                                 setResult(null);
                                 setAmount('');
@@ -81,7 +110,7 @@ export const OracleWidget = () => {
                         </Button>
                     </div>
                 )}
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 };

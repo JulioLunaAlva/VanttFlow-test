@@ -31,61 +31,78 @@ export const RecentActivityWidget = () => {
         }).format(amount);
     };
     return (
-        <Card className="h-full flex flex-col">
-            <CardHeader className="pb-3 flex flex-row items-center justify-between">
-                <CardTitle className="text-lg font-medium">{t('dashboard.activity')}</CardTitle>
-                <Button variant="link" className="text-xs h-auto p-0" onClick={() => navigate('/transactions')}>
+        <div className="h-full flex flex-col">
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <h3 className="text-xl font-black tracking-tight">{t('dashboard.activity')}</h3>
+                <Button 
+                    variant="ghost" 
+                    className="text-[10px] h-auto p-2 font-black uppercase text-primary hover:bg-primary/10 rounded-xl" 
+                    onClick={() => navigate('/transactions')}
+                >
                     {t('dashboard.view_all')}
                 </Button>
-            </CardHeader>
-            <CardContent className="flex-1 overflow-auto">
-                <div className="space-y-4">
+            </div>
+            <div className="p-6 flex-1 overflow-y-auto custom-scrollbar">
+                <div className="space-y-6">
                     {recentTransactions.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-8 text-center space-y-2 opacity-40">
-                            <div className="w-12 h-12 bg-slate-200 dark:bg-slate-800 rounded-full flex items-center justify-center mb-2">
-                                <ArrowUpRight size={20} className="rotate-45" />
+                        <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+                            <div className="w-16 h-16 bg-white/5 rounded-[2rem] flex items-center justify-center border border-white/10 shadow-inner">
+                                <ArrowUpRight size={32} className="rotate-45 text-muted-foreground/30" />
                             </div>
-                            <p className="text-sm font-medium">{t('dashboard.no_activity')}</p>
-                            <p className="text-xs text-muted-foreground">{t('dashboard.activity_hint')}</p>
+                            <div>
+                                <p className="font-black text-sm tracking-tight">{t('dashboard.no_activity')}</p>
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-60 mt-1">{t('dashboard.activity_hint')}</p>
+                            </div>
                         </div>
                     ) : (
-                        recentTransactions.map(t => (
-                            <div key={t.id} className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <div className={`p-1.5 rounded-full ${t.type === 'income' ? 'bg-green-100 text-green-600' :
-                                        t.type === 'expense' ? 'bg-red-100 text-red-600' :
-                                            'bg-blue-100 text-blue-600'
-                                        }`}>
-                                        {t.type === 'income' ? <ArrowUpRight size={14} /> :
-                                            t.type === 'expense' ? <ArrowDownLeft size={14} /> :
-                                                <ArrowRightLeft size={14} />}
+                        recentTransactions.map(t => {
+                            const category = categories.find(c => c.id === t.category);
+                            return (
+                                <div key={t.id} className="group relative flex items-center justify-between p-1">
+                                    <div className="flex items-center gap-4">
+                                        <div className={cn(
+                                            "w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110 border",
+                                            t.type === 'income' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
+                                            t.type === 'expense' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
+                                            'bg-blue-500/10 text-blue-500 border-blue-500/20'
+                                        )}>
+                                            {t.type === 'income' ? <ArrowUpRight size={22} strokeWidth={2.5} /> :
+                                                t.type === 'expense' ? <ArrowDownLeft size={22} strokeWidth={2.5} /> :
+                                                    <ArrowRightLeft size={22} strokeWidth={2.5} />}
+                                        </div>
+                                        <div className="min-w-0">
+                                            <p className="font-black text-lg tracking-tight truncate group-hover:text-primary transition-colors leading-none">{t.description}</p>
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
+                                                    {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}
+                                                </span>
+                                                {category && (
+                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
+                                                        <div 
+                                                            className="w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor]" 
+                                                            style={{ backgroundColor: category.color, color: category.color }} 
+                                                        />
+                                                        <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/80">{category.name}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="font-bold text-sm tracking-tight truncate leading-tight group-hover:text-primary transition-colors">{t.description}</p>
-                                        <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/60 mt-1 flex items-center gap-1.5">
-                                            {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}
-                                            {t.category && (
-                                                <>
-                                                    <span className="w-1 h-1 rounded-full bg-border" />
-                                                    <span
-                                                        className="w-2 h-2 rounded-full inline-block"
-                                                        style={{ backgroundColor: categories.find(c => c.id === t.category)?.color || '#ccc' }}
-                                                    />
-                                                </>
-                                            )}
-                                        </p>
+                                    <div className="text-right">
+                                        <span className={cn(
+                                            "text-xl font-black tracking-tighter block",
+                                            t.type === 'income' ? 'text-emerald-500' :
+                                            t.type === 'expense' ? 'text-rose-500' : 'text-blue-500'
+                                        )}>
+                                            {t.type === 'expense' ? '-' : '+'}{formatCurrency(t.amount)}
+                                        </span>
                                     </div>
                                 </div>
-                                <span className={`text-sm font-semibold ${t.type === 'income' ? 'text-green-600' :
-                                    t.type === 'expense' ? 'text-red-600' : 'text-blue-600'
-                                    }`}>
-                                    {t.type === 'expense' ? '-' : '+'}{formatCurrency(t.amount)}
-                                </span>
-                            </div>
-                        ))
+                            );
+                        })
                     )}
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 };

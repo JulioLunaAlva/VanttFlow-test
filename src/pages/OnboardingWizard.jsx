@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 export const OnboardingWizard = () => {
     const { t } = useTranslation();
     const { register } = useIdentity();
-    const { addAccount, updateAccount } = useFinance();
+    const { updateAccount } = useFinance();
     const { setSelectedPet } = useGamification();
     const navigate = useNavigate();
 

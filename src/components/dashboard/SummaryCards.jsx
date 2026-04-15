@@ -20,61 +20,78 @@ export const SummaryCards = React.memo(() => {
     };
 
     return (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-8">
-            <div id="tour-balance" className="glass-card card-glow p-6 group">
-                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.total_balance')}</p>
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/20">
-                        <DollarSign className="h-6 w-6 text-primary" />
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-12">
+            {/* Total Balance Card */}
+            <div id="tour-balance" className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(var(--primary),0.15)] border-white/5 active:scale-[0.98]">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
+                
+                <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/40 leading-none group-hover:text-primary transition-colors duration-500">{t('summary.total_balance')}</p>
+                            <div className="flex items-center gap-2 mt-3">
+                                <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
+                                <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">{t('summary.current_status')}</span>
+                            </div>
+                        </div>
+                        <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/20 group-hover:rotate-6">
+                            <DollarSign className="h-7 w-7 text-primary" />
+                        </div>
                     </div>
-                </div>
-                <div className="mt-4">
-                    <div className="text-3xl md:text-5xl font-black tracking-tighter text-foreground drop-shadow-sm">
+                    
+                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-foreground drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                     </div>
-                    <div className="flex items-center gap-2 mt-4">
-                        <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                            {t('summary.current_status')}
-                        </p>
-                    </div>
                 </div>
             </div>
-            <div className="glass-card card-glow p-6 group">
-                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.income')}</p>
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-emerald-500/20">
-                        <ArrowUpCircle className="h-6 w-6 text-emerald-500" />
+
+            {/* Income Card */}
+            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(16,185,129,0.15)] border-white/5 active:scale-[0.98]">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition-all duration-700" />
+                
+                <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/40 leading-none group-hover:text-emerald-500 transition-colors duration-500">{t('summary.income')}</p>
+                            <div className="flex items-center gap-2 mt-3">
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+                                <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">{t('summary.total_in')}</span>
+                            </div>
+                        </div>
+                        <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-emerald-500/20 group-hover:rotate-6">
+                            <ArrowUpCircle className="h-7 w-7 text-emerald-500" />
+                        </div>
                     </div>
-                </div>
-                <div className="mt-4">
-                    <div className="text-2xl md:text-4xl font-black tracking-tighter text-emerald-600 dark:text-emerald-400 drop-shadow-sm">
+                    
+                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(income)}</PrivacyBlur>
                     </div>
-                    <div className="flex items-center gap-2 mt-4">
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                            {t('summary.total_in')}
-                        </p>
-                    </div>
                 </div>
             </div>
-            <div className="glass-card card-glow p-6 group">
-                <div className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('summary.expense')}</p>
-                    <div className="w-12 h-12 rounded-2xl bg-destructive/10 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:bg-destructive/20">
-                        <ArrowDownCircle className="h-6 w-6 text-destructive" />
+
+            {/* Expense Card */}
+            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(244,63,94,0.15)] border-white/5 active:scale-[0.98]">
+                <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[60px] group-hover:bg-rose-500/20 transition-all duration-700" />
+                
+                <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/40 leading-none group-hover:text-rose-500 transition-colors duration-500">{t('summary.expense')}</p>
+                            <div className="flex items-center gap-2 mt-3">
+                                <span className="h-1.5 w-1.5 rounded-full bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.5)]" />
+                                <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">{t('summary.total_out')}</span>
+                            </div>
+                        </div>
+                        <div className="w-14 h-14 rounded-2xl bg-rose-500/10 flex items-center justify-center border border-rose-500/20 shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:bg-rose-500/20 group-hover:-rotate-6">
+                            <ArrowDownCircle className="h-7 w-7 text-rose-500" />
+                        </div>
                     </div>
-                </div>
-                <div className="mt-4">
-                    <div className="text-2xl md:text-4xl font-black tracking-tighter text-destructive dark:text-red-400 drop-shadow-sm">
+                    
+                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-rose-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(expense)}</PrivacyBlur>
-                    </div>
-                    <div className="flex items-center gap-2 mt-4">
-                        <div className="h-1.5 w-1.5 rounded-full bg-destructive" />
-                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">
-                            {t('summary.total_out')}
-                        </p>
                     </div>
                 </div>
             </div>

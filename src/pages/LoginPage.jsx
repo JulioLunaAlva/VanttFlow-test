@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { cn } from "@/lib/utils";
 import { useIdentity } from '@/context/IdentityContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";

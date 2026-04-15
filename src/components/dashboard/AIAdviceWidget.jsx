@@ -44,78 +44,101 @@ export const AIAdviceWidget = () => {
     }, []);
 
     return (
-        <Card className="overflow-hidden border-primary/20 bg-gradient-to-br from-primary/5 via-transparent to-indigo-500/5 backdrop-blur-xl group">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle className="text-sm font-black uppercase tracking-widest flex items-center gap-2">
-                    <Sparkles className={cn(hasKey ? "text-primary animate-pulse" : "text-muted-foreground")} size={16} />
-                    VanttAI Advisor
-                    {!hasKey && <span className="text-[10px] text-red-500 font-bold ml-2">Offline</span>}
-                </CardTitle>
+        <div className="h-full flex flex-col relative group overflow-hidden">
+            {/* Background mystical glow */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
+            
+            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+                <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
+                    <span className={cn(
+                        "p-2 rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-110",
+                        hasKey ? "bg-primary/10 text-primary animate-pulse" : "bg-muted/10 text-muted-foreground"
+                    )}>
+                        <Sparkles size={20} />
+                    </span>
+                    <span className="flex items-center gap-2">
+                        VanttAI Advisor
+                        {!hasKey && <span className="text-[10px] bg-red-500/10 text-red-500 px-2 py-0.5 rounded-full font-black uppercase tracking-widest border border-red-500/20">Offline</span>}
+                    </span>
+                </h3>
                 <Button 
-                    variant="ghost" 
+                    variant="secondary" 
                     size="icon" 
-                    className="h-8 w-8 rounded-full hover:bg-primary/10" 
+                    className="h-10 w-10 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:text-primary transition-all active:scale-95" 
                     onClick={fetchAdvice}
                     disabled={isLoading}
                 >
-                    <RefreshCw size={14} className={isLoading ? "animate-spin" : ""} />
+                    <RefreshCw size={18} className={isLoading ? "animate-spin" : ""} />
                 </Button>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <AnimatePresence mode="wait">
-                    {isLoading ? (
-                        <motion.div 
-                            key="loading"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="space-y-3 py-4"
-                        >
-                            <div className="h-4 bg-muted animate-pulse rounded w-3/4" />
-                            <div className="h-4 bg-muted animate-pulse rounded w-5/6" />
-                        </motion.div>
-                    ) : advice.length > 0 ? (
-                        <motion.div 
-                            key="content"
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="space-y-3"
-                        >
-                            {advice.map((item, index) => (
-                                <div key={index} className="flex gap-3 items-start p-3 rounded-2xl bg-background/50 border border-border/40 hover:border-primary/30 transition-colors">
-                                    <div className={`p-2 rounded-xl ${index === 0 ? "bg-amber-500/10" : "bg-blue-500/10"}`}>
-                                        {index === 0 ? <Lightbulb size={16} className="text-amber-500" /> : <TrendingDown size={16} className="text-blue-500" />}
+            </div>
+            
+            <div className="p-6 flex-1 flex flex-col relative z-10">
+                <div className="flex-1">
+                    <AnimatePresence mode="wait">
+                        {isLoading ? (
+                            <motion.div 
+                                key="loading"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="space-y-4 py-4"
+                            >
+                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-3/4 border border-white/5" />
+                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-5/6 border border-white/5" />
+                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-2/3 border border-white/5" />
+                            </motion.div>
+                        ) : advice.length > 0 ? (
+                            <motion.div 
+                                key="content"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="space-y-4"
+                            >
+                                {advice.map((item, index) => (
+                                    <div key={index} className="group/item flex gap-4 items-start p-4 rounded-[2rem] bg-white/5 border border-white/5 hover:border-primary/20 hover:bg-white/10 transition-all duration-300">
+                                        <div className={cn(
+                                            "p-3 rounded-2xl shadow-lg transition-transform duration-500 group-hover/item:scale-110",
+                                            index === 0 ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : "bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                                        )}>
+                                            {index === 0 ? <Lightbulb size={20} /> : <TrendingDown size={20} />}
+                                        </div>
+                                        <p className="text-xs font-bold leading-relaxed italic opacity-80 group-hover/item:opacity-100 transition-opacity">
+                                            "{item}"
+                                        </p>
                                     </div>
-                                    <p className="text-xs font-medium leading-relaxed italic">
-                                        "{item}"
-                                    </p>
+                                ))}
+                            </motion.div>
+                        ) : (
+                            <div className="py-12 text-center space-y-4">
+                                <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-white/10 relative">
+                                    <Wallet className="text-muted-foreground/30" size={32} />
+                                    <div className="absolute inset-0 bg-primary/5 rounded-full blur-[20px] -z-10" />
                                 </div>
-                            ))}
-                        </motion.div>
-                    ) : (
-                        <div className="py-8 text-center space-y-2 opacity-50">
-                            <Wallet className="mx-auto h-8 w-8 mb-2" />
-                            <p className="text-[10px] font-bold uppercase tracking-widest">
-                                Registra más movimientos para recibir consejos
-                            </p>
-                        </div>
-                    )}
-                </AnimatePresence>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40 max-w-[180px] mx-auto leading-relaxed">
+                                    Registra más movimientos para recibir consejos personalizados
+                                </p>
+                            </div>
+                        )}
+                    </AnimatePresence>
+                </div>
                 
-                <div className="pt-2">
-                    <div className="h-1 w-full bg-muted rounded-full overflow-hidden">
+                <div className="mt-8 pt-4 border-t border-white/10">
+                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
                         <motion.div 
-                            className="h-full bg-primary"
+                            className="h-full bg-gradient-to-r from-primary/40 via-primary to-primary/40"
                             initial={{ width: "0%" }}
                             animate={{ width: "100%" }}
-                            transition={{ duration: 10, repeat: Infinity }}
+                            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
                         />
                     </div>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/40 mt-2 text-right">
-                        Powered by Gemini 1.5 Flash
+                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-muted-foreground/30 mt-3 text-center">
+                        Intelligence Core: Gemini 1.5 Flash
                     </p>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+
+            {/* Background elements */}
+            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/5 rounded-full blur-[100px]" />
+        </div>
     );
 };

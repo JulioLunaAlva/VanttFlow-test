@@ -11,7 +11,7 @@ import { Select } from "@/components/ui/select";
 import { toast } from 'sonner';
 
 export const ImportPage = () => {
-    const { addTransactions, accounts, categories } = useFinance();
+    const { addTransactions, accounts } = useFinance();
     const [step, setStep] = useState(1); // 1: Upload, 2: Map, 3: Preview
     const [file, setFile] = useState(null);
     const [csvData, setCsvData] = useState([]); // Array of Arrays

@@ -127,20 +127,22 @@ export const GoalsPage = () => {
     };
 
     return (
-        <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-card p-6 border-white/10 mb-2">
-                <div>
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground">
+        <div className="space-y-10 pb-24 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                <div className="relative z-10">
+                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">
                         {t('goals.title')}
                     </h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                         {t('goals.subtitle')}
                     </p>
                 </div>
 
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button size="lg" className="shadow-2xl gap-2 rounded-2xl h-12 font-black px-8 group transition-all duration-500 scale-100 hover:scale-105 active:scale-95 shadow-primary/20">
+                        <Button size="lg" className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 mt-6 md:mt-0 relative z-10">
                             <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('goals.new_goal')}
                         </Button>
                     </DialogTrigger>
@@ -210,75 +212,76 @@ export const GoalsPage = () => {
                 </Dialog>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                 {goals && goals.map(goal => {
                     const progress = goal.targetAmount > 0 ? (goal.currentSaved / goal.targetAmount) * 100 : 0;
                     const isCompleted = progress >= 100;
 
                     return (
                         <div key={goal.id} className={cn(
-                            "glass-card card-glow relative overflow-hidden transition-all duration-500 hover:scale-[1.02] border-white/10",
-                            isCompleted ? "bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent border-yellow-500/30" : ""
+                            "glass-premium rounded-[3rem] relative overflow-hidden transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] border-white/10 group",
+                            isCompleted ? "bg-yellow-500/5 border-yellow-500/20" : ""
                         )}>
                             {isCompleted && (
-                                <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-500/10 rounded-full blur-3xl animate-pulse" />
+                                <div className="absolute -top-8 -right-8 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl animate-pulse" />
                             )}
+                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
 
-                            <div className="p-6 pb-2 flex flex-row items-center justify-between space-y-0">
-                                <div className="text-xl font-black tracking-tighter truncate flex items-center gap-3">
+                            <div className="p-8 pb-4 flex flex-row items-center justify-between space-y-0 relative z-10">
+                                <div className="text-xl font-black tracking-tighter truncate flex items-center gap-4">
                                     <div className={cn(
-                                        "w-12 h-12 rounded-2xl flex items-center justify-center shadow-2xl border border-white/10",
-                                        isCompleted ? "bg-yellow-500/20 text-yellow-500" : "bg-primary/10 text-primary"
+                                        "w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-2xl border",
+                                        isCompleted ? "bg-yellow-500/20 text-yellow-500 border-yellow-500/20 shadow-glow" : "bg-primary/10 text-primary border-primary/20"
                                     )}>
-                                        {isCompleted ? <Trophy size={24} /> : <Target size={24} />}
+                                        {isCompleted ? <Trophy size={26} /> : <Target size={26} />}
                                     </div>
-                                    <span className="truncate">{goal.name}</span>
+                                    <span className="truncate text-white drop-shadow-lg">{goal.name}</span>
                                 </div>
                                 <div className="flex gap-1">
-                                    <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:bg-white/5 rounded-xl" onClick={() => handleEdit(goal)}>
+                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-white/30 hover:text-white hover:bg-white/5 rounded-xl" onClick={() => handleEdit(goal)}>
                                         <Edit2 size={16} />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-red-500 hover:bg-red-500/5 rounded-xl" onClick={() => deleteGoal(goal.id)}>
+                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-white/30 hover:text-rose-500 hover:bg-rose-500/5 rounded-xl" onClick={() => deleteGoal(goal.id)}>
                                         <Trash2 size={16} />
                                     </Button>
                                 </div>
                             </div>
-                            <div className="p-6 pt-4">
+                            <div className="p-8 pt-4 relative z-10">
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-end">
                                         <div>
-                                            <p className="text-3xl font-bold tracking-tight">
+                                            <p className="text-3xl font-black tracking-tighter text-white drop-shadow-lg">
                                                 {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.currentSaved)}
                                             </p>
-                                            <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold mt-1">
+                                            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black mt-2">
                                                 {t('goals.target_label', { amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.targetAmount) })}
                                             </p>
                                         </div>
                                         <div className="text-right">
-                                            <span className={cn("text-2xl font-bold", isCompleted ? "text-yellow-600 dark:text-yellow-400" : "text-primary")}>
+                                            <span className={cn("text-3xl font-black tracking-tighter", isCompleted ? "text-yellow-500 drop-shadow-glow" : "text-primary")}>
                                                 {progress.toFixed(0)}%
                                             </span>
                                         </div>
                                     </div>
 
                                     {/* Custom Progress Bar */}
-                                    <div className="h-3 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
+                                    <div className="h-4 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[3px]">
                                         <div
                                             className={cn(
-                                                "h-full transition-all duration-1000 ease-out relative rounded-full shadow-[0_0_15px_rgba(var(--primary),0.3)]",
-                                                isCompleted ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]" : "bg-gradient-to-r from-primary to-blue-400"
+                                                "h-full transition-all duration-1000 ease-out relative rounded-full",
+                                                isCompleted ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-glow" : "bg-gradient-to-r from-primary to-blue-400 shadow-glow"
                                             )}
                                             style={{ width: `${Math.min(progress, 100)}%` }}
                                         >
-                                            <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                                            <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
                                         </div>
                                     </div>
 
                                     <div className="pt-2">
                                         <Button
                                             className={cn(
-                                                "w-full font-semibold shadow-md transition-transform active:scale-95",
-                                                isCompleted ? "bg-yellow-500 hover:bg-yellow-600 text-black" : ""
+                                                "w-full font-black shadow-xl transition-all active:scale-95 rounded-2xl h-14 text-[10px] uppercase tracking-[0.2em]",
+                                                isCompleted ? "bg-yellow-500 hover:bg-yellow-400 text-black shadow-glow" : "glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white"
                                             )}
                                             onClick={() => openAddFunds(goal)}
                                         >
@@ -291,23 +294,26 @@ export const GoalsPage = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
                     );
                 })}
 
                 {(!goals || goals.length === 0) && (
-                        <div className="col-span-full py-20 flex flex-col items-center justify-center text-center glass-card border-dashed border-white/10">
-                            <div className="glass-premium p-8 rounded-[2rem] mb-6 shadow-2xl border-white/10 animate-bounce-slow">
-                                <Target className="w-16 h-16 text-primary drop-shadow-lg" />
+                        <div className="col-span-full py-24 flex flex-col items-center justify-center text-center glass-premium border-dashed border-2 border-white/10 rounded-[3rem] group overflow-hidden relative">
+                            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-white/10 animate-bounce-slow inline-block bg-primary/5 relative z-10">
+                                <Target className="w-16 h-16 text-primary drop-shadow-glow" />
                             </div>
-                            <h3 className="text-2xl font-black tracking-tighter mb-2">{t('goals.no_goals')}</h3>
-                            <p className="text-muted-foreground max-w-sm mb-8 font-medium">
-                                {t('goals.no_goals_desc')}
-                            </p>
-                            <Button size="lg" className="rounded-2xl h-12 px-8 font-black shadow-xl shadow-primary/20" onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
+                            <div className="relative z-10">
+                                <h3 className="text-3xl font-black tracking-tighter text-white/40 mb-3 drop-shadow-2xl">{t('goals.no_goals')}</h3>
+                                <p className="text-white/20 max-w-sm mb-8 font-black text-[10px] uppercase tracking-[0.2em]">
+                                    {t('goals.no_goals_desc')}
+                                </p>
+                                <Button size="lg" className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white rounded-2xl h-14 px-10 font-black shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500" onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
+                            </div>
                         </div>
                     )}
                 </div>
-            </div>
         </div>
     );
 };

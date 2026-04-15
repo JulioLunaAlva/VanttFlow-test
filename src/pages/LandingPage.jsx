@@ -10,7 +10,7 @@ export const LandingPage = () => {
     const navigate = useNavigate();
     const { user } = useIdentity();
 
-    const [activeFeature, setActiveFeature] = React.useState(0);
+    const [, setActiveFeature] = React.useState(0);
     const features = [
         {
             icon: Shield,

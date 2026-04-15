@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useFinance } from '@/context/FinanceContext';
-import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';

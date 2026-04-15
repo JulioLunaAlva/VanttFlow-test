@@ -168,10 +168,10 @@ export const DashboardPage = () => {
 
     return (
         <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-0">
-            <div className="flex justify-between items-center glass-card p-6 border-white/10">
-                <div>
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground">{t('common.dashboard')}</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 mt-1">
+            <div className="flex justify-between items-center glass-premium p-8 rounded-[2.5rem] border-white/10 mb-8 mt-4 group">
+                <div className="relative z-10">
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('common.dashboard')}</h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
                         {isEditMode
                             ? (window.innerWidth < 768 ? t('dashboard.edit_mode_touch') : t('dashboard.edit_mode_drag'))
                             : t('dashboard.activity_desc')}
@@ -182,14 +182,14 @@ export const DashboardPage = () => {
                         variant={isEditMode ? "default" : "outline"}
                         size="sm"
                         onClick={() => setIsEditMode(!isEditMode)}
-                        className="gap-2 rounded-2xl font-bold h-11 px-6 shadow-lg shadow-primary/10"
+                        className="gap-3 rounded-2xl font-black uppercase tracking-widest h-12 px-8 shadow-2xl transition-all active:scale-95 border-white/10"
                     >
-                        {isEditMode ? <Check size={18} /> : <Settings2 size={18} />}
+                        {isEditMode ? <Check size={18} className="text-white" /> : <Settings2 size={18} />}
                         {isEditMode ? t('dashboard.finish_edit') : t('dashboard.customize')}
                     </Button>
                     {isEditMode && (
-                        <Button variant="ghost" size="icon" onClick={resetLayout} title="Restablecer original" className="rounded-2xl h-11 w-11 hover:bg-white/5">
-                            <RotateCcw size={18} />
+                        <Button variant="ghost" size="icon" onClick={resetLayout} title="Restablecer original" className="rounded-2xl h-12 w-12 hover:bg-white/10 hover:text-primary transition-all">
+                            <RotateCcw size={20} />
                         </Button>
                     )}
                 </div>
@@ -215,20 +215,20 @@ export const DashboardPage = () => {
                             id={widgetId === 'goals' ? 'tour-goals' : widgetId === 'gamification' ? 'tour-gamification' : widgetId === 'balance' ? 'tour-analytics' : undefined}
                             className={`
                                 ${widgetConfig.className} 
-                                relative group transition-all duration-500 glass-card card-glow
-                                ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card z-50 scale-105 shadow-2xl' : ''}
-                                ${draggedItem === index ? 'opacity-50' : ''}
+                                relative group transition-all duration-700
+                                ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card/80 backdrop-blur-3xl z-50 scale-105 shadow-[0_0_80px_rgba(var(--primary),0.3)] rounded-[2.5rem]' : ''}
+                                ${draggedItem === index ? 'opacity-30 scale-95 blur-[4px]' : ''}
                                 ${!visibility[widgetId] && isEditMode ? 'opacity-40 grayscale blur-[2px]' : ''}
                             `}
                         >
                             {/* Edit Overlay / Handle - Visible only in Edit Mode */}
                             {isEditMode && (
                                 <div className="absolute inset-0 bg-background/50 backdrop-blur-[1px] rounded-xl flex flex-col items-center justify-center z-50 border-2 border-dashed border-primary/50 pointer-events-none p-4">
-                                    <div className="absolute top-2 right-2 pointer-events-auto">
+                                    <div className="absolute top-4 right-4 pointer-events-auto">
                                         <Button
                                             size="icon"
                                             variant={visibility[widgetId] ? "secondary" : "destructive"}
-                                            className="h-8 w-8 rounded-full shadow-lg"
+                                            className="h-10 w-10 rounded-full shadow-2xl border border-white/10 transition-all hover:scale-110 active:scale-90"
                                             onClick={() => toggleVisibility(widgetId)}
                                             title={visibility[widgetId] ? "Ocultar" : "Mostrar"}
                                         >
