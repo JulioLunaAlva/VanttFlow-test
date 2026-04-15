@@ -288,10 +288,9 @@ export const GoalsPage = () => {
                                                 <span className="flex items-center gap-2"><Rocket size={16} /> {t('goals.add_funds')}</span>
                                             )}
                                         </Button>
-                                    </div>
                                 </div>
-                            </CardContent>
-                        </Card>
+                            </div>
+                        </div>
                     );
                 })}
 
