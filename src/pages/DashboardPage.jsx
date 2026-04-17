@@ -45,19 +45,19 @@ const WelcomeHeader = () => {
 };
 
 const WIDGETS_CONFIG = [
-    { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2' },
-    { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2' },
-    { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2' },
-    { id: 'accounts_breakdown', component: AccountsWidget, labelKey: 'dashboard.accounts_breakdown', className: 'lg:col-span-2 md:col-span-2' },
-    { id: 'oracle', component: OracleWidget, labelKey: 'dashboard.oracle', className: 'lg:col-span-2 md:col-span-2' },
-    { id: 'activity', component: RecentActivityWidget, labelKey: 'dashboard.activity', className: 'lg:col-span-3 md:col-span-2' },
-    { id: 'expenses', component: ExpensePieChart, labelKey: 'dashboard.expenses', className: 'lg:col-span-4 md:col-span-2' },
-    { id: 'goals', component: GoalsSummaryWidget, labelKey: 'dashboard.goals_progress', className: 'lg:col-span-3 md:col-span-2' },
-    { id: 'gamification', component: GamificationWidget, labelKey: 'dashboard.gamification', className: 'lg:col-span-4 md:col-span-2' },
-    { id: 'saving', component: SavingPowerWidget, labelKey: 'dashboard.saving', className: 'lg:col-span-3 md:col-span-2' },
-    { id: 'missions', component: DailyMissionsWidget, labelKey: 'dashboard.missions', className: 'lg:col-span-4 md:col-span-2' },
-    { id: 'market', component: MarketTrendsWidget, labelKey: 'dashboard.market', className: 'lg:col-span-3 md:col-span-2' },
-    { id: 'pending', component: PendingPaymentsWidget, labelKey: 'dashboard.pending', className: 'lg:col-span-7 md:col-span-2' }
+    { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'col-span-1 md:col-span-2 lg:col-span-8' },
+    { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'col-span-1 md:col-span-1 lg:col-span-4' },
+    { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'col-span-1 md:col-span-1 lg:col-span-4' },
+    { id: 'accounts_breakdown', component: AccountsWidget, labelKey: 'dashboard.accounts_breakdown', className: 'col-span-1 md:col-span-2 lg:col-span-8' },
+    { id: 'oracle', component: OracleWidget, labelKey: 'dashboard.oracle', className: 'col-span-1 md:col-span-2 lg:col-span-12' },
+    { id: 'activity', component: RecentActivityWidget, labelKey: 'dashboard.activity', className: 'col-span-1 md:col-span-2 lg:col-span-6' },
+    { id: 'expenses', component: ExpensePieChart, labelKey: 'dashboard.expenses', className: 'col-span-1 md:col-span-2 lg:col-span-6' },
+    { id: 'goals', component: GoalsSummaryWidget, labelKey: 'dashboard.goals_progress', className: 'col-span-1 md:col-span-2 lg:col-span-12' },
+    { id: 'gamification', component: GamificationWidget, labelKey: 'dashboard.gamification', className: 'col-span-1 md:col-span-2 lg:col-span-12' },
+    { id: 'saving', component: SavingPowerWidget, labelKey: 'dashboard.saving', className: 'col-span-1 md:col-span-1 lg:col-span-6' },
+    { id: 'missions', component: DailyMissionsWidget, labelKey: 'dashboard.missions', className: 'col-span-1 md:col-span-1 lg:col-span-6' },
+    { id: 'market', component: MarketTrendsWidget, labelKey: 'dashboard.market', className: 'col-span-1 md:col-span-2 lg:col-span-12' },
+    { id: 'pending', component: PendingPaymentsWidget, labelKey: 'dashboard.pending', className: 'col-span-1 md:col-span-2 lg:col-span-12' }
 ];
 
 export const DashboardPage = () => {
