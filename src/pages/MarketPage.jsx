@@ -14,7 +14,8 @@ import {
     Search,
     Filter,
     ArrowRight,
-    Zap
+    Zap,
+    Sparkles
 } from 'lucide-react';
 import {
     AreaChart,

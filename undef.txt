@@ -1,0 +1,12 @@
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 46: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 53: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 53: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 54: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 70: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 70: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 87: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 108: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 110: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 115: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\accounts\AccountManager.jsx line 118: 't' is not defined.
+no-undef error in C:\Users\jluna\.gemini\antigravity\scratch\VanttFlow-test-main\src\components\dashboard\MarketTrendsWidget.jsx line 35: 'Gem' is not defined.

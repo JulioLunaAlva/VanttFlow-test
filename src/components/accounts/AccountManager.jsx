@@ -5,7 +5,9 @@ import { useFinance } from "@/context/FinanceContext";
 import { Wallet, Plus, Trash2, Edit2, CreditCard } from 'lucide-react';
 import { AccountForm } from './AccountForm';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { useTranslation } from 'react-i18next';
 export const AccountManager = () => {
+    const { t } = useTranslation();
     const { accounts, addAccount, updateAccount, deleteAccount } = useFinance();
     const [open, setOpen] = useState(false);
     const [editingAccount, setEditingAccount] = useState(null);

@@ -2,7 +2,7 @@ import React from 'react';
 import { useGamification } from '@/context/GamificationContext';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
-import { CheckCircle2, Circle, Target, Receipt } from 'lucide-react';
+import { CheckCircle2, Circle, Target, Receipt, Sparkles } from 'lucide-react';
 const ICON_MAP = {
     Receipt,
     Target,
