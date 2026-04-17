@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { MonthSelector } from './MonthSelector';
 import { ModeToggle } from "@/components/ui/ModeToggle";
 import { useFinance } from "@/context/FinanceContext";
+import { useIdentity } from "@/context/IdentityContext";
+import { useTranslation } from 'react-i18next';
 import { LevelProgress } from '@/components/gamification/LevelProgress';
 import { SpiritPet } from '@/components/gamification/SpiritPet';
 import { MobileNav } from './MobileNav';
