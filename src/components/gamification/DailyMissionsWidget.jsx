@@ -2,13 +2,10 @@ import React from 'react';
 import { useGamification } from '@/context/GamificationContext';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
-import { CheckCircle2, Circle, Sparkles, Trophy, Target, Receipt, PieChart, CalendarClock, BarChart3 } from 'lucide-react';
+import { CheckCircle2, Circle, Target, Receipt } from 'lucide-react';
 const ICON_MAP = {
     Receipt,
     Target,
-    PieChart,
-    CalendarClock,
-    BarChart3,
 };
 import { useTranslation } from 'react-i18next';
 
