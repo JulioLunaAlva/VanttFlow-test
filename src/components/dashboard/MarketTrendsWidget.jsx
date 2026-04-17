@@ -1,7 +1,7 @@
 import React from 'react';
 import { useMarket } from '@/context/MarketContext';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { TrendingUp, TrendingDown, DollarSign, Coins, Gem } from 'lucide-react';
+import { TrendingUp, TrendingDown, DollarSign, Coins, Gem, CandlestickChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 
