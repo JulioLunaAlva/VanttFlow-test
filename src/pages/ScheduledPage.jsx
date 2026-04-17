@@ -12,6 +12,7 @@ import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { useTranslation } from 'react-i18next';
 import { useIdentity } from "@/context/IdentityContext";
+import { Label } from "@/components/ui/label";
 
 export const ScheduledPage = () => {
     const { t, i18n } = useTranslation();

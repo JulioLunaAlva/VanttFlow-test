@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, DollarSign, Coins, Gem, CandlestickChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export const MarketTrendsWidget = () => {
     const { t } = useTranslation();
