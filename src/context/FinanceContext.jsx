@@ -899,7 +899,6 @@ export const FinanceProvider = ({ children }) => {
         netWorthHistory,
         getForecast,
         getVanttScore,
-        getAIRecommendations,
         getSpendingAnalysis,
         simulatePurchase,
         addInstallments,
