@@ -63,7 +63,7 @@ export const SubscriptionsPage = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">{t('subscriptions.title')}</h2>
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{t('subscriptions.title')}</h2>
                     <div className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                         {t('subscriptions.subtitle')}
@@ -185,7 +185,7 @@ export const SubscriptionsPage = () => {
                                 </div>
                             </div>
                             <div className="p-8 relative z-10">
-                                <div className="text-5xl font-black tracking-tighter text-white mb-6 drop-shadow-2xl">
+                                <div className="text-3xl md:text-4xl font-black tracking-tighter text-white mb-6 drop-shadow-2xl">
                                     {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
                                 </div>
                                 <div className="flex items-center justify-between">

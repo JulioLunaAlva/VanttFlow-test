@@ -23,10 +23,13 @@ export const TransactionItem = ({ transaction, onEdit }) => {
     return (
         <div className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 transition-colors bg-card/30 backdrop-blur-sm">
             <div className="flex items-center gap-4">
-                <div className={`p-2 rounded-full ${t.type === 'income' ? 'bg-green-100 text-green-600 dark:bg-emerald-500/20 dark:text-emerald-400' :
-                    t.type === 'expense' ? 'bg-red-100 text-red-600 dark:bg-destructive/20 dark:text-red-400' :
-                        'bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400'
-                    }`}>
+                <div className={`p-2 rounded-full flex-shrink-0 ${
+                    t.type === 'income' 
+                        ? 'bg-primary/10 text-primary' 
+                        : t.type === 'expense' 
+                            ? 'bg-destructive/10 text-destructive' 
+                            : 'bg-blue-500/10 text-blue-500'
+                }`}>
                     {t.type === 'income' ? <ArrowUpRight size={20} /> :
                         t.type === 'expense' ? <ArrowDownLeft size={20} /> :
                             <ArrowRightLeft size={20} />}
@@ -37,7 +40,7 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                         <span>{format(parseLocalDateStr(t.date), 'dd MMM', { locale: es })}</span>
                         <span>•</span>
                         {t.type === 'transfer' ? (
-                            <span className="flex items-center gap-1 font-bold text-blue-600 dark:text-blue-400">
+                            <span className="flex items-center gap-1 font-bold text-blue-500">
                                 {getAccountName(t.accountId)} <ArrowRightLeft size={10} /> {getAccountName(t.targetAccountId)}
                             </span>
                         ) : (
@@ -47,7 +50,7 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                             <TransactionImageViewer
                                 attachment={t.attachment}
                                 trigger={
-                                    <button className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors cursor-pointer ml-1 active:scale-95">
+                                    <button className="flex items-center gap-1 text-primary hover:text-primary/80 transition-colors cursor-pointer ml-1 active:scale-95">
                                         <ImageIcon size={14} />
                                     </button>
                                 }
@@ -71,10 +74,13 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                 </div>
             </div>
             <div className="flex items-center gap-3">
-                <span className={`font-black text-sm ${t.type === 'income' ? 'text-green-600 dark:text-emerald-400' :
-                    t.type === 'expense' ? 'text-red-600 dark:text-red-400' :
-                        'text-blue-600 dark:text-blue-400'
-                    }`}>
+                <span className={`font-black text-sm ${
+                    t.type === 'income' 
+                        ? 'text-primary' 
+                        : t.type === 'expense' 
+                            ? 'text-destructive' 
+                            : 'text-blue-500'
+                }`}>
                     {t.type === 'income' ? '+' : t.type === 'expense' ? '-' : ''}{formatCurrency(t.amount)}
                 </span>
                 <div className="flex gap-0.5">

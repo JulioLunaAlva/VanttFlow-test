@@ -69,7 +69,7 @@ export const BudgetPage = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
                         {t('budget.title') || 'Mi Presupuesto'}
                     </h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
@@ -100,7 +100,7 @@ export const BudgetPage = () => {
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}</div>
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}</div>
                         <p className="text-[11px] font-black text-primary/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
                             {t('budget.monthly_planning')}
@@ -117,7 +117,7 @@ export const BudgetPage = () => {
                         <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/40">{t('budget.accumulated_consumption')}</p>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalSpent)}</div>
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalSpent)}</div>
                         <div className="mt-8 space-y-4">
                             <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
                                 <span className="text-white/20">Progreso General</span>

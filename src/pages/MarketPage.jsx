@@ -112,7 +112,7 @@ export const MarketPage = () => {
                                 <TrendingUp size={30} />
                             </div>
                             <div>
-                                <h2 className="text-5xl font-black tracking-tighter text-white">Mercado & Intel</h2>
+                                <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white">Mercado & Intel</h2>
                                 <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-1">Global Financial Monitor v2.5</p>
                             </div>
                         </div>

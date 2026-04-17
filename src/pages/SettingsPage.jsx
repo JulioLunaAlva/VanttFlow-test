@@ -105,15 +105,15 @@ export const SettingsPage = () => {
     };
 
     const validateBackupData = (data) => {
-        if (!data || typeof data !== 'object') return false;
-        // Check for required root structure
-        const requiredKeys = ['identity', 'transactions', 'categories', 'accounts'];
-        if (!requiredKeys.every(key => Object.prototype.hasOwnProperty.call(data, key))) return false;
-        if (!data.identity.name || !data.identity.pin) return false;
-        if (!Array.isArray(data.transactions)) return false;
-        if (!Array.isArray(data.categories)) return false;
-        if (!Array.isArray(data.accounts)) return false;
-        return true;
+        if (!data || typeof data !== 'object') return { valid: false, reason: 'El archivo no es un JSON válido' };
+        // Accept either 'transactions' (v1.2) or 'finance_data' (older backup.js format)
+        const hasTransactions = Array.isArray(data.transactions) || Array.isArray(data.finance_data);
+        if (!hasTransactions) return { valid: false, reason: 'No se encontraron transacciones en el archivo' };
+        if (!Array.isArray(data.categories)) return { valid: false, reason: 'No se encontraron categorías' };
+        if (!Array.isArray(data.accounts)) return { valid: false, reason: 'No se encontraron cuentas' };
+        // Identity is optional for partial backups, but if present, must have at least a name
+        if (data.identity && typeof data.identity !== 'object') return { valid: false, reason: 'Campo de identidad inválido' };
+        return { valid: true };
     };
 
     const handleImport = (e) => {
@@ -125,15 +125,19 @@ export const SettingsPage = () => {
             try {
                 const data = JSON.parse(event.target.result);
 
-                if (!validateBackupData(data)) {
-                    toast.error(t('settings.import_invalid_format') || 'Formato de archivo inválido o corrupto');
+                const { valid, reason } = validateBackupData(data);
+                if (!valid) {
+                    toast.error(`${t('settings.import_invalid_format') || 'Formato de archivo inválido'}: ${reason}`);
                     return;
                 }
 
                 if (confirm(t('settings.import_confirm'))) {
+                    // Support both v1.2 (transactions) and older format (finance_data key from backup.js)
+                    const transactions = data.transactions || data.finance_data || [];
+                    
                     // Start atomic-like update by verifying keys first
                     const backupKeys = {
-                        'finance_transactions': data.transactions,
+                        'finance_transactions': transactions,
                         'finance_categories': data.categories,
                         'finance_accounts': data.accounts,
                         'finance_scheduled': data.scheduledPayments || [],
@@ -141,9 +145,13 @@ export const SettingsPage = () => {
                         'finance_budgets': data.budgets || [],
                         'finance_goals': data.goals || [],
                         'market_data_real': data.market || null,
-                        'vantt_identity': data.identity,
                         'vantt_privacy_mode': data.privacyMode ?? false
                     };
+
+                    // Only restore identity if it exists in backup and has required fields
+                    if (data.identity && data.identity.name) {
+                        backupKeys['vantt_identity'] = data.identity;
+                    }
 
                     // Gamification
                     if (data.gamification) {
@@ -164,12 +172,12 @@ export const SettingsPage = () => {
                         }
                     });
 
-                    toast.success(t('settings.import_success'));
+                    toast.success(`${t('settings.import_success')} — ${transactions.length} transacciones restauradas`);
                     setTimeout(() => window.location.reload(), 1500);
                 }
             } catch (error) {
                 console.error('Import error:', error);
-                toast.error(t('settings.import_error'));
+                toast.error(`${t('settings.import_error')}: ${error.message}`);
             }
         };
         reader.readAsText(file);
@@ -181,7 +189,7 @@ export const SettingsPage = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-5xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
                         {t('settings.title')}
                     </h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">

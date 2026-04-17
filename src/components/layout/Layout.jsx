@@ -14,6 +14,25 @@ import { SpiritPet } from '@/components/gamification/SpiritPet';
 import { MobileNav } from './MobileNav';
 import { AppTour } from '@/components/onboarding/AppTour';
 
+// Route label map for dynamic sub-header title
+const ROUTE_LABELS = {
+    '/': { title: 'dashboard.title', subtitle: 'dashboard.subtitle' },
+    '/transactions': { title: 'common.transactions', subtitle: 'transactions.manage_desc' },
+    '/analytics': { title: 'common.analytics', subtitle: null },
+    '/market': { title: 'common.market', subtitle: null },
+    '/budget': { title: 'common.budget', subtitle: null },
+    '/goals': { title: 'common.goals', subtitle: null },
+    '/calendar': { title: 'common.calendar', subtitle: null },
+    '/notes': { title: 'common.notes', subtitle: null },
+    '/scheduled': { title: 'common.scheduled', subtitle: null },
+    '/accounts': { title: 'common.cards', subtitle: null },
+    '/subscriptions': { title: 'common.subscriptions', subtitle: null },
+    '/categories': { title: 'common.categories', subtitle: null },
+    '/import': { title: 'common.import', subtitle: null },
+    '/settings': { title: 'settings.title', subtitle: null },
+    '/reports': { title: 'common.reports', subtitle: null },
+};
+
 const Sidebar = ({ className }) => {
     const { t } = useTranslation();
     const { user, privacyMode, setPrivacyMode } = useIdentity();
@@ -187,27 +206,39 @@ export const Layout = ({ children }) => {
 
                 <div className="hidden xl:flex h-20 px-8 items-center justify-between border-b border-border/40">
                     <div className="flex flex-col">
-                        <h2 className="font-black text-2xl tracking-tighter">{t('dashboard.title')}</h2>
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest -mt-1 opacity-60">{t('dashboard.subtitle')}</span>
+                        <h2 className="font-black text-2xl tracking-tighter">
+                            {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
+                        </h2>
+                        {ROUTE_LABELS[location.pathname]?.subtitle && (
+                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest -mt-1 opacity-60">
+                                {t(ROUTE_LABELS[location.pathname].subtitle)}
+                            </span>
+                        )}
                     </div>
                     <div className="flex items-center gap-6">
                         <MonthSelector />
                     </div>
                 </div>
 
-                {/* Mobile Tablet Header Sub-Nav - More spacing and clarity */}
-                <div className="xl:hidden p-5 pb-4 border-b border-border/10 bg-muted/20">
+                {/* Mobile Tablet Header Sub-Nav - Dynamic section title */}
+                <div className="xl:hidden p-4 pb-3 border-b border-border/10 bg-muted/20">
                     <div className="flex items-center justify-between gap-4">
-                        <div className="flex flex-col">
-                            <h2 className="font-black text-base tracking-tight">{t('dashboard.title')}</h2>
-                            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">General</p>
+                        <div className="flex flex-col min-w-0">
+                            <h2 className="font-black text-base tracking-tight truncate">
+                                {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
+                            </h2>
+                            {ROUTE_LABELS[location.pathname]?.subtitle && (
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 truncate">
+                                    {t(ROUTE_LABELS[location.pathname].subtitle)}
+                                </p>
+                            )}
                         </div>
                         <MonthSelector />
                     </div>
                 </div>
 
-                <main className="flex-1 p-4 lg:p-10 overflow-auto bg-muted/5 scroll-smooth-mobile">
-                    <div className="max-w-7xl mx-auto h-full">
+                <main className="flex-1 p-4 lg:p-10 overflow-auto overflow-x-hidden bg-muted/5 scroll-smooth-mobile">
+                    <div className="max-w-7xl mx-auto h-full min-w-0">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={location.pathname}
@@ -215,7 +246,7 @@ export const Layout = ({ children }) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.2, ease: "easeOut" }}
-                                className="h-full"
+                                className="h-full min-w-0"
                             >
                                 {children}
                             </motion.div>

@@ -168,16 +168,16 @@ export const DashboardPage = () => {
 
     return (
         <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-0">
-            <div className="flex justify-between items-center glass-premium p-8 rounded-[2.5rem] border-white/10 mb-8 mt-4 group">
-                <div className="relative z-10">
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('common.dashboard')}</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mt-3 opacity-60 group-hover:opacity-100 transition-opacity">
+            <div className="flex justify-between items-center gap-4 mb-8 mt-4">
+                <div className="relative z-10 min-w-0">
+                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground drop-shadow-sm truncate">{t('common.dashboard')}</h2>
+                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
                         {isEditMode
                             ? (window.innerWidth < 768 ? t('dashboard.edit_mode_touch') : t('dashboard.edit_mode_drag'))
                             : t('dashboard.activity_desc')}
                     </p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-3 flex-shrink-0">
                     <Button
                         variant={isEditMode ? "default" : "outline"}
                         size="sm"
