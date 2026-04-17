@@ -32,10 +32,10 @@ const WelcomeHeader = () => {
                     <span className="text-4xl md:text-6xl drop-shadow-lg">🚀</span>
                 </div>
                 <div className="text-center md:text-left space-y-3">
-                    <h3 className="text-3xl md:text-5xl font-black tracking-tighter text-foreground leading-tight">
+                    <h3 className="text-2xl md:text-4xl font-black tracking-tighter text-foreground leading-tight">
                         {t('dashboard.welcome_title')}
                     </h3>
-                    <p className="text-muted-foreground text-sm md:text-lg max-w-2xl font-medium leading-relaxed">
+                    <p className="text-muted-foreground text-sm md:text-base max-w-2xl font-medium leading-relaxed">
                         {t('dashboard.welcome_desc')}
                     </p>
                 </div>
@@ -45,18 +45,18 @@ const WelcomeHeader = () => {
 };
 
 const WIDGETS_CONFIG = [
-    { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
-    { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
-    { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
-    { id: 'accounts_breakdown', component: AccountsWidget, labelKey: 'dashboard.accounts_breakdown', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
-    { id: 'oracle', component: OracleWidget, labelKey: 'dashboard.oracle', className: 'lg:col-span-2 md:col-span-2 h-[350px]' },
-    { id: 'activity', component: RecentActivityWidget, labelKey: 'dashboard.activity', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
-    { id: 'expenses', component: ExpensePieChart, labelKey: 'dashboard.expenses', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
-    { id: 'goals', component: GoalsSummaryWidget, labelKey: 'dashboard.goals_progress', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
-    { id: 'gamification', component: GamificationWidget, labelKey: 'dashboard.gamification', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
-    { id: 'saving', component: SavingPowerWidget, labelKey: 'dashboard.saving', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
-    { id: 'missions', component: DailyMissionsWidget, labelKey: 'dashboard.missions', className: 'lg:col-span-4 md:col-span-2 h-[350px]' },
-    { id: 'market', component: MarketTrendsWidget, labelKey: 'dashboard.market', className: 'lg:col-span-3 md:col-span-2 h-[350px]' },
+    { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'lg:col-span-4 md:col-span-2' },
+    { id: 'forecast', component: ForecastWidget, labelKey: 'dashboard.forecast', className: 'lg:col-span-3 md:col-span-2' },
+    { id: 'vanttscore', component: VanttScoreWidget, labelKey: 'dashboard.vanttscore', className: 'lg:col-span-2 md:col-span-2' },
+    { id: 'accounts_breakdown', component: AccountsWidget, labelKey: 'dashboard.accounts_breakdown', className: 'lg:col-span-2 md:col-span-2' },
+    { id: 'oracle', component: OracleWidget, labelKey: 'dashboard.oracle', className: 'lg:col-span-2 md:col-span-2' },
+    { id: 'activity', component: RecentActivityWidget, labelKey: 'dashboard.activity', className: 'lg:col-span-3 md:col-span-2' },
+    { id: 'expenses', component: ExpensePieChart, labelKey: 'dashboard.expenses', className: 'lg:col-span-4 md:col-span-2' },
+    { id: 'goals', component: GoalsSummaryWidget, labelKey: 'dashboard.goals_progress', className: 'lg:col-span-3 md:col-span-2' },
+    { id: 'gamification', component: GamificationWidget, labelKey: 'dashboard.gamification', className: 'lg:col-span-4 md:col-span-2' },
+    { id: 'saving', component: SavingPowerWidget, labelKey: 'dashboard.saving', className: 'lg:col-span-3 md:col-span-2' },
+    { id: 'missions', component: DailyMissionsWidget, labelKey: 'dashboard.missions', className: 'lg:col-span-4 md:col-span-2' },
+    { id: 'market', component: MarketTrendsWidget, labelKey: 'dashboard.market', className: 'lg:col-span-3 md:col-span-2' },
     { id: 'pending', component: PendingPaymentsWidget, labelKey: 'dashboard.pending', className: 'lg:col-span-7 md:col-span-2' }
 ];
 
@@ -216,7 +216,8 @@ export const DashboardPage = () => {
                             className={`
                                 ${widgetConfig.className} 
                                 relative group transition-all duration-700
-                                ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card/80 backdrop-blur-3xl z-50 scale-105 shadow-[0_0_80px_rgba(var(--primary),0.3)] rounded-[2.5rem]' : ''}
+                                glass-premium rounded-[2.5rem] border-white/10 overflow-hidden min-h-[320px] h-full flex flex-col
+                                ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card/80 backdrop-blur-3xl z-50 scale-105 shadow-[0_0_80px_rgba(var(--primary),0.3)]' : ''}
                                 ${draggedItem === index ? 'opacity-30 scale-95 blur-[4px]' : ''}
                                 ${!visibility[widgetId] && isEditMode ? 'opacity-40 grayscale blur-[2px]' : ''}
                             `}

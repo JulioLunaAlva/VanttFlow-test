@@ -90,13 +90,13 @@ export const TransactionsCalendarPage = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-8 group relative overflow-hidden active:scale-95 transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative z-10">
-                <h2 className="text-5xl font-black tracking-tighter capitalize text-white drop-shadow-2xl">
+                <h2 className="text-3xl md:text-4xl font-black tracking-tighter capitalize text-white drop-shadow-2xl">
                     {format(currentMonth, 'MMMM yyyy', { locale })}
                 </h2>
-                <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
+                <div className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                     {t('common.calendar_view') || 'Vista de Calendario'}
-                </p>
+                </div>
             </div>
             <div className="flex items-center gap-4 mt-6 md:mt-0 relative z-10">
                 <Button 
