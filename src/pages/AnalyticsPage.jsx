@@ -399,10 +399,10 @@ export const AnalyticsPage = () => {
                                         <div className="w-14 h-14 shrink-0 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-border/30 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
                                             <TrendingUp size={24} className="shadow-glow" />
                                         </div>
-                                        <div className="min-w-0">
-                                            <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block truncate">{cat.name}</span>
-                                            <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-1 block truncate">{t('analytics.monthly_spend')}</span>
-                                        </div>
+                                            <div className="min-w-0 flex-1 pr-2">
+                                                <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block break-words whitespace-normal leading-tight">{cat.name}</span>
+                                                <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-2 block break-words whitespace-normal leading-tight">{t('analytics.monthly_spend')}</span>
+                                            </div>
                                     </div>
                                     <div className="text-right shrink-0 ml-4">
                                         <span className="font-black text-2xl tracking-tighter text-foreground block drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
