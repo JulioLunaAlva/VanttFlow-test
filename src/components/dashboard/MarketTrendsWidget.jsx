@@ -51,7 +51,7 @@ export const MarketTrendsWidget = () => {
 
     if (loading && marketData.usdMxn.price) {
         return (
-            <div className="h-full flex flex-col items-center justify-center p-6 bg-white/5 border border-white/10 rounded-[2rem] animate-pulse">
+            <div className="h-full flex flex-col items-center justify-center p-6 bg-foreground/5 border border-border/30 rounded-[2rem] animate-pulse">
                 <CandlestickChart className="text-muted-foreground/20 animate-bounce" size={40} />
             </div>
         );
@@ -62,7 +62,7 @@ export const MarketTrendsWidget = () => {
             {/* Background mystical glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg transition-transform duration-500 group-hover:scale-110">
                         <CandlestickChart size={20} />
@@ -80,7 +80,7 @@ export const MarketTrendsWidget = () => {
                         <div key={idx} className="flex items-center justify-between group/row">
                             <div className="flex items-center gap-4">
                                 <div className={cn(
-                                    "p-3 rounded-2xl transition-all duration-500 group-hover/row:scale-110 shadow-lg border border-white/5",
+                                    "p-3 rounded-2xl transition-all duration-500 group-hover/row:scale-110 shadow-lg border border-border/30",
                                     item.bg, 
                                     item.color
                                 )}>
@@ -106,7 +106,7 @@ export const MarketTrendsWidget = () => {
                     ))}
                 </div>
                 
-                <div className="mt-8 p-5 rounded-[2rem] glass-premium border border-white/10 relative overflow-hidden group/tip group-hover:border-primary/30 transition-all duration-500">
+                <div className="mt-8 p-5 rounded-[2rem] glass-premium border border-border/30 relative overflow-hidden group/tip group-hover:border-primary/30 transition-all duration-500">
                     {/* Inner glow for the tip */}
                     <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/tip:opacity-100 transition-opacity duration-700" />
                     

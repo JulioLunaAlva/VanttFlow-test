@@ -66,7 +66,7 @@ export const LevelProgress = ({ variant = 'full', showTitle = true, className })
                     <div className="absolute inset-0 bg-[linear-gradient(110deg,transparent_25%,rgba(255,255,255,0.3)_45%,rgba(255,255,255,0.3)_55%,transparent_75%)] bg-[length:200%_100%] animate-[shimmer_3s_infinite]" />
 
                     {/* Leading glow flare */}
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-white/20 blur-xl animate-pulse" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-foreground/20 blur-xl animate-pulse" />
                 </div>
             </div>
 

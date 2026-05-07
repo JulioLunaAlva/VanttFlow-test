@@ -37,7 +37,7 @@ export const GamificationWidget = React.memo(() => {
             <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[80px] pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] pointer-events-none opacity-30 group-hover:opacity-60 transition-opacity duration-700" />
 
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)]">
                         <Sword size={20} />
@@ -77,7 +77,7 @@ export const GamificationWidget = React.memo(() => {
                     <LevelProgress showTitle={false} />
                 </div>
 
-                <div className="mt-auto pt-8 border-t border-white/5">
+                <div className="mt-auto pt-8 border-t border-border/30">
                     <div className="flex items-center justify-between text-[11px] mb-6">
                         <span className="text-muted-foreground/40 font-black uppercase tracking-[0.3em]">{t('dashboard.ach_tracker')}</span>
                         <Dialog>
@@ -88,9 +88,9 @@ export const GamificationWidget = React.memo(() => {
                                     <ChevronRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                                 </button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-md glass-premium border-white/10 shadow-[0_0_80px_rgba(var(--primary),0.1)]">
+                            <DialogContent className="max-w-md glass-premium border-border/30 shadow-[0_0_80px_rgba(var(--primary),0.1)]">
                                 <DialogHeader>
-                                    <DialogTitle className="text-3xl font-black tracking-tighter text-white mb-2">{t('dashboard.trophy_room')}</DialogTitle>
+                                    <DialogTitle className="text-3xl font-black tracking-tighter text-foreground mb-2">{t('dashboard.trophy_room')}</DialogTitle>
                                     <DialogDescription className="text-sm font-bold text-muted-foreground/60 uppercase tracking-widest">
                                         {t('dashboard.trophy_desc')}
                                     </DialogDescription>
@@ -104,8 +104,8 @@ export const GamificationWidget = React.memo(() => {
                                                 className={cn(
                                                     "flex items-center gap-6 p-5 rounded-[2rem] border transition-all duration-500 relative overflow-hidden group/item",
                                                     ach.unlocked
-                                                        ? "bg-white/5 border-primary/20 hover:bg-white/10 active:scale-[0.98]"
-                                                        : "bg-white/5 border-white/5 opacity-30 grayscale blur-[1px]"
+                                                        ? "bg-foreground/5 border-primary/20 hover:bg-foreground/10 active:scale-[0.98]"
+                                                        : "bg-foreground/5 border-border/30 opacity-30 grayscale blur-[1px]"
                                                 )}
                                             >
                                                 {ach.unlocked && (
@@ -114,8 +114,8 @@ export const GamificationWidget = React.memo(() => {
                                                 <div className={cn(
                                                     "w-14 h-14 rounded-2xl flex items-center justify-center relative transition-transform duration-500 group-hover/item:scale-110 shadow-2xl",
                                                     ach.unlocked
-                                                        ? "bg-gradient-to-br from-primary to-indigo-600 text-white border border-white/10"
-                                                        : "bg-white/5 text-muted-foreground"
+                                                        ? "bg-gradient-to-br from-primary to-indigo-600 text-foreground border border-border/30"
+                                                        : "bg-foreground/5 text-muted-foreground"
                                                 )}>
                                                     {ach.unlocked ? (
                                                         <>
@@ -153,7 +153,7 @@ export const GamificationWidget = React.memo(() => {
                                             "w-full h-full rounded-2xl flex items-center justify-center transition-all duration-500 relative group/icon shadow-lg",
                                             ach.unlocked
                                                 ? 'bg-gradient-to-br from-amber-500/10 to-orange-500/5 text-amber-500 border border-amber-500/20 hover:border-amber-500/50 hover:scale-110 active:scale-95'
-                                                : 'bg-white/5 text-muted-foreground/20 border border-white/5 opacity-40 grayscale blur-[0.5px]',
+                                                : 'bg-foreground/5 text-muted-foreground/20 border border-border/30 opacity-40 grayscale blur-[0.5px]',
                                             selectedArch === ach.id && "ring-2 ring-primary ring-offset-4 ring-offset-background scale-110 bg-primary/10"
                                         )}
                                     >
@@ -161,21 +161,21 @@ export const GamificationWidget = React.memo(() => {
 
                                         {/* Status Dot */}
                                         {ach.unlocked && (
-                                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] border border-white/20" />
+                                            <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] border border-border/50" />
                                         )}
                                     </button>
 
                                     {/* Custom Tooltip */}
                                     {selectedArch === ach.id && (
-                                        <div className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 w-56 glass-premium border border-white/10 p-4 rounded-[2rem] shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-300">
+                                        <div className="absolute bottom-full mb-4 left-1/2 -translate-x-1/2 w-56 glass-premium border border-border/30 p-4 rounded-[2rem] shadow-2xl z-50 animate-in fade-in zoom-in-95 duration-300">
                                             <div className="flex items-center gap-3 mb-2">
-                                                <div className={cn("p-2 rounded-xl shadow-lg", ach.unlocked ? "bg-amber-500/10 text-amber-500" : "bg-white/5 text-muted-foreground")}>
+                                                <div className={cn("p-2 rounded-xl shadow-lg", ach.unlocked ? "bg-amber-500/10 text-amber-500" : "bg-foreground/5 text-muted-foreground")}>
                                                     <Icon size={16} />
                                                 </div>
                                                 <p className="text-[10px] font-black uppercase text-foreground tracking-[0.2em] leading-tight">{t(`dashboard.achievements.${ach.id}_name`)}</p>
                                             </div>
                                             <p className="text-[11px] text-muted-foreground/60 font-bold leading-relaxed italic">"{t(`dashboard.achievements.${ach.id}_desc`)}"</p>
-                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900/95 rotate-45 border-r border-b border-white/10" />
+                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900/95 rotate-45 border-r border-b border-border/30" />
                                         </div>
                                     )}
                                 </div>

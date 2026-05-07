@@ -16,7 +16,7 @@ export class ErrorBoundary extends React.Component {
             return (
                 <div className="p-8 bg-red-50 text-red-900 h-screen overflow-auto">
                     <h1 className="text-2xl font-bold mb-4">Algo salió mal :(</h1>
-                    <details className="whitespace-pre-wrap font-mono text-sm bg-white p-4 border rounded">
+                    <details className="whitespace-pre-wrap font-mono text-sm bg-card p-4 border rounded">
                         <summary className="cursor-pointer mb-2 font-semibold">Ver detalle del error</summary>
                         {this.state.error && this.state.error.toString()}
                         <br />
@@ -24,7 +24,7 @@ export class ErrorBoundary extends React.Component {
                     </details>
                     <button
                         onClick={() => window.location.reload()}
-                        className="mt-6 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                        className="mt-6 px-4 py-2 bg-red-600 text-foreground rounded hover:bg-red-700"
                     >
                         Recargar Página
                     </button>

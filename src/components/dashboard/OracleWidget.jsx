@@ -24,7 +24,7 @@ export const OracleWidget = () => {
             {/* Background mystical glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-[60px] group-hover:bg-indigo-500/20 transition-all duration-700" />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-indigo-500/10 text-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                         <BrainCircuit size={20} />
@@ -46,9 +46,9 @@ export const OracleWidget = () => {
                                     placeholder={t('dashboard.oracle.ask_placeholder')}
                                     value={amount}
                                     onChange={e => setAmount(e.target.value)}
-                                    className="h-12 bg-white/5 border-white/10 rounded-2xl pl-4 pr-10 font-bold focus:ring-indigo-500/50"
+                                    className="h-12 bg-foreground/5 border-border/30 rounded-2xl pl-4 pr-10 font-bold focus:ring-indigo-500/50"
                                 />
-                                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-white/20 uppercase tracking-widest pointer-events-none">
+                                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-foreground/20 uppercase tracking-widest pointer-events-none">
                                     MXN
                                 </div>
                             </div>
@@ -100,7 +100,7 @@ export const OracleWidget = () => {
 
                         <Button
                             variant="secondary"
-                            className="w-full h-12 rounded-2xl bg-white/5 border-white/10 font-bold text-[10px] uppercase tracking-widest hover:bg-white/10"
+                            className="w-full h-12 rounded-2xl bg-foreground/5 border-border/30 font-bold text-[10px] uppercase tracking-widest hover:bg-foreground/10"
                             onClick={() => {
                                 setResult(null);
                                 setAmount('');

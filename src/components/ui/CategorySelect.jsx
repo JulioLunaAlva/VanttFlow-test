@@ -25,7 +25,7 @@ export function CategorySelect({ categories, value, onChange, placeholder = "Sel
                     {selectedCategory ? (
                         <div className="flex items-center gap-2">
                             <div
-                                className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs"
+                                className="w-6 h-6 rounded-full flex items-center justify-center text-foreground text-xs"
                                 style={{ backgroundColor: selectedCategory.color }}
                             >
                                 {Icons[selectedCategory.icon] ?
@@ -60,7 +60,7 @@ export function CategorySelect({ categories, value, onChange, placeholder = "Sel
                             }}
                         >
                             <div
-                                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs shrink-0"
+                                className="w-8 h-8 rounded-full flex items-center justify-center text-foreground text-xs shrink-0"
                                 style={{ backgroundColor: category.color }}
                             >
                                 {Icons[category.icon] ?

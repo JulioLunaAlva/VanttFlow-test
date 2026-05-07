@@ -21,7 +21,7 @@ export const DailyMissionsWidget = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
             <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-emerald-500/5 rounded-full blur-[60px] group-hover:bg-emerald-500/10 transition-all duration-1000" />
 
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg transition-transform duration-500 group-hover:scale-110">
                         <Target size={20} />
@@ -48,14 +48,14 @@ export const DailyMissionsWidget = () => {
                                     "group/item flex items-center gap-4 p-4 rounded-[1.5rem] transition-all duration-500 border relative overflow-hidden",
                                     mission.completed
                                         ? "bg-primary/5 border-primary/20 opacity-60 backdrop-blur-sm"
-                                        : "glass-premium border-white/5 hover:border-primary/40 hover:scale-[1.02] active:scale-[0.98] shadow-xl"
+                                        : "glass-premium border-border/30 hover:border-primary/40 hover:scale-[1.02] active:scale-[0.98] shadow-xl"
                                 )}
                             >
                                 <div className={cn(
                                     "w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 shadow-2xl relative z-10",
                                     mission.completed 
                                         ? "bg-primary/10 text-primary/60" 
-                                        : "bg-white/5 text-muted-foreground group-hover/item:text-primary group-hover/item:bg-primary/10 group-hover/item:rotate-6"
+                                        : "bg-foreground/5 text-muted-foreground group-hover/item:text-primary group-hover/item:bg-primary/10 group-hover/item:rotate-6"
                                 )}>
                                     <Icon size={22} className="drop-shadow-sm" />
                                 </div>
@@ -83,7 +83,7 @@ export const DailyMissionsWidget = () => {
                                             <CheckCircle2 className="text-primary h-5 w-5 animate-in zoom-in duration-500" />
                                         </div>
                                     ) : (
-                                        <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover/item:border-primary/30 transition-colors">
+                                        <div className="p-2 rounded-full bg-foreground/5 border border-border/30 group-hover/item:border-primary/30 transition-colors">
                                             <Circle className="text-muted-foreground/20 h-5 w-5 group-hover/item:text-primary/40 transition-colors" />
                                         </div>
                                     )}
@@ -98,7 +98,7 @@ export const DailyMissionsWidget = () => {
                         <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.3em]">{t('dashboard.daily_progress')}</span>
                         <span className="text-[10px] font-black text-primary uppercase tracking-widest bg-primary/10 px-3 py-1 rounded-full">{Math.round(progress)}%</span>
                     </div>
-                    <div className="h-4 w-full glass-premium border border-white/5 rounded-2xl p-1 overflow-hidden relative shadow-2xl">
+                    <div className="h-4 w-full glass-premium border border-border/30 rounded-2xl p-1 overflow-hidden relative shadow-2xl">
                         <div
                             className="h-full bg-gradient-to-r from-primary via-blue-500 to-indigo-600 rounded-xl transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] relative"
                             style={{ width: `${progress}%` }}

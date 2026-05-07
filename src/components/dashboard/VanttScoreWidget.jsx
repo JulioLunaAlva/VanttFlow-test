@@ -26,7 +26,7 @@ export const VanttScoreWidget = () => {
 
     return (
         <div className="h-full flex flex-col relative group overflow-hidden">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-purple-500/10 text-purple-500 shadow-lg group-hover:scale-110 transition-transform duration-500">
                         <Award size={20} />
@@ -98,7 +98,7 @@ export const VanttScoreWidget = () => {
                                     </div>
                                     <span className="group-hover/item:text-foreground">{item.value}</span>
                                 </div>
-                                <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                                <div className="h-1 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30">
                                     <div 
                                         className={cn("h-full transition-all duration-1000", item.bg)} 
                                         style={{ width: `${(item.value / 200) * 100}%` }} 
@@ -109,7 +109,7 @@ export const VanttScoreWidget = () => {
                     </div>
                 </div>
                 
-                <div className="mt-auto pt-4 border-t border-white/5">
+                <div className="mt-auto pt-4 border-t border-border/30">
                     <p className="text-[10px] font-bold text-center text-muted-foreground/40 uppercase tracking-widest leading-relaxed italic">
                         {t('dashboard.vantt_score.footer')}
                     </p>

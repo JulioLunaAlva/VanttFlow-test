@@ -22,7 +22,7 @@ export const SummaryCards = React.memo(() => {
     return (
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-12">
             {/* Total Balance Card */}
-            <div id="tour-balance" className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(var(--primary),0.15)] border-white/5 active:scale-[0.98]">
+            <div id="tour-balance" className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(var(--primary),0.15)] border-border/30 active:scale-[0.98]">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
                 
@@ -47,7 +47,7 @@ export const SummaryCards = React.memo(() => {
             </div>
 
             {/* Income Card */}
-            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(16,185,129,0.15)] border-white/5 active:scale-[0.98]">
+            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(16,185,129,0.15)] border-border/30 active:scale-[0.98]">
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-[60px] group-hover:bg-emerald-500/20 transition-all duration-700" />
                 
@@ -72,7 +72,7 @@ export const SummaryCards = React.memo(() => {
             </div>
 
             {/* Expense Card */}
-            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(244,63,94,0.15)] border-white/5 active:scale-[0.98]">
+            <div className="group relative overflow-hidden p-8 rounded-[2.5rem] glass-premium transition-all duration-700 hover:scale-[1.02] hover:shadow-[0_0_50px_rgba(244,63,94,0.15)] border-border/30 active:scale-[0.98]">
                 <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-transparent to-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[60px] group-hover:bg-rose-500/20 transition-all duration-700" />
                 

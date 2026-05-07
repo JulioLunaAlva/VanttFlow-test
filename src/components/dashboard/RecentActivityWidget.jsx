@@ -32,7 +32,7 @@ export const RecentActivityWidget = () => {
     };
     return (
         <div className="h-full flex flex-col">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-border/50 flex items-center justify-between">
                 <h3 className="text-xl font-black tracking-tight">{t('dashboard.activity')}</h3>
                 <Button 
                     variant="ghost" 
@@ -46,7 +46,7 @@ export const RecentActivityWidget = () => {
                 <div className="space-y-6">
                     {recentTransactions.length === 0 ? (
                         <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
-                            <div className="w-16 h-16 bg-white/5 rounded-[2rem] flex items-center justify-center border border-white/10 shadow-inner">
+                            <div className="w-16 h-16 bg-foreground/5 rounded-[2rem] flex items-center justify-center border border-border/50 shadow-inner">
                                 <ArrowUpRight size={32} className="rotate-45 text-muted-foreground/30" />
                             </div>
                             <div>
@@ -77,7 +77,7 @@ export const RecentActivityWidget = () => {
                                                     {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}
                                                 </span>
                                                 {category && (
-                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
+                                                    <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-foreground/5 border border-border/50">
                                                         <div 
                                                             className="w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor]" 
                                                             style={{ backgroundColor: category.color, color: category.color }} 

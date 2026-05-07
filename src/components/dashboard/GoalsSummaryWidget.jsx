@@ -15,7 +15,7 @@ export const GoalsSummaryWidget = () => {
     if (!goals || goals.length === 0) {
         return (
         <div className="h-full flex flex-col relative overflow-hidden group">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg group-hover:scale-110 transition-transform duration-500">
                         <Target size={20} />
@@ -24,7 +24,7 @@ export const GoalsSummaryWidget = () => {
                 </h3>
             </div>
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center space-y-6 relative z-10">
-                <div className="w-20 h-20 bg-white/5 rounded-[2.5rem] border border-white/10 flex items-center justify-center relative group-hover:rotate-12 transition-all duration-700">
+                <div className="w-20 h-20 bg-foreground/5 rounded-[2.5rem] border border-border/30 flex items-center justify-center relative group-hover:rotate-12 transition-all duration-700">
                     <Target className="text-primary/40 group-hover:text-primary transition-colors" size={40} />
                     <div className="absolute inset-0 bg-primary/5 rounded-full blur-[20px] -z-10" />
                 </div>
@@ -35,7 +35,7 @@ export const GoalsSummaryWidget = () => {
                     </p>
                 </div>
                 <Link to="/goals" className="w-full">
-                    <Button variant="secondary" className="w-full h-11 rounded-2xl bg-white/5 border border-white/10 font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all">
+                    <Button variant="secondary" className="w-full h-11 rounded-2xl bg-foreground/5 border border-border/30 font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all">
                         {t('dashboard.create_first_goal')}
                     </Button>
                 </Link>
@@ -54,7 +54,7 @@ export const GoalsSummaryWidget = () => {
     }).slice(0, 3);
     return (
         <div className="h-full flex flex-col relative group overflow-hidden">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-amber-500/10 text-amber-500 shadow-lg group-hover:scale-110 transition-transform duration-500">
                         <Trophy size={20} />
@@ -83,7 +83,7 @@ export const GoalsSummaryWidget = () => {
                                 </span>
                             </div>
                             
-                            <div className="relative h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 shadow-inner">
+                            <div className="relative h-2 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30 shadow-inner">
                                 <div
                                     className={cn(
                                         "h-full transition-all duration-1000 relative",
@@ -92,11 +92,11 @@ export const GoalsSummaryWidget = () => {
                                     style={{ width: `${Math.min(progress, 100)}%` }}
                                 >
                                     {/* Shining effect */}
-                                    <div className="absolute top-0 right-0 h-full w-4 bg-white/20 blur-sm -skew-x-12 animate-shimmer" />
+                                    <div className="absolute top-0 right-0 h-full w-4 bg-foreground/20 blur-sm -skew-x-12 animate-shimmer" />
                                 </div>
                             </div>
                             
-                            <div className="flex justify-between items-center bg-white/5 px-3 py-1.5 rounded-xl border border-white/5">
+                            <div className="flex justify-between items-center bg-foreground/5 px-3 py-1.5 rounded-xl border border-border/30">
                                 <div className="space-y-0.5">
                                     <p className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest">{t('dashboard.saved_amount') || 'Ahorrado'}</p>
                                     <p className="text-[10px] font-black">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: user?.currency || 'MXN', maximumFractionDigits: 0 }).format(goal.currentSaved)}</p>

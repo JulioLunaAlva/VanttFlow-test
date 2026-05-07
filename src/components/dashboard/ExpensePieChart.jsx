@@ -119,7 +119,7 @@ export const ExpensePieChart = React.memo(() => {
             {/* Background mystical glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-[60px] group-hover:bg-rose-500/20 transition-all duration-700" />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/50 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-rose-500/10 text-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
                         <TrendingDown size={20} />
@@ -145,7 +145,7 @@ export const ExpensePieChart = React.memo(() => {
                             <motion.div
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-                                className="relative p-6 bg-white/5 rounded-full border border-white/10"
+                                className="relative p-6 bg-foreground/5 rounded-full border border-border/50"
                             >
                                 <PieChartIcon className="w-12 h-12 text-muted-foreground/20" strokeWidth={1.5} />
                             </motion.div>
@@ -196,7 +196,7 @@ export const ExpensePieChart = React.memo(() => {
                                             <Cell
                                                 key={`cell-${index}`}
                                                 fill={`url(#gradient-${index})`}
-                                                className="transition-all duration-500 outline-none cursor-pointer drop-shadow-[0_0_8px_rgba(255,255,255,0.05)]"
+                                                className="transition-all duration-500 outline-none cursor-pointer drop-shadow-[0_0_8px_hsl(var(--foreground)_/_0.05)]"
                                                 style={{
                                                     filter: activeIndex === index ? 'brightness(1.1) saturate(1.2)' : 'brightness(0.9) saturate(0.8)',
                                                     opacity: activeIndex !== null && activeIndex !== index ? 0.3 : 1,
@@ -209,7 +209,7 @@ export const ExpensePieChart = React.memo(() => {
                             
                             {/* Center label */}
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                <div className="p-4 rounded-full glass-premium border border-white/5 w-32 h-32 flex items-center justify-center shadow-2xl">
+                                <div className="p-4 rounded-full glass-premium border border-border/30 w-32 h-32 flex items-center justify-center shadow-2xl">
                                     <AnimatePresence mode="wait">
                                         {activeIndex !== null ? (
                                             <motion.div
@@ -266,12 +266,12 @@ export const ExpensePieChart = React.memo(() => {
                                     className={cn(
                                         "flex items-center gap-3 p-2.5 rounded-2xl border transition-all duration-300",
                                         activeIndex === index 
-                                            ? "bg-white/10 border-white/20 shadow-lg scale-[1.02]" 
-                                            : "bg-white/5 border-white/5 hover:border-white/10 opacity-70 hover:opacity-100"
+                                            ? "bg-foreground/10 border-border shadow-lg scale-[1.02]" 
+                                            : "bg-foreground/5 border-border/10 hover:border-border/30 opacity-70 hover:opacity-100"
                                     )}
                                 >
                                     <div
-                                        className="w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.1)] transition-transform duration-500"
+                                        className="w-3 h-3 rounded-full shadow-[0_0_10px_hsl(var(--foreground)_/_0.1)] transition-transform duration-500"
                                         style={{ 
                                             backgroundColor: entry.color,
                                             boxShadow: activeIndex === index ? `0 0 15px ${entry.color}40` : 'none',

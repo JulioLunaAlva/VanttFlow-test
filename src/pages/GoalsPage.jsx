@@ -128,10 +128,10 @@ export const GoalsPage = () => {
 
     return (
         <div className="space-y-10 pb-24 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
                         {t('goals.title')}
                     </h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
@@ -142,7 +142,7 @@ export const GoalsPage = () => {
 
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button size="lg" className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 mt-6 md:mt-0 relative z-10">
+                        <Button size="lg" className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 mt-6 md:mt-0 relative z-10">
                             <Plus size={20} className="group-hover:rotate-90 transition-transform duration-500" /> {t('goals.new_goal')}
                         </Button>
                     </DialogTrigger>
@@ -219,7 +219,7 @@ export const GoalsPage = () => {
 
                     return (
                         <div key={goal.id} className={cn(
-                            "glass-premium rounded-[3rem] relative overflow-hidden transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] border-white/10 group",
+                            "glass-premium rounded-[3rem] relative overflow-hidden transition-all duration-500 hover:scale-[1.02] active:scale-[0.98] border-border/30 group",
                             isCompleted ? "bg-yellow-500/5 border-yellow-500/20" : ""
                         )}>
                             {isCompleted && (
@@ -235,13 +235,13 @@ export const GoalsPage = () => {
                                     )}>
                                         {isCompleted ? <Trophy size={26} /> : <Target size={26} />}
                                     </div>
-                                    <span className="truncate text-white drop-shadow-lg">{goal.name}</span>
+                                    <span className="truncate text-foreground drop-shadow-lg">{goal.name}</span>
                                 </div>
                                 <div className="flex gap-1">
-                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-white/30 hover:text-white hover:bg-white/5 rounded-xl" onClick={() => handleEdit(goal)}>
+                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/30 hover:text-foreground hover:bg-foreground/5 rounded-xl" onClick={() => handleEdit(goal)}>
                                         <Edit2 size={16} />
                                     </Button>
-                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-white/30 hover:text-rose-500 hover:bg-rose-500/5 rounded-xl" onClick={() => deleteGoal(goal.id)}>
+                                    <Button variant="ghost" size="icon" className="h-10 w-10 text-foreground/30 hover:text-rose-500 hover:bg-rose-500/5 rounded-xl" onClick={() => deleteGoal(goal.id)}>
                                         <Trash2 size={16} />
                                     </Button>
                                 </div>
@@ -250,10 +250,10 @@ export const GoalsPage = () => {
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-end">
                                         <div>
-                                            <p className="text-3xl font-black tracking-tighter text-white drop-shadow-lg">
+                                            <p className="text-3xl font-black tracking-tighter text-foreground drop-shadow-lg">
                                                 {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.currentSaved)}
                                             </p>
-                                            <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black mt-2">
+                                            <p className="text-[10px] text-foreground/30 uppercase tracking-[0.2em] font-black mt-2">
                                                 {t('goals.target_label', { amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(goal.targetAmount) })}
                                             </p>
                                         </div>
@@ -265,7 +265,7 @@ export const GoalsPage = () => {
                                     </div>
 
                                     {/* Custom Progress Bar */}
-                                    <div className="h-4 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[3px]">
+                                    <div className="h-4 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30 p-[3px]">
                                         <div
                                             className={cn(
                                                 "h-full transition-all duration-1000 ease-out relative rounded-full",
@@ -273,7 +273,7 @@ export const GoalsPage = () => {
                                             )}
                                             style={{ width: `${Math.min(progress, 100)}%` }}
                                         >
-                                            <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full" />
+                                            <div className="absolute inset-0 bg-foreground/20 animate-pulse rounded-full" />
                                         </div>
                                     </div>
 
@@ -281,7 +281,7 @@ export const GoalsPage = () => {
                                         <Button
                                             className={cn(
                                                 "w-full font-black shadow-xl transition-all active:scale-95 rounded-2xl h-14 text-[10px] uppercase tracking-[0.2em]",
-                                                isCompleted ? "bg-yellow-500 hover:bg-yellow-400 text-black shadow-glow" : "glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white"
+                                                isCompleted ? "bg-yellow-500 hover:bg-yellow-400 text-black shadow-glow" : "glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground"
                                             )}
                                             onClick={() => openAddFunds(goal)}
                                         >
@@ -299,17 +299,17 @@ export const GoalsPage = () => {
                 })}
 
                 {(!goals || goals.length === 0) && (
-                        <div className="col-span-full py-24 flex flex-col items-center justify-center text-center glass-premium border-dashed border-2 border-white/10 rounded-[3rem] group overflow-hidden relative">
+                        <div className="col-span-full py-24 flex flex-col items-center justify-center text-center glass-premium border-dashed border-2 border-border/30 rounded-[3rem] group overflow-hidden relative">
                             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-white/10 animate-bounce-slow inline-block bg-primary/5 relative z-10">
+                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-border/30 animate-bounce-slow inline-block bg-primary/5 relative z-10">
                                 <Target className="w-16 h-16 text-primary drop-shadow-glow" />
                             </div>
                             <div className="relative z-10">
-                                <h3 className="text-3xl font-black tracking-tighter text-white/40 mb-3 drop-shadow-2xl">{t('goals.no_goals')}</h3>
-                                <p className="text-white/20 max-w-sm mb-8 font-black text-[10px] uppercase tracking-[0.2em]">
+                                <h3 className="text-3xl font-black tracking-tighter text-foreground/40 mb-3 drop-shadow-2xl">{t('goals.no_goals')}</h3>
+                                <p className="text-foreground/20 max-w-sm mb-8 font-black text-[10px] uppercase tracking-[0.2em]">
                                     {t('goals.no_goals_desc')}
                                 </p>
-                                <Button size="lg" className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white rounded-2xl h-14 px-10 font-black shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500" onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
+                                <Button size="lg" className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground rounded-2xl h-14 px-10 font-black shadow-2xl hover:scale-105 active:scale-95 transition-all duration-500" onClick={() => setIsCreateDialogOpen(true)}>{t('goals.create_first')}</Button>
                             </div>
                         </div>
                     )}

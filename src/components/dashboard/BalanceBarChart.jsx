@@ -69,7 +69,7 @@ export const BalanceBarChart = React.memo(() => {
             {/* Background mystical glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/50 flex items-center justify-between relative z-10">
                 <div className="flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg group-hover:scale-110 transition-transform duration-500">
                         <BarChart3 size={20} />
@@ -104,7 +104,7 @@ export const BalanceBarChart = React.memo(() => {
                         >
                             <div className="relative group/empty">
                                 <div className="absolute inset-0 bg-primary/5 blur-[40px] rounded-full group-hover/empty:bg-primary/10 transition-all duration-700" />
-                                <div className="relative flex items-end gap-3 p-6 bg-white/5 rounded-[2rem] border border-white/10">
+                                <div className="relative flex items-end gap-3 p-6 bg-foreground/5 rounded-[2rem] border border-border/50">
                                     <motion.div
                                         animate={{ height: [20, 32, 20] }}
                                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -154,14 +154,14 @@ export const BalanceBarChart = React.memo(() => {
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="rgba(255,255,255,0.05)"
+                                    stroke="hsl(var(--foreground) / 0.1)"
                                 />
                                 <XAxis
                                     dataKey="name"
                                     axisLine={false}
                                     tickLine={false}
                                     tick={{
-                                        fill: 'rgba(255,255,255,0.4)',
+                                        fill: 'hsl(var(--foreground) / 0.4)',
                                         fontSize: 10,
                                         fontWeight: 900,
                                         textTransform: 'uppercase',
@@ -172,7 +172,7 @@ export const BalanceBarChart = React.memo(() => {
                                     axisLine={false}
                                     tickLine={false}
                                     tick={{
-                                        fill: 'rgba(255,255,255,0.2)',
+                                        fill: 'hsl(var(--foreground) / 0.4)',
                                         fontSize: 9,
                                         fontWeight: 800
                                     }}
@@ -180,7 +180,7 @@ export const BalanceBarChart = React.memo(() => {
                                 />
                                 <Tooltip
                                     content={<CustomTooltip />}
-                                    cursor={{ fill: 'rgba(255,255,255,0.05)', radius: 16 }}
+                                    cursor={{ fill: 'hsl(var(--foreground) / 0.05)', radius: 16 }}
                                 />
                                 <Bar
                                     dataKey="value"
@@ -194,7 +194,7 @@ export const BalanceBarChart = React.memo(() => {
                                             key={`cell-${index}`}
                                             fill={entry.gradient}
                                             className="transition-all duration-500 outline-none cursor-pointer hover:opacity-80"
-                                            style={{ filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.05))' }}
+                                            style={{ filter: 'drop-shadow(0 0 10px hsl(var(--foreground) / 0.05))' }}
                                         />
                                     ))}
                                 </Bar>

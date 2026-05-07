@@ -87,10 +87,10 @@ export const TransactionsCalendarPage = () => {
 
     // Header component
     const renderHeader = () => (
-        <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-8 group relative overflow-hidden active:scale-95 transition-all duration-500">
+        <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/50 mb-8 group relative overflow-hidden active:scale-95 transition-all duration-500">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative z-10">
-                <h2 className="text-3xl md:text-4xl font-black tracking-tighter capitalize text-white drop-shadow-2xl">
+                <h2 className="text-3xl md:text-4xl font-black tracking-tighter capitalize text-foreground drop-shadow-2xl">
                     {format(currentMonth, 'MMMM yyyy', { locale })}
                 </h2>
                 <div className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
@@ -103,7 +103,7 @@ export const TransactionsCalendarPage = () => {
                     variant="ghost" 
                     size="icon" 
                     onClick={prevMonth} 
-                    className="glass-premium border-white/20 hover:border-primary/50 bg-white/5 text-white h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
+                    className="glass-premium border-border/50 hover:border-primary/50 bg-foreground/5 text-foreground h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
                 >
                     <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform" />
                 </Button>
@@ -111,7 +111,7 @@ export const TransactionsCalendarPage = () => {
                     variant="ghost" 
                     size="icon" 
                     onClick={nextMonth} 
-                    className="glass-premium border-white/20 hover:border-primary/50 bg-white/5 text-white h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
+                    className="glass-premium border-border/50 hover:border-primary/50 bg-foreground/5 text-foreground h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
                 >
                     <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
@@ -125,7 +125,7 @@ export const TransactionsCalendarPage = () => {
         const date = startOfWeek(new Date());
         for (let i = 0; i < 7; i++) {
             days.push(
-                <div key={i} className="text-center text-[11px] font-black uppercase tracking-[0.3em] text-white/20 py-4 drop-shadow-sm">
+                <div key={i} className="text-center text-[11px] font-black uppercase tracking-[0.3em] text-foreground/40 py-4 drop-shadow-sm">
                     {format(addDays(date, i), 'eee', { locale })}
                 </div>
             );
@@ -136,8 +136,8 @@ export const TransactionsCalendarPage = () => {
     // Calendar grid
     const renderCells = () => {
         return (
-            <div className="glass-premium rounded-[3rem] overflow-hidden border-white/10 mb-10 shadow-3xl relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+            <div className="glass-premium rounded-[3rem] overflow-hidden border-border/50 mb-10 shadow-3xl relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none" />
                 <div className="grid grid-cols-7 relative z-10">
                     {calendarDays.map((day) => {
                     const dateStr = format(day, 'yyyy-MM-dd');
@@ -151,16 +151,16 @@ export const TransactionsCalendarPage = () => {
                             key={day.toString()}
                             onClick={() => setSelectedDate(day)}
                             className={cn(
-                                "relative min-h-[100px] xs:min-h-[120px] p-4 bg-white/[0.02] transition-all duration-500 cursor-pointer select-none group border-r border-b border-white/5 last:border-r-0 hover:bg-white/[0.05]",
-                                !isCurrentMonth && "bg-black/20 opacity-20 hover:opacity-40",
+                                "relative min-h-[100px] xs:min-h-[120px] p-4 bg-foreground/[0.02] transition-all duration-500 cursor-pointer select-none group border-r border-b border-border/10 last:border-r-0 hover:bg-foreground/[0.05]",
+                                !isCurrentMonth && "bg-foreground/[0.05] opacity-30 hover:opacity-50",
                                 isSelected && "bg-primary/10 !opacity-100 z-10 shadow-[inset_0_0_20px_rgba(var(--primary),0.2)]",
-                                isToday && !isSelected && "bg-white/[0.08]"
+                                isToday && !isSelected && "bg-foreground/[0.08]"
                             )}
                         >
                             <span className={cn(
-                                "text-sm font-black tracking-tighter drop-shadow-md transition-all duration-500",
+                                "text-sm font-black tracking-tighter drop-shadow-md transition-all duration-500 text-foreground",
                                 isToday && "text-primary px-2.5 py-1 rounded-xl bg-primary/10 shadow-glow",
-                                !isCurrentMonth && "text-white/20",
+                                !isCurrentMonth && "opacity-50",
                                 isSelected && "scale-125 inline-block"
                             )}>
                                 {format(day, 'd')}
@@ -223,7 +223,7 @@ export const TransactionsCalendarPage = () => {
             {/* Selected Day Details */}
             <div className="space-y-6 pt-6">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 px-4">
-                    <h3 className="text-3xl font-black tracking-tighter capitalize text-white drop-shadow-lg">
+                    <h3 className="text-3xl font-black tracking-tighter capitalize text-foreground drop-shadow-lg">
                         {isSameDay(selectedDate, new Date()) ? t('common.today') : format(selectedDate, 'eeee d MMMM', { locale })}
                     </h3>
                     <div className="flex gap-4">
@@ -252,14 +252,14 @@ export const TransactionsCalendarPage = () => {
                             />
                         ))
                     ) : (
-                        <div className="text-center py-20 glass-premium rounded-[3rem] border-2 border-dashed border-white/10 mt-4 active:scale-98 transition-all duration-500 flex flex-col items-center justify-center group overflow-hidden relative">
+                        <div className="text-center py-20 glass-premium rounded-[3rem] border-2 border-dashed border-border/30 mt-4 active:scale-98 transition-all duration-500 flex flex-col items-center justify-center group overflow-hidden relative">
                             <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-white/10 animate-bounce-slow inline-block bg-primary/5 relative z-10">
-                                <CalendarIcon className="mx-auto h-16 w-16 text-white/20 drop-shadow-glow" />
+                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-border/50 animate-bounce-slow inline-block bg-primary/5 relative z-10">
+                                <CalendarIcon className="mx-auto h-16 w-16 text-foreground/20 drop-shadow-glow" />
                             </div>
                             <div className="text-center max-w-sm relative z-10 px-6">
-                                <h3 className="text-2xl font-black tracking-tighter text-white/40 mb-2 drop-shadow-2xl">{t('transactions.no_movements') || 'Sin movimientos este día'}</h3>
-                                <p className="text-white/10 font-black uppercase tracking-[0.2em] text-[10px]">
+                                <h3 className="text-2xl font-black tracking-tighter text-foreground/60 mb-2 drop-shadow-2xl">{t('transactions.no_movements') || 'Sin movimientos este día'}</h3>
+                                <p className="text-foreground/40 font-black uppercase tracking-[0.2em] text-[10px]">
                                     Selecciona otro día para ver su actividad
                                 </p>
                             </div>

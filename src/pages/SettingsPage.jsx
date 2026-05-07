@@ -186,10 +186,10 @@ export const SettingsPage = () => {
 
     return (
         <div className="space-y-10 pb-32 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
                         {t('settings.title')}
                     </h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
@@ -205,39 +205,39 @@ export const SettingsPage = () => {
             </div>
 
             {/* Profile Section */}
-            <div className="glass-premium rounded-[3rem] border-white/10 overflow-hidden group active:scale-[0.99] transition-all duration-500">
-                <div className="p-8 border-b border-white/5">
+            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden group active:scale-[0.99] transition-all duration-500">
+                <div className="p-8 border-b border-border/30">
                     <div className="flex items-center gap-5">
                         <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-glow group-hover:scale-110 transition-transform duration-500">
                             <User size={22} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-white drop-shadow-lg">{t('settings.profile')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.profile_desc')}</p>
+                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.profile')}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.profile_desc')}</p>
                         </div>
                     </div>
                 </div>
                 <div className="p-8 space-y-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('settings.name_label')}</Label>
+                        <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.name_label')}</Label>
                         <div className="relative">
-                            <User className="absolute left-4 top-3.5 h-4 w-4 text-white/20" />
+                            <User className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
                             <Input
                                 id="name"
-                                className="pl-12 h-12 rounded-2xl bg-white/5 border-white/5 text-white font-black tracking-tight"
+                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-black tracking-tight"
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                             />
                         </div>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('settings.email_label')}</Label>
+                        <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.email_label')}</Label>
                         <div className="relative">
-                            <Mail className="absolute left-4 top-3.5 h-4 w-4 text-white/20" />
+                            <Mail className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
                             <Input
                                 id="email"
                                 type="email"
-                                className="pl-12 h-12 rounded-2xl bg-white/5 border-white/5 text-white font-black tracking-tight"
+                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-black tracking-tight"
                                 placeholder={t('settings.email_placeholder')}
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
@@ -245,13 +245,13 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="pin" className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('settings.pin_label_setting')}</Label>
+                        <Label htmlFor="pin" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.pin_label_setting')}</Label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-3.5 h-4 w-4 text-white/20" />
+                            <Lock className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
                             <Input
                                 id="pin"
                                 type="password"
-                                className="pl-12 h-12 rounded-2xl bg-white/5 border-white/5 text-white font-mono tracking-[0.5em]"
+                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-mono tracking-[0.5em]"
                                 maxLength={4}
                                 value={formData.pin}
                                 onChange={e => setFormData({ ...formData, pin: e.target.value.replace(/\D/g, '') })}
@@ -259,50 +259,50 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="p-8 bg-white/[0.02] border-t border-white/5 flex justify-end">
-                    <Button onClick={handleSave} className="glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500">
+                <div className="p-8 bg-card/[0.02] border-t border-border/30 flex justify-end">
+                    <Button onClick={handleSave} className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500">
                         <Save size={18} /> {t('settings.save_changes_btn')}
                     </Button>
                 </div>
             </div>
 
             {/* Preferences Section */}
-            <div className="glass-premium rounded-[3rem] border-white/10 overflow-hidden">
-                <div className="p-8 border-b border-white/5">
+            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
+                <div className="p-8 border-b border-border/30">
                     <div className="flex items-center gap-5">
                         <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-500 shadow-glow">
                             <Globe size={22} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-white drop-shadow-lg">{t('settings.appearance')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.appearance_desc')}</p>
+                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.appearance')}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.appearance_desc')}</p>
                         </div>
                     </div>
                 </div>
                 <div className="p-8 space-y-6">
                     <div className="grid gap-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('settings.currency_label')}</Label>
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.currency_label')}</Label>
                         <select
                             value={formData.currency}
                             onChange={e => setFormData({ ...formData, currency: e.target.value })}
-                            className="flex h-14 w-full items-center rounded-2xl border border-white/10 bg-white/5 px-5 py-2 text-sm font-black tracking-tight text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
+                            className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
                         >
                             <option value="MXN">Peso Mexicano (MXN)</option>
                             <option value="USD">Dólar Americano (USD)</option>
                             <option value="EUR">Euro (EUR)</option>
                             <option value="COP">Peso Colombiano (COP)</option>
                         </select>
-                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] px-2">
+                        <p className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] px-2">
                             {t('settings.currency_note')}
                         </p>
                     </div>
-                    <div className="h-px bg-white/5" />
+                    <div className="h-px bg-foreground/5" />
 
                     <div className="pt-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{t('settings.tour_label')}</Label>
-                        <div className="mt-4 text-center p-10 border-2 border-dashed border-white/10 rounded-[2.5rem] glass-premium">
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.tour_label')}</Label>
+                        <div className="mt-4 text-center p-10 border-2 border-dashed border-border/30 rounded-[2.5rem] glass-premium">
                             <Sparkles className="w-10 h-10 text-primary mx-auto mb-4 opacity-50 drop-shadow-glow" />
-                            <p className="text-white/30 text-[10px] font-black uppercase tracking-[0.2em] mb-6">{t('settings.tour_desc')}</p>
+                            <p className="text-foreground/30 text-[10px] font-black uppercase tracking-[0.2em] mb-6">{t('settings.tour_desc')}</p>
                             <Button
                                 variant="outline"
                                 size="sm"
@@ -310,7 +310,7 @@ export const SettingsPage = () => {
                                     localStorage.removeItem('vanttflow_tour_completed');
                                     toast.success(t('settings.tour_success'));
                                 }}
-                                className="glass-premium border-white/20 hover:border-primary/50 rounded-2xl h-12 px-8 font-black text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/5"
+                                className="glass-premium border-border/50 hover:border-primary/50 rounded-2xl h-12 px-8 font-black text-[10px] uppercase tracking-[0.2em] text-foreground hover:bg-foreground/5"
                             >
                                 {t('settings.tour_restart')}
                             </Button>
@@ -320,25 +320,25 @@ export const SettingsPage = () => {
                 </div>
 
             {/* Language Settings */}
-            <div className="glass-premium rounded-[3rem] border-white/10 overflow-hidden">
-                <div className="p-8 border-b border-white/5">
+            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
+                <div className="p-8 border-b border-border/30">
                     <div className="flex items-center gap-5">
                         <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 shadow-glow">
                             <Languages size={22} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-white drop-shadow-lg">{t('settings.language')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.select_language')}</p>
+                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.language')}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.select_language')}</p>
                         </div>
                     </div>
                 </div>
                 <div className="p-8">
                     <div className="grid gap-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 px-1">{t('settings.language')}</Label>
+                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 px-1">{t('settings.language')}</Label>
                         <select
                             value={i18n.language}
                             onChange={e => i18n.changeLanguage(e.target.value)}
-                            className="flex h-14 w-full items-center rounded-2xl border border-white/10 bg-white/5 px-5 py-2 text-sm font-black tracking-tight text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none cursor-pointer"
+                            className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none cursor-pointer"
                         >
                             <option value="es">Español 🇪🇸</option>
                             <option value="en">English 🇺🇸</option>
@@ -350,25 +350,25 @@ export const SettingsPage = () => {
             </div>
 
             {/* Data Management Section */}
-            <div className="glass-premium rounded-[3rem] border-white/10 overflow-hidden">
-                <div className="p-8 border-b border-white/5">
+            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
+                <div className="p-8 border-b border-border/30">
                     <div className="flex items-center gap-5">
                         <div className="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-500 shadow-glow">
                             <Download size={22} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-white drop-shadow-lg">{t('settings.data')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.data_desc')}</p>
+                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.data')}</h3>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.data_desc')}</p>
                         </div>
                     </div>
                 </div>
                 <div className="p-8 space-y-4">
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-white/10 hover:bg-white/5 font-black uppercase text-[10px] tracking-[0.2em] text-white active:scale-95 transition-all duration-500" onClick={handleExport}>
+                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase text-[10px] tracking-[0.2em] text-foreground active:scale-95 transition-all duration-500" onClick={handleExport}>
                             <Download size={20} className="text-purple-500" />
                             {t('settings.export_btn')}
                         </Button>
-                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-white/10 hover:bg-white/5 font-black uppercase text-[10px] tracking-[0.2em] text-white active:scale-95 transition-all duration-500" onClick={() => fileInputRef.current?.click()}>
+                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase text-[10px] tracking-[0.2em] text-foreground active:scale-95 transition-all duration-500" onClick={() => fileInputRef.current?.click()}>
                             <Upload size={20} className="text-emerald-500" />
                             {t('settings.import_btn')}
                         </Button>
@@ -386,22 +386,22 @@ export const SettingsPage = () => {
             {/* Gamification Settings */}
             <div className="glass-premium rounded-[3rem] border-primary/20 bg-primary/5 overflow-hidden group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent pointer-events-none" />
-                <div className="p-8 border-b border-white/5 relative z-10">
+                <div className="p-8 border-b border-border/30 relative z-10">
                     <div className="flex items-center gap-5">
                         <div className="p-3 rounded-2xl bg-primary/20 border border-primary/30 text-primary shadow-glow animate-pulse">
                             <Sword size={22} />
                         </div>
                         <div>
                             <h3 className="text-2xl font-black tracking-tighter text-primary drop-shadow-lg">{t('settings.spirit_title')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.spirit_desc')}</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.spirit_desc')}</p>
                         </div>
                     </div>
                 </div>
                 <div className="p-8 space-y-6 relative z-10">
                     <div className="flex items-center justify-between p-6 rounded-[2rem] glass-premium border-primary/20">
                         <div className="space-y-2">
-                            <Label className="text-lg font-black tracking-tighter text-white">{t('settings.spirit_enable')}</Label>
-                            <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{t('dashboard.gamification_desc')}</p>
+                            <Label className="text-lg font-black tracking-tighter text-foreground">{t('settings.spirit_enable')}</Label>
+                            <p className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.2em]">{t('dashboard.gamification_desc')}</p>
                         </div>
                         <Button
                             variant={isEnabled ? "default" : "outline"}
@@ -409,7 +409,7 @@ export const SettingsPage = () => {
                             onClick={() => setIsEnabled(!isEnabled)}
                             className={cn(
                                 "rounded-full px-10 h-12 font-black tracking-[0.2em] text-[9px] uppercase transition-all duration-500",
-                                isEnabled ? "shadow-glow bg-primary hover:bg-primary/80" : "border-white/10 glass-premium text-white"
+                                isEnabled ? "shadow-glow bg-primary hover:bg-primary/80" : "border-border/30 glass-premium text-foreground"
                             )}
                         >
                             {isEnabled ? t('settings.spirit_on') : t('settings.spirit_off')}
@@ -417,8 +417,8 @@ export const SettingsPage = () => {
                     </div>
 
                     {isEnabled && (
-                        <div className="pt-6 border-t border-white/5 animate-in fade-in slide-in-from-top-4 duration-700">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-6 block px-1">{t('settings.spirit_pet_label')}</Label>
+                        <div className="pt-6 border-t border-border/30 animate-in fade-in slide-in-from-top-4 duration-700">
+                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-6 block px-1">{t('settings.spirit_pet_label')}</Label>
                             <div className="grid grid-cols-4 sm:grid-cols-7 gap-4">
                                 {PET_OPTIONS.map(pet => (
                                     <button
@@ -435,7 +435,7 @@ export const SettingsPage = () => {
                                         )}
                                     >
                                         <span className="text-4xl mb-2">{pet.emoji}</span>
-                                        <span className="text-[8px] font-black uppercase truncate w-full text-center tracking-[0.15em] text-white/60">{pet.name}</span>
+                                        <span className="text-[8px] font-black uppercase truncate w-full text-center tracking-[0.15em] text-foreground/60">{pet.name}</span>
                                     </button>
                                 ))}
                             </div>
@@ -453,7 +453,7 @@ export const SettingsPage = () => {
                         </div>
                         <div>
                             <h3 className="text-2xl font-black tracking-tighter text-indigo-400 drop-shadow-lg">{t('settings.notifications')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.notifications_desc')}</p>
+                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.notifications_desc')}</p>
                         </div>
                     </div>
                 </div>
@@ -463,7 +463,7 @@ export const SettingsPage = () => {
                             <Label className="text-lg font-black tracking-tighter text-indigo-400">
                                 {t('settings.notif_status')}: {permission === 'granted' ? t('settings.notif_status_on') : permission === 'denied' ? t('settings.notif_status_blocked') : t('settings.notif_status_off')}
                             </Label>
-                            <p className="text-[10px] text-white/30 font-black uppercase tracking-[0.2em]">
+                            <p className="text-[10px] text-foreground/30 font-black uppercase tracking-[0.2em]">
                                 {permission === 'granted'
                                     ? t('settings.notif_on_desc')
                                     : t('settings.notif_off_desc')}
@@ -484,7 +484,7 @@ export const SettingsPage = () => {
                             </div>
                         )}
                     </div>
-                    <p className="text-[10px] text-white/20 italic px-4 font-medium">
+                    <p className="text-[10px] text-foreground/20 italic px-4 font-medium">
                         {t('settings.notif_ios_note')}
                     </p>
                 </div>
@@ -500,7 +500,7 @@ export const SettingsPage = () => {
                             </div>
                             <div>
                                 <h3 className="text-xl font-black tracking-tighter text-rose-500 drop-shadow-lg">{t('settings.danger_title')}</h3>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.danger_desc')}</p>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.danger_desc')}</p>
                             </div>
                         </div>
                     </div>
@@ -511,25 +511,25 @@ export const SettingsPage = () => {
                     </div>
                 </div>
 
-                <div className="glass-premium rounded-[3rem] border-white/10 overflow-hidden">
-                    <div className="p-8 border-b border-white/5">
+                <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
+                    <div className="p-8 border-b border-border/30">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-2xl bg-white/10 border border-white/10 text-white/60">
+                            <div className="p-3 rounded-2xl bg-foreground/10 border border-border/30 text-foreground/60">
                                 <LogOut size={20} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-black tracking-tighter text-white drop-shadow-lg">{t('settings.session_title')}</h3>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{t('settings.session_desc')}</p>
+                                <h3 className="text-xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.session_title')}</h3>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.session_desc')}</p>
                             </div>
                         </div>
                     </div>
                     <div className="p-8 space-y-6">
                         <div className="grid gap-2">
-                            <Label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/40"><Timer size={14} /> {t('settings.autolock_label')}</Label>
+                            <Label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40"><Timer size={14} /> {t('settings.autolock_label')}</Label>
                             <select
                                 value={autoLockMinutes}
                                 onChange={e => setAutoLockMinutes(Number(e.target.value))}
-                                className="flex h-14 w-full items-center rounded-2xl border border-white/10 bg-white/5 px-5 py-2 text-sm font-black tracking-tight text-white focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
+                                className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
                             >
                                 <option value={0}>{t('settings.autolock_never')}</option>
                                 <option value={1}>{t('settings.autolock_min')}</option>
@@ -539,15 +539,15 @@ export const SettingsPage = () => {
                                 <option value={30}>{t('settings.autolock_mins', { count: 30 })}</option>
                             </select>
                         </div>
-                        <div className="h-px bg-white/5" />
-                        <Button variant="ghost" className="w-full h-14 rounded-2xl glass-premium border-white/10 hover:bg-white/5 font-black uppercase tracking-[0.2em] text-[10px] text-white active:scale-95 transition-all duration-500" onClick={logout}>
+                        <div className="h-px bg-foreground/5" />
+                        <Button variant="ghost" className="w-full h-14 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase tracking-[0.2em] text-[10px] text-foreground active:scale-95 transition-all duration-500" onClick={logout}>
                             {t('settings.logout_btn')}
                         </Button>
                     </div>
                 </div>
             </div>
 
-            <div className="text-center text-[10px] text-white/10 pt-10 font-black uppercase tracking-[0.5em]">
+            <div className="text-center text-[10px] text-foreground/10 pt-10 font-black uppercase tracking-[0.5em]">
                 VanttFlow v1.2 Beta • Build 2026
             </div>
         </div>

@@ -93,10 +93,10 @@ export const AnalyticsPage = () => {
 
     return (
         <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{t('analytics.title')}</h2>
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('analytics.title')}</h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
                         <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
                         {t('analytics.comparing', {
@@ -106,7 +106,7 @@ export const AnalyticsPage = () => {
                     </p>
                 </div>
                 <div className="mt-6 md:mt-0 relative z-10">
-                    <div className="glass-premium p-4 px-8 rounded-2xl border-white/5 bg-white/5 backdrop-blur-3xl">
+                    <div className="glass-premium p-4 px-8 rounded-2xl border-border/30 bg-foreground/5 backdrop-blur-3xl">
                         <LineChartIcon className="w-8 h-8 text-primary shadow-glow" />
                     </div>
                 </div>
@@ -115,10 +115,10 @@ export const AnalyticsPage = () => {
 
 
             {/* Patrimony Evolution Chart */}
-            <div className="glass-premium overflow-hidden mb-10 rounded-[3rem] border-white/10 relative group">
-                <div className="p-10 border-b border-white/5 bg-white/5 backdrop-blur-3xl flex items-center justify-between">
+            <div className="glass-premium overflow-hidden mb-10 rounded-[3rem] border-border/30 relative group">
+                <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl flex items-center justify-between">
                     <div>
-                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-white">
+                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-foreground">
                             <div className="p-2 bg-primary/20 rounded-xl"><TrendingUp size={24} className="text-primary shadow-glow" /></div>
                             {t('analytics.patrimony_evolution')}
                         </h3>
@@ -189,9 +189,9 @@ export const AnalyticsPage = () => {
 
             {/* Income vs Expenses Legend */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                <div className="lg:col-span-2 glass-premium rounded-[3rem] border-white/10 relative overflow-hidden group">
-                    <div className="p-10 border-b border-white/5 bg-white/5 backdrop-blur-3xl">
-                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-white">
+                <div className="lg:col-span-2 glass-premium rounded-[3rem] border-border/30 relative overflow-hidden group">
+                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl">
+                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-foreground">
                             <div className="p-2 bg-primary/20 rounded-xl"><BarChart2 size={24} className="text-primary shadow-glow" /></div>
                             {t('analytics.cash_flow_title') || 'Flujo de Caja Histórico'}
                         </h3>
@@ -247,10 +247,10 @@ export const AnalyticsPage = () => {
                 </div>
 
                 {/* Savings Insight card - alongside chart */}
-                <div className="glass-premium rounded-[3rem] border-white/10 flex flex-col relative overflow-hidden group">
+                <div className="glass-premium rounded-[3rem] border-border/30 flex flex-col relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                    <div className="p-10 border-b border-white/5 bg-white/5 backdrop-blur-3xl text-center">
-                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-white/50">{t('analytics.savings_summary') || 'Resumen de Ahorro'}</h3>
+                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl text-center">
+                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-foreground/50">{t('analytics.savings_summary') || 'Resumen de Ahorro'}</h3>
                     </div>
                     <div className="p-10 flex-1 flex flex-col items-center justify-center space-y-10 relative z-10">
                         <div className="text-center group/savings">
@@ -264,7 +264,7 @@ export const AnalyticsPage = () => {
                         </div>
                         
                         <div className="w-full space-y-4">
-                            <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden flex shadow-inner border border-white/5 p-1">
+                            <div className="w-full h-4 bg-foreground/5 rounded-full overflow-hidden flex shadow-inner border border-border/30 p-1">
                                 {currentIncome > 0 && (
                                     <>
                                         <div
@@ -278,13 +278,13 @@ export const AnalyticsPage = () => {
                                     </>
                                 )}
                             </div>
-                            <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">
                                 <span className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500" /> Gasto</span>
                                 <span className="flex items-center gap-2">Ahorro <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-glow" /></span>
                             </div>
                         </div>
 
-                        <p className="text-[11px] text-center text-white/40 font-black uppercase tracking-[0.3em] bg-white/5 p-4 rounded-2xl w-full border border-white/5">
+                        <p className="text-[11px] text-center text-foreground/40 font-black uppercase tracking-[0.3em] bg-foreground/5 p-4 rounded-2xl w-full border border-border/30">
                             {currentIncome > 0
                                 ? `${((currentExpense / currentIncome) * 100).toFixed(1)}% ${t('analytics.of_income_spent') || 'de tus ingresos han sido gastados'}`
                                 : t('analytics.no_income_data') || 'Sin datos de ingresos para este mes'
@@ -296,10 +296,10 @@ export const AnalyticsPage = () => {
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                <div className="glass-premium p-10 rounded-[3rem] border-white/10 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
                     <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/40">{t('analytics.total_expense')}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('analytics.total_expense')}</p>
                         <div className={cn(
                             "p-3 rounded-2xl border transition-all duration-500",
                             expenseVariation > 0 ? "bg-rose-500/10 border-rose-500/20 text-rose-500 shadow-glow" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"
@@ -308,7 +308,7 @@ export const AnalyticsPage = () => {
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
                         <p className="text-[11px] font-black uppercase tracking-[0.3em] mt-6 flex items-center gap-2">
                             <span className={cn(
                                 "flex items-center gap-1 p-1 px-3 rounded-full border",
@@ -317,15 +317,15 @@ export const AnalyticsPage = () => {
                                 {expenseVariation > 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
                                 {Math.abs(expenseVariation).toFixed(1)}%
                             </span>
-                            <span className="text-white/20 ml-2">{t('analytics.vs_previous_short')}</span>
+                            <span className="text-foreground/20 ml-2">{t('analytics.vs_previous_short')}</span>
                         </p>
                     </div>
                 </div>
 
-                <div className="glass-premium p-10 rounded-[3rem] border-white/10 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
                     <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white/40">{t('analytics.income')}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('analytics.income')}</p>
                         <div className={cn(
                             "p-3 rounded-2xl border transition-all duration-500",
                             incomeVariation >= 0 ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500 shadow-glow" : "bg-rose-500/10 border-rose-500/20 text-rose-500"
@@ -334,7 +334,7 @@ export const AnalyticsPage = () => {
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
                         <p className="text-[11px] font-black uppercase tracking-[0.3em] mt-6 flex items-center gap-2">
                             <span className={cn(
                                 "flex items-center gap-1 p-1 px-3 rounded-full border",
@@ -343,7 +343,7 @@ export const AnalyticsPage = () => {
                                 {incomeVariation >= 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
                                 {Math.abs(incomeVariation).toFixed(1)}%
                             </span>
-                            <span className="text-white/20 ml-2">{t('analytics.vs_previous_short')}</span>
+                            <span className="text-foreground/20 ml-2">{t('analytics.vs_previous_short')}</span>
                         </p>
                     </div>
                 </div>
@@ -352,8 +352,8 @@ export const AnalyticsPage = () => {
                 {(() => {
                     const highestIncrease = [...categoryInsights].sort((a, b) => b.diff - a.diff)[0];
                     if (!highestIncrease || highestIncrease.diff <= 0) return (
-                        <div className="glass-premium p-10 rounded-[3rem] border-white/10 relative overflow-hidden group">
-                            <div className="p-10 text-center text-white/30 font-black uppercase tracking-[0.3em] text-xs">
+                        <div className="glass-premium p-10 rounded-[3rem] border-border/30 relative overflow-hidden group">
+                            <div className="p-10 text-center text-foreground/30 font-black uppercase tracking-[0.3em] text-xs">
                                 <Minus size={48} className="mx-auto mb-6 opacity-10" />
                                 {t('analytics.no_significant_changes')}
                             </div>
@@ -370,8 +370,8 @@ export const AnalyticsPage = () => {
                                 </div>
                             </div>
                             <div className="space-y-4 relative z-10">
-                                <div className="text-4xl font-black tracking-tighter text-white drop-shadow-2xl leading-none">{highestIncrease.name}</div>
-                                <p className="text-[11px] text-white/40 font-black uppercase tracking-[0.3em] mt-6 bg-black/20 p-4 rounded-2xl border border-white/5">
+                                <div className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl leading-none">{highestIncrease.name}</div>
+                                <p className="text-[11px] text-foreground/40 font-black uppercase tracking-[0.3em] mt-6 bg-black/20 p-4 rounded-2xl border border-border/30">
                                     {t('analytics.increase_desc', {
                                         amount: new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(highestIncrease.diff)
                                     })}
@@ -383,9 +383,9 @@ export const AnalyticsPage = () => {
             </div>
 
             {/* Detailed Category Comparison */}
-            <div className="glass-premium rounded-[3.5rem] border-white/10 relative overflow-hidden group">
-                <div className="p-10 border-b border-white/5 bg-white/5 backdrop-blur-3xl flex items-center justify-between">
-                    <h3 className="flex items-center gap-4 text-3xl font-black tracking-tighter text-white">
+            <div className="glass-premium rounded-[3.5rem] border-border/30 relative overflow-hidden group">
+                <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl flex items-center justify-between">
+                    <h3 className="flex items-center gap-4 text-3xl font-black tracking-tighter text-foreground">
                         <div className="p-3 bg-primary/20 rounded-2xl shadow-glow"><BarChart2 size={24} className="text-primary" /></div>
                         {t('analytics.category_breakdown')}
                     </h3>
@@ -396,16 +396,16 @@ export const AnalyticsPage = () => {
                             <div key={cat.id} className="group/item active:scale-98 transition-all duration-300">
                                 <div className="flex items-center justify-between mb-5">
                                     <div className="flex items-center gap-5">
-                                        <div className="w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-white/10 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
+                                        <div className="w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-border/30 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
                                             <TrendingUp size={24} className="shadow-glow" />
                                         </div>
                                         <div>
-                                            <span className="font-black text-xl tracking-tighter text-white drop-shadow-md block">{cat.name}</span>
-                                            <span className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mt-1 block">{t('analytics.monthly_spend')}</span>
+                                            <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block">{cat.name}</span>
+                                            <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-1 block">{t('analytics.monthly_spend')}</span>
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <span className="font-black text-2xl tracking-tighter text-white block drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
+                                        <span className="font-black text-2xl tracking-tighter text-foreground block drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
                                         <span className={cn(
                                             "text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-end gap-2 mt-1",
                                             cat.diff > 0 ? 'text-rose-500' : 'text-emerald-500'
@@ -416,7 +416,7 @@ export const AnalyticsPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="relative h-3 bg-white/5 rounded-full overflow-hidden p-0.5 border border-white/5">
+                                <div className="relative h-3 bg-foreground/5 rounded-full overflow-hidden p-0.5 border border-border/30">
                                     {(() => {
                                         const maxVal = Math.max(...categoryInsights.map(c => Math.max(c.current, c.previous)));
                                         const curWidth = (cat.current / maxVal) * 100;
@@ -425,7 +425,7 @@ export const AnalyticsPage = () => {
                                         return (
                                             <>
                                                 <div
-                                                    className="absolute top-0.5 left-0.5 h-[calc(100%-4px)] bg-white/10 rounded-full z-10 transition-all duration-1500"
+                                                    className="absolute top-0.5 left-0.5 h-[calc(100%-4px)] bg-foreground/10 rounded-full z-10 transition-all duration-1500"
                                                     style={{ width: `${prevWidth}%` }}
                                                 />
                                                 <div
@@ -444,9 +444,9 @@ export const AnalyticsPage = () => {
                         ))}
                     </div>
                     {categoryInsights.length === 0 && (
-                        <div className="text-center py-32 bg-white/5 rounded-[4rem] border-2 border-dashed border-white/10 mt-8">
+                        <div className="text-center py-32 bg-foreground/5 rounded-[4rem] border-2 border-dashed border-border/30 mt-8">
                             <BarChart2 size={64} className="mx-auto mb-8 opacity-10" />
-                            <p className="text-white/20 font-black uppercase tracking-[0.5em] text-xs">{t('analytics.no_data')}</p>
+                            <p className="text-foreground/20 font-black uppercase tracking-[0.5em] text-xs">{t('analytics.no_data')}</p>
                         </div>
                     )}
                 </div>

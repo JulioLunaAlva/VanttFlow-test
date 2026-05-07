@@ -52,7 +52,7 @@ export const ForecastWidget = () => {
                 bufferRatio < 0.2 ? "bg-amber-500" : "bg-emerald-500"
             )} />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className={cn(
                         "p-2 rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-110",
@@ -82,7 +82,7 @@ export const ForecastWidget = () => {
                     </div>
 
                     <div className="space-y-3">
-                        <div className="flex justify-between items-center p-3 rounded-2xl bg-white/5 border border-white/5 group/row transition-all hover:bg-white/10">
+                        <div className="flex justify-between items-center p-3 rounded-2xl bg-foreground/5 border border-border/30 group/row transition-all hover:bg-foreground/10">
                             <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 group-hover/row:text-foreground transition-colors">{t('dashboard.forecast_widget.current')}</span>
                             <span className="text-xs font-black">{new Intl.NumberFormat(undefined, { style: 'currency', currency: currency }).format(forecast.currentBalance)}</span>
                         </div>
@@ -95,7 +95,7 @@ export const ForecastWidget = () => {
                         </div>
 
                         {forecast.estimatedDailyExpenses > 0 && (
-                            <div className="flex justify-between items-center p-3 rounded-2xl bg-white/5 border border-white/5 border-dashed group/row transition-all hover:bg-white/10 italic">
+                            <div className="flex justify-between items-center p-3 rounded-2xl bg-foreground/5 border border-border/30 border-dashed group/row transition-all hover:bg-foreground/10 italic">
                                 <span className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/40 group-hover/row:text-foreground transition-colors">
                                     {t('dashboard.daily_expense_est')} (x{new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate()} {t('dashboard.days_left')})
                                 </span>
@@ -121,7 +121,7 @@ export const ForecastWidget = () => {
                             <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground/60">{t('dashboard.forecast_widget.buffer_safety') || 'Margen de Seguridad'}</span>
                             <span className={cn("text-[10px] font-black", statusColor)}>{(bufferRatio * 100).toFixed(0)}%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                        <div className="h-1.5 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30">
                             <div 
                                 className={cn("h-full transition-all duration-1000", 
                                     bufferRatio < 0.2 ? "bg-amber-500" : "bg-emerald-500"
@@ -134,7 +134,7 @@ export const ForecastWidget = () => {
             </div>
 
             {/* Background elements */}
-            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-white/5 rounded-full blur-[100px]" />
+            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-foreground/5 rounded-full blur-[100px]" />
         </div>
     );
 };

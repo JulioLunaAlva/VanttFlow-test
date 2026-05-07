@@ -26,9 +26,9 @@ export const OfflineIndicator = () => {
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                     className="fixed top-[calc(env(safe-area-inset-top)+1rem)] left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:min-w-[320px] rounded-2xl z-[100] shadow-2xl"
                 >
-                    <div className="bg-amber-500/90 backdrop-blur-md text-white px-4 py-3 rounded-2xl border border-amber-400/50 flex items-center justify-center gap-3 shadow-amber-500/20">
-                        <div className="bg-white/20 p-1.5 rounded-full">
-                            <WifiOff className="w-4 h-4 text-white" />
+                    <div className="bg-amber-500/90 backdrop-blur-md text-foreground px-4 py-3 rounded-2xl border border-amber-400/50 flex items-center justify-center gap-3 shadow-amber-500/20">
+                        <div className="bg-foreground/20 p-1.5 rounded-full">
+                            <WifiOff className="w-4 h-4 text-foreground" />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-sm font-black tracking-tight leading-none">Sin conexión</span>
@@ -45,9 +45,9 @@ export const OfflineIndicator = () => {
                     transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                     className="fixed top-[calc(env(safe-area-inset-top)+1rem)] left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 md:min-w-[320px] rounded-2xl z-[100] shadow-2xl"
                 >
-                    <div className="bg-emerald-600/90 backdrop-blur-md text-white px-4 py-3 rounded-2xl border border-emerald-500/50 flex items-center justify-center gap-3 shadow-emerald-500/20">
-                        <div className="bg-white/20 p-1.5 rounded-full">
-                            <Wifi className="w-4 h-4 text-white" />
+                    <div className="bg-emerald-600/90 backdrop-blur-md text-foreground px-4 py-3 rounded-2xl border border-emerald-500/50 flex items-center justify-center gap-3 shadow-emerald-500/20">
+                        <div className="bg-foreground/20 p-1.5 rounded-full">
+                            <Wifi className="w-4 h-4 text-foreground" />
                         </div>
                         <div className="flex flex-col">
                             <span className="text-sm font-black tracking-tight leading-none">Conexión restaurada</span>

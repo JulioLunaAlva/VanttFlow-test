@@ -63,7 +63,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                             onChange={e => setName(e.target.value)}
                             placeholder="Ej. BBVA Crédito Oro"
                             required
-                            className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all placeholder:text-white/10"
+                            className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all placeholder:text-foreground/10"
                         />
                         <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/20 blur-[4px] group-hover:bg-primary transition-all shadow-glow" />
                     </div>
@@ -74,7 +74,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                         {t('accounts.account_type') || 'Tipo de Cuenta'}
                     </label>
                     <div className="relative">
-                        <Select value={type} onChange={e => setType(e.target.value)} className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight transition-all">
+                        <Select value={type} onChange={e => setType(e.target.value)} className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight transition-all">
                             <option value="debit">{t('accounts.debit_option') || 'Efectivo / Débito'}</option>
                             <option value="credit">{t('accounts.credit_option') || 'Tarjeta de Crédito'}</option>
                             <option value="cash">{t('accounts.cash_option') || 'Efectivo Físico'}</option>
@@ -95,7 +95,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     value={limit}
                                     onChange={e => setLimit(e.target.value)}
                                     placeholder="50000"
-                                    className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
+                                    className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
                                 />
                             </div>
                             <div className="space-y-2 group/field">
@@ -108,7 +108,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                         value={balance}
                                         onChange={e => setBalance(e.target.value)}
                                         placeholder="-1500"
-                                        className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-rose-400/20 transition-all border-rose-500/10"
+                                        className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-rose-400/20 transition-all border-rose-500/10"
                                     />
                                     <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-rose-500/20 blur-[4px]" />
                                 </div>
@@ -125,7 +125,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     value={cutOffDay}
                                     onChange={e => setCutOffDay(e.target.value)}
                                     placeholder="Ej. 5"
-                                    className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
+                                    className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
                                 />
                             </div>
                             <div className="space-y-2 group/field">
@@ -138,7 +138,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     value={paymentDay}
                                     onChange={e => setPaymentDay(e.target.value)}
                                     placeholder="Ej. 25"
-                                    className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
+                                    className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-primary/20 transition-all"
                                 />
                             </div>
                         </div>
@@ -154,7 +154,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                 value={balance}
                                 onChange={e => setBalance(e.target.value)}
                                 placeholder="0.00"
-                                className="h-14 bg-white/5 border-white/10 rounded-2xl px-6 font-black tracking-tight focus:ring-emerald-400/20 transition-all border-emerald-500/10"
+                                className="h-14 bg-foreground/5 border-border/30 rounded-2xl px-6 font-black tracking-tight focus:ring-emerald-400/20 transition-all border-emerald-500/10"
                             />
                             <div className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500/20 blur-[4px] shadow-glow" />
                         </div>
@@ -165,19 +165,19 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                     <label className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/50 group-hover:text-primary transition-colors block ml-2">
                         {t('accounts.distinctive_color') || 'Color Distintivo'}
                     </label>
-                    <div className="glass-premium p-4 rounded-3xl border-white/5 bg-white/5 overflow-hidden">
+                    <div className="glass-premium p-4 rounded-3xl border-border/30 bg-foreground/5 overflow-hidden">
                         <ColorPicker value={color} onChange={setColor} />
                     </div>
                 </div>
             </div>
 
-            <div className="pt-8 flex justify-end gap-4 border-t border-white/5">
+            <div className="pt-8 flex justify-end gap-4 border-t border-border/30">
                 {onCancel && (
                     <Button 
                         type="button" 
                         variant="ghost" 
                         onClick={onCancel} 
-                        className="h-14 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-white/5 text-muted-foreground transition-all"
+                        className="h-14 px-8 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-foreground/5 text-muted-foreground transition-all"
                     >
                         <X size={16} className="mr-2" />
                         {t('common.cancel') || 'Cancelar'}

@@ -67,20 +67,20 @@ export const UpdatePrompt = () => {
                         <div className="absolute inset-0 backdrop-blur-xl" />
 
                         {/* Ambient glow */}
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-[40px]" />
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-foreground/10 rounded-full blur-[40px]" />
 
                         <div className="relative z-10 p-5 flex items-center gap-4">
                             {/* Icon */}
-                            <div className="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center flex-shrink-0 shadow-lg border border-white/20">
-                                <Sparkles className="w-6 h-6 text-white animate-pulse" />
+                            <div className="w-12 h-12 rounded-2xl bg-foreground/20 flex items-center justify-center flex-shrink-0 shadow-lg border border-border/50">
+                                <Sparkles className="w-6 h-6 text-foreground animate-pulse" />
                             </div>
 
                             {/* Text */}
                             <div className="flex-1 min-w-0">
-                                <p className="text-white font-black text-sm tracking-tight leading-none">
+                                <p className="text-foreground font-black text-sm tracking-tight leading-none">
                                     ¡Nueva versión lista!
                                 </p>
-                                <p className="text-white/70 text-[11px] font-medium mt-1 leading-tight">
+                                <p className="text-foreground/70 text-[11px] font-medium mt-1 leading-tight">
                                     Toca actualizar para obtener las mejoras más recientes
                                 </p>
                             </div>
@@ -88,9 +88,9 @@ export const UpdatePrompt = () => {
                             {/* Dismiss button */}
                             <button
                                 onClick={handleDismiss}
-                                className="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors flex-shrink-0 active:scale-90"
+                                className="w-7 h-7 rounded-full bg-foreground/10 hover:bg-foreground/20 flex items-center justify-center transition-colors flex-shrink-0 active:scale-90"
                             >
-                                <X className="w-3.5 h-3.5 text-white/80" />
+                                <X className="w-3.5 h-3.5 text-foreground/80" />
                             </button>
                         </div>
 
@@ -98,7 +98,7 @@ export const UpdatePrompt = () => {
                         <div className="relative z-10 px-5 pb-5">
                             <button
                                 onClick={handleUpdate}
-                                className="w-full bg-white text-primary font-black text-sm py-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-lg active:scale-95 transition-all duration-200 hover:bg-white/90"
+                                className="w-full bg-card text-primary font-black text-sm py-3 rounded-2xl flex items-center justify-center gap-2.5 shadow-lg active:scale-95 transition-all duration-200 hover:bg-foreground/90"
                             >
                                 <RefreshCw className="w-4 h-4" />
                                 Actualizar ahora

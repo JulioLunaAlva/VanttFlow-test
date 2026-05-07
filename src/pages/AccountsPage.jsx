@@ -49,12 +49,12 @@ export const AccountsPage = () => {
         };
 
         return (
-            <div key={account.id} className="glass-premium overflow-hidden group relative border-white/10 rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.5)] active:scale-95">
+            <div key={account.id} className="glass-premium overflow-hidden group relative border-border/30 rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.5)] active:scale-95">
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-10 w-10 bg-white/5 hover:bg-white/20 text-white backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl"
+                        className="h-10 w-10 bg-foreground/5 hover:bg-foreground/20 text-foreground backdrop-blur-3xl border border-border/30 rounded-2xl shadow-2xl"
                         onClick={() => setEditingAccount(account)}
                     >
                         <Edit2 size={16} />
@@ -62,7 +62,7 @@ export const AccountsPage = () => {
                 </div>
 
                 <div
-                    className="h-56 p-10 text-white flex flex-col justify-between relative overflow-hidden"
+                    className="h-56 p-10 text-foreground flex flex-col justify-between relative overflow-hidden"
                     style={{
                         background: `linear-gradient(135deg, ${account.color || '#1e293b'} 0%, #000000 100%)`,
                     }}
@@ -72,7 +72,7 @@ export const AccountsPage = () => {
                             <p className="opacity-40 text-[9px] font-black uppercase tracking-[0.4em] mb-2">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
                             <h3 className="font-black text-3xl tracking-tighter truncate pr-12 drop-shadow-2xl">{account.name}</h3>
                         </div>
-                        <div className="p-4 bg-white/5 rounded-3xl backdrop-blur-3xl border border-white/10 shadow-3xl transform -rotate-12 transition-transform group-hover:rotate-0 duration-700">
+                        <div className="p-4 bg-foreground/5 rounded-3xl backdrop-blur-3xl border border-border/30 shadow-3xl transform -rotate-12 transition-transform group-hover:rotate-0 duration-700">
                             <CreditCard className="w-8 h-8 text-primary shadow-glow" />
                         </div>
                     </div>
@@ -85,7 +85,7 @@ export const AccountsPage = () => {
                     </div>
 
                     {/* Premium Abstract Elements */}
-                    <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-white/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000" />
+                    <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-foreground/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000" />
                     <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary/20 rounded-full blur-[80px]" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
@@ -99,7 +99,7 @@ export const AccountsPage = () => {
                                 utilization > 80 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
                             )}>{utilization.toFixed(1)}%</span>
                         </div>
-                        <div className="h-2.5 w-full bg-white/5 rounded-full overflow-hidden p-[1px] border border-white/10">
+                        <div className="h-2.5 w-full bg-foreground/5 rounded-full overflow-hidden p-[1px] border border-border/30">
                             <Progress 
                                 value={utilization} 
                                 className="h-full rounded-full" 
@@ -111,24 +111,24 @@ export const AccountsPage = () => {
                         </div>
                         <div className="flex justify-between text-[10px] font-black tracking-[0.1em] text-muted-foreground/40 pt-1">
                             <span className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-glow" /> {t('accounts.limit_available') || 'Disponible'}: {formatCurrency(availableCredit)}</span>
-                            <span>Total: <span className="text-white/40">{formatCurrency(account.limit)}</span></span>
+                            <span>Total: <span className="text-foreground/40">{formatCurrency(account.limit)}</span></span>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="glass-premium p-4 rounded-3xl border border-white/5 transition-all hover:bg-white/5 group/stat">
+                        <div className="glass-premium p-4 rounded-3xl border border-border/30 transition-all hover:bg-foreground/5 group/stat">
                             <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 mb-2">
                                 <Calendar size={14} className="text-primary group-hover:scale-110 transition-transform" /> {t('accounts.cutoff_day') || 'Corte'}
                             </div>
-                            <p className="font-black text-base text-white/90">{t('accounts.day') || 'Día'} {account.cutOffDay}</p>
+                            <p className="font-black text-base text-foreground/90">{t('accounts.day') || 'Día'} {account.cutOffDay}</p>
                         </div>
-                        <div className="glass-premium p-4 rounded-3xl border border-white/5 transition-all hover:bg-white/5 group/stat">
+                        <div className="glass-premium p-4 rounded-3xl border border-border/30 transition-all hover:bg-foreground/5 group/stat">
                             <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 mb-2">
                                 <AlertCircle size={14} className="text-rose-500/80 group-hover:scale-110 transition-transform" /> {t('accounts.pay_before') || 'Pago'}
                             </div>
                             <p className={cn(
                                 "font-black text-base",
-                                utilization > 0 ? "text-rose-400" : "text-white/90"
+                                utilization > 0 ? "text-rose-400" : "text-foreground/90"
                             )}>
                                 {nextPaymentDate ? format(nextPaymentDate, 'dd MMM', { locale: currentLocale }) : 'N/A'}
                             </p>
@@ -143,12 +143,12 @@ export const AccountsPage = () => {
         const balance = getAccountBalance(account.id);
 
         return (
-            <div key={account.id} className="glass-premium group relative border-white/10 flex flex-col h-full rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)] active:scale-95 overflow-hidden">
+            <div key={account.id} className="glass-premium group relative border-border/30 flex flex-col h-full rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)] active:scale-95 overflow-hidden">
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-10 w-10 hover:bg-white/10 rounded-2xl border border-white/5 shadow-2xl backdrop-blur-3xl"
+                        className="h-10 w-10 hover:bg-foreground/10 rounded-2xl border border-border/30 shadow-2xl backdrop-blur-3xl"
                         onClick={() => setEditingAccount(account)}
                     >
                         <Edit2 size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
@@ -156,7 +156,7 @@ export const AccountsPage = () => {
                 </div>
                 <div className="p-10 space-y-8 flex-1 flex flex-col relative z-10">
                     <div className="flex items-center gap-6">
-                        <div className="p-5 rounded-[2rem] bg-white/5 border border-white/10 shadow-3xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 backdrop-blur-3xl">
+                        <div className="p-5 rounded-[2rem] bg-foreground/5 border border-border/30 shadow-3xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 backdrop-blur-3xl">
                             {account.type === 'cash' ? <Banknote size={28} className="text-emerald-500 shadow-glow" /> :
                                 account.type === 'investment' ? <TrendingUp size={28} className="text-blue-500 shadow-glow" /> :
                                     <Landmark size={28} className="text-primary shadow-glow" />}
@@ -175,7 +175,7 @@ export const AccountsPage = () => {
                         <p className="text-[10px] font-black text-muted-foreground opacity-30 uppercase tracking-[0.4em] mb-3 group-hover/balance:text-primary/40 transition-colors">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
                         <p className={cn(
                             "text-5xl font-black tracking-tighter truncate drop-shadow-2xl transition-transform duration-500 group-hover/balance:translate-x-1",
-                            balance < 0 ? 'text-rose-500' : 'text-white'
+                            balance < 0 ? 'text-rose-500' : 'text-foreground'
                         )}>
                             <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                         </p>
@@ -184,17 +184,17 @@ export const AccountsPage = () => {
                 <div className="absolute bottom-0 left-0 w-full h-[6px] transition-all duration-700 group-hover:h-[8px]" style={{ background: account.color || '#10b981', opacity: 0.3 }} />
                 
                 {/* Decorative background circle */}
-                <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-white/5 rounded-full blur-[60px] pointer-events-none" />
+                <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-foreground/5 rounded-full blur-[60px] pointer-events-none" />
             </div>
         );
     };
 
     return (
         <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-8 rounded-[2.5rem] border-white/10 mb-8 mt-2 group relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-8 rounded-[2.5rem] border-border/30 mb-8 mt-2 group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -mr-32 -mt-32" />
                 <div className="relative z-10">
-                    <h2 className="text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
                         {t('accounts.title') || 'Mis Cuentas'}
                     </h2>
                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-3 group-hover:text-primary transition-colors">
@@ -207,22 +207,22 @@ export const AccountsPage = () => {
             </div>
 
             <div className="space-y-8">
-                <div className="flex items-center gap-4 border-b border-white/10 pb-4 relative group">
+                <div className="flex items-center gap-4 border-b border-border/30 pb-4 relative group">
                     <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-2xl group-hover:scale-110 transition-transform">
                         <Wallet size={24} className="text-emerald-500 shadow-glow" />
                     </div>
                     <div>
-                        <h3 className="text-2xl font-black tracking-tight text-white">{t('accounts.cash_debit_header') || 'Efectivo y Débito'}</h3>
+                        <h3 className="text-2xl font-black tracking-tight text-foreground">{t('accounts.cash_debit_header') || 'Efectivo y Débito'}</h3>
                         <div className="absolute bottom-[-1px] left-0 w-24 h-[3px] bg-emerald-500 shadow-glow rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                     </div>
                 </div>
                 {debitAccounts.length === 0 ? (
-                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-white/10 rounded-[3rem] opacity-60 space-y-6 group hover:border-emerald-500/30 transition-all duration-700">
-                        <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
+                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-border/30 rounded-[3rem] opacity-60 space-y-6 group hover:border-emerald-500/30 transition-all duration-700">
+                        <div className="w-24 h-24 bg-foreground/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
                             <Wallet size={48} className="text-muted-foreground/40 group-hover:text-emerald-500/60 transition-colors" />
                         </div>
                         <div className="text-center">
-                            <p className="font-black text-xl tracking-tight text-white/80">{t('accounts.no_debit_accounts') || 'No hay cuentas registradas'}</p>
+                            <p className="font-black text-xl tracking-tight text-foreground/80">{t('accounts.no_debit_accounts') || 'No hay cuentas registradas'}</p>
                             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground/30 px-12 mt-2">{t('accounts.no_debit_accounts_desc') || 'Agregas tus cuentas bancarias o efectivo para ver sus saldos.'}</p>
                         </div>
                     </div>
@@ -234,22 +234,22 @@ export const AccountsPage = () => {
             </div>
 
             <div className="space-y-8">
-                <div className="flex items-center gap-4 border-b border-white/10 pb-4 relative group">
+                <div className="flex items-center gap-4 border-b border-border/30 pb-4 relative group">
                     <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center border border-primary/20 shadow-2xl group-hover:scale-110 transition-transform">
                         <CreditCard size={24} className="text-primary shadow-glow" />
                     </div>
                     <div>
-                        <h3 className="text-2xl font-black tracking-tight text-white">{t('accounts.credit_header') || 'Líneas de Crédito'}</h3>
+                        <h3 className="text-2xl font-black tracking-tight text-foreground">{t('accounts.credit_header') || 'Líneas de Crédito'}</h3>
                         <div className="absolute bottom-[-1px] left-0 w-24 h-[3px] bg-primary shadow-glow rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                     </div>
                 </div>
                 {creditCards.length === 0 ? (
-                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-white/10 rounded-[3rem] opacity-60 space-y-6 group hover:border-primary/30 transition-all duration-700">
-                        <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
+                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-border/30 rounded-[3rem] opacity-60 space-y-6 group hover:border-primary/30 transition-all duration-700">
+                        <div className="w-24 h-24 bg-foreground/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
                             <CreditCard size={48} className="text-muted-foreground/40 group-hover:text-primary/60 transition-colors" />
                         </div>
                         <div className="text-center">
-                            <p className="font-black text-xl tracking-tight text-white/80">{t('accounts.no_credit_cards') || 'Sin tarjetas registradas'}</p>
+                            <p className="font-black text-xl tracking-tight text-foreground/80">{t('accounts.no_credit_cards') || 'Sin tarjetas registradas'}</p>
                             <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground/30 px-12 mt-2">{t('accounts.no_credit_cards_desc') || 'Mantén el control de tus fechas de corte y límites utilizados.'}</p>
                         </div>
                     </div>
@@ -261,13 +261,13 @@ export const AccountsPage = () => {
             </div>
 
             <Dialog open={!!editingAccount} onOpenChange={(val) => !val && setEditingAccount(null)}>
-                <DialogContent className="max-w-md glass-premium border-white/10 p-0 overflow-hidden rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
-                    <div className="p-10 border-b border-white/5 bg-white/5 backdrop-blur-3xl relative overflow-hidden group">
+                <DialogContent className="max-w-md glass-premium border-border/30 p-0 overflow-hidden rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
+                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl relative overflow-hidden group">
                          {/* Background mystical glow */}
                         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
                         
                         <DialogHeader className="relative z-10">
-                            <DialogTitle className="text-3xl font-black tracking-tighter text-white drop-shadow-2xl">{t('accounts.edit_account') || 'Editar Cuenta'}</DialogTitle>
+                            <DialogTitle className="text-3xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('accounts.edit_account') || 'Editar Cuenta'}</DialogTitle>
                             <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-2">{t('accounts.edit_desc') || 'Ajusta los detalles de tu cuenta financiera'}</p>
                         </DialogHeader>
                     </div>

@@ -22,13 +22,13 @@ import { useTranslation } from 'react-i18next';
 const WelcomeHeader = () => {
     const { t } = useTranslation();
     return (
-        <div className="relative overflow-hidden glass-premium p-8 md:p-12 rounded-[2.5rem] border-white/10 animate-in fade-in zoom-in duration-1000 group">
+        <div className="relative overflow-hidden glass-premium p-8 md:p-12 rounded-[2.5rem] border-border/30 animate-in fade-in zoom-in duration-1000 group">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary/5 opacity-50 group-hover:opacity-70 transition-opacity" />
             <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
             <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/10 rounded-full blur-[100px]" />
             
             <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
-                <div className="w-20 h-20 md:w-28 md:h-28 glass-premium rounded-3xl flex items-center justify-center shadow-2xl border-white/20 flex-shrink-0 animate-bounce-slow">
+                <div className="w-20 h-20 md:w-28 md:h-28 glass-premium rounded-3xl flex items-center justify-center shadow-2xl border-border/50 flex-shrink-0 animate-bounce-slow">
                     <span className="text-4xl md:text-6xl drop-shadow-lg">🚀</span>
                 </div>
                 <div className="text-center md:text-left space-y-3">
@@ -168,7 +168,7 @@ export const DashboardPage = () => {
 
     return (
         <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-0">
-            <div className="flex justify-between items-center gap-4 mb-8 mt-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 mt-4">
                 <div className="relative z-10 min-w-0">
                     <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground drop-shadow-sm truncate">{t('common.dashboard')}</h2>
                     <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -182,13 +182,13 @@ export const DashboardPage = () => {
                         variant={isEditMode ? "default" : "outline"}
                         size="sm"
                         onClick={() => setIsEditMode(!isEditMode)}
-                        className="gap-3 rounded-2xl font-black uppercase tracking-widest h-12 px-8 shadow-2xl transition-all active:scale-95 border-white/10"
+                        className="gap-3 rounded-2xl font-black uppercase tracking-widest h-12 px-8 shadow-2xl transition-all active:scale-95 border-border/30"
                     >
-                        {isEditMode ? <Check size={18} className="text-white" /> : <Settings2 size={18} />}
+                        {isEditMode ? <Check size={18} className="text-foreground" /> : <Settings2 size={18} />}
                         {isEditMode ? t('dashboard.finish_edit') : t('dashboard.customize')}
                     </Button>
                     {isEditMode && (
-                        <Button variant="ghost" size="icon" onClick={resetLayout} title="Restablecer original" className="rounded-2xl h-12 w-12 hover:bg-white/10 hover:text-primary transition-all">
+                        <Button variant="ghost" size="icon" onClick={resetLayout} title="Restablecer original" className="rounded-2xl h-12 w-12 hover:bg-foreground/10 hover:text-primary transition-all">
                             <RotateCcw size={20} />
                         </Button>
                     )}
@@ -216,7 +216,7 @@ export const DashboardPage = () => {
                             className={`
                                 ${widgetConfig.className} 
                                 relative group transition-all duration-700
-                                glass-premium rounded-[2.5rem] border-white/10 overflow-hidden min-h-[320px] h-full flex flex-col
+                                glass-premium rounded-[2.5rem] border-border/30 overflow-hidden min-h-[320px] h-full flex flex-col
                                 ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card/80 backdrop-blur-3xl z-50 scale-105 shadow-[0_0_80px_rgba(var(--primary),0.3)]' : ''}
                                 ${draggedItem === index ? 'opacity-30 scale-95 blur-[4px]' : ''}
                                 ${!visibility[widgetId] && isEditMode ? 'opacity-40 grayscale blur-[2px]' : ''}
@@ -229,7 +229,7 @@ export const DashboardPage = () => {
                                         <Button
                                             size="icon"
                                             variant={visibility[widgetId] ? "secondary" : "destructive"}
-                                            className="h-10 w-10 rounded-full shadow-2xl border border-white/10 transition-all hover:scale-110 active:scale-90"
+                                            className="h-10 w-10 rounded-full shadow-2xl border border-border/30 transition-all hover:scale-110 active:scale-90"
                                             onClick={() => toggleVisibility(widgetId)}
                                             title={visibility[widgetId] ? "Ocultar" : "Mostrar"}
                                         >

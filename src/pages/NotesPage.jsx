@@ -94,13 +94,13 @@ const IOUDialog = ({ open, onClose, initial }) => {
                     {/* Type Toggle */}
                     <div className="flex gap-2 p-1 bg-muted rounded-lg">
                         <Button type="button" size="sm"
-                            className={cn('flex-1 gap-1.5 text-xs', form.type === 'lent' ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : '')}
+                            className={cn('flex-1 gap-1.5 text-xs', form.type === 'lent' ? 'bg-emerald-600 hover:bg-emerald-700 text-foreground' : '')}
                             variant={form.type === 'lent' ? 'default' : 'ghost'}
                             onClick={() => set('type', 'lent')}>
                             <ArrowUpRight size={14} /> Me deben
                         </Button>
                         <Button type="button" size="sm"
-                            className={cn('flex-1 gap-1.5 text-xs', form.type === 'borrowed' ? 'bg-rose-600 hover:bg-rose-700 text-white' : '')}
+                            className={cn('flex-1 gap-1.5 text-xs', form.type === 'borrowed' ? 'bg-rose-600 hover:bg-rose-700 text-foreground' : '')}
                             variant={form.type === 'borrowed' ? 'default' : 'ghost'}
                             onClick={() => set('type', 'borrowed')}>
                             <ArrowDownLeft size={14} /> Yo debo
@@ -166,7 +166,7 @@ const SettleDialog = ({ open, onClose, iou }) => {
                                 <button type="button"
                                     className={cn('w-9 h-5 rounded-full transition-colors relative', genTx ? 'bg-primary' : 'bg-muted')}
                                     onClick={() => setGenTx(!genTx)}>
-                                    <div className={cn('absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all', genTx ? 'right-0.5' : 'left-0.5')} />
+                                    <div className={cn('absolute top-0.5 w-4 h-4 rounded-full bg-card transition-all', genTx ? 'right-0.5' : 'left-0.5')} />
                                 </button>
                                 <span>Registrar como ingreso en mis cuentas</span>
                             </label>
@@ -225,7 +225,7 @@ const NoteDialog = ({ open, onClose, initial }) => {
                         {Object.entries(NOTE_COLORS).map(([key, val]) => (
                             <button key={key} type="button" onClick={() => set('color', key)}
                                 className={cn('w-6 h-6 rounded-full transition-all border-2', val.dot,
-                                    form.color === key ? 'border-white scale-125 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100')} />
+                                    form.color === key ? 'border-border scale-125 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100')} />
                         ))}
                     </div>
                     <Button type="submit" className="w-full gap-2">
@@ -253,7 +253,7 @@ const IOUCard = ({ iou, onSettle, onEdit, onDelete }) => {
         )}>
             {/* Header */}
             <div className="flex items-start gap-3">
-                <div className={cn('w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0', getAvatarColor(iou.personName))}>
+                <div className={cn('w-11 h-11 rounded-2xl flex items-center justify-center text-foreground font-bold text-sm flex-shrink-0', getAvatarColor(iou.personName))}>
                     {initials(iou.personName)}
                 </div>
                 <div className="flex-1 min-w-0">

@@ -13,7 +13,7 @@ export function ThemeProvider({
 
     useEffect(() => {
         const root = window.document.documentElement
-        const themes = ["light", "dark", "pink", "gamer", "anime"]
+        const themes = ["light", "dark"]
 
         root.classList.remove(...themes)
 

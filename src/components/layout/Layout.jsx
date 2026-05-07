@@ -51,7 +51,7 @@ const Sidebar = ({ className }) => {
                 <Link to="/" className="flex items-center gap-4 group/logo-link">
                     <div className="relative group/logo">
                         <div className="absolute inset-0 bg-primary/20 blur-lg rounded-xl opacity-0 group-hover/logo:opacity-100 transition-opacity" />
-                        <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-xl relative z-10 shadow-lg border border-white/10" />
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-xl relative z-10 shadow-lg border border-border/30" />
                     </div>
                     <div className="flex flex-col">
                         <h1 className="text-2xl font-black tracking-tighter bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent">
@@ -160,8 +160,8 @@ const SidebarLink = ({ to, icon: Icon, label, id }) => (
         className={({ isActive }) => cn(
             "flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-500 group relative",
             isActive
-                ? "bg-primary text-primary-foreground shadow-[0_8px_24px_rgba(var(--primary),0.4)] scale-[1.02] border-white/20"
-                : "text-muted-foreground hover:bg-white/5 hover:text-foreground border-transparent"
+                ? "bg-primary text-primary-foreground shadow-[0_8px_24px_rgba(var(--primary),0.4)] scale-[1.02] border-border/50"
+                : "text-muted-foreground hover:bg-foreground/5 hover:text-foreground border-transparent"
         )}
     >
         <div className="flex items-center gap-3">
@@ -173,7 +173,7 @@ const SidebarLink = ({ to, icon: Icon, label, id }) => (
         </div>
         {/* Subtle indicator for active state */}
         <div className={cn(
-            "h-1.5 w-1.5 rounded-full bg-white transition-all duration-500",
+            "h-1.5 w-1.5 rounded-full bg-card transition-all duration-500",
             "group-[.active]:opacity-100 opacity-0 group-[.active]:translate-x-0 translate-x-4"
         )} />
     </NavLink>

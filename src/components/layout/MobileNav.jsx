@@ -116,12 +116,12 @@ export const MobileNav = () => {
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-background/95 backdrop-blur-md border-t flex items-center justify-between px-6 z-50 pb-safe shadow-lg">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-[5.5rem] bg-background/95 backdrop-blur-md border-t flex items-center justify-around px-2 sm:px-6 z-50 pb-safe shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.3)]">
             {/* Left Side */}
             <NavLink
                 to="/"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-14 h-full transition-all duration-300",
+                    "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
@@ -136,7 +136,7 @@ export const MobileNav = () => {
             <NavLink
                 to="/transactions"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-14 h-full transition-all duration-300",
+                    "flex flex-col items-center justify-center flex-1 h-full transition-all duration-300",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70"
                 )}
             >
@@ -149,7 +149,7 @@ export const MobileNav = () => {
             </NavLink>
 
             {/* Center Action Button */}
-            <div id="tour-add" className="relative -top-5">
+            <div id="tour-add" className="relative -top-6 flex-shrink-0 mx-2">
                 <Button
                     size="icon"
                     className="h-16 w-16 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95 transition-all select-none touch-none border-4 border-background"
@@ -223,7 +223,7 @@ export const MobileNav = () => {
             <NavLink
                 to="/calendar"
                 className={({ isActive }) => cn(
-                    "flex flex-col items-center justify-center w-14 h-full transition-colors",
+                    "flex flex-col items-center justify-center flex-1 h-full transition-colors",
                     isActive ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                 )}
             >
@@ -240,7 +240,7 @@ export const MobileNav = () => {
                 <SheetTrigger asChild>
                     <button
                         className={cn(
-                            "flex flex-col items-center justify-center w-14 h-full transition-colors outline-none",
+                            "flex flex-col items-center justify-center flex-1 h-full transition-colors outline-none",
                             isMoreOpen ? "text-primary scale-110" : "text-muted-foreground/70 hover:text-foreground"
                         )}
                     >

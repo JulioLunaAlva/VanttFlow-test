@@ -130,17 +130,17 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                             <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/80 to-transparent p-4">
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1">
-                                        <h3 className="text-white font-bold text-lg truncate">
+                                        <h3 className="text-foreground font-bold text-lg truncate">
                                             {attachment.name || 'Comprobante'}
                                         </h3>
-                                        <p className="text-white/60 text-sm">
+                                        <p className="text-foreground/60 text-sm">
                                             Toca para cerrar • Pellizca para zoom
                                         </p>
                                     </div>
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="text-white hover:bg-white/20 rounded-full"
+                                        className="text-foreground hover:bg-foreground/20 rounded-full"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         <X className="w-6 h-6" />
@@ -184,24 +184,24 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.1 }}
-                                        className="flex items-center gap-2 bg-white/10 backdrop-blur-xl rounded-2xl p-2 border border-white/20"
+                                        className="flex items-center gap-2 bg-foreground/10 backdrop-blur-xl rounded-2xl p-2 border border-border/50"
                                     >
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="text-white hover:bg-white/20 rounded-xl"
+                                            className="text-foreground hover:bg-foreground/20 rounded-xl"
                                             onClick={handleZoomOut}
                                             disabled={scale <= 0.5}
                                         >
                                             <ZoomOut className="w-5 h-5" />
                                         </Button>
-                                        <div className="px-3 text-white font-bold text-sm min-w-[60px] text-center">
+                                        <div className="px-3 text-foreground font-bold text-sm min-w-[60px] text-center">
                                             {Math.round(scale * 100)}%
                                         </div>
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="text-white hover:bg-white/20 rounded-xl"
+                                            className="text-foreground hover:bg-foreground/20 rounded-xl"
                                             onClick={handleZoomIn}
                                             disabled={scale >= 4}
                                         >
@@ -217,7 +217,7 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="text-white hover:bg-white/20 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20"
+                                            className="text-foreground hover:bg-foreground/20 rounded-xl bg-foreground/10 backdrop-blur-xl border border-border/50"
                                             onClick={handleRotate}
                                         >
                                             <RotateCw className="w-5 h-5" />
@@ -232,7 +232,7 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="text-white hover:bg-white/20 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20"
+                                            className="text-foreground hover:bg-foreground/20 rounded-xl bg-foreground/10 backdrop-blur-xl border border-border/50"
                                             onClick={handleDownload}
                                         >
                                             <Download className="w-5 h-5" />
@@ -248,7 +248,7 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                className="text-white hover:bg-white/20 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20"
+                                                className="text-foreground hover:bg-foreground/20 rounded-xl bg-foreground/10 backdrop-blur-xl border border-border/50"
                                                 onClick={handleShare}
                                             >
                                                 <Share2 className="w-5 h-5" />
@@ -266,7 +266,7 @@ export const TransactionImageViewer = ({ attachment, trigger }) => {
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            className="text-white/60 hover:text-white hover:bg-white/10 text-xs"
+                                            className="text-foreground/60 hover:text-foreground hover:bg-foreground/10 text-xs"
                                             onClick={handleReset}
                                         >
                                             Restablecer vista

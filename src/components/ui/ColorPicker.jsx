@@ -76,7 +76,7 @@ export const ColorPicker = ({ value, onChange }) => {
                                     {value === color && (
                                         <div className="w-full h-full flex items-center justify-center">
                                             <svg
-                                                className="w-5 h-5 text-white drop-shadow-lg"
+                                                className="w-5 h-5 text-foreground drop-shadow-lg"
                                                 fill="none"
                                                 strokeWidth="3"
                                                 stroke="currentColor"

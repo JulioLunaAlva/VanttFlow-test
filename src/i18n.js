@@ -38,7 +38,8 @@ const resources = {
                     movs: "Movs",
                     cards: "Cuentas",
                     more: "Más",
-                    menu: "Menú"
+                    menu: "Menú",
+                    calendar: "Calendario"
                 },
                 continue: "Continuar",
                 start: "Empezar",
@@ -236,10 +237,12 @@ const resources = {
                     at_risk: "Riesgo de sobregiro",
                     real_available: "Saldo real disponible",
                     pending_payments: "Pagos pendientes",
-                    expected_income: "Ingresos esperados:"
+                    expected_income: "Ingresos esperados:",
+                    buffer_safety: "Margen de seguridad"
                 }
             },
             transactions: {
+                manage_desc: "Controla tus ingresos y gastos de forma detallada.",
                 new_title: "Nueva Transacción",
                 edit_title: "Editar Transacción",
                 add: "Agregar",
@@ -585,7 +588,8 @@ const resources = {
                         movs: "Trans",
                         cards: "Accounts",
                         more: "More",
-                        menu: "Menu"
+                        menu: "Menu",
+                        calendar: "Calendar"
                     }
                 },
                 dashboard: {
@@ -751,10 +755,12 @@ const resources = {
                         at_risk: "Overdraft risk",
                         real_available: "Real available balance",
                         pending_payments: "Pending payments",
-                        expected_income: "Expected income:"
+                        expected_income: "Expected income:",
+                        buffer_safety: "Safety margin"
                     }
                 },
             transactions: {
+                manage_desc: "Control your income and expenses in detail.",
                 new_title: "New Transaction",
                 edit_title: "Edit Transaction",
                 add: "Add",

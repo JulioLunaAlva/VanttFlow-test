@@ -48,7 +48,7 @@ export const AIAdviceWidget = () => {
             {/* Background mystical glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-[60px] group-hover:bg-primary/20 transition-all duration-700" />
             
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className={cn(
                         "p-2 rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-110",
@@ -64,7 +64,7 @@ export const AIAdviceWidget = () => {
                 <Button 
                     variant="secondary" 
                     size="icon" 
-                    className="h-10 w-10 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:text-primary transition-all active:scale-95" 
+                    className="h-10 w-10 rounded-2xl bg-foreground/5 border border-border/30 hover:bg-primary/20 hover:text-primary transition-all active:scale-95" 
                     onClick={fetchAdvice}
                     disabled={isLoading}
                 >
@@ -83,9 +83,9 @@ export const AIAdviceWidget = () => {
                                 exit={{ opacity: 0 }}
                                 className="space-y-4 py-4"
                             >
-                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-3/4 border border-white/5" />
-                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-5/6 border border-white/5" />
-                                <div className="h-6 bg-white/5 animate-pulse rounded-2xl w-2/3 border border-white/5" />
+                                <div className="h-6 bg-foreground/5 animate-pulse rounded-2xl w-3/4 border border-border/30" />
+                                <div className="h-6 bg-foreground/5 animate-pulse rounded-2xl w-5/6 border border-border/30" />
+                                <div className="h-6 bg-foreground/5 animate-pulse rounded-2xl w-2/3 border border-border/30" />
                             </motion.div>
                         ) : advice.length > 0 ? (
                             <motion.div 
@@ -95,7 +95,7 @@ export const AIAdviceWidget = () => {
                                 className="space-y-4"
                             >
                                 {advice.map((item, index) => (
-                                    <div key={index} className="group/item flex gap-4 items-start p-4 rounded-[2rem] bg-white/5 border border-white/5 hover:border-primary/20 hover:bg-white/10 transition-all duration-300">
+                                    <div key={index} className="group/item flex gap-4 items-start p-4 rounded-[2rem] bg-foreground/5 border border-border/30 hover:border-primary/20 hover:bg-foreground/10 transition-all duration-300">
                                         <div className={cn(
                                             "p-3 rounded-2xl shadow-lg transition-transform duration-500 group-hover/item:scale-110",
                                             index === 0 ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : "bg-blue-500/10 text-blue-500 border border-blue-500/20"
@@ -110,7 +110,7 @@ export const AIAdviceWidget = () => {
                             </motion.div>
                         ) : (
                             <div className="py-12 text-center space-y-4">
-                                <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto border border-white/10 relative">
+                                <div className="w-16 h-16 bg-foreground/5 rounded-full flex items-center justify-center mx-auto border border-border/30 relative">
                                     <Wallet className="text-muted-foreground/30" size={32} />
                                     <div className="absolute inset-0 bg-primary/5 rounded-full blur-[20px] -z-10" />
                                 </div>
@@ -122,8 +122,8 @@ export const AIAdviceWidget = () => {
                     </AnimatePresence>
                 </div>
                 
-                <div className="mt-8 pt-4 border-t border-white/10">
-                    <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                <div className="mt-8 pt-4 border-t border-border/30">
+                    <div className="h-1 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30">
                         <motion.div 
                             className="h-full bg-gradient-to-r from-primary/40 via-primary to-primary/40"
                             initial={{ width: "0%" }}

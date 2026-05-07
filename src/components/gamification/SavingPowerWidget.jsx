@@ -72,7 +72,7 @@ export const SavingPowerWidget = () => {
                     color === 'from-muted to-muted-foreground/20' ? 'bg-muted' : 'bg-gradient-to-br ' + color
                 )} />
                 
-                <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+                <div className="p-6 border-b border-border/30 flex items-center justify-between relative z-10">
                     <div className="flex items-center gap-3">
                         <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg transition-transform duration-500 group-hover:scale-110">
                             <Zap size={20} className="animate-pulse" />
@@ -100,16 +100,16 @@ export const SavingPowerWidget = () => {
                             </p>
                         </div>
                         <div className={cn(
-                                "w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-3xl border border-white/20 bg-gradient-to-br transition-all duration-700 hover:scale-115 hover:rotate-10",
+                                "w-16 h-16 rounded-[1.5rem] flex items-center justify-center shadow-3xl border border-border/50 bg-gradient-to-br transition-all duration-700 hover:scale-115 hover:rotate-10",
                                 color
                             )}
                         >
-                            <Icon className="text-white h-8 w-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]" />
+                            <Icon className="text-foreground h-8 w-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]" />
                         </div>
                     </div>
 
                     <div className="relative mb-10 mt-2">
-                        <div className="h-6 w-full rounded-2xl bg-white/5 border border-white/10 p-1 overflow-hidden backdrop-blur-xl">
+                        <div className="h-6 w-full rounded-2xl bg-foreground/5 border border-border/30 p-1 overflow-hidden backdrop-blur-xl">
                             <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: `${score}%` }}
@@ -122,8 +122,8 @@ export const SavingPowerWidget = () => {
                     </div>
 
                     {isEmpty ? (
-                        <div className="flex-1 flex flex-col items-center justify-center text-center p-8 rounded-[2rem] bg-white/5 border border-dashed border-white/10 mt-6 group/empty transition-all hover:bg-white/[0.08] hover:border-primary/30">
-                            <div className="w-14 h-14 rounded-[1.25rem] bg-white/5 border border-white/10 flex items-center justify-center mb-4 transition-all duration-500 shadow-2xl">
+                        <div className="flex-1 flex flex-col items-center justify-center text-center p-8 rounded-[2rem] bg-foreground/5 border border-dashed border-border/30 mt-6 group/empty transition-all hover:bg-card/[0.08] hover:border-primary/30">
+                            <div className="w-14 h-14 rounded-[1.25rem] bg-foreground/5 border border-border/30 flex items-center justify-center mb-4 transition-all duration-500 shadow-2xl">
                                 <Sparkles className="text-primary/40 group-hover:text-primary transition-colors" size={24} />
                             </div>
                             <p className="text-[13px] font-bold text-muted-foreground/80 leading-relaxed max-w-[200px] mb-4">
@@ -139,9 +139,9 @@ export const SavingPowerWidget = () => {
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 gap-4 mt-8">
-                            <div className="p-5 rounded-[2rem] glass-premium border border-white/5 hover:border-white/20 transition-all duration-500 shadow-2xl">
+                            <div className="p-5 rounded-[2rem] glass-premium border border-border/30 hover:border-border/50 transition-all duration-500 shadow-2xl">
                                 <p className="text-[10px] font-black uppercase text-muted-foreground/40 tracking-[0.3em] mb-3 flex items-center gap-2">
-                                    <span className="w-2 h-2 rounded-full bg-white/20" />
+                                    <span className="w-2 h-2 rounded-full bg-foreground/20" />
                                     {t('dashboard.theoretical')}
                                 </p>
                                 <p className="text-xl font-black tracking-tighter text-foreground">

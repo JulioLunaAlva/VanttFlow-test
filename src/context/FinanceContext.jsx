@@ -863,7 +863,17 @@ export const FinanceProvider = ({ children }) => {
         }).sort((a, b) => b.percentage - a.percentage);
     };
 
+    const formatCurrency = (amount, options = {}) => {
+        return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: 'MXN',
+            notation: options.compact ? "compact" : "standard",
+            ...options
+        }).format(amount || 0);
+    };
+
     const value = useMemo(() => ({
+        formatCurrency,
         transactions,
         filteredTransactions,
         categories,

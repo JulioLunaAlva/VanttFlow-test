@@ -49,7 +49,7 @@ export const AccountsWidget = () => {
 
     return (
         <div className="h-full flex flex-col relative group overflow-hidden">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between relative z-10">
+            <div className="p-6 border-b border-border/50 flex items-center justify-between relative z-10">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary shadow-lg group-hover:scale-110 transition-transform duration-500">
                         <Wallet size={20} />
@@ -57,7 +57,7 @@ export const AccountsWidget = () => {
                     {t('dashboard.accounts_breakdown') || 'Mis Cuentas'}
                 </h3>
                 <Link to="/accounts">
-                    <Button variant="ghost" className="h-10 w-10 p-0 rounded-2xl bg-white/5 border border-white/10 hover:bg-primary/20 hover:text-primary transition-all">
+                    <Button variant="ghost" className="h-10 w-10 p-0 rounded-2xl bg-foreground/5 border border-border/50 hover:bg-primary/20 hover:text-primary transition-all">
                         <ChevronRight size={18} />
                     </Button>
                 </Link>
@@ -66,8 +66,8 @@ export const AccountsWidget = () => {
             <div className="p-6 flex-1 flex flex-col relative z-10">
                 <div className="space-y-4">
                     {processedAccounts.length === 0 ? (
-                        <div className="py-12 text-center bg-white/5 rounded-[2rem] border border-dashed border-white/10 flex flex-col items-center gap-3">
-                            <div className="p-4 rounded-full bg-white/5">
+                        <div className="py-12 text-center bg-foreground/5 rounded-[2rem] border border-dashed border-border/50 flex flex-col items-center gap-3">
+                            <div className="p-4 rounded-full bg-foreground/5">
                                 <Wallet size={32} className="text-muted-foreground/30" />
                             </div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">{t('dashboard.no_accounts') || 'Sin cuentas vinculadas'}</p>
@@ -79,9 +79,9 @@ export const AccountsWidget = () => {
                                 : 0;
 
                             return (
-                                <div key={account.id} className="relative group/item flex items-center justify-between p-3 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 hover:bg-white/10 transition-all duration-300">
+                                <div key={account.id} className="relative group/item flex items-center justify-between p-3 rounded-2xl bg-foreground/5 border border-border/10 hover:border-border/30 hover:bg-foreground/10 transition-all duration-300">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-xl glass-premium border border-white/10 flex items-center justify-center shadow-lg transition-transform duration-500 group-hover/item:scale-110">
+                                        <div className="w-10 h-10 rounded-xl glass-premium border border-border/50 flex items-center justify-center shadow-lg transition-transform duration-500 group-hover/item:scale-110">
                                             {getIcon(account.type)}
                                         </div>
                                         <div className="min-w-0">
@@ -125,7 +125,7 @@ export const AccountsWidget = () => {
                     )}
                 </div>
 
-                <div className="mt-auto pt-6 border-t border-white/10 flex gap-4">
+                <div className="mt-auto pt-6 border-t border-border/50 flex gap-4">
                     <div className="flex-1 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
                         <p className="text-[8px] font-black text-emerald-500/60 uppercase tracking-widest mb-1">{t('common.assets') || 'Activos'}</p>
                         <p className="text-sm font-black text-emerald-500 tracking-tight leading-none">

@@ -55,10 +55,10 @@ export const ScheduledPage = () => {
 
     return (
         <div className="space-y-10 pb-32 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-white/10 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-white drop-shadow-2xl">
+                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
                         {t('scheduled.title')}
                     </h2>
                     <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
@@ -68,31 +68,31 @@ export const ScheduledPage = () => {
                 </div>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                     <DialogTrigger asChild>
-                        <Button className="mt-6 md:mt-0 glass-premium border-white/20 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-white shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 relative z-10">
+                        <Button className="mt-6 md:mt-0 glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 relative z-10">
                             <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" /> 
                             {t('scheduled.new_recurrent')}
                         </Button>
                     </DialogTrigger>
-                    <DialogContent className="glass-premium border-white/10 max-w-lg">
+                    <DialogContent className="glass-premium border-border/30 max-w-lg">
                         <DialogHeader>
                             <DialogTitle className="text-2xl font-black tracking-tighter">{t('scheduled.new_payment_dialog')}</DialogTitle>
                         </DialogHeader>
                         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
-                            <div className="grid grid-cols-2 gap-4 p-1 bg-white/5 rounded-2xl border border-white/5">
-                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'income' ? "bg-emerald-500 text-white shadow-lg" : "hover:bg-white/5")} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
-                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'expense' ? "bg-rose-500 text-white shadow-lg" : "hover:bg-white/5")} onClick={() => setType('expense')}>{t('scheduled.expense')}</Button>
+                            <div className="grid grid-cols-2 gap-4 p-1 bg-foreground/5 rounded-2xl border border-border/30">
+                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'income' ? "bg-emerald-500 text-foreground shadow-lg" : "hover:bg-foreground/5")} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
+                                <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'expense' ? "bg-rose-500 text-foreground shadow-lg" : "hover:bg-foreground/5")} onClick={() => setType('expense')}>{t('scheduled.expense')}</Button>
                             </div>
 
                             <div className="space-y-2">
                                 <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Concepto</Label>
-                                <Input placeholder={t('subscriptions.name_placeholder')} value={name} onChange={e => setName(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5 px-4 font-bold" />
+                                <Input placeholder={t('subscriptions.name_placeholder')} value={name} onChange={e => setName(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5 px-4 font-bold" />
                             </div>
 
-                            <div className="flex gap-2 p-1 bg-white/5 border border-white/5 rounded-2xl">
+                            <div className="flex gap-2 p-1 bg-foreground/5 border border-border/30 rounded-2xl">
                                 <Button
                                     type="button"
                                     variant="ghost"
-                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'monthly' ? "bg-primary text-white" : "text-muted-foreground")}
+                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'monthly' ? "bg-primary text-foreground" : "text-muted-foreground")}
                                     onClick={() => setFrequency('monthly')}
                                 >
                                     {t('scheduled.monthly_recurrent')}
@@ -100,7 +100,7 @@ export const ScheduledPage = () => {
                                 <Button
                                     type="button"
                                     variant="ghost"
-                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'one-time' ? "bg-primary text-white" : "text-muted-foreground")}
+                                    className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all", frequency === 'one-time' ? "bg-primary text-foreground" : "text-muted-foreground")}
                                     onClick={() => setFrequency('one-time')}
                                 >
                                     {t('scheduled.one_time')}
@@ -110,12 +110,12 @@ export const ScheduledPage = () => {
                             <div className="grid grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.amount_label')}</Label>
-                                    <Input type="number" step="0.01" value={amount} onChange={e => setAmount(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5 px-4 font-black text-xl" />
+                                    <Input type="number" step="0.01" value={amount} onChange={e => setAmount(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5 px-4 font-black text-xl" />
                                 </div>
                                 {frequency === 'monthly' ? (
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.day_of_month')}</Label>
-                                        <div className="flex items-center gap-2 h-12 rounded-2xl border border-white/10 bg-white/5 px-4">
+                                        <div className="flex items-center gap-2 h-12 rounded-2xl border border-border/30 bg-foreground/5 px-4">
                                             <Calendar className="w-4 h-4 text-primary" />
                                             <Input type="number" min="1" max="31" value={dayOfMonth} onChange={e => setDayOfMonth(e.target.value)} className="border-0 focus-visible:ring-0 px-0 font-black text-lg bg-transparent" required />
                                         </div>
@@ -123,7 +123,7 @@ export const ScheduledPage = () => {
                                 ) : (
                                     <div className="space-y-2">
                                         <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.date')}</Label>
-                                        <DatePicker value={specificDate} onChange={e => setSpecificDate(e.target.value)} required className="h-12 rounded-2xl border-white/10 bg-white/5" />
+                                        <DatePicker value={specificDate} onChange={e => setSpecificDate(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5" />
                                     </div>
                                 )}
                             </div>
@@ -131,7 +131,7 @@ export const ScheduledPage = () => {
                             {frequency === 'monthly' && (
                                 <div className="space-y-2">
                                     <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">{t('scheduled.end_date_label')}</Label>
-                                    <DatePicker value={endDate} onChange={e => setEndDate(e.target.value)} className="h-12 rounded-2xl border-white/10 bg-white/5" />
+                                    <DatePicker value={endDate} onChange={e => setEndDate(e.target.value)} className="h-12 rounded-2xl border-border/30 bg-foreground/5" />
                                 </div>
                             )}
 
@@ -171,12 +171,12 @@ export const ScheduledPage = () => {
 
                     return (
                         <div key={payment.id} className={cn(
-                            "glass-card card-glow border-white/10 overflow-hidden group transition-all duration-500 hover:-translate-y-2",
+                            "glass-card card-glow border-border/30 overflow-hidden group transition-all duration-500 hover:-translate-y-2",
                             payment.status === 'paused' && "opacity-60 grayscale scale-95"
                         )}>
-                            <div className="p-6 border-b border-white/5">
+                            <div className="p-6 border-b border-border/30">
                                 <div className="flex items-center justify-between mb-4">
-                                    <span style={{ color: category?.color }} className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                                    <span style={{ color: category?.color }} className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 bg-foreground/5 rounded-full border border-border/30">
                                         {category?.name}
                                     </span>
                                     <div className={cn(
@@ -184,7 +184,7 @@ export const ScheduledPage = () => {
                                         payment.status === 'active' ? (payment.type === 'income' ? "bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" : "bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]") : "bg-muted"
                                     )} />
                                 </div>
-                                <h3 className="text-xl font-black tracking-tighter text-white mb-1 group-hover:translate-x-1 transition-transform duration-500">{payment.name}</h3>
+                                <h3 className="text-xl font-black tracking-tighter text-foreground mb-1 group-hover:translate-x-1 transition-transform duration-500">{payment.name}</h3>
                                 <div className="flex items-center gap-2 text-muted-foreground/60 text-[10px] font-black uppercase tracking-widest">
                                     <Calendar size={12} className="text-primary" />
                                     {payment.frequency === 'monthly'
@@ -196,20 +196,20 @@ export const ScheduledPage = () => {
                             <div className="p-6 space-y-4">
                                 <div className={cn(
                                     "text-3xl font-black tracking-tight",
-                                    payment.type === 'income' ? "text-emerald-400" : "text-white"
+                                    payment.type === 'income' ? "text-emerald-400" : "text-foreground"
                                 )}>
                                     {payment.type === 'income' ? '+' : '-'} {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/5">
+                                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-foreground/5 border border-border/30">
                                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500/50" />
                                         <span className="text-[10px] font-black uppercase tracking-widest opacity-60 truncate max-w-[100px]">{account?.name}</span>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 transition-all" onClick={() => toggleScheduledStatus(payment.id)}>
+                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-foreground/5 hover:bg-foreground/10 border border-border/30 transition-all" onClick={() => toggleScheduledStatus(payment.id)}>
                                             <Power size={18} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
                                         </Button>
-                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-white/5 hover:bg-rose-500/20 border border-white/5 group/del" onClick={() => {
+                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-foreground/5 hover:bg-rose-500/20 border border-border/30 group/del" onClick={() => {
                                             if (window.confirm(t('scheduled.delete_confirm'))) deleteScheduledPayment(payment.id);
                                         }}>
                                             <Trash2 size={18} className="text-muted-foreground group-hover/del:text-rose-500 transition-colors" />
@@ -221,12 +221,12 @@ export const ScheduledPage = () => {
                     );
                 })}
                 {scheduledPayments.length === 0 && (
-                    <div className="col-span-full py-20 glass-card border-dashed border-white/10 text-center flex flex-col items-center justify-center space-y-4">
-                        <div className="w-20 h-20 rounded-[2.5rem] bg-white/5 flex items-center justify-center border border-white/10 text-muted-foreground/20">
+                    <div className="col-span-full py-20 glass-card border-dashed border-border/30 text-center flex flex-col items-center justify-center space-y-4">
+                        <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
                             <Calendar size={40} />
                         </div>
                         <div>
-                            <p className="text-xl font-black tracking-tighter text-white">{t('scheduled.no_scheduled')}</p>
+                            <p className="text-xl font-black tracking-tighter text-foreground">{t('scheduled.no_scheduled')}</p>
                             <p className="text-xs text-muted-foreground/60 font-medium px-4">{t('scheduled.no_scheduled_desc')}</p>
                         </div>
                     </div>

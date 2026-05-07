@@ -26,7 +26,7 @@ export const PendingPaymentsWidget = () => {
 
     return (
         <div className="h-full flex flex-col">
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+            <div className="p-6 border-b border-border/30 flex items-center justify-between">
                 <h3 className="text-xl font-black tracking-tight flex items-center gap-3">
                     <span className="p-2 rounded-xl bg-primary/10 text-primary">
                         <Clock size={20} />
@@ -34,7 +34,7 @@ export const PendingPaymentsWidget = () => {
                     {t('dashboard.pending')}
                 </h3>
                 <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-black bg-white/5 border border-white/10 px-3 py-1 rounded-full uppercase tracking-widest text-muted-foreground">
+                    <span className="text-[10px] font-black bg-foreground/5 border border-border/30 px-3 py-1 rounded-full uppercase tracking-widest text-muted-foreground">
                         {t('dashboard.pending_count', { count: pendingItems.length })}
                     </span>
                     <Button variant="ghost" className="text-[10px] h-auto p-2 font-black uppercase text-primary hover:bg-primary/10 rounded-xl" asChild>
@@ -56,7 +56,7 @@ export const PendingPaymentsWidget = () => {
                     {pendingItems.map(item => {
                         const isLate = isPast(item.currentMonthDate) && isToday(item.currentMonthDate);
                         return (
-                            <div key={item.id} className="group relative flex items-center justify-between p-4 rounded-[1.5rem] bg-white/5 border border-white/5 hover:border-white/10 transition-all duration-300">
+                            <div key={item.id} className="group relative flex items-center justify-between p-4 rounded-[1.5rem] bg-foreground/5 border border-border/30 hover:border-border/30 transition-all duration-300">
                                 <div className="flex items-center gap-4">
                                     <div className={cn(
                                         "w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:scale-110",
@@ -84,7 +84,7 @@ export const PendingPaymentsWidget = () => {
                                     <Button
                                         size="icon"
                                         variant="ghost"
-                                        className="h-10 w-10 rounded-2xl bg-white/5 text-muted-foreground hover:bg-white/10 hover:scale-110 transition-all"
+                                        className="h-10 w-10 rounded-2xl bg-foreground/5 text-muted-foreground hover:bg-foreground/10 hover:scale-110 transition-all"
                                         title={t('dashboard.skip_month')}
                                         onClick={() => processScheduledPayment(item, 'skip')}
                                     >

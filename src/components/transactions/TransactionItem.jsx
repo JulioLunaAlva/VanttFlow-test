@@ -58,7 +58,7 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                         )}
                         {t.category && (
                             <span
-                                className="text-[10px] px-2 py-0.5 rounded-full text-white ml-1 flex items-center gap-1 font-black"
+                                className="text-[10px] px-2 py-0.5 rounded-full text-foreground ml-1 flex items-center gap-1 font-black"
                                 style={{ backgroundColor: t.category === 'transfer' ? '#2563eb' : (categories.find(c => c.id === t.category)?.color || '#94a3b8') }}
                             >
                                 {(() => {

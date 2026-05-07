@@ -25,14 +25,14 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
     };
     return (
         <div className={cn(
-            "glass-card card-glow overflow-hidden transition-all duration-500 hover:scale-[1.03] group border-white/10",
+            "glass-card card-glow overflow-hidden transition-all duration-500 hover:scale-[1.03] group border-border/30",
             isOverBudget ? "bg-red-500/5 ring-1 ring-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.15)]" : ""
         )}>
             <div className="p-6 space-y-6">
                 {/* Header */}
                 <div className="flex justify-between items-start">
                     <div className="flex items-center gap-4">
-                        <div className="h-14 w-14 rounded-2xl flex items-center justify-center glass-premium border-white/10 shadow-2xl group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: `${category?.color}20` }}>
+                        <div className="h-14 w-14 rounded-2xl flex items-center justify-center glass-premium border-border/30 shadow-2xl group-hover:scale-110 transition-transform duration-500" style={{ backgroundColor: `${category?.color}20` }}>
                             {renderIcon(category?.icon, category?.color)}
                         </div>
                         <div>
@@ -45,13 +45,13 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                             </div>
                         </div>
                     </div>
-                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-white/5 border border-transparent hover:border-white/10" onClick={() => onEdit(budget)}>
+                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-xl hover:bg-foreground/5 border border-transparent hover:border-border/30" onClick={() => onEdit(budget)}>
                         <Edit2 size={16} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     </Button>
                 </div>
 
                 {/* Amounts Container */}
-                <div className="glass-premium rounded-3xl p-5 flex justify-between items-center border-white/5 shadow-inner bg-white/5 transition-all duration-500 group-hover:bg-white/10">
+                <div className="glass-premium rounded-3xl p-5 flex justify-between items-center border-border/30 shadow-inner bg-foreground/5 transition-all duration-500 group-hover:bg-foreground/10">
                     <div>
                         <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] mb-1.5">Consumo</p>
                         <p className="text-3xl font-black tracking-tighter">${budget.spent.toLocaleString()}</p>
@@ -75,7 +75,7 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                             {budget.percentage.toFixed(0)}%
                         </span>
                     </div>
-                    <div className="relative h-4 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5 shadow-inner">
+                    <div className="relative h-4 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30 p-0.5 shadow-inner">
                         <div
                             className={cn(
                                 "h-full rounded-full transition-all duration-1000 ease-out relative",

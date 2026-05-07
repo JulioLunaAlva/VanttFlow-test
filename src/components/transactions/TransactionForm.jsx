@@ -175,7 +175,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                             type="button"
                             variant={type === 'income' ? 'default' : 'ghost'}
                             onClick={() => setType('income')}
-                            className={cn("flex-1 text-xs", type === 'income' && "bg-emerald-600 hover:bg-emerald-700 text-white")}
+                            className={cn("flex-1 text-xs", type === 'income' && "bg-emerald-600 hover:bg-emerald-700 text-foreground")}
                         >
                             {t('scheduled.income')}
                         </Button>
@@ -183,7 +183,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                             type="button"
                             variant={type === 'expense' ? 'default' : 'ghost'}
                             onClick={() => setType('expense')}
-                            className={cn("flex-1 text-xs", type === 'expense' && "bg-red-600 hover:bg-red-700 text-white")}
+                            className={cn("flex-1 text-xs", type === 'expense' && "bg-red-600 hover:bg-red-700 text-foreground")}
                         >
                             {t('scheduled.expense')}
                         </Button>
@@ -191,7 +191,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                             type="button"
                             variant={type === 'transfer' ? 'default' : 'ghost'}
                             onClick={() => setType('transfer')}
-                            className={cn("flex-1 text-xs", type === 'transfer' && "bg-blue-600 hover:bg-blue-700 text-white")}
+                            className={cn("flex-1 text-xs", type === 'transfer' && "bg-blue-600 hover:bg-blue-700 text-foreground")}
                         >
                             {t('transactions.transfer')}
                         </Button>
@@ -311,7 +311,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                     )}
                                 >
                                     <div className={cn(
-                                        "absolute top-1 w-3 h-3 rounded-full bg-white transition-all",
+                                        "absolute top-1 w-3 h-3 rounded-full bg-card transition-all",
                                         isInstallments ? "right-1" : "left-1"
                                     )} />
                                 </button>

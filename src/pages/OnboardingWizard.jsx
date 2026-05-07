@@ -72,7 +72,7 @@ export const OnboardingWizard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050A1F] text-white flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+        <div className="min-h-screen bg-[#050A1F] text-foreground flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
             {/* Background Glows */}
             <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-900/10 rounded-full blur-[100px] pointer-events-none" />
@@ -85,8 +85,8 @@ export const OnboardingWizard = () => {
                     ))}
                 </div>
 
-                <Card className="border border-white/5 shadow-2xl bg-[#0F1631]/60 backdrop-blur-2xl rounded-3xl overflow-hidden">
-                    <CardContent className="p-8 space-y-6 text-white">
+                <Card className="border border-border/30 shadow-2xl bg-[#0F1631]/60 backdrop-blur-2xl rounded-3xl overflow-hidden">
+                    <CardContent className="p-8 space-y-6 text-foreground">
                         {step === 1 && (
                             <div className="space-y-6 animate-in slide-in-from-right-4 fade-in">
                                 <div className="text-center">
@@ -165,7 +165,7 @@ export const OnboardingWizard = () => {
                                                 "cursor-pointer rounded-xl p-4 border-2 transition-all hover:scale-105",
                                                 formData.pet === pet.id
                                                     ? "border-blue-500 bg-blue-500/10 shadow-[0_0_15px_rgba(59,130,246,0.3)]"
-                                                    : "border-white/10 bg-white/5 opacity-60 hover:opacity-100"
+                                                    : "border-border/30 bg-foreground/5 opacity-60 hover:opacity-100"
                                             )}
                                         >
                                             <div className="text-4xl text-center mb-2">{pet.emoji}</div>
@@ -212,7 +212,7 @@ export const OnboardingWizard = () => {
                                     <BrainCircuit className="w-10 h-10 text-emerald-400" />
                                 </div>
                                 <h2 className="text-2xl font-bold">{t('onboarding.step5_title')}</h2>
-                                <div className="space-y-4 text-left p-4 bg-white/5 rounded-xl border border-white/10">
+                                <div className="space-y-4 text-left p-4 bg-foreground/5 rounded-xl border border-border/30">
                                     <div className="flex items-start gap-3">
                                         <Shield className="w-5 h-5 text-blue-400 mt-0.5" />
                                         <div>
