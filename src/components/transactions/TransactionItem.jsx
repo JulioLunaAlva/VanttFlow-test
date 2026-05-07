@@ -36,7 +36,7 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                             <ArrowRightLeft size={24} />}
                 </div>
                 <div className="min-w-0">
-                    <p className="font-black text-lg tracking-tight leading-none group-hover:text-primary transition-colors truncate">{t.description}</p>
+                    <p className="font-black text-base tracking-tight leading-none group-hover:text-primary transition-colors truncate">{t.description}</p>
                     <div className="flex items-center gap-2 flex-wrap text-[10px] text-muted-foreground uppercase font-black tracking-widest mt-2 opacity-60">
                         <span className="shrink-0">{format(parseLocalDateStr(t.date), 'dd MMM', { locale: es })}</span>
                         <span className="shrink-0">•</span>
@@ -77,7 +77,7 @@ export const TransactionItem = ({ transaction, onEdit }) => {
             <div className="flex items-center gap-4 shrink-0 ml-4">
                 <div className="text-right">
                     <span className={cn(
-                        "font-black text-xl tracking-tighter block",
+                        "font-black text-base md:text-lg tracking-tighter block",
                         t.type === 'income' ? 'text-emerald-500' : t.type === 'expense' ? 'text-foreground' : 'text-blue-500'
                     )}>
                         {t.type === 'income' ? '+' : t.type === 'expense' ? '-' : ''}{formatCurrency(t.amount)}

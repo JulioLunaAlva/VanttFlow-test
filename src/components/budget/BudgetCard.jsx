@@ -54,7 +54,7 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                 <div className="glass-premium rounded-3xl p-5 flex justify-between items-center border-border/30 shadow-inner bg-foreground/5 transition-all duration-500 group-hover:bg-foreground/10">
                     <div>
                         <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] mb-1.5">Consumo</p>
-                        <p className="text-3xl font-black tracking-tighter">${budget.spent.toLocaleString()}</p>
+                        <p className="text-2xl font-black tracking-tighter">${budget.spent.toLocaleString()}</p>
                     </div>
                     <div className="text-right">
                         <p className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] mb-1.5">Límite</p>

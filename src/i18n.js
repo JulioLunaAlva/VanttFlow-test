@@ -5,7 +5,11 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     es: {
         translation: {
+"first_transaction": "Primer Paso", "goal_creator": "Arquitecto de Sueños", "budget_master": "Control Total", "saving_streak": "Racha Imparable",
+"accounts": {"account_name":"Nombre de Cuenta","account_type":"Tipo de Cuenta","add_new":"Agregar Cuenta","available_balance":"Saldo Disponible","cash_option":"Efectivo","confirm_delete":"¿Estás seguro de eliminar esta cuenta?","credit":"Crédito","credit_option":"Tarjeta de Crédito","current_balance":"Saldo Actual","debit":"Débito","debit_option":"Cuenta de Débito","delete_desc":"Esta acción no se puede deshacer.","distinctive_color":"Color Distintivo","edit_desc":"Modifica los detalles de tu cuenta","initial_debt":"Deuda Inicial","investment":"Inversión","investment_option":"Inversión","manage":"Gestionar Cuentas","manage_subtitle":"Administra tus cuentas, tarjetas y efectivo","payment_day":"Día de Pago"},
+"reports": {"average_expense":"Gasto Promedio","average_income":"Ingreso Promedio","expenses_by_category":"Gastos por Categoría","financial_health_metrics":"Métricas de Salud Financiera","recommended_target":"Objetivo Recomendado","savings_rate":"Tasa de Ahorro","semiannual_comparison":"Comparativa Semestral"},
             common: {
+"delete": "Eliminar", "great_job": "¡Buen trabajo!", "more": "Más", "others": "Otros",
                 welcome: "Bienvenido",
                 dashboard: "Dashboard",
                 transactions: "Transacciones",
@@ -52,6 +56,7 @@ const resources = {
                 }
             },
             dashboard: {
+"more_goals_count": "metas más", "no_accounts": "Sin Cuentas", "saved_amount": "Ahorrado",
                 title: "Panel de Control",
                 subtitle: "Gestión de Finanzas Personales",
                 balance: "Balance General",
@@ -242,6 +247,7 @@ const resources = {
                 }
             },
             transactions: {
+"manage_desc": "Registra y controla tus movimientos financieros", "no_movements": "No hay movimientos registrados", "amount": "Monto", "date": "Fecha",
                 manage_desc: "Controla tus ingresos y gastos de forma detallada.",
                 new_title: "Nueva Transacción",
                 edit_title: "Editar Transacción",
@@ -482,6 +488,7 @@ const resources = {
                 delete_confirm: "¿Estás seguro de eliminar esta categoría?"
             },
             budget: {
+"subtitle": "Planifica y controla tus gastos mensuales",
                 title: "Presupuestos",
                 total_budget: "Presupuesto Total",
                 monthly_planning: "Planificación Mensual",
@@ -528,6 +535,7 @@ const resources = {
                 account_placeholder: "Cuenta de Cargo"
             },
             scheduled: {
+"date": "Fecha",
                 title: "Pagos Programados",
                 subtitle: "Movimientos futuros y tareas automáticas.",
                 new_payment: "Programar Pago",
