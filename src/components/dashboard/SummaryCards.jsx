@@ -40,7 +40,7 @@ export const SummaryCards = React.memo(() => {
                         </div>
                     </div>
                     
-                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-foreground drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ export const SummaryCards = React.memo(() => {
                         </div>
                     </div>
                     
-                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="text-3xl md:text-4xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(income)}</PrivacyBlur>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export const SummaryCards = React.memo(() => {
                         </div>
                     </div>
                     
-                    <div className="text-4xl md:text-5xl font-black tracking-tighter text-rose-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
+                    <div className="text-3xl md:text-4xl font-black tracking-tighter text-rose-500 drop-shadow-2xl transition-transform duration-500 group-hover:translate-x-1">
                         <PrivacyBlur intensity="lg">{formatCurrency(expense)}</PrivacyBlur>
                     </div>
                 </div>

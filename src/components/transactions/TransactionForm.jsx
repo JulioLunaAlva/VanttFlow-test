@@ -214,7 +214,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                 placeholder="0.00"
                                 required
                                 className={cn(
-                                    "pl-10 h-20 text-center text-4xl sm:text-5xl font-black bg-transparent border-0 border-b-2 border-border/50 rounded-none focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all duration-500",
+                                    "pl-10 h-20 text-center text-3xl sm:text-4xl font-black bg-transparent border-0 border-b-2 border-border/50 rounded-none focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all duration-500",
                                     type === 'income' ? "text-emerald-500" : type === 'expense' ? "text-rose-500" : "text-blue-500"
                                 )}
                             />

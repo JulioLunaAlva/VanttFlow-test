@@ -5,6 +5,29 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 const resources = {
     es: {
         translation: {
+"analytics": {
+    "title": "Analíticas",
+    "comparing": "Comparando {{current}} vs {{previous}}",
+    "patrimony_evolution": "Evolución de Patrimonio",
+    "patrimony": "Patrimonio",
+    "empty_history": "Historial Vacío",
+    "empty_history_sub": "Tus datos de balance aparecerán aquí",
+    "cash_flow_title": "Flujo de Caja Histórico",
+    "savings_summary": "Resumen de Ahorro",
+    "net_savings": "Ahorro Neto (Este Mes)",
+    "of_income_spent": "de tus ingresos han sido gastados",
+    "no_income_data": "Sin datos de ingresos para este mes",
+    "total_expense": "Gasto Total",
+    "vs_previous_short": "vs mes anterior",
+    "income": "Ingresos",
+    "no_significant_changes": "Sin cambios significativos",
+    "biggest_increase": "Mayor Incremento",
+    "increase_desc": "{{category}} subió de {{prev}} a {{curr}}",
+    "category_breakdown": "Desglose por Categorías",
+    "monthly_spend": "Gasto Mensual",
+    "no_data": "Sin Datos"
+},
+
 "first_transaction": "Primer Paso", "goal_creator": "Arquitecto de Sueños", "budget_master": "Control Total", "saving_streak": "Racha Imparable",
 "accounts": {"account_name":"Nombre de Cuenta","account_type":"Tipo de Cuenta","add_new":"Agregar Cuenta","available_balance":"Saldo Disponible","cash_option":"Efectivo","confirm_delete":"¿Estás seguro de eliminar esta cuenta?","credit":"Crédito","credit_option":"Tarjeta de Crédito","current_balance":"Saldo Actual","debit":"Débito","debit_option":"Cuenta de Débito","delete_desc":"Esta acción no se puede deshacer.","distinctive_color":"Color Distintivo","edit_desc":"Modifica los detalles de tu cuenta","initial_debt":"Deuda Inicial","investment":"Inversión","investment_option":"Inversión","manage":"Gestionar Cuentas","manage_subtitle":"Administra tus cuentas, tarjetas y efectivo","payment_day":"Día de Pago"},
 "reports": {"average_expense":"Gasto Promedio","average_income":"Ingreso Promedio","expenses_by_category":"Gastos por Categoría","financial_health_metrics":"Métricas de Salud Financiera","recommended_target":"Objetivo Recomendado","savings_rate":"Tasa de Ahorro","semiannual_comparison":"Comparativa Semestral"},

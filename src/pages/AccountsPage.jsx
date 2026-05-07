@@ -79,7 +79,7 @@ export const AccountsPage = () => {
                     
                     <div className="z-10 mt-auto">
                         <p className="text-[9px] opacity-40 font-black uppercase tracking-[0.4em] mb-2">{t('accounts.current_debt') || 'Deuda Actual'}</p>
-                        <p className="text-5xl font-black tracking-tighter font-mono drop-shadow-2xl">
+                        <p className="text-3xl font-black tracking-tighter font-mono drop-shadow-2xl">
                             <PrivacyBlur intensity="lg">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
                     </div>
@@ -174,7 +174,7 @@ export const AccountsPage = () => {
                     <div className="pt-8 mt-auto group/balance">
                         <p className="text-[10px] font-black text-muted-foreground opacity-30 uppercase tracking-[0.4em] mb-3 group-hover/balance:text-primary/40 transition-colors">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
                         <p className={cn(
-                            "text-5xl font-black tracking-tighter truncate drop-shadow-2xl transition-transform duration-500 group-hover/balance:translate-x-1",
+                            "text-3xl font-black tracking-tighter truncate drop-shadow-2xl transition-transform duration-500 group-hover/balance:translate-x-1",
                             balance < 0 ? 'text-rose-500' : 'text-foreground'
                         )}>
                             <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>

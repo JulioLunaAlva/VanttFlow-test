@@ -126,7 +126,7 @@ export const SubscriptionsPage = () => {
                                 <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse shadow-glow" />
                                 {t('subscriptions.projected_monthly_fixed')}
                             </p>
-                            <h3 className="text-6xl font-black tracking-tighter text-foreground drop-shadow-2xl">
+                            <h3 className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
                                 {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(totalMonthlyFixed)}
                             </h3>
                             <p className="text-foreground/20 text-[10px] font-black uppercase tracking-[0.3em] mt-6 flex items-center gap-2">
@@ -147,7 +147,7 @@ export const SubscriptionsPage = () => {
                         <Zap size={36} className="text-primary drop-shadow-glow" />
                     </div>
                     <span className="text-[11px] font-black text-foreground/40 uppercase tracking-[0.4em] mb-2">{t('subscriptions.active_subscriptions')}</span>
-                    <span className="text-6xl font-black tracking-tighter text-foreground drop-shadow-2xl">{activeSubscriptions}</span>
+                    <span className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{activeSubscriptions}</span>
                 </div>
             </div>
 
@@ -185,7 +185,7 @@ export const SubscriptionsPage = () => {
                                 </div>
                             </div>
                             <div className="p-8 relative z-10">
-                                <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground mb-6 drop-shadow-2xl">
+                                <div className="text-2xl md:text-3xl font-black tracking-tighter text-foreground mb-6 drop-shadow-2xl">
                                     {new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(payment.amount)}
                                 </div>
                                 <div className="flex items-center justify-between">
@@ -232,7 +232,7 @@ export const SubscriptionsPage = () => {
                     <div className="col-span-full py-32 glass-premium rounded-[4rem] border-2 border-dashed border-border/30 mt-4 flex flex-col items-center justify-center group overflow-hidden relative">
                         <TrendingUp className="mx-auto h-20 w-20 text-primary drop-shadow-glow mb-10" />
                         <div className="text-center max-w-sm relative z-10 px-6">
-                            <h3 className="text-4xl font-black tracking-tighter text-foreground mb-4 drop-shadow-2xl">{t('subscriptions.no_subscriptions')}</h3>
+                            <h3 className="text-2xl font-black tracking-tighter text-foreground mb-4 drop-shadow-2xl">{t('subscriptions.no_subscriptions')}</h3>
                             <p className="text-foreground/40 font-black uppercase tracking-[0.2em] text-[10px] leading-relaxed">
                                 {t('subscriptions.no_subscriptions_desc')}
                             </p>

@@ -151,7 +151,7 @@ export const BudgetPage = () => {
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-5xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(Math.max(0, totalBudget - totalSpent))}</div>
+                        <div className="text-4xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(Math.max(0, totalBudget - totalSpent))}</div>
                         <p className="text-[11px] font-black text-emerald-500/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
                             {t('budget.operating_margin')}

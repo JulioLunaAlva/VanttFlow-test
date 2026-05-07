@@ -256,7 +256,7 @@ export const AnalyticsPage = () => {
                         <div className="text-center group/savings">
                             <p className="text-[10px] text-primary/40 uppercase tracking-[0.4em] font-black mb-4 group-hover/savings:text-primary active:scale-95 transition-all">{t('analytics.net_savings') || 'Ahorro Neto (Este Mes)'}</p>
                             <p className={cn(
-                                "text-6xl font-black tracking-tighter drop-shadow-2xl transition-all duration-700",
+                                "text-4xl font-black tracking-tighter drop-shadow-2xl transition-all duration-700",
                                 currentIncome - currentExpense >= 0 ? "text-emerald-500 shadow-glow" : "text-rose-500"
                             )}>
                                 {new Intl.NumberFormat(i18n.language, { style: 'currency', currency }).format(currentIncome - currentExpense)}

@@ -87,8 +87,8 @@ export const SavingPowerWidget = () => {
                 <div className="p-6 flex-1 flex flex-col relative z-10">
                     <div className="flex items-center justify-between mb-8 group/main">
                         <div className="space-y-2">
-                            <h3 className="text-5xl font-black tracking-tighter leading-none text-foreground drop-shadow-2xl">
-                                {score}<span className="text-2xl ml-1 opacity-50">%</span>
+                            <h3 className="text-3xl font-black tracking-tighter leading-none text-foreground drop-shadow-2xl">
+                                {score}<span className="text-xl ml-1 opacity-50">%</span>
                                 <span className="text-[10px] font-black text-muted-foreground/40 uppercase ml-3 tracking-[0.3em] inline-block translate-y-[-10px]">{t('dashboard.efficiency')}</span>
                             </h3>
                             <p className={cn(
