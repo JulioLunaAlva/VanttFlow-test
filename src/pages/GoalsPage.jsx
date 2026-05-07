@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFinance } from "@/context/FinanceContext";
 import { useIdentity } from "@/context/IdentityContext";
+import { useGamification } from "@/context/GamificationContext";
 import { Plus, Target, Trophy, Trash2, Edit2, Rocket, Star } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { MoneyInput } from "@/components/ui/MoneyInput";
@@ -16,6 +17,7 @@ import { toLocalDateStr } from '@/lib/utils';
 export const GoalsPage = () => {
     const { t, i18n } = useTranslation();
     const { goals, addGoal, updateGoal, deleteGoal, accounts, addTransaction } = useFinance();
+    const { completeMission, gainXp } = useGamification();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -70,6 +72,7 @@ export const GoalsPage = () => {
             updateGoal(editingGoal.id, { ...editingGoal, ...goalData });
         } else {
             addGoal(goalData);
+            completeMission('add_goal');
         }
 
         setIsCreateDialogOpen(false);

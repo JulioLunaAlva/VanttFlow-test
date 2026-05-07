@@ -9,6 +9,7 @@ import { useFinance } from "@/context/FinanceContext";
 import { PlusCircle, Upload, X, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
 import { toast } from "sonner";
 import { MoneyInput } from "@/components/ui/MoneyInput";
+import { useGamification } from "@/context/GamificationContext";
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
@@ -18,6 +19,7 @@ import { toLocalDateStr } from "@/lib/utils";
 
 export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) => {
     const { addTransaction, editTransaction, categories, accounts, transactions, addInstallments } = useFinance();
+    const { completeMission } = useGamification();
     const { t } = useTranslation();
 
     const uniqueId = useId();
@@ -130,6 +132,7 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
             });
         } else {
             addTransaction(transactionData);
+            completeMission('reg_trans');
         }
 
         if (onSuccess) {
@@ -164,41 +167,74 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
 
 
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>{initialData ? t('transactions.edit_title') : t('transactions.new_title')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="flex gap-2 p-1 bg-muted rounded-lg">
-                        <Button
-                            type="button"
-                            variant={type === 'income' ? 'default' : 'ghost'}
-                            onClick={() => setType('income')}
-                            className={cn("flex-1 text-xs", type === 'income' && "bg-emerald-600 hover:bg-emerald-700 text-foreground")}
-                        >
-                            {t('scheduled.income')}
-                        </Button>
-                        <Button
-                            type="button"
-                            variant={type === 'expense' ? 'default' : 'ghost'}
-                            onClick={() => setType('expense')}
-                            className={cn("flex-1 text-xs", type === 'expense' && "bg-red-600 hover:bg-red-700 text-foreground")}
-                        >
-                            {t('scheduled.expense')}
-                        </Button>
-                        <Button
-                            type="button"
-                            variant={type === 'transfer' ? 'default' : 'ghost'}
-                            onClick={() => setType('transfer')}
-                            className={cn("flex-1 text-xs", type === 'transfer' && "bg-blue-600 hover:bg-blue-700 text-foreground")}
-                        >
-                            {t('transactions.transfer')}
-                        </Button>
+        <div className="glass-card flex flex-col relative overflow-hidden group/form">
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover/form:opacity-100 transition-opacity duration-1000" />
+            <div className="p-6 border-b border-border/10 bg-muted/5 flex items-center justify-between relative z-10">
+                <h2 className="text-xl font-black tracking-tight text-foreground">{initialData ? t('transactions.edit_title') : t('transactions.new_title')}</h2>
+            </div>
+            <div className="p-6 relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Premium Segmented Control for Type */}
+                    <div className="relative flex p-1.5 bg-muted/40 backdrop-blur-sm rounded-2xl border border-border/40 overflow-hidden w-full max-w-sm mx-auto shadow-inner">
+                        {['income', 'expense', 'transfer'].map((tType) => (
+                            <button
+                                key={tType}
+                                type="button"
+                                onClick={() => setType(tType)}
+                                className={cn(
+                                    "relative flex-1 py-2.5 text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-500 z-10",
+                                    type === tType ? "text-primary-foreground shadow-lg scale-[1.02]" : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                                )}
+                            >
+                                {type === tType && (
+                                    <div className={cn(
+                                        "absolute inset-0 rounded-xl shadow-md -z-10 transition-all duration-500",
+                                        tType === 'income' ? 'bg-emerald-500' : tType === 'expense' ? 'bg-rose-500' : 'bg-blue-500'
+                                    )} />
+                                )}
+                                {tType === 'income' ? t('scheduled.income') : tType === 'expense' ? t('scheduled.expense') : t('transactions.transfer')}
+                            </button>
+                        ))}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-2">
+                    {/* Apple Wallet Style Amount Input */}
+                    <div className="relative py-4 group flex flex-col items-center">
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60 mb-2">{t('transactions.amount') || 'Monto de la transacción'}</span>
+                        <div className="relative max-w-[280px] w-full">
+                            <span className={cn(
+                                "absolute left-4 top-1/2 -translate-y-1/2 font-black text-2xl transition-colors duration-500",
+                                type === 'income' ? "text-emerald-500" : type === 'expense' ? "text-rose-500" : "text-blue-500"
+                            )}>$</span>
+                            <Input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                placeholder="0.00"
+                                required
+                                className={cn(
+                                    "pl-10 h-20 text-center text-4xl sm:text-5xl font-black bg-transparent border-0 border-b-2 border-border/50 rounded-none focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all duration-500",
+                                    type === 'income' ? "text-emerald-500" : type === 'expense' ? "text-rose-500" : "text-blue-500"
+                                )}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="space-y-1 bg-muted/10 p-2 rounded-2xl border border-border/30 focus-within:border-primary/40 focus-within:bg-muted/20 transition-all duration-300">
+                        <Input
+                            type="text"
+                            placeholder={t('transactions.description')}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            required
+                            className="border-0 bg-transparent shadow-none focus-visible:ring-0 px-4 h-12 text-base font-semibold"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">{type === 'transfer' ? t('transactions.origin_account') : t('transactions.account')}</label>
                             <AccountSelect
                                 accounts={accounts}
                                 value={accountId}
@@ -206,7 +242,8 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                 placeholder={type === 'transfer' ? t('transactions.origin_account') : t('transactions.account')}
                             />
                         </div>
-                        <div className="space-y-2">
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">{type === 'transfer' ? t('transactions.target_account') : t('budget.category_label')}</label>
                             {type === 'transfer' ? (
                                 <AccountSelect
                                     accounts={accounts.filter(a => a.id !== accountId)}
@@ -223,33 +260,14 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                 />
                             )}
                         </div>
-                    </div>
-
-                    <div className="space-y-2 grid grid-cols-2 gap-4">
-                        <div className="col-span-1">
-                            <MoneyInput
-                                value={amount}
-                                onChange={setAmount}
-                                placeholder="0.00"
-                                required
-                            />
-                        </div>
-                        <div className="col-span-1">
+                        <div className="space-y-1.5 md:col-span-2">
+                            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground px-1">{t('transactions.date') || 'Fecha'}</label>
                             <DatePicker
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="space-y-2">
-                        <Input
-                            type="text"
-                            placeholder={t('transactions.description')}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
                     </div>
 
                     {/* Attachment Section */}
@@ -349,11 +367,11 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                         </div>
                     )}
 
-                    <Button type="submit" className="w-full gap-2">
-                        <PlusCircle size={16} /> {submitLabel || t('transactions.add')}
+                    <Button type="submit" className="w-full h-14 rounded-2xl text-base font-black uppercase tracking-widest gap-3 shadow-xl active:scale-95 transition-all">
+                        <PlusCircle size={20} /> {submitLabel || t('transactions.add')}
                     </Button>
                 </form>
-            </CardContent>
-        </Card>
+            </div>
+        </div>
     );
 };

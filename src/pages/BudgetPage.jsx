@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { useIdentity } from "@/context/IdentityContext";
+import { useGamification } from "@/context/GamificationContext";
 
 export const BudgetPage = () => {
     const { t, i18n } = useTranslation();
@@ -22,6 +23,7 @@ export const BudgetPage = () => {
         updateBudget,
         selectedMonth
     } = useFinance();
+    const { completeMission } = useGamification();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
 
@@ -61,6 +63,7 @@ export const BudgetPage = () => {
         if (!amount || Number(amount) <= 0) return toast.error(t('budget.error_invalid_amount'));
 
         updateBudget(selectedCategoryId, Number(amount));
+        completeMission('check_budget');
         setIsDialogOpen(false);
     };
 
