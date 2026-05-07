@@ -64,7 +64,7 @@ function App() {
   return (
     <BrowserRouter>
       <ErrorBoundary>
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <IdentityProvider>
             <GamificationProvider>
               <MarketProvider>
