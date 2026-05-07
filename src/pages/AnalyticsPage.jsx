@@ -395,16 +395,16 @@ export const AnalyticsPage = () => {
                         {categoryInsights.map(cat => (
                             <div key={cat.id} className="group/item active:scale-98 transition-all duration-300">
                                 <div className="flex items-center justify-between mb-5">
-                                    <div className="flex items-center gap-5">
-                                        <div className="w-14 h-14 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-border/30 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
+                                    <div className="flex items-center gap-5 min-w-0 flex-1">
+                                        <div className="w-14 h-14 shrink-0 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-border/30 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
                                             <TrendingUp size={24} className="shadow-glow" />
                                         </div>
-                                        <div>
-                                            <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block">{cat.name}</span>
-                                            <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-1 block">{t('analytics.monthly_spend')}</span>
+                                        <div className="min-w-0">
+                                            <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block truncate">{cat.name}</span>
+                                            <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-1 block truncate">{t('analytics.monthly_spend')}</span>
                                         </div>
                                     </div>
-                                    <div className="text-right">
+                                    <div className="text-right shrink-0 ml-4">
                                         <span className="font-black text-2xl tracking-tighter text-foreground block drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
                                         <span className={cn(
                                             "text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-end gap-2 mt-1",

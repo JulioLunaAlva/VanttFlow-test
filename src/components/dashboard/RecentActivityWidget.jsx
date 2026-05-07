@@ -59,9 +59,9 @@ export const RecentActivityWidget = () => {
                             const category = categories.find(c => c.id === t.category);
                             return (
                                 <div key={t.id} className="group relative flex items-center justify-between p-1">
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-4 min-w-0 flex-1">
                                         <div className={cn(
-                                            "w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110 border",
+                                            "w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110 border",
                                             t.type === 'income' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' :
                                             t.type === 'expense' ? 'bg-rose-500/10 text-rose-500 border-rose-500/20' :
                                             'bg-blue-500/10 text-blue-500 border-blue-500/20'
@@ -88,7 +88,7 @@ export const RecentActivityWidget = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-right">
+                                    <div className="text-right shrink-0 ml-4">
                                         <span className={cn(
                                             "text-xl font-black tracking-tighter block",
                                             t.type === 'income' ? 'text-emerald-500' :

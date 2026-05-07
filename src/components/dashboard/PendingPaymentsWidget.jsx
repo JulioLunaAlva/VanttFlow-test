@@ -57,21 +57,21 @@ export const PendingPaymentsWidget = () => {
                         const isLate = isPast(item.currentMonthDate) && isToday(item.currentMonthDate);
                         return (
                             <div key={item.id} className="group relative flex items-center justify-between p-4 rounded-[1.5rem] bg-foreground/5 border border-border/30 hover:border-border/30 transition-all duration-300">
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 min-w-0 flex-1">
                                     <div className={cn(
-                                        "w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:scale-110",
+                                        "w-12 h-12 shrink-0 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:scale-110",
                                         isLate ? "bg-rose-500/20 text-rose-500 border border-rose-500/20" : "bg-primary/10 text-primary border border-primary/20"
                                     )}>
                                         {isLate ? <AlertCircle size={24} /> : <Clock size={24} />}
                                     </div>
-                                    <div>
-                                        <p className="font-black text-lg tracking-tight leading-none group-hover:text-primary transition-colors">{item.name}</p>
-                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-2 opacity-60">
+                                    <div className="min-w-0">
+                                        <p className="font-black text-lg tracking-tight leading-none group-hover:text-primary transition-colors truncate">{item.name}</p>
+                                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-2 opacity-60 truncate">
                                             {format(item.currentMonthDate, 'd MMM', { locale: currentLocale })} • <span className="text-foreground/80">{new Intl.NumberFormat('es-MX', { style: 'currency', currency: user?.currency || 'MXN' }).format(item.amount)}</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex gap-2">
+                                <div className="flex gap-2 shrink-0 ml-4">
                                     <Button
                                         size="icon"
                                         variant="ghost"

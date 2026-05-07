@@ -80,8 +80,8 @@ export const AccountsWidget = () => {
 
                             return (
                                 <div key={account.id} className="relative group/item flex items-center justify-between p-3 rounded-2xl bg-foreground/5 border border-border/10 hover:border-border/30 hover:bg-foreground/10 transition-all duration-300">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-xl glass-premium border border-border/50 flex items-center justify-center shadow-lg transition-transform duration-500 group-hover/item:scale-110">
+                                    <div className="flex items-center gap-4 min-w-0 flex-1">
+                                        <div className="w-10 h-10 shrink-0 rounded-xl glass-premium border border-border/50 flex items-center justify-center shadow-lg transition-transform duration-500 group-hover/item:scale-110">
                                             {getIcon(account.type)}
                                         </div>
                                         <div className="min-w-0">
@@ -103,7 +103,7 @@ export const AccountsWidget = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="text-right">
+                                    <div className="text-right shrink-0 ml-4">
                                         <p className={cn(
                                             "text-lg font-black tracking-tighter drop-shadow-sm",
                                             account.balance < 0 ? "text-rose-500" : "text-foreground"
