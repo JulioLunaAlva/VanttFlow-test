@@ -165,6 +165,7 @@ export const ScheduledPage = () => {
                     </DialogContent>
                 </Dialog>
             </div>
+        </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {scheduledPayments.map(payment => {

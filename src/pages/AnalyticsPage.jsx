@@ -92,9 +92,16 @@ export const AnalyticsPage = () => {
     }).sort((a, b) => b.current - a.current); // Sort by highest spending this month
 
     return (
-                <div className="mt-6 md:mt-0 relative z-10">
-                    <div className="glass-premium p-4 px-8 rounded-2xl border-border/30 bg-foreground/5 backdrop-blur-3xl">
-                        <LineChartIcon className="w-8 h-8 text-primary shadow-glow" />
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto">
+            {/* Header Compacto */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <BarChart2 size={20} />
+                    </div>
+                    <div>
+                        <h2 className="text-title font-black text-foreground">{t('analytics.title')}</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">Análisis financiero avanzado</p>
                     </div>
                 </div>
             </div>
