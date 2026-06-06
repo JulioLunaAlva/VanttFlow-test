@@ -98,6 +98,11 @@ function App() {
                       <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                     <Toaster />
+                    {/* PWA Components */}
+                    <OfflineIndicator />
+                    <InstallPrompt />
+                    <UpdatePrompt />
+                    <AutoBackup />
                     </SyncProvider>
                   </NotificationProvider>
                 </FinanceProvider>
@@ -105,11 +110,6 @@ function App() {
             </GamificationProvider>
           </IdentityProvider>
         </ThemeProvider>
-        {/* PWA Components */}
-        <OfflineIndicator />
-        <InstallPrompt />
-        <UpdatePrompt />
-        <AutoBackup />
       </ErrorBoundary>
     </BrowserRouter>
   );
