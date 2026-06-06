@@ -49,12 +49,12 @@ export const AccountsPage = () => {
         };
 
         return (
-            <div key={account.id} className="glass-premium overflow-hidden group relative border-border/30 rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.5)] active:scale-95">
-                <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
+            <div key={account.id} className="card-interactive overflow-hidden group relative flex flex-col h-[280px]">
+                <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-10 w-10 bg-foreground/5 hover:bg-foreground/20 text-foreground backdrop-blur-3xl border border-border/30 rounded-2xl shadow-2xl"
+                        className="h-10 w-10 bg-background/50 backdrop-blur-sm border border-border/30 rounded-2xl shadow-sm hover:bg-background/80 hover:text-primary transition-colors"
                         onClick={() => setEditingAccount(account)}
                     >
                         <Edit2 size={16} />
@@ -62,35 +62,32 @@ export const AccountsPage = () => {
                 </div>
 
                 <div
-                    className="h-56 p-10 text-foreground flex flex-col justify-between relative overflow-hidden"
+                    className="h-44 p-8 text-foreground flex flex-col justify-between relative overflow-hidden"
                     style={{
                         background: `linear-gradient(135deg, ${account.color || '#1e293b'} 0%, #000000 100%)`,
                     }}
                 >
                     <div className="flex justify-between items-start z-10">
                         <div>
-                            <p className="opacity-40 text-[9px] font-black uppercase tracking-[0.4em] mb-2">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
-                            <h3 className="font-black text-3xl tracking-tighter truncate pr-12 drop-shadow-2xl">{account.name}</h3>
+                            <p className="opacity-60 text-[10px] font-bold uppercase tracking-widest mb-1">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
+                            <h3 className="font-black text-2xl tracking-tight truncate pr-12">{account.name}</h3>
                         </div>
-                        <div className="p-4 bg-foreground/5 rounded-3xl backdrop-blur-3xl border border-border/30 shadow-3xl transform -rotate-12 transition-transform group-hover:rotate-0 duration-700">
-                            <CreditCard className="w-8 h-8 text-primary shadow-glow" />
+                        <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
+                            <CreditCard className="w-6 h-6 text-white" />
                         </div>
                     </div>
                     
                     <div className="z-10 mt-auto">
-                        <p className="text-[9px] opacity-40 font-black uppercase tracking-[0.4em] mb-2">{t('accounts.current_debt') || 'Deuda Actual'}</p>
-                        <p className="text-3xl font-black tracking-tighter font-mono drop-shadow-2xl">
+                        <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest mb-1">{t('accounts.current_debt') || 'Deuda Actual'}</p>
+                        <p className="text-2xl font-black tracking-tight font-mono text-white">
                             <PrivacyBlur intensity="lg">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
                     </div>
 
-                    {/* Premium Abstract Elements */}
-                    <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-foreground/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-48 h-48 bg-primary/20 rounded-full blur-[80px]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute bottom-[-20%] left-[-10%] w-40 h-40 bg-white/5 rounded-full blur-[40px] pointer-events-none" />
                 </div>
 
-                <div className="p-8 space-y-8 bg-black/20 backdrop-blur-3xl">
+                <div className="flex-1 p-6 flex flex-col gap-6 bg-card border-t border-border/50">
                     <div className="space-y-3">
                         <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.3em]">
                             <span className="text-muted-foreground/60">{t('accounts.limit_used') || 'Uso de Crédito'}</span>
@@ -115,20 +112,20 @@ export const AccountsPage = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="glass-premium p-4 rounded-3xl border border-border/30 transition-all hover:bg-foreground/5 group/stat">
-                            <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 mb-2">
-                                <Calendar size={14} className="text-primary group-hover:scale-110 transition-transform" /> {t('accounts.cutoff_day') || 'Corte'}
+                    <div className="grid grid-cols-2 gap-4 mt-auto">
+                        <div className="bg-muted/30 p-3.5 rounded-2xl border border-border/40">
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                                <Calendar size={12} className="text-primary" /> {t('accounts.cutoff_day') || 'Corte'}
                             </div>
-                            <p className="font-black text-base text-foreground/90">{t('accounts.day') || 'Día'} {account.cutOffDay}</p>
+                            <p className="font-black text-sm text-foreground">{t('accounts.day') || 'Día'} {account.cutOffDay}</p>
                         </div>
-                        <div className="glass-premium p-4 rounded-3xl border border-border/30 transition-all hover:bg-foreground/5 group/stat">
-                            <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-muted-foreground/40 mb-2">
-                                <AlertCircle size={14} className="text-rose-500/80 group-hover:scale-110 transition-transform" /> {t('accounts.pay_before') || 'Pago'}
+                        <div className="bg-muted/30 p-3.5 rounded-2xl border border-border/40">
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
+                                <AlertCircle size={12} className={utilization > 0 ? "text-rose-500" : "text-muted-foreground"} /> {t('accounts.pay_before') || 'Pago'}
                             </div>
                             <p className={cn(
-                                "font-black text-base",
-                                utilization > 0 ? "text-rose-400" : "text-foreground/90"
+                                "font-black text-sm",
+                                utilization > 0 ? "text-rose-500" : "text-foreground"
                             )}>
                                 {nextPaymentDate ? format(nextPaymentDate, 'dd MMM', { locale: currentLocale }) : 'N/A'}
                             </p>
@@ -143,27 +140,27 @@ export const AccountsPage = () => {
         const balance = getAccountBalance(account.id);
 
         return (
-            <div key={account.id} className="glass-premium group relative border-border/30 flex flex-col h-full rounded-[2.5rem] transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2 hover:shadow-[0_40px_80px_rgba(0,0,0,0.4)] active:scale-95 overflow-hidden">
-                <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
+            <div key={account.id} className="card-interactive flex flex-col h-[280px] relative overflow-hidden group">
+                <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-10 w-10 hover:bg-foreground/10 rounded-2xl border border-border/30 shadow-2xl backdrop-blur-3xl"
+                        className="h-10 w-10 hover:bg-foreground/10 rounded-2xl border border-border/30 shadow-sm"
                         onClick={() => setEditingAccount(account)}
                     >
                         <Edit2 size={16} className="text-muted-foreground group-hover:text-primary transition-colors" />
                     </Button>
                 </div>
-                <div className="p-10 space-y-8 flex-1 flex flex-col relative z-10">
-                    <div className="flex items-center gap-6">
-                        <div className="p-5 rounded-[2rem] bg-foreground/5 border border-border/30 shadow-3xl group-hover:scale-110 group-hover:rotate-6 transition-all duration-700 backdrop-blur-3xl">
-                            {account.type === 'cash' ? <Banknote size={28} className="text-emerald-500 shadow-glow" /> :
-                                account.type === 'investment' ? <TrendingUp size={28} className="text-blue-500 shadow-glow" /> :
-                                    <Landmark size={28} className="text-primary shadow-glow" />}
+                <div className="p-8 flex-1 flex flex-col relative z-10">
+                    <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-foreground/5 border border-border/40 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
+                            {account.type === 'cash' ? <Banknote size={24} className="text-emerald-500" /> :
+                                account.type === 'investment' ? <TrendingUp size={24} className="text-blue-500" /> :
+                                    <Landmark size={24} className="text-primary" />}
                         </div>
                         <div className="min-w-0">
-                            <h3 className="font-black text-2xl tracking-tight truncate leading-tight drop-shadow-2xl">{account.name}</h3>
-                            <p className="text-[10px] font-black text-muted-foreground opacity-40 uppercase tracking-[0.4em] mt-2">
+                            <h3 className="font-black text-xl tracking-tight truncate">{account.name}</h3>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
                                 {account.type === 'cash' ? t('accounts.cash') || 'Efectivo' :
                                     account.type === 'investment' ? t('accounts.investment') || 'Inversión' :
                                         t('accounts.debit_short') || 'Cta. Débito'}
@@ -171,20 +168,17 @@ export const AccountsPage = () => {
                         </div>
                     </div>
 
-                    <div className="pt-8 mt-auto group/balance">
-                        <p className="text-[10px] font-black text-muted-foreground opacity-30 uppercase tracking-[0.4em] mb-3 group-hover/balance:text-primary/40 transition-colors">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
+                    <div className="mt-auto">
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1.5">{t('accounts.available_balance') || 'Saldo Disponible'}</p>
                         <p className={cn(
-                            "text-3xl font-black tracking-tighter truncate drop-shadow-2xl transition-transform duration-500 group-hover/balance:translate-x-1",
+                            "text-3xl font-black tracking-tight truncate",
                             balance < 0 ? 'text-rose-500' : 'text-foreground'
                         )}>
                             <PrivacyBlur intensity="lg">{formatCurrency(balance)}</PrivacyBlur>
                         </p>
                     </div>
                 </div>
-                <div className="absolute bottom-0 left-0 w-full h-[6px] transition-all duration-700 group-hover:h-[8px]" style={{ background: account.color || '#10b981', opacity: 0.3 }} />
-                
-                {/* Decorative background circle */}
-                <div className="absolute -bottom-16 -right-16 w-48 h-48 bg-foreground/5 rounded-full blur-[60px] pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-full h-[4px] transition-all duration-300 group-hover:h-[6px]" style={{ background: account.color || '#10b981', opacity: 0.8 }} />
             </div>
         );
     };

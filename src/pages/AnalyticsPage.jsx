@@ -109,16 +109,16 @@ export const AnalyticsPage = () => {
 
 
             {/* Patrimony Evolution Chart */}
-            <div className="glass-premium overflow-hidden mb-10 rounded-[3rem] border-border/30 relative group">
-                <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl flex items-center justify-between">
+            <div className="card-base mb-8 overflow-hidden">
+                <div className="px-6 py-5 border-b border-border/50 bg-card/50 flex items-center justify-between">
                     <div>
-                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-foreground">
-                            <div className="p-2 bg-primary/20 rounded-xl"><TrendingUp size={24} className="text-primary shadow-glow" /></div>
+                        <h3 className="flex items-center gap-2 text-lg font-black tracking-tight text-foreground">
+                            <div className="p-1.5 bg-primary/10 rounded-lg"><TrendingUp size={18} className="text-primary" /></div>
                             {t('analytics.patrimony_evolution')}
                         </h3>
                     </div>
                 </div>
-                <div className="p-10 h-[400px] w-full bg-black/40 backdrop-blur-3xl">
+                <div className="p-6 h-[350px] w-full bg-card">
                     {chartData.length > 0 ? (
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
@@ -183,14 +183,14 @@ export const AnalyticsPage = () => {
 
             {/* Income vs Expenses Legend */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                <div className="lg:col-span-2 glass-premium rounded-[3rem] border-border/30 relative overflow-hidden group">
-                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl">
-                        <h3 className="flex items-center gap-3 text-2xl font-black tracking-tighter text-foreground">
-                            <div className="p-2 bg-primary/20 rounded-xl"><BarChart2 size={24} className="text-primary shadow-glow" /></div>
+                <div className="lg:col-span-2 card-base overflow-hidden">
+                    <div className="px-6 py-5 border-b border-border/50 bg-card/50">
+                        <h3 className="flex items-center gap-2 text-lg font-black tracking-tight text-foreground">
+                            <div className="p-1.5 bg-primary/10 rounded-lg"><BarChart2 size={18} className="text-primary" /></div>
                             {t('analytics.cash_flow_title') || 'Flujo de Caja Histórico'}
                         </h3>
                     </div>
-                    <div className="p-10 h-[350px] bg-black/40 backdrop-blur-3xl">
+                    <div className="p-6 h-[350px] bg-card">
                         {(() => {
                             const last6Months = Array.from({ length: 6 }).map((_, i) => subMonths(new Date(), i)).reverse();
                             const flowData = last6Months.map(monthDate => {
@@ -241,17 +241,16 @@ export const AnalyticsPage = () => {
                 </div>
 
                 {/* Savings Insight card - alongside chart */}
-                <div className="glass-premium rounded-[3rem] border-border/30 flex flex-col relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl text-center">
-                        <h3 className="text-[11px] font-black uppercase tracking-[0.5em] text-foreground/50">{t('analytics.savings_summary') || 'Resumen de Ahorro'}</h3>
+                <div className="card-base flex flex-col relative overflow-hidden">
+                    <div className="px-6 py-5 border-b border-border/50 bg-card/50 text-center">
+                        <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">{t('analytics.savings_summary') || 'Resumen de Ahorro'}</h3>
                     </div>
-                    <div className="p-10 flex-1 flex flex-col items-center justify-center space-y-10 relative z-10">
+                    <div className="p-8 flex-1 flex flex-col items-center justify-center space-y-8 relative z-10 bg-card">
                         <div className="text-center group/savings">
-                            <p className="text-[10px] text-primary/40 uppercase tracking-[0.4em] font-black mb-4 group-hover/savings:text-primary active:scale-95 transition-all">{t('analytics.net_savings') || 'Ahorro Neto (Este Mes)'}</p>
+                            <p className="text-[10px] text-primary uppercase tracking-widest font-bold mb-2 transition-all">{t('analytics.net_savings') || 'Ahorro Neto (Este Mes)'}</p>
                             <p className={cn(
-                                "text-4xl font-black tracking-tighter drop-shadow-2xl transition-all duration-700",
-                                currentIncome - currentExpense >= 0 ? "text-emerald-500 shadow-glow" : "text-rose-500"
+                                "text-3xl font-black tracking-tight",
+                                currentIncome - currentExpense >= 0 ? "text-emerald-500" : "text-rose-500"
                             )}>
                                 {new Intl.NumberFormat(i18n.language, { style: 'currency', currency }).format(currentIncome - currentExpense)}
                             </p>
@@ -290,19 +289,18 @@ export const AnalyticsPage = () => {
 
             {/* KPI Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
-                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
-                    <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('analytics.total_expense')}</p>
+                <div className="card-base p-6 md:p-8">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('analytics.total_expense')}</p>
                         <div className={cn(
-                            "p-3 rounded-2xl border transition-all duration-500",
-                            expenseVariation > 0 ? "bg-rose-500/10 border-rose-500/20 text-rose-500 shadow-glow" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"
+                            "p-2 rounded-xl border",
+                            expenseVariation > 0 ? "bg-rose-500/10 border-rose-500/20 text-rose-500" : "bg-emerald-500/10 border-emerald-500/20 text-emerald-500"
                         )}>
-                            <TrendingDown size={20} />
+                            <TrendingDown size={18} />
                         </div>
                     </div>
-                    <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
+                    <div>
+                        <div className="text-2xl md:text-3xl font-black tracking-tight text-foreground">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentExpense)}</div>
                         <p className="text-[11px] font-black uppercase tracking-[0.3em] mt-6 flex items-center gap-2">
                             <span className={cn(
                                 "flex items-center gap-1 p-1 px-3 rounded-full border",
@@ -316,19 +314,18 @@ export const AnalyticsPage = () => {
                     </div>
                 </div>
 
-                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
-                    <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('analytics.income')}</p>
+                <div className="card-base p-6 md:p-8">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-4">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t('analytics.income')}</p>
                         <div className={cn(
-                            "p-3 rounded-2xl border transition-all duration-500",
-                            incomeVariation >= 0 ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500 shadow-glow" : "bg-rose-500/10 border-rose-500/20 text-rose-500"
+                            "p-2 rounded-xl border",
+                            incomeVariation >= 0 ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500" : "bg-rose-500/10 border-rose-500/20 text-rose-500"
                         )}>
-                            <TrendingUp size={20} />
+                            <TrendingUp size={18} />
                         </div>
                     </div>
-                    <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
+                    <div>
+                        <div className="text-2xl md:text-3xl font-black tracking-tight text-foreground">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(currentIncome)}</div>
                         <p className="text-[11px] font-black uppercase tracking-[0.3em] mt-6 flex items-center gap-2">
                             <span className={cn(
                                 "flex items-center gap-1 p-1 px-3 rounded-full border",
@@ -346,21 +343,20 @@ export const AnalyticsPage = () => {
                 {(() => {
                     const highestIncrease = [...categoryInsights].sort((a, b) => b.diff - a.diff)[0];
                     if (!highestIncrease || highestIncrease.diff <= 0) return (
-                        <div className="glass-premium p-10 rounded-[3rem] border-border/30 relative overflow-hidden group">
-                            <div className="p-10 text-center text-foreground/30 font-black uppercase tracking-[0.3em] text-xs">
-                                <Minus size={48} className="mx-auto mb-6 opacity-10" />
+                        <div className="card-base p-6 md:p-8 flex items-center justify-center">
+                            <div className="text-center text-muted-foreground font-bold uppercase tracking-widest text-[10px]">
+                                <Minus size={24} className="mx-auto mb-3 opacity-20" />
                                 {t('analytics.no_significant_changes')}
                             </div>
                         </div>
                     );
 
                     return (
-                        <div className="glass-premium p-10 rounded-[3rem] border-rose-500/20 bg-rose-500/5 group active:scale-95 transition-all duration-500 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-tr from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                            <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                                <h4 className="text-[11px] font-black uppercase tracking-[0.4em] text-rose-500/60">{t('analytics.biggest_increase')}</h4>
-                                <div className="p-3 bg-rose-500/20 rounded-2xl text-rose-500 shadow-glow">
-                                    <TrendingUp size={20} />
+                        <div className="card-base p-6 md:p-8 bg-rose-500/5 border-rose-500/20">
+                            <div className="flex flex-row items-center justify-between space-y-0 pb-4">
+                                <h4 className="text-[10px] font-bold uppercase tracking-widest text-rose-500">{t('analytics.biggest_increase')}</h4>
+                                <div className="p-2 bg-rose-500/10 rounded-xl text-rose-500">
+                                    <TrendingUp size={18} />
                                 </div>
                             </div>
                             <div className="space-y-4 relative z-10">
@@ -377,26 +373,26 @@ export const AnalyticsPage = () => {
             </div>
 
             {/* Detailed Category Comparison */}
-            <div className="glass-premium rounded-[3.5rem] border-border/30 relative overflow-hidden group">
-                <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl flex items-center justify-between">
-                    <h3 className="flex items-center gap-4 text-3xl font-black tracking-tighter text-foreground">
-                        <div className="p-3 bg-primary/20 rounded-2xl shadow-glow"><BarChart2 size={24} className="text-primary" /></div>
+            <div className="card-base mb-8 overflow-hidden">
+                <div className="px-6 py-5 border-b border-border/50 bg-card/50 flex items-center justify-between">
+                    <h3 className="flex items-center gap-2 text-lg font-black tracking-tight text-foreground">
+                        <div className="p-1.5 bg-primary/10 rounded-lg text-primary"><BarChart2 size={18} /></div>
                         {t('analytics.category_breakdown')}
                     </h3>
                 </div>
-                <div className="p-12 bg-black/40 backdrop-blur-3xl">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="p-6 md:p-8 bg-card">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {categoryInsights.map(cat => (
-                            <div key={cat.id} className="group/item active:scale-98 transition-all duration-300">
-                                <div className="flex items-center justify-between mb-5">
-                                    <div className="flex items-center gap-5 min-w-0 flex-1">
-                                        <div className="w-14 h-14 shrink-0 rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-border/30 glass-premium group-hover/item:scale-110 transition-transform duration-500" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
-                                            <TrendingUp size={24} className="shadow-glow" />
+                            <div key={cat.id} className="group/item">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                                        <div className="w-10 h-10 shrink-0 rounded-xl flex items-center justify-center border border-border/30" style={{ backgroundColor: `${cat.color}15`, color: cat.color }}>
+                                            <TrendingUp size={16} />
                                         </div>
-                                            <div className="min-w-0 flex-1 pr-2">
-                                                <span className="font-black text-xl tracking-tighter text-foreground drop-shadow-md block break-words whitespace-normal leading-tight">{cat.name}</span>
-                                                <span className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-2 block break-words whitespace-normal leading-tight">{t('analytics.monthly_spend')}</span>
-                                            </div>
+                                        <div className="min-w-0 flex-1 pr-2">
+                                            <span className="font-bold text-base tracking-tight text-foreground block truncate">{cat.name}</span>
+                                            <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 block truncate">{t('analytics.monthly_spend')}</span>
+                                        </div>
                                     </div>
                                     <div className="text-right shrink-0 ml-4">
                                         <span className="font-black text-2xl tracking-tighter text-foreground block drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(cat.current)}</span>
