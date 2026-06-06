@@ -20,6 +20,8 @@ import { useFinance } from '@/context/FinanceContext';
 import { useIdentity } from '@/context/IdentityContext';
 import { useTranslation } from 'react-i18next';
 import { PrivacyBlur } from '@/components/ui/PrivacyBlur';
+import { useNotifications } from '@/context/NotificationContext';
+import { checkScheduledPaymentsForNotifications } from '@/lib/notifications';
 
 // Hero de patrimonio — estilo Revolut
 const DashboardHero = ({ isNewUser }) => {
@@ -81,7 +83,9 @@ const WIDGETS_CONFIG = [
 
 export const DashboardPage = () => {
     const { t } = useTranslation();
-    const { transactions } = useFinance();
+    const { transactions, getScheduledForMonth } = useFinance();
+    const { permission, requestPermission } = useNotifications();
+    
     const isNewUser = transactions.length === 0;
     const [order, setOrder] = useState(() => {
         const saved = localStorage.getItem('dashboard_layout');
@@ -108,6 +112,14 @@ export const DashboardPage = () => {
             setOrder([...validSaved, ...newItems]);
         }
     }, [order.length]);
+
+    // Revisar pagos programados pendientes para notificar
+    useEffect(() => {
+        if (permission === 'granted') {
+            const scheduledThisMonth = getScheduledForMonth(new Date());
+            checkScheduledPaymentsForNotifications(scheduledThisMonth);
+        }
+    }, [permission, getScheduledForMonth]);
 
     const saveOrder = (newOrder, persist = false) => {
         setOrder(newOrder);

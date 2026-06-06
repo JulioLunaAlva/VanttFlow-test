@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { db, migrateFromLocalStorage, INITIAL_CATEGORIES, INITIAL_ACCOUNTS } from '@/lib/db';
 import { startOfMonth, endOfMonth, isWithinInterval, parseISO, format, setDate, min, lastDayOfMonth, isSameMonth } from 'date-fns';
 import { toast } from 'sonner';
 import { useGamification } from './GamificationContext';
@@ -7,44 +8,30 @@ import { toLocalDateStr, parseLocalDateStr } from '@/lib/utils';
 
 const FinanceContext = createContext();
 
-const INITIAL_CATEGORIES = [
-    { id: 'salary', name: 'Salario', type: 'income', color: '#10b981', icon: 'Wallet' },
-    { id: 'freelance', name: 'Freelance', type: 'income', color: '#34d399', icon: 'Laptop' },
-    { id: 'investments', name: 'Inversiones', type: 'income', color: '#6ee7b7', icon: 'TrendingUp' },
-    { id: 'food', name: 'Comida', type: 'expense', color: '#f87171', icon: 'Utensils' },
-    { id: 'transport', name: 'Transporte', type: 'expense', color: '#fb923c', icon: 'Car' },
-    { id: 'housing', name: 'Vivienda', type: 'expense', color: '#fbbf24', icon: 'Home' },
-    { id: 'utilities', name: 'Servicios', type: 'expense', color: '#facc15', icon: 'Zap' },
-    { id: 'entertainment', name: 'Entretenimiento', type: 'expense', color: '#a3e635', icon: 'Gamepad2' },
-    { id: 'uber', name: 'Uber/Transporte App', type: 'expense', color: '#000000', icon: 'CarFront' },
-    { id: 'health', name: 'Salud', type: 'expense', color: '#4ade80', icon: 'Heart' },
-    { id: 'education', name: 'Educación', type: 'expense', color: '#22d3ee', icon: 'GraduationCap' },
-    { id: 'shopping', name: 'Compras', type: 'expense', color: '#818cf8', icon: 'ShoppingBag' },
-    { id: 'loans', name: 'Préstamos', type: 'both', color: '#60a5fa', icon: 'CreditCard' },
-    { id: 'gifts', name: 'Regalos', type: 'expense', color: '#f472b6', icon: 'Gift' },
-    { id: 'pets', name: 'Mascotas', type: 'expense', color: '#fb923c', icon: 'Dog' },
-    { id: 'travel', name: 'Viajes', type: 'expense', color: '#06b6d4', icon: 'Plane' },
-    { id: 'savings', name: 'Ahorro', type: 'expense', color: '#10b981', icon: 'PiggyBank' },
-    { id: 'other', name: 'Otros', type: 'both', color: '#94a3b8', icon: 'MoreHorizontal' },
-];
 
-const INITIAL_ACCOUNTS = [
-    { id: 'wallet', name: 'Efectivo', initialBalance: 0 },
-    { id: 'bank', name: 'Cuenta Bancaria', initialBalance: 0 },
-];
+
+
 
 export const FinanceProvider = ({ children }) => {
-    // State
-    const [transactions, setTransactions] = useLocalStorage('finance_transactions', []);
-    const [categories, setCategories] = useLocalStorage('finance_categories', INITIAL_CATEGORIES);
-    const [accounts, setAccounts] = useLocalStorage('finance_accounts', INITIAL_ACCOUNTS);
-    const [scheduledPayments, setScheduledPayments] = useLocalStorage('finance_scheduled', []);
-    const [paymentInstances, setPaymentInstances] = useLocalStorage('finance_scheduled_instances', []);
-    const [budgets, setBudgets] = useLocalStorage('finance_budgets', []); // { monthKey, categoryId, amount }
-    const [goals, setGoals] = useLocalStorage('finance_goals', []); // { id, name, targetAmount, currentSaved }
-    const [netWorthHistory, setNetWorthHistory] = useLocalStorage('finance_net_worth_history', []); // [{ date: '2023-01-01', balance: 1000 }]
-    const [ious, setIous] = useLocalStorage('finance_ious', []); // { id, personName, type, amount, description, date, status, amountPaid }
-    const [notes, setNotes] = useLocalStorage('finance_notes', []); // { id, title, body, color, pinned, archived, createdAt }
+    const [isDbReady, setIsDbReady] = React.useState(false);
+
+    React.useEffect(() => {
+        migrateFromLocalStorage().then(() => setIsDbReady(true));
+    }, []);
+
+    // State from Dexie
+    const transactions = useLiveQuery(() => db.transactions.toArray(), [], []) || [];
+    const categories = useLiveQuery(() => db.categories.toArray(), [], INITIAL_CATEGORIES) || INITIAL_CATEGORIES;
+    const accounts = useLiveQuery(() => db.accounts.toArray(), [], INITIAL_ACCOUNTS) || INITIAL_ACCOUNTS;
+    const scheduledPayments = useLiveQuery(() => db.scheduledPayments.toArray(), [], []) || [];
+    const paymentInstances = useLiveQuery(() => db.paymentInstances.toArray(), [], []) || [];
+    const budgets = useLiveQuery(() => db.budgets.toArray(), [], []) || [];
+    const goals = useLiveQuery(() => db.goals.toArray(), [], []) || [];
+    const netWorthHistory = useLiveQuery(() => db.netWorthHistory.toArray(), [], []) || [];
+    const ious = useLiveQuery(() => db.ious.toArray(), [], []) || [];
+    const notes = useLiveQuery(() => db.notes.toArray(), [], []) || [];
+    
+
 
     // Global Filter State
     const [selectedMonth, setSelectedMonth] = React.useState(new Date()); // Date object representing the month
@@ -56,7 +43,7 @@ export const FinanceProvider = ({ children }) => {
 
     // --- LOGICA METAS ---
     const addGoal = (goal) => {
-        setGoals(prev => [...prev, { ...goal, id: crypto.randomUUID(), createdAt: Date.now() }]);
+        db.goals.add({ ...goal, id: crypto.randomUUID(), createdAt: Date.now() });
         toast.success('Meta creada');
         gainXp(20, 'Planificando el futuro');
         unlockAchievement('goal_creator');
@@ -64,28 +51,28 @@ export const FinanceProvider = ({ children }) => {
     };
 
     const updateGoal = (id, updates) => {
-        setGoals(prev => prev.map(g => g.id === id ? { ...g, ...updates } : g));
+        db.goals.update(id, updates);
         toast.success('Meta actualizada');
     };
 
     const deleteGoal = (id) => {
-        setGoals(prev => prev.filter(g => g.id !== id));
+        db.goals.delete(id);
         toast.success('Meta eliminada');
     };
 
     // --- LOGICA IOUs ---
     const addIOU = (iou) => {
-        setIous(prev => [...prev, { ...iou, id: crypto.randomUUID(), amountPaid: 0, status: 'pending', createdAt: Date.now() }]);
+        db.ious.add({ ...iou, id: crypto.randomUUID(), amountPaid: 0, status: 'pending', createdAt: Date.now() });
         toast.success('Deuda registrada');
     };
 
     const editIOU = (id, updates) => {
-        setIous(prev => prev.map(i => i.id === id ? { ...i, ...updates } : i));
+        db.ious.update(id, updates);
         toast.success('Deuda actualizada');
     };
 
     const deleteIOU = (id) => {
-        setIous(prev => prev.filter(i => i.id !== id));
+        db.ious.delete(id);
         toast.success('Registro eliminado');
     };
 
@@ -94,7 +81,7 @@ export const FinanceProvider = ({ children }) => {
         if (!iou) return;
         const newPaid = Number(iou.amountPaid || 0) + Number(paidAmount);
         const newStatus = newPaid >= Number(iou.amount) ? 'settled' : 'partial';
-        setIous(prev => prev.map(i => i.id === id ? { ...i, amountPaid: newPaid, status: newStatus } : i));
+        db.ious.update(id, { amountPaid: newPaid, status: newStatus });
         if (generateTransaction && iou.type === 'lent') {
             // Cobrar una deuda genera un ingreso
             addTransaction({
@@ -111,25 +98,25 @@ export const FinanceProvider = ({ children }) => {
 
     // --- LOGICA NOTAS ---
     const addNote = (note) => {
-        setNotes(prev => [...prev, { ...note, id: crypto.randomUUID(), pinned: false, archived: false, createdAt: Date.now() }]);
+        db.notes.add({ ...note, id: crypto.randomUUID(), pinned: false, archived: false, createdAt: Date.now() });
         toast.success('Nota creada');
     };
 
     const editNote = (id, updates) => {
-        setNotes(prev => prev.map(n => n.id === id ? { ...n, ...updates } : n));
+        db.notes.update(id, updates);
     };
 
     const deleteNote = (id) => {
-        setNotes(prev => prev.filter(n => n.id !== id));
+        db.notes.delete(id);
         toast.success('Nota eliminada');
     };
 
     const togglePinNote = (id) => {
-        setNotes(prev => prev.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n));
+        const n = notes.find(x => x.id === id); if(n) db.notes.update(id, { pinned: !n.pinned });
     };
 
     const archiveNote = (id) => {
-        setNotes(prev => prev.map(n => n.id === id ? { ...n, archived: !n.archived } : n));
+        const n = notes.find(x => x.id === id); if(n) db.notes.update(id, { archived: !n.archived });
     };
 
     const exportData = () => {
@@ -162,16 +149,12 @@ export const FinanceProvider = ({ children }) => {
 
     const updateBudget = (categoryId, amount) => {
         const monthKey = format(selectedMonth, 'yyyy-MM');
-        setBudgets(prev => {
-            const existing = prev.find(b => b.monthKey === monthKey && b.categoryId === categoryId);
-            if (existing) {
-                // Update
-                return prev.map(b => b.id === existing.id ? { ...b, amount } : b);
-            } else {
-                // Create
-                return [...prev, { id: crypto.randomUUID(), monthKey, categoryId, amount }];
-            }
-        });
+        const existing = budgets.find(b => b.monthKey === monthKey && b.categoryId === categoryId);
+        if (existing) {
+            db.budgets.update(existing.id, { amount });
+        } else {
+            db.budgets.add({ id: crypto.randomUUID(), monthKey, categoryId, amount });
+        }
         toast.success('Presupuesto actualizado');
         gainXp(15, 'Organizando tus finanzas');
         unlockAchievement('budget_master');
@@ -410,27 +393,16 @@ export const FinanceProvider = ({ children }) => {
     // Capture daily snapshot
     React.useEffect(() => {
         const today = toLocalDateStr();
-        setNetWorthHistory(prev => {
-            // Check if we already have a snapshot for today
-            const hasToday = prev.find(item => item.date === today);
-
-            // Calculate current worth
+        const hasToday = netWorthHistory.find(item => item.date === today);
             const currentWorth = accounts.reduce((acc, account) => {
-                // For credit cards, balance is negative if used, so it correctly subtracts from net worth
-                // For debit/cash, balance is positive.
                 return acc + getAccountBalance(account.id);
             }, 0);
 
             if (hasToday) {
-                // Optional: Update today's value if it changed? 
-                // Let's update it so it's always fresh for the current day until the day passes.
-                return prev.map(item => item.date === today ? { ...item, balance: currentWorth } : item);
+                db.netWorthHistory.put({ date: today, balance: currentWorth });
             } else {
-                // Add new snapshot
-                // Limit history to last 365 days to save space? Nah, localStorage can handle it for a while.
-                return [...prev, { date: today, balance: currentWorth }];
+                db.netWorthHistory.put({ date: today, balance: currentWorth });
             }
-        });
     }, [transactions, accounts]); // Update whenever transactions or accounts change? 
     // Ideally we want this to be efficient. Updating on every transaction change ensures 'today' is always accurate.
 
@@ -468,12 +440,12 @@ export const FinanceProvider = ({ children }) => {
 
     // --- LOGICA CATEGORIAS ---
     const addCategory = (category) => {
-        setCategories(prev => [...prev, { ...category, id: crypto.randomUUID() }]);
+        db.categories.add({ ...category, id: crypto.randomUUID() });
         toast.success('Categoría creada');
     };
 
     const updateCategory = (id, updates) => {
-        setCategories(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c));
+        db.categories.update(id, updates);
         toast.success('Categoría actualizada');
     };
 
@@ -483,7 +455,7 @@ export const FinanceProvider = ({ children }) => {
             toast.error('No se puede eliminar: Hay transacciones usando esta categoría');
             return false;
         }
-        setCategories(prev => prev.filter(c => c.id !== id));
+        db.categories.delete(id);
         toast.success('Categoría eliminada');
         return true;
     };
@@ -525,7 +497,7 @@ export const FinanceProvider = ({ children }) => {
             }
         }
 
-        setTransactions(prev => [newTransaction, ...prev]);
+        db.transactions.add(newTransaction);
         toast.success('Transacción guardada');
         gainXp(10, 'Registro de actividad');
         unlockAchievement('first_transaction');
@@ -533,28 +505,28 @@ export const FinanceProvider = ({ children }) => {
     };
 
     const deleteTransaction = (id) => {
-        setTransactions(prev => prev.filter(t => t.id !== id));
+        db.transactions.delete(id);
         toast.success('Transacción eliminada');
     };
 
     const editTransaction = (id, updatedData) => {
-        setTransactions(prev => prev.map(t => t.id === id ? { ...t, ...updatedData } : t));
+        db.transactions.update(id, updatedData);
         toast.success('Transacción actualizada');
     };
 
     const addAccount = (account) => {
-        setAccounts(prev => [...prev, {
+        db.accounts.add({
             ...account,
             id: crypto.randomUUID(),
             type: account.type || 'debit',
             limit: Number(account.limit) || 0,
             color: account.color || '#000000'
-        }]);
+        });
         toast.success('Cuenta creada');
     };
 
     const updateAccount = (id, updates) => {
-        setAccounts(prev => prev.map(a => a.id === id ? { ...a, ...updates } : a));
+        db.accounts.update(id, updates);
         toast.success('Cuenta actualizada');
     };
 
@@ -564,7 +536,7 @@ export const FinanceProvider = ({ children }) => {
             toast.error('No se puede eliminar: Tiene transacciones asociadas');
             return false;
         }
-        setAccounts(prev => prev.filter(a => a.id !== id));
+        db.accounts.delete(id);
         toast.success('Cuenta eliminada');
         return true;
     };
@@ -646,7 +618,7 @@ export const FinanceProvider = ({ children }) => {
             startMonthKey,
             endMonthKey
         };
-        setScheduledPayments(prev => [...prev, newPayment]);
+        db.scheduledPayments.add(newPayment);
         return newPayment;
     };
 
@@ -700,13 +672,11 @@ export const FinanceProvider = ({ children }) => {
     };
 
     const toggleScheduledStatus = (id) => {
-        setScheduledPayments(prev => prev.map(p =>
-            p.id === id ? { ...p, status: p.status === 'active' ? 'paused' : 'active' } : p
-        ));
+        const p = scheduledPayments.find(x => x.id === id); if(p) db.scheduledPayments.update(id, { status: p.status === 'active' ? 'paused' : 'active' });
     };
 
     const deleteScheduledPayment = (id) => {
-        setScheduledPayments(prev => prev.filter(p => p.id !== id));
+        db.scheduledPayments.delete(id);
         toast.success('Pago programado eliminado');
     };
 
@@ -802,7 +772,7 @@ export const FinanceProvider = ({ children }) => {
             };
             const transId = crypto.randomUUID();
             const newTransaction = { ...transactionStr, id: transId, createdAt: new Date().toISOString() };
-            setTransactions(prev => [newTransaction, ...prev]);
+            db.transactions.add(newTransaction);
 
             const newInstance = {
                 id: crypto.randomUUID(),
@@ -813,14 +783,16 @@ export const FinanceProvider = ({ children }) => {
                 generatedTransactionId: transId,
                 resolvedAt: Date.now()
             };
-            setPaymentInstances(prev => [
-                ...prev.filter(i => {
-                    const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
-                    const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
-                    return !(isSamePayment && isSameInstallment);
-                }),
-                newInstance
-            ]);
+            const existing = paymentInstances.find(i => {
+                const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
+                const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
+                return isSamePayment && isSameInstallment;
+            });
+            if (existing) {
+                db.paymentInstances.delete(existing.id).then(() => db.paymentInstances.add(newInstance));
+            } else {
+                db.paymentInstances.add(newInstance);
+            }
             toast.success('Pago registrado');
             gainXp(30, 'Responsabilidad cumplida');
         } else if (action === 'skip') {
@@ -832,14 +804,16 @@ export const FinanceProvider = ({ children }) => {
                 state: 'skipped',
                 resolvedAt: Date.now()
             };
-            setPaymentInstances(prev => [
-                ...prev.filter(i => {
-                    const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
-                    const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
-                    return !(isSamePayment && isSameInstallment);
-                }),
-                newInstance
-            ]);
+            const existing = paymentInstances.find(i => {
+                const isSamePayment = i.scheduledPaymentId === payment.id && i.monthKey === monthKey;
+                const isSameInstallment = payment.installmentIndex !== undefined ? i.installmentIndex === payment.installmentIndex : true;
+                return isSamePayment && isSameInstallment;
+            });
+            if (existing) {
+                db.paymentInstances.delete(existing.id).then(() => db.paymentInstances.add(newInstance));
+            } else {
+                db.paymentInstances.add(newInstance);
+            }
             toast.success('Pago omitido');
         }
     };
@@ -940,7 +914,11 @@ export const FinanceProvider = ({ children }) => {
 
     return (
         <FinanceContext.Provider value={value}>
-            {children}
+            {!isDbReady ? (
+                <div className="flex items-center justify-center h-screen w-screen bg-background"><div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>
+            ) : (
+                children
+            )}
         </FinanceContext.Provider>
     );
 };
