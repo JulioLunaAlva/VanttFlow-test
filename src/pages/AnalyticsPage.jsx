@@ -92,19 +92,6 @@ export const AnalyticsPage = () => {
     }).sort((a, b) => b.current - a.current); // Sort by highest spending this month
 
     return (
-        <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('analytics.title')}</h2>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                        {t('analytics.comparing', {
-                            current: format(currentMonthDate, 'MMMM yyyy', { locale: currentLocale }),
-                            previous: format(previousMonthDate, 'MMMM yyyy', { locale: currentLocale })
-                        })}
-                    </p>
-                </div>
                 <div className="mt-6 md:mt-0 relative z-10">
                     <div className="glass-premium p-4 px-8 rounded-2xl border-border/30 bg-foreground/5 backdrop-blur-3xl">
                         <LineChartIcon className="w-8 h-8 text-primary shadow-glow" />

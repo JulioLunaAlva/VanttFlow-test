@@ -167,12 +167,11 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
 
 
     return (
-        <div className="glass-card flex flex-col relative overflow-hidden group/form">
-            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-0 group-hover/form:opacity-100 transition-opacity duration-1000" />
-            <div className="p-6 border-b border-border/10 bg-muted/5 flex items-center justify-between relative z-10">
-                <h2 className="text-xl font-black tracking-tight text-foreground">{initialData ? t('transactions.edit_title') : t('transactions.new_title')}</h2>
+        <div className="flex flex-col w-full">
+            <div className="pb-4 mb-4 border-b border-border/20 flex items-center justify-between">
+                <h2 className="text-title font-black text-foreground">{initialData ? t('transactions.edit_title') : t('transactions.new_title')}</h2>
             </div>
-            <div className="p-6 relative z-10">
+            <div className="relative">
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Premium Segmented Control for Type */}
                     <div className="relative flex p-1.5 bg-muted/40 backdrop-blur-sm rounded-2xl border border-border/40 overflow-hidden w-full max-w-sm mx-auto shadow-inner">
@@ -198,8 +197,8 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                     </div>
 
                     {/* Apple Wallet Style Amount Input */}
-                    <div className="relative py-4 group flex flex-col items-center">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/60 mb-2">{t('transactions.amount') || 'Monto de la transacción'}</span>
+                    <div className="relative py-4 flex flex-col items-center">
+                        <span className="text-caption font-bold tracking-widest text-muted-foreground mb-2 uppercase">{t('transactions.amount') || 'Monto de la transacción'}</span>
                         <div className="relative max-w-[280px] w-full">
                             <span className={cn(
                                 "absolute left-4 top-1/2 -translate-y-1/2 font-black text-2xl transition-colors duration-500",
@@ -214,21 +213,21 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
                                 placeholder="0.00"
                                 required
                                 className={cn(
-                                    "pl-10 h-20 text-center text-3xl sm:text-4xl font-black bg-transparent border-0 border-b-2 border-border/50 rounded-none focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all duration-500",
+                                    "pl-10 h-20 text-center text-4xl font-black bg-transparent border-0 border-b-2 border-border/50 rounded-none focus-visible:ring-0 focus-visible:border-primary shadow-none transition-all duration-500",
                                     type === 'income' ? "text-emerald-500" : type === 'expense' ? "text-rose-500" : "text-blue-500"
                                 )}
                             />
                         </div>
                     </div>
 
-                    <div className="space-y-1 bg-muted/10 p-2 rounded-2xl border border-border/30 focus-within:border-primary/40 focus-within:bg-muted/20 transition-all duration-300">
+                    <div className="space-y-1.5">
                         <Input
                             type="text"
                             placeholder={t('transactions.description')}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required
-                            className="border-0 bg-transparent shadow-none focus-visible:ring-0 px-4 h-12 text-base font-semibold"
+                            className="w-full text-base"
                         />
                     </div>
 

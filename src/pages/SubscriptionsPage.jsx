@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useFinance } from "@/context/FinanceContext";
 import { Plus, Calendar, Power, Trash2, Zap, AlertCircle, RefreshCw, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
 import { useTranslation } from 'react-i18next';
@@ -351,14 +352,31 @@ export const SubscriptionsPage = () => {
                                         >
                                             <Power size={16} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
                                         </Button>
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            className="h-10 w-10 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl border border-rose-500/20"
-                                            onClick={() => { if (window.confirm(t('subscriptions.delete_confirm'))) deleteScheduledPayment(payment.id); }}
-                                        >
-                                            <Trash2 size={16} />
-                                        </Button>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-10 w-10 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl border border-rose-500/20"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>¿Eliminar suscripción?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Esta acción cancelará la programación de "{payment.name}".
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => deleteScheduledPayment(payment.id)} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+                                                        Eliminar
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
                                     </div>
                                 </div>
                             </div>

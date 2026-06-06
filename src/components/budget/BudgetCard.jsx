@@ -17,10 +17,11 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
         return <Icon size={24} style={{ color }} />;
     };
     const isOverBudget = budget.percentage > 100;
+    const isNearLimit = budget.percentage >= 80 && budget.percentage <= 100;
     const progressPercent = Math.min(budget.percentage, 100);
     const getEnergyColor = (percent) => {
-        if (percent >= 100) return "from-red-500 to-rose-600 shadow-[0_0_15px_rgba(239,68,68,0.4)]";
-        if (percent >= 85) return "from-amber-400 to-orange-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]";
+        if (percent > 100) return "from-red-500 to-rose-600 shadow-[0_0_15px_rgba(239,68,68,0.4)]";
+        if (percent >= 80) return "from-amber-400 to-orange-500 shadow-[0_0_15px_rgba(245,158,11,0.4)]";
         return "from-emerald-400 to-teal-500 shadow-[0_0_15px_rgba(20,184,166,0.4)]";
     };
     return (
@@ -38,9 +39,9 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                         <div>
                             <h3 className="font-black text-lg tracking-tighter text-foreground">{category?.name || 'Desconocido'}</h3>
                             <div className="flex items-center gap-2 mt-1">
-                                <div className={cn("h-1.5 w-1.5 rounded-full animate-pulse", isOverBudget ? "bg-red-500" : "bg-emerald-500")} />
-                                <span className={cn("text-[9px] font-black uppercase tracking-[0.2em]", isOverBudget ? "text-red-500" : "text-emerald-500/60")}>
-                                    {isOverBudget ? 'Excedido' : 'En Control'}
+                                <div className={cn("h-1.5 w-1.5 rounded-full animate-pulse", isOverBudget ? "bg-red-500" : isNearLimit ? "bg-amber-500" : "bg-emerald-500")} />
+                                <span className={cn("text-[9px] font-black uppercase tracking-[0.2em]", isOverBudget ? "text-red-500" : isNearLimit ? "text-amber-500" : "text-emerald-500/60")}>
+                                    {isOverBudget ? 'Excedido' : isNearLimit ? 'Cerca del límite' : 'En Control'}
                                 </span>
                             </div>
                         </div>
@@ -71,11 +72,11 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                 <div className="space-y-3">
                     <div className="flex justify-between items-center px-1">
                         <span className="text-[9px] font-black opacity-30 uppercase tracking-[0.2em] text-foreground">Nivel de Consumo</span>
-                        <span className={cn("text-xs font-black", isOverBudget ? "text-red-500" : "text-foreground")}>
+                        <span className={cn("text-xs font-black", isOverBudget ? "text-red-500" : isNearLimit ? "text-amber-500" : "text-foreground")}>
                             {budget.percentage.toFixed(0)}%
                         </span>
                     </div>
-                    <div className="relative h-4 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30 p-0.5 shadow-inner">
+                    <div className="relative h-6 w-full bg-foreground/5 rounded-full overflow-hidden border border-border/30 p-0.5 shadow-inner">
                         <div
                             className={cn(
                                 "h-full rounded-full transition-all duration-1000 ease-out relative",
@@ -91,6 +92,12 @@ export const BudgetCard = ({ budget, category, onEdit }) => {
                         <div className="flex items-center gap-2 px-1 py-1 text-red-500 animate-in fade-in slide-in-from-top-2">
                             <AlertTriangle size={14} />
                             <span className="text-[9px] font-black uppercase tracking-widest">Presupuesto en estado crítico</span>
+                        </div>
+                    )}
+                    {isNearLimit && !isOverBudget && (
+                        <div className="flex items-center gap-2 px-1 py-1 text-amber-500 animate-in fade-in slide-in-from-top-2">
+                            <AlertTriangle size={14} />
+                            <span className="text-[9px] font-black uppercase tracking-widest">Aviso: Superaste el 80%</span>
                         </div>
                     )}
                 </div>

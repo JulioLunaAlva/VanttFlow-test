@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useFinance } from "@/context/FinanceContext";
-import { Plus, Calendar, Power, Trash2, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Plus, CalendarClock, Calendar, Power, Trash2, CheckCircle2, RotateCcw } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { CategorySelect } from "@/components/ui/CategorySelect";
 import { AccountSelect } from "@/components/ui/AccountSelect";
 import { DatePicker } from "@/components/ui/DatePicker";
@@ -54,29 +55,30 @@ export const ScheduledPage = () => {
     };
 
     return (
-        <div className="space-y-10 pb-32 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
-                        {t('scheduled.title')}
-                    </h2>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                        {t('scheduled.subtitle') || 'Automatización De Pagos Recurrentes'}
-                    </p>
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto">
+            {/* Header Compacto */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <CalendarClock size={20} />
+                    </div>
+                    <div>
+                        <h2 className="text-title font-black text-foreground">{t('scheduled.title')}</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">{t('scheduled.subtitle') || 'Automatización De Pagos Recurrentes'}</p>
+                    </div>
                 </div>
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                    <DialogTrigger asChild>
-                        <Button className="mt-6 md:mt-0 glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500 relative z-10">
-                            <Plus size={18} className="group-hover:rotate-90 transition-transform duration-500" /> 
-                            {t('scheduled.new_recurrent')}
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="glass-premium border-border/30 max-w-lg">
-                        <DialogHeader>
-                            <DialogTitle className="text-2xl font-black tracking-tighter">{t('scheduled.new_payment_dialog')}</DialogTitle>
-                        </DialogHeader>
+                <div className="mt-4 sm:mt-0">
+                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button size="sm" className="w-full sm:w-auto gap-2">
+                                <Plus size={16} /> 
+                                {t('scheduled.new_recurrent')}
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md">
+                            <DialogHeader>
+                                <DialogTitle>{t('scheduled.new_payment_dialog')}</DialogTitle>
+                            </DialogHeader>
                         <form onSubmit={handleSubmit} className="space-y-6 pt-4">
                             <div className="grid grid-cols-2 gap-4 p-1 bg-foreground/5 rounded-2xl border border-border/30">
                                 <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter transition-all", type === 'income' ? "bg-emerald-500 text-foreground shadow-lg" : "hover:bg-foreground/5")} onClick={() => setType('income')}>{t('scheduled.income')}</Button>
@@ -206,14 +208,30 @@ export const ScheduledPage = () => {
                                         <span className="text-[10px] font-black uppercase tracking-widest opacity-60 truncate max-w-[100px]">{account?.name}</span>
                                     </div>
                                     <div className="flex gap-2">
-                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-foreground/5 hover:bg-foreground/10 border border-border/30 transition-all" onClick={() => toggleScheduledStatus(payment.id)}>
-                                            <Power size={18} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
+                                        <Button variant="outline" size="icon-sm" onClick={() => toggleScheduledStatus(payment.id)}>
+                                            <Power size={16} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
                                         </Button>
-                                        <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl bg-foreground/5 hover:bg-rose-500/20 border border-border/30 group/del" onClick={() => {
-                                            if (window.confirm(t('scheduled.delete_confirm'))) deleteScheduledPayment(payment.id);
-                                        }}>
-                                            <Trash2 size={18} className="text-muted-foreground group-hover/del:text-rose-500 transition-colors" />
-                                        </Button>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button variant="outline" size="icon-sm" className="hover:bg-destructive/10 hover:text-destructive hover:border-destructive/30">
+                                                    <Trash2 size={16} />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>¿Eliminar pago programado?</AlertDialogTitle>
+                                                    <AlertDialogDescription>
+                                                        Esta acción cancelará la programación de "{payment.name}". No afectará a las transacciones que ya se hayan registrado en el pasado.
+                                                    </AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => deleteScheduledPayment(payment.id)} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+                                                        Eliminar
+                                                    </AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
                                     </div>
                                 </div>
                             </div>
