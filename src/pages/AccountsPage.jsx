@@ -49,7 +49,7 @@ export const AccountsPage = () => {
         };
 
         return (
-            <div key={account.id} className="card-interactive overflow-hidden group relative flex flex-col h-[280px]">
+            <div key={account.id} className="card-interactive overflow-hidden group relative flex flex-col h-auto min-h-[320px]">
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <Button
                         size="icon"
@@ -62,24 +62,24 @@ export const AccountsPage = () => {
                 </div>
 
                 <div
-                    className="h-44 p-8 text-white flex flex-col justify-between relative overflow-hidden"
+                    className="min-h-[11rem] h-auto p-8 text-white flex flex-col justify-between relative overflow-hidden"
                     style={{
                         background: `linear-gradient(135deg, ${account.color || '#1e293b'} 0%, #000000 100%)`,
                     }}
                 >
-                    <div className="flex justify-between items-start z-10">
+                    <div className="flex justify-between items-start z-10 drop-shadow-md">
                         <div>
-                            <p className="opacity-80 text-[10px] font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
-                            <h3 className="font-black text-2xl tracking-tight line-clamp-2 pr-12 text-white leading-none">{account.name}</h3>
+                            <p className="opacity-90 text-[10px] font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
+                            <h3 className="font-black text-2xl tracking-tight line-clamp-2 pr-12 text-white leading-tight">{account.name}</h3>
                         </div>
                         <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
                             <CreditCard className="w-6 h-6 text-white" />
                         </div>
                     </div>
                     
-                    <div className="z-10 mt-auto">
-                        <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.current_debt') || 'Deuda Actual'}</p>
-                        <p className="text-2xl font-black tracking-tight font-mono text-white">
+                    <div className="z-10 mt-6 drop-shadow-md">
+                        <p className="text-[10px] opacity-90 font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.current_debt') || 'Deuda Actual'}</p>
+                        <p className="text-3xl font-black tracking-tight font-mono text-white leading-none">
                             <PrivacyBlur intensity="lg">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
                     </div>
@@ -140,7 +140,7 @@ export const AccountsPage = () => {
         const balance = getAccountBalance(account.id);
 
         return (
-            <div key={account.id} className="card-interactive flex flex-col h-[280px] relative overflow-hidden group">
+            <div key={account.id} className="card-interactive flex flex-col h-auto min-h-[280px] relative overflow-hidden group">
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <Button
                         size="icon"
