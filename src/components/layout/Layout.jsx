@@ -187,11 +187,11 @@ export const Layout = ({ children }) => {
             <AppTour />
             <Sidebar className="hidden xl:flex" />
 
-            <div className="flex-1 flex flex-col pb-24 md:pb-0 min-w-0"> {/* Adjusted padding bottom for larger Mobile Nav */}
-                <header className="pt-safe border-b glass-premium px-5 flex items-center justify-between xl:hidden sticky top-0 z-40 h-20">
+            <div className="flex-1 flex flex-col pb-32 md:pb-0 min-w-0"> {/* Padding bottom para barra de nav más alta */}
+                <header className="pt-safe border-b glass-premium px-6 flex items-center justify-between xl:hidden sticky top-0 z-40 h-24">
                     <Link to="/" className="flex items-center gap-3 active:opacity-70 transition-opacity">
-                        <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-xl shadow-md" />
-                        <span className="font-black text-xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
+                        <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-xl shadow-md" />
+                        <span className="font-black text-2xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
                             VanttFlow
                         </span>
                     </Link>
@@ -221,14 +221,14 @@ export const Layout = ({ children }) => {
                 </div>
 
                 {/* Mobile Tablet Header Sub-Nav - Dynamic section title */}
-                <div className="xl:hidden p-4 pb-3 border-b border-border/10 bg-muted/20">
+                <div className="xl:hidden px-6 py-4 border-b border-border/10 bg-muted/20">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex flex-col min-w-0">
-                            <h2 className="font-black text-base tracking-tight truncate">
+                            <h2 className="font-black text-lg tracking-tight truncate">
                                 {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
                             </h2>
                             {ROUTE_LABELS[location.pathname]?.subtitle && (
-                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60 truncate">
+                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest opacity-60 truncate">
                                     {t(ROUTE_LABELS[location.pathname].subtitle)}
                                 </p>
                             )}

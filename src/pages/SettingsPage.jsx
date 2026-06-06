@@ -6,8 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select } from "@/components/ui/select";
-
-import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword, Timer } from 'lucide-react';
+import { User, Mail, Lock, LogOut, Trash2, Save, Globe, Sparkles, Sword, Timer, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useGamification } from '@/context/GamificationContext';
@@ -185,73 +184,70 @@ export const SettingsPage = () => {
     };
 
     return (
-        <div className="space-y-10 pb-32 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
-                        {t('settings.title')}
-                    </h2>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                        Configuración y Personalización
-                    </p>
-                </div>
-                <div className="flex items-center gap-3 mt-6 md:mt-0 relative z-10">
-                    <div className="glass-premium px-6 py-3 rounded-2xl border-primary/20 text-primary font-black text-[10px] tracking-[0.3em] uppercase shadow-glow">
-                        V1.2 BETA
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-4xl mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <Settings size={20} />
                     </div>
+                    <div>
+                        <h2 className="text-title font-black text-foreground">{t('settings.title')}</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">Configuración y Personalización</p>
+                    </div>
+                </div>
+                <div className="mt-3 sm:mt-0">
+                    <span className="badge-primary">V1.2 BETA</span>
                 </div>
             </div>
 
             {/* Profile Section */}
-            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden group active:scale-[0.99] transition-all duration-500">
-                <div className="p-8 border-b border-border/30">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-glow group-hover:scale-110 transition-transform duration-500">
-                            <User size={22} />
+            <div className="card-base overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20 text-primary">
+                            <User size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.profile')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.profile_desc')}</p>
+                            <h3 className="text-base font-black tracking-tight text-foreground">{t('settings.profile')}</h3>
+                            <p className="text-caption text-muted-foreground/50">{t('settings.profile_desc')}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8 space-y-6">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.name_label')}</Label>
+                <div className="p-5 space-y-4">
+                    <div className="grid gap-1.5">
+                        <Label htmlFor="name" className="text-caption text-muted-foreground/60">{t('settings.name_label')}</Label>
                         <div className="relative">
-                            <User className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
+                            <User className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground/30" />
                             <Input
                                 id="name"
-                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-black tracking-tight"
+                                className="pl-10"
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
                             />
                         </div>
                     </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="email" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.email_label')}</Label>
+                    <div className="grid gap-1.5">
+                        <Label htmlFor="email" className="text-caption text-muted-foreground/60">{t('settings.email_label')}</Label>
                         <div className="relative">
-                            <Mail className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
+                            <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground/30" />
                             <Input
                                 id="email"
                                 type="email"
-                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-black tracking-tight"
+                                className="pl-10"
                                 placeholder={t('settings.email_placeholder')}
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                             />
                         </div>
                     </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="pin" className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.pin_label_setting')}</Label>
+                    <div className="grid gap-1.5">
+                        <Label htmlFor="pin" className="text-caption text-muted-foreground/60">{t('settings.pin_label_setting')}</Label>
                         <div className="relative">
-                            <Lock className="absolute left-4 top-3.5 h-4 w-4 text-foreground/20" />
+                            <Lock className="absolute left-3.5 top-3.5 h-4 w-4 text-muted-foreground/30" />
                             <Input
                                 id="pin"
                                 type="password"
-                                className="pl-12 h-12 rounded-2xl bg-foreground/5 border-border/30 text-foreground font-mono tracking-[0.5em]"
+                                className="pl-10 font-mono tracking-[0.5em]"
                                 maxLength={4}
                                 value={formData.pin}
                                 onChange={e => setFormData({ ...formData, pin: e.target.value.replace(/\D/g, '') })}
@@ -259,9 +255,9 @@ export const SettingsPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="p-8 bg-card/[0.02] border-t border-border/30 flex justify-end">
-                    <Button onClick={handleSave} className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 hover:scale-105 active:scale-95 transition-all duration-500">
-                        <Save size={18} /> {t('settings.save_changes_btn')}
+                <div className="px-5 pb-5 border-t border-border/40 pt-4 flex justify-end">
+                    <Button onClick={handleSave} size="lg" className="gap-2">
+                        <Save size={16} /> {t('settings.save_changes_btn')}
                     </Button>
                 </div>
             </div>

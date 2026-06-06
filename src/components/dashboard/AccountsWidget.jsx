@@ -85,10 +85,10 @@ export const AccountsWidget = () => {
                                             {getIcon(account.type)}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-black text-sm tracking-tight truncate max-w-[120px]">{account.name}</p>
+                                            <p className="font-black text-base tracking-tight truncate max-w-[120px]">{account.name}</p>
                                             <div className="flex items-center gap-2 mt-1">
                                                 <span className={cn(
-                                                    "px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest border",
+                                                    "px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest border",
                                                     account.type === 'credit' ? "bg-rose-500/10 text-rose-500 border-rose-500/20" :
                                                     account.type === 'investment' ? "bg-blue-500/10 text-blue-500 border-blue-500/20" :
                                                     "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
@@ -96,7 +96,7 @@ export const AccountsWidget = () => {
                                                     {account.type}
                                                 </span>
                                                 {percentage > 0 && (
-                                                    <span className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest leading-none">
+                                                    <span className="text-xs font-black text-muted-foreground/60 uppercase tracking-widest leading-none">
                                                         {percentage.toFixed(0)}%
                                                     </span>
                                                 )}
@@ -105,7 +105,7 @@ export const AccountsWidget = () => {
                                     </div>
                                     <div className="text-right shrink-0 ml-4">
                                         <p className={cn(
-                                            "text-lg font-black tracking-tighter drop-shadow-sm",
+                                            "text-xl font-black tracking-tighter drop-shadow-sm",
                                             account.balance < 0 ? "text-rose-500" : "text-foreground"
                                         )}>
                                             <PrivacyBlur intensity="sm">{formatCurrency(account.balance)}</PrivacyBlur>
@@ -127,14 +127,14 @@ export const AccountsWidget = () => {
 
                 <div className="mt-auto pt-6 border-t border-border/50 flex gap-4">
                     <div className="flex-1 p-3 rounded-2xl bg-emerald-500/5 border border-emerald-500/10">
-                        <p className="text-[8px] font-black text-emerald-500/60 uppercase tracking-widest mb-1">{t('common.assets') || 'Activos'}</p>
-                        <p className="text-sm font-black text-emerald-500 tracking-tight leading-none">
+                        <p className="text-xs font-black text-emerald-500/60 uppercase tracking-widest mb-1">{t('common.assets') || 'Activos'}</p>
+                        <p className="text-base font-black text-emerald-500 tracking-tight leading-none">
                             <PrivacyBlur intensity="sm">{formatCurrency(totalAssets)}</PrivacyBlur>
                         </p>
                     </div>
                     <div className="flex-1 p-3 rounded-2xl bg-rose-500/5 border border-rose-500/10">
-                        <p className="text-[8px] font-black text-rose-500/60 uppercase tracking-widest mb-1">{t('common.liabilities') || 'Deudas'}</p>
-                        <p className="text-sm font-black text-rose-500 tracking-tight leading-none">
+                        <p className="text-xs font-black text-rose-500/60 uppercase tracking-widest mb-1">{t('common.liabilities') || 'Deudas'}</p>
+                        <p className="text-base font-black text-rose-500 tracking-tight leading-none">
                             <PrivacyBlur intensity="sm">{formatCurrency(Math.abs(totalDebts))}</PrivacyBlur>
                         </p>
                     </div>

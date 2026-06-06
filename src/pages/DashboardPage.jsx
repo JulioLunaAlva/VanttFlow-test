@@ -14,30 +14,49 @@ import { VanttScoreWidget } from '@/components/dashboard/VanttScoreWidget';
 import { OracleWidget } from '@/components/dashboard/OracleWidget';
 import { AccountsWidget } from '@/components/dashboard/AccountsWidget';
 import { Button } from "@/components/ui/button";
-import { RotateCcw, GripHorizontal, Check, Settings2, Plus, Layout as LayoutIcon, CalendarIcon, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Eye, EyeOff } from 'lucide-react';
+import { RotateCcw, GripHorizontal, Check, Settings2, Eye, EyeOff, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useFinance } from '@/context/FinanceContext';
+import { useIdentity } from '@/context/IdentityContext';
 import { useTranslation } from 'react-i18next';
+import { PrivacyBlur } from '@/components/ui/PrivacyBlur';
 
-const WelcomeHeader = () => {
+// Hero de patrimonio — estilo Revolut
+const DashboardHero = ({ isNewUser }) => {
     const { t } = useTranslation();
-    return (
-        <div className="relative overflow-hidden glass-premium p-8 md:p-12 rounded-[2.5rem] border-border/30 animate-in fade-in zoom-in duration-1000 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-primary/5 opacity-50 group-hover:opacity-70 transition-opacity" />
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-[100px]" />
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-blue-500/10 rounded-full blur-[100px]" />
-            
-            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 relative z-10">
-                <div className="w-20 h-20 md:w-28 md:h-28 glass-premium rounded-3xl flex items-center justify-center shadow-2xl border-border/50 flex-shrink-0 animate-bounce-slow">
-                    <span className="text-4xl md:text-6xl drop-shadow-lg">🚀</span>
+    const { user } = useIdentity();
+    const { summary } = useFinance();
+    const { balance } = summary;
+    const hour = new Date().getHours();
+    const greeting = hour < 12 ? '☀️ Buenos días' : hour < 19 ? '👋 Buenas tardes' : '🌙 Buenas noches';
+
+    const fmt = (v) => new Intl.NumberFormat('es-MX', {
+        style: 'currency', currency: user?.currency || 'MXN', maximumFractionDigits: 0
+    }).format(v);
+
+    if (isNewUser) {
+        return (
+            <div className="relative overflow-hidden rounded-3xl p-6 bg-primary/5 border border-primary/15 mb-2">
+                <div className="absolute -top-12 -right-12 w-40 h-40 bg-primary/10 rounded-full blur-[60px]" />
+                <div className="relative z-10 flex items-center gap-5">
+                    <span className="text-5xl">🚀</span>
+                    <div>
+                        <h3 className="text-title font-black text-foreground">{t('dashboard.welcome_title')}</h3>
+                        <p className="text-body text-muted-foreground mt-1">{t('dashboard.welcome_desc')}</p>
+                    </div>
                 </div>
-                <div className="text-center md:text-left space-y-3">
-                    <h3 className="text-2xl md:text-4xl font-black tracking-tighter text-foreground leading-tight">
-                        {t('dashboard.welcome_title')}
-                    </h3>
-                    <p className="text-muted-foreground text-sm md:text-base max-w-2xl font-medium leading-relaxed">
-                        {t('dashboard.welcome_desc')}
-                    </p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="relative overflow-hidden rounded-3xl p-5 bg-primary/5 border border-primary/15 mb-2">
+            <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/15 rounded-full blur-[80px]" />
+            <div className="relative z-10">
+                <p className="text-caption text-muted-foreground/50 mb-3">{greeting}, {user?.name?.split(' ')[0] || 'bienvenido'}</p>
+                <p className="text-caption text-primary/50 mb-1">PATRIMONIO NETO</p>
+                <div className="text-amount-xl font-black text-foreground">
+                    <PrivacyBlur intensity="lg">{fmt(balance)}</PrivacyBlur>
                 </div>
             </div>
         </div>
@@ -167,38 +186,44 @@ export const DashboardPage = () => {
     };
 
     return (
-        <div className="space-y-6 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-24 md:pb-0">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 mt-4">
-                <div className="relative z-10 min-w-0">
-                    <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground drop-shadow-sm truncate">{t('common.dashboard')}</h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mt-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        {isEditMode
-                            ? (window.innerWidth < 768 ? t('dashboard.edit_mode_touch') : t('dashboard.edit_mode_drag'))
-                            : t('dashboard.activity_desc')}
-                    </p>
-                </div>
-                <div className="flex gap-3 flex-shrink-0">
-                    <Button
-                        variant={isEditMode ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => setIsEditMode(!isEditMode)}
-                        className="gap-3 rounded-2xl font-black uppercase tracking-widest h-12 px-8 shadow-2xl transition-all active:scale-95 border-border/30"
-                    >
-                        {isEditMode ? <Check size={18} className="text-foreground" /> : <Settings2 size={18} />}
-                        {isEditMode ? t('dashboard.finish_edit') : t('dashboard.customize')}
-                    </Button>
+        <div className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-32 md:pb-8">
+
+            {/* Hero patrimonio */}
+            <DashboardHero isNewUser={isNewUser} />
+
+            {/* Summary Cards */}
+            <SummaryCards />
+
+            {/* Barra de controles del dashboard */}
+            <div className="flex items-center justify-between pt-1">
+                <div>
+                    <h2 className="text-title font-black text-foreground">{t('common.dashboard')}</h2>
                     {isEditMode && (
-                        <Button variant="ghost" size="icon" onClick={resetLayout} title="Restablecer original" className="rounded-2xl h-12 w-12 hover:bg-foreground/10 hover:text-primary transition-all">
-                            <RotateCcw size={20} />
+                        <p className="text-caption text-primary/60 mt-0.5">
+                            {window.innerWidth < 768 ? t('dashboard.edit_mode_touch') : t('dashboard.edit_mode_drag')}
+                        </p>
+                    )}
+                </div>
+                <div className="flex gap-2">
+                    {isEditMode && (
+                        <Button variant="ghost" size="icon-sm" onClick={resetLayout} aria-label="Restablecer layout">
+                            <RotateCcw size={16} />
                         </Button>
                     )}
+                    <Button
+                        variant={isEditMode ? 'default' : 'premium'}
+                        size="sm"
+                        onClick={() => setIsEditMode(!isEditMode)}
+                        className="gap-2"
+                    >
+                        {isEditMode ? <Check size={15} /> : <Settings2 size={15} />}
+                        {isEditMode ? t('dashboard.finish_edit') : t('dashboard.customize')}
+                    </Button>
                 </div>
             </div>
 
-            {isNewUser && <WelcomeHeader />}
-
             {/* Widgets Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-6">
                 {order.map((widgetId, index) => {
                     const widgetConfig = WIDGETS_CONFIG.find(w => w.id === widgetId);
                     if (!widgetConfig) return null;
@@ -213,14 +238,15 @@ export const DashboardPage = () => {
                             onDragOver={(e) => handleDragOver(e, index)}
                             style={{ display: visibility[widgetId] || isEditMode ? 'block' : 'none' }}
                             id={widgetId === 'goals' ? 'tour-goals' : widgetId === 'gamification' ? 'tour-gamification' : widgetId === 'balance' ? 'tour-analytics' : undefined}
-                            className={`
-                                ${widgetConfig.className} 
-                                relative group transition-all duration-700
-                                glass-premium rounded-[2.5rem] border-border/30 overflow-hidden min-h-[320px] h-full flex flex-col
-                                ${isEditMode ? 'cursor-grab active:cursor-grabbing ring-4 ring-primary ring-offset-4 bg-card/80 backdrop-blur-3xl z-50 scale-105 shadow-[0_0_80px_rgba(var(--primary),0.3)]' : ''}
-                                ${draggedItem === index ? 'opacity-30 scale-95 blur-[4px]' : ''}
-                                ${!visibility[widgetId] && isEditMode ? 'opacity-40 grayscale blur-[2px]' : ''}
-                            `}
+                            className={[
+                                widgetConfig.className,
+                                'relative group transition-all duration-300',
+                                'bg-card rounded-3xl border border-border/60 overflow-hidden min-h-[280px] h-full flex flex-col',
+                                'shadow-[0_2px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)]',
+                                isEditMode ? 'cursor-grab active:cursor-grabbing ring-2 ring-primary ring-offset-2 scale-[1.01]' : '',
+                                draggedItem === index ? 'opacity-30 scale-95' : '',
+                                !visibility[widgetId] && isEditMode ? 'opacity-40 grayscale' : ''
+                            ].join(' ')}
                         >
                             {/* Edit Overlay / Handle - Visible only in Edit Mode */}
                             {isEditMode && (

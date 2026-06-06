@@ -68,25 +68,31 @@ export const BudgetPage = () => {
     };
 
     return (
-        <div className="space-y-8 pb-24 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/30 group relative overflow-hidden transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
-                        {t('budget.title') || 'Mi Presupuesto'}
-                    </h2>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                        {t('budget.subtitle') || 'Planifica y controla tus gastos mensuales'}
-                    </p>
+                <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
+                <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Wallet size={22} className="text-primary" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
+                            {t('budget.title') || 'Mi Presupuesto'}
+                        </h2>
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-primary/60 mt-1 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                            {t('budget.subtitle') || 'Planifica y controla tus gastos mensuales'}
+                        </p>
+                    </div>
                 </div>
-                <div className="mt-6 md:mt-0 relative z-10">
+                <div className="mt-4 sm:mt-0 relative z-10">
                      <Button 
                         onClick={handleOpenCreate} 
                         disabled={unbudgetedCategories.length === 0} 
-                        className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-2xl gap-3 rounded-2xl h-14 font-black px-10 group transition-all duration-500 hover:scale-105 active:scale-95"
+                        className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-xl gap-3 rounded-2xl h-12 font-black px-6 group/btn transition-all duration-500 hover:scale-105 active:scale-95"
                     >
-                        <Plus size={22} className="group-hover:rotate-90 transition-transform duration-500 text-primary shadow-glow" /> 
+                        <Plus size={20} className="group-hover/btn:rotate-90 transition-transform duration-500 text-primary" /> 
                         <span className="tracking-tight">{t('budget.set_budget')}</span>
                     </Button>
                 </div>

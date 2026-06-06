@@ -71,9 +71,9 @@ export const RecentActivityWidget = () => {
                                                     <ArrowRightLeft size={22} strokeWidth={2.5} />}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-black text-lg tracking-tight truncate group-hover:text-primary transition-colors leading-none">{t.description}</p>
+                                            <p className="font-black text-xl tracking-tight truncate group-hover:text-primary transition-colors leading-none">{t.description}</p>
                                             <div className="flex items-center gap-2 mt-2">
-                                                <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest opacity-60">
+                                                <span className="text-xs font-black text-muted-foreground uppercase tracking-widest opacity-60">
                                                     {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}
                                                 </span>
                                                 {category && (
@@ -82,7 +82,7 @@ export const RecentActivityWidget = () => {
                                                             className="w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor]" 
                                                             style={{ backgroundColor: category.color, color: category.color }} 
                                                         />
-                                                        <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/80">{category.name}</span>
+                                                        <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/80">{category.name}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -90,7 +90,7 @@ export const RecentActivityWidget = () => {
                                     </div>
                                     <div className="text-right shrink-0 ml-4">
                                         <span className={cn(
-                                            "text-xl font-black tracking-tighter block",
+                                            "text-2xl font-black tracking-tighter block",
                                             t.type === 'income' ? 'text-emerald-500' :
                                             t.type === 'expense' ? 'text-rose-500' : 'text-blue-500'
                                         )}>

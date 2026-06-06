@@ -190,18 +190,23 @@ export const AccountsPage = () => {
     };
 
     return (
-        <div className="space-y-8 pb-24 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-8 rounded-[2.5rem] border-border/30 mb-8 mt-2 group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -mr-32 -mt-32" />
-                <div className="relative z-10">
-                    <h2 className="text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
-                        {t('accounts.title') || 'Mis Cuentas'}
-                    </h2>
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-3 group-hover:text-primary transition-colors">
-                        {t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}
-                    </p>
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/30 group relative overflow-hidden transition-all duration-500">
+                <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/5 rounded-full blur-[80px]" />
+                <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <CreditCard size={22} className="text-primary" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
+                            {t('accounts.title') || 'Mis Cuentas'}
+                        </h2>
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-primary/60 mt-1">
+                            {t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}
+                        </p>
+                    </div>
                 </div>
-                <div className="flex items-center gap-4 mt-6 md:mt-0 relative z-10">
+                <div className="flex items-center gap-4 mt-4 sm:mt-0 relative z-10">
                     <AccountManager />
                 </div>
             </div>

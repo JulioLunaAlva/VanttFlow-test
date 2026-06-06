@@ -130,17 +130,23 @@ export const GoalsPage = () => {
     };
 
     return (
-        <div className="space-y-10 pb-24 md:pb-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-            <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/30 mb-4 group relative overflow-hidden active:scale-95 transition-all duration-500">
+        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/30 group relative overflow-hidden transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="relative z-10">
-                    <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">
-                        {t('goals.title')}
-                    </h2>
-                    <p className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                        {t('goals.subtitle')}
-                    </p>
+                <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
+                <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Target size={22} className="text-primary" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
+                            {t('goals.title')}
+                        </h2>
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-primary/60 mt-1 flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                            {t('goals.subtitle')}
+                        </p>
+                    </div>
                 </div>
 
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
