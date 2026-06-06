@@ -306,10 +306,10 @@ export const SettingsPage = () => {
                             onChange={e => setFormData({ ...formData, currency: e.target.value })}
                             className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                         >
-                            <option value="MXN">{t('settings.currency_mxn') || 'Peso Mexicano (MXN)'}</option>
-                            <option value="USD">{t('settings.currency_usd') || 'Dólar Americano (USD)'}</option>
-                            <option value="EUR">{t('settings.currency_eur') || 'Euro (EUR)'}</option>
-                            <option value="COP">{t('settings.currency_cop') || 'Peso Colombiano (COP)'}</option>
+                            <option value="MXN">Peso Mexicano (MXN)</option>
+                            <option value="USD">Dólar Americano (USD)</option>
+                            <option value="EUR">Euro (EUR)</option>
+                            <option value="COP">Peso Colombiano (COP)</option>
                         </Select>
                         <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-1">
                             {t('settings.currency_note') || '* La moneda solo afecta la visualización'}
@@ -359,10 +359,10 @@ export const SettingsPage = () => {
                             onChange={e => i18n.changeLanguage(e.target.value)}
                             className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                         >
-                            <option value="es">{t('settings.lang_es') || 'Español 🇪🇸'}</option>
-                            <option value="en">{t('settings.lang_en') || 'English 🇺🇸'}</option>
-                            <option value="pt">{t('settings.lang_pt') || 'Português 🇧🇷'}</option>
-                            <option value="fr">{t('settings.lang_fr') || 'Français 🇫🇷'}</option>
+                            <option value="es">Español 🇪🇸</option>
+                            <option value="en">English 🇺🇸</option>
+                            <option value="pt">Português 🇧🇷</option>
+                            <option value="fr">Français 🇫🇷</option>
                         </Select>
                     </div>
                 </div>
