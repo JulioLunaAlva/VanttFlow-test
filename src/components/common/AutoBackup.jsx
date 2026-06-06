@@ -1,40 +1,37 @@
 import React, { useEffect } from 'react';
-import { exportData } from '@/utils/backup';
-import { toast } from 'sonner';
-import { Download } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { useSync } from '@/context/SyncContext';
 
 export const AutoBackup = () => {
-    const { t } = useTranslation();
+    const { firebaseUser, backupToCloud } = useSync();
 
     useEffect(() => {
-        // Run once on mount (app load)
-        const checkBackup = () => {
-            const lastBackupStr = localStorage.getItem('last_auto_backup');
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
+        if (!firebaseUser) return;
 
-            // Simple prompt on every load as requested
-            toast("¿Generar respaldo de seguridad?", {
-                description: "Se guardará una copia de tus finanzas en un archivo JSON.",
-                action: {
-                    label: "Guardar",
-                    onClick: () => {
-                        const success = exportData();
-                        if (success) {
-                            toast.success("Respaldo generado con éxito.");
-                        }
-                    }
-                },
-                icon: <Download size={18} />,
-                duration: 10000, 
-            });
+        // Auto backup silently 5 seconds after the app loads
+        const timer = setTimeout(() => {
+            backupToCloud(firebaseUser.uid, true); // true = silent mode
+        }, 5000);
+
+        // Auto backup silently every 10 minutes while the app is open
+        const interval = setInterval(() => {
+            backupToCloud(firebaseUser.uid, true);
+        }, 10 * 60 * 1000);
+
+        // Auto backup silently when the user switches apps or minimizes the browser
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'hidden') {
+                backupToCloud(firebaseUser.uid, true);
+            }
         };
 
-        // Delay slightly to not compete with initial load animations
-        const timer = setTimeout(checkBackup, 3000);
-        return () => clearTimeout(timer);
-    }, []);
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    return null; // This component doesn't render anything itself
+        return () => {
+            clearTimeout(timer);
+            clearInterval(interval);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+    }, [firebaseUser, backupToCloud]);
+
+    return null; // This component doesn't render anything visually
 };

@@ -82,9 +82,9 @@ export const SyncProvider = ({ children }) => {
         };
     };
 
-    const backupToCloud = async (uid = firebaseUser?.uid) => {
+    const backupToCloud = async (uid = firebaseUser?.uid, silent = false) => {
         if (!uid) return;
-        setIsSyncing(true);
+        if (!silent) setIsSyncing(true);
         try {
             const data = await exportLocalState();
             await setDoc(doc(dbFirestore, 'backups', uid), {
@@ -94,12 +94,12 @@ export const SyncProvider = ({ children }) => {
             const now = new Date().toISOString();
             setLastSyncTime(now);
             localStorage.setItem('last_cloud_sync', now);
-            toast.success('Respaldo guardado en la nube');
+            if (!silent) toast.success('Respaldo guardado en la nube');
         } catch (error) {
             console.error('Cloud Backup Error:', error);
-            toast.error('Error al subir a la nube');
+            if (!silent) toast.error('Error al subir a la nube');
         } finally {
-            setIsSyncing(false);
+            if (!silent) setIsSyncing(false);
         }
     };
 
