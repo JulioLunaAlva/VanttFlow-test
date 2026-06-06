@@ -91,16 +91,18 @@ export const ReportsPage = () => {
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={historicalData}>
                                 <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                                <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
+                                <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} stroke="currentColor" className="text-muted-foreground/80" />
                                 <YAxis
                                     fontSize={12}
                                     tickLine={false}
                                     axisLine={false}
+                                    stroke="currentColor"
+                                    className="text-muted-foreground/80"
                                     tickFormatter={(value) => `$${value / 1000}k`}
                                 />
                                 <Tooltip
                                     formatter={(value) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value)}
-                                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                    contentStyle={{ backgroundColor: 'hsl(var(--card))', borderRadius: '16px', border: '1px solid hsl(var(--border))', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
                                 />
                                 <Legend />
                                 <Bar dataKey={t('reports.income_label')} fill="#10b981" radius={[4, 4, 0, 0]} />
@@ -131,7 +133,10 @@ export const ReportsPage = () => {
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
-                                <Tooltip formatter={(value) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value)} />
+                                <Tooltip 
+                                    formatter={(value) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value)}
+                                    contentStyle={{ backgroundColor: 'hsl(var(--card))', borderRadius: '16px', border: '1px solid hsl(var(--border))', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+                                />
                                 <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: '12px' }} />
                             </PieChart>
                         </ResponsiveContainer>

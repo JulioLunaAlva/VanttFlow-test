@@ -85,7 +85,7 @@ export const AccountsWidget = () => {
                                             {getIcon(account.type)}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-black text-base tracking-tight truncate max-w-[120px]">{account.name}</p>
+                                            <p className="font-black text-base tracking-tight line-clamp-2 leading-tight pr-2">{account.name}</p>
                                             <div className="flex items-center gap-2 mt-1">
                                                 <span className={cn(
                                                     "px-1.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest border",

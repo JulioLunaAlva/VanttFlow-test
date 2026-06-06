@@ -128,18 +128,20 @@ export const AnalyticsPage = () => {
                                         <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-muted-foreground/10" />
                                 <XAxis
                                     dataKey="date"
                                     tickFormatter={(val) => format(parseLocalDateStr(val), 'dd MMM', { locale: currentLocale })}
-                                    stroke="rgba(255,255,255,0.2)"
+                                    stroke="currentColor"
+                                    className="text-muted-foreground/50"
                                     fontSize={10}
                                     fontWeight="bold"
                                     axisLine={false}
                                     tickLine={false}
                                 />
                                 <YAxis
-                                    stroke="rgba(255,255,255,0.2)"
+                                    stroke="currentColor"
+                                    className="text-muted-foreground/50"
                                     fontSize={10}
                                     fontWeight="bold"
                                     axisLine={false}
@@ -149,14 +151,13 @@ export const AnalyticsPage = () => {
                                 <Tooltip
                                     contentStyle={{ 
                                         borderRadius: '24px', 
-                                        background: 'rgba(0,0,0,0.8)', 
-                                        backdropFilter: 'blur(12px)',
-                                        border: '1px solid rgba(255,255,255,0.1)', 
-                                        boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                                        background: 'hsl(var(--card))', 
+                                        border: '1px solid hsl(var(--border))', 
+                                        boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
                                         padding: '16px 24px'
                                     }}
                                     itemStyle={{ color: '#10b981', fontWeight: '900', fontSize: '14px', letterSpacing: '-0.02em' }}
-                                    labelStyle={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '8px', fontWeight: '900' }}
+                                    labelStyle={{ color: 'hsl(var(--muted-foreground))', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '8px', fontWeight: '900' }}
                                     formatter={(value) => [new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency }).format(value), t('analytics.patrimony')]}
                                     labelFormatter={(label) => format(parseLocalDateStr(label), 'dd MMMM yyyy', { locale: currentLocale })}
                                 />
@@ -215,20 +216,19 @@ export const AnalyticsPage = () => {
                                                 <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                                             </linearGradient>
                                         </defs>
-                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                                        <XAxis dataKey="name" fontSize={10} fontWeight="900" stroke="rgba(255,255,255,0.2)" axisLine={false} tickLine={false} />
-                                        <YAxis fontSize={10} fontWeight="900" stroke="rgba(255,255,255,0.2)" axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
+                                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" className="text-muted-foreground/10" />
+                                        <XAxis dataKey="name" fontSize={10} fontWeight="900" stroke="currentColor" className="text-muted-foreground/50" axisLine={false} tickLine={false} />
+                                        <YAxis fontSize={10} fontWeight="900" stroke="currentColor" className="text-muted-foreground/50" axisLine={false} tickLine={false} tickFormatter={(v) => `$${v}`} />
                                         <Tooltip
                                             contentStyle={{ 
                                                 borderRadius: '24px', 
-                                                background: 'rgba(0,0,0,0.8)', 
-                                                backdropFilter: 'blur(12px)',
-                                                border: '1px solid rgba(255,255,255,0.1)', 
-                                                boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+                                                background: 'hsl(var(--card))', 
+                                                border: '1px solid hsl(var(--border))', 
+                                                boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
                                                 padding: '16px 24px'
                                             }}
                                             itemStyle={{ fontWeight: '900', fontSize: '14px' }}
-                                            labelStyle={{ color: 'rgba(255,255,255,0.5)', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '8px', fontWeight: '900' }}
+                                            labelStyle={{ color: 'hsl(var(--muted-foreground))', fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '8px', fontWeight: '900' }}
                                             formatter={(v) => new Intl.NumberFormat(i18n.language, { style: 'currency', currency }).format(v)}
                                         />
                                         <Area type="monotone" dataKey="income" stroke="#10b981" fillOpacity={1} fill="url(#colorIncome)" strokeWidth={3} />

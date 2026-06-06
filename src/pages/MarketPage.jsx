@@ -189,8 +189,8 @@ export const MarketPage = () => {
                                         </linearGradient>
                                     </defs>
                                     <Tooltip 
-                                        contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', fontFamily: 'Outfit, sans-serif' }}
-                                        itemStyle={{ color: '#fff', fontWeight: 'bold' }}
+                                        contentStyle={{ backgroundColor: 'hsl(var(--card))', borderRadius: '16px', border: '1px solid hsl(var(--border))', fontFamily: 'Outfit, sans-serif', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
+                                        itemStyle={{ color: 'hsl(var(--foreground))', fontWeight: 'bold' }}
                                         labelStyle={{ display: 'none' }}
                                     />
                                     <Area

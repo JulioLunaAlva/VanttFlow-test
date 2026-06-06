@@ -70,7 +70,7 @@ export const AccountsPage = () => {
                     <div className="flex justify-between items-start z-10">
                         <div>
                             <p className="opacity-80 text-[10px] font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
-                            <h3 className="font-black text-2xl tracking-tight truncate pr-12 text-white">{account.name}</h3>
+                            <h3 className="font-black text-2xl tracking-tight line-clamp-2 pr-12 text-white leading-none">{account.name}</h3>
                         </div>
                         <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
                             <CreditCard className="w-6 h-6 text-white" />
@@ -159,7 +159,7 @@ export const AccountsPage = () => {
                                     <Landmark size={24} className="text-primary" />}
                         </div>
                         <div className="min-w-0">
-                            <h3 className="font-black text-xl tracking-tight truncate">{account.name}</h3>
+                            <h3 className="font-black text-xl tracking-tight line-clamp-2 leading-tight">{account.name}</h3>
                             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
                                 {account.type === 'cash' ? t('accounts.cash') || 'Efectivo' :
                                     account.type === 'investment' ? t('accounts.investment') || 'Inversión' :

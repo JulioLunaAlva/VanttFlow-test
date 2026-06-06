@@ -71,7 +71,7 @@ export const RecentActivityWidget = () => {
                                                     <ArrowRightLeft size={22} strokeWidth={2.5} />}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="font-black text-xl tracking-tight truncate group-hover:text-primary transition-colors leading-none">{t.description}</p>
+                                            <p className="font-black text-xl tracking-tight line-clamp-2 group-hover:text-primary transition-colors leading-tight">{t.description}</p>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <span className="text-xs font-black text-muted-foreground uppercase tracking-widest opacity-60">
                                                     {format(parseLocalDateStr(t.date), 'dd MMM', { locale: currentLocale })}

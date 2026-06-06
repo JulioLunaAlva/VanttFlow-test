@@ -58,7 +58,7 @@ export const GamificationWidget = React.memo(() => {
                         </div>
                     </div>
                     <div className="flex-1 min-w-0">
-                        <h3 className="font-black text-3xl tracking-tighter leading-tight truncate bg-gradient-to-r from-foreground via-foreground to-foreground/40 bg-clip-text text-transparent">
+                        <h3 className="font-black text-3xl tracking-tighter leading-tight line-clamp-2 bg-gradient-to-r from-foreground via-foreground to-foreground/40 bg-clip-text text-transparent">
                             {t(`dashboard.levels.l${currentLevel.level}`)}
                         </h3>
                         <div className="flex items-center gap-3 mt-2">
@@ -175,7 +175,7 @@ export const GamificationWidget = React.memo(() => {
                                                 <p className="text-[10px] font-black uppercase text-foreground tracking-[0.2em] leading-tight">{t(`dashboard.achievements.${ach.id}_name`)}</p>
                                             </div>
                                             <p className="text-[11px] text-muted-foreground/60 font-bold leading-relaxed italic">"{t(`dashboard.achievements.${ach.id}_desc`)}"</p>
-                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900/95 rotate-45 border-r border-b border-border/30" />
+                                            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-card rotate-45 border-r border-b border-border/30" />
                                         </div>
                                     )}
                                 </div>
