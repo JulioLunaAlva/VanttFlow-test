@@ -94,36 +94,36 @@ export const BudgetPage = () => {
 
             {/* Header Summary */}
             <div className="grid gap-8 md:grid-cols-3">
-                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                <div className="card-elevated p-10 rounded-3xl border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
                     <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('budget.total_budget')}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground">{t('budget.total_budget')}</p>
                         <div className="p-3 rounded-2xl bg-primary/10 border border-primary/20 text-primary shadow-glow transition-all duration-500 group-hover:scale-110">
                             <Wallet size={20} />
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}</div>
-                        <p className="text-[11px] font-black text-primary/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-lg">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalBudget)}</div>
+                        <div className="text-[11px] font-black text-primary/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
                             {t('budget.monthly_planning')}
-                        </p>
+                        </div>
                     </div>
                 </div>
 
-                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                <div className="card-elevated p-10 rounded-3xl border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
                     <div className={cn(
                         "absolute top-0 right-0 w-32 h-32 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000",
                         totalProgress > 90 ? "bg-rose-500/5" : "bg-emerald-500/5"
                     )} />
                     <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('budget.accumulated_consumption')}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground">{t('budget.accumulated_consumption')}</p>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalSpent)}</div>
+                        <div className="text-3xl md:text-4xl font-black tracking-tighter text-foreground drop-shadow-lg">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(totalSpent)}</div>
                         <div className="mt-8 space-y-4">
                             <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-[0.2em]">
-                                <span className="text-foreground/20">Progreso General</span>
+                                <span className="text-muted-foreground">Progreso General</span>
                                 <span className={cn(
                                     "p-1 px-3 rounded-full border shadow-glow",
                                     totalProgress > 90 ? "bg-rose-500/10 text-rose-500 border-rose-500/20" : "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
@@ -142,20 +142,20 @@ export const BudgetPage = () => {
                     </div>
                 </div>
 
-                <div className="glass-premium p-10 rounded-[3rem] border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
+                <div className="card-elevated p-10 rounded-3xl border-border/30 group active:scale-95 transition-all duration-500 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
                     <div className="flex flex-row items-center justify-between space-y-0 pb-6 relative z-10">
-                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-foreground/40">{t('budget.available_capital')}</p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.4em] text-muted-foreground">{t('budget.available_capital')}</p>
                         <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 shadow-glow transition-all duration-500 group-hover:scale-110">
                             <AlertCircle size={20} />
                         </div>
                     </div>
                     <div className="relative z-10">
-                        <div className="text-4xl font-black tracking-tighter text-emerald-500 drop-shadow-2xl">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(Math.max(0, totalBudget - totalSpent))}</div>
-                        <p className="text-[11px] font-black text-emerald-500/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
+                        <div className="text-4xl font-black tracking-tighter text-emerald-500 drop-shadow-lg">{new Intl.NumberFormat(i18n.language, { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(Math.max(0, totalBudget - totalSpent))}</div>
+                        <div className="text-[11px] font-black text-emerald-500/40 mt-6 uppercase tracking-[0.3em] flex items-center gap-2">
                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
                             {t('budget.operating_margin')}
-                        </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -165,13 +165,17 @@ export const BudgetPage = () => {
             </div>
 
             {budgetStatus.length === 0 ? (
-                <div className="text-center py-32 glass-premium rounded-[4rem] border-2 border-dashed border-border/30 mt-4 active:scale-98 transition-all duration-500">
-                    <div className="glass-premium p-10 rounded-[2.5rem] mb-10 shadow-2xl border-border/30 animate-bounce-slow inline-block bg-primary/5">
-                        <Wallet className="mx-auto h-20 w-20 text-primary drop-shadow-glow" />
+                <div className="col-span-full py-20 card-base border-dashed text-center flex flex-col items-center justify-center space-y-4">
+                    <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
+                        <Wallet size={40} className="text-primary drop-shadow-lg" />
                     </div>
-                    <h3 className="text-4xl font-black tracking-tighter text-foreground mb-4 drop-shadow-2xl">{t('budget.no_budgets')}</h3>
-                    <p className="text-foreground/40 max-w-sm mx-auto mb-12 font-black uppercase tracking-[0.2em] text-[10px]">{t('budget.no_budgets_desc')}</p>
-                    <Button onClick={handleOpenCreate} size="lg" className="glass-premium bg-primary text-foreground rounded-[2rem] h-16 px-12 font-black shadow-2xl shadow-primary/40 hover:scale-110 transition-all duration-500">{t('budget.start_btn')}</Button>
+                    <div>
+                        <p className="text-xl font-black tracking-tighter text-foreground">{t('budget.no_budgets')}</p>
+                        <p className="text-xs text-muted-foreground/60 font-medium px-4">{t('budget.no_budgets_desc')}</p>
+                    </div>
+                    <Button onClick={handleOpenCreate} className="mt-4 gap-2">
+                        <Plus size={16} /> {t('budget.start_btn')}
+                    </Button>
                 </div>
             ) : (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

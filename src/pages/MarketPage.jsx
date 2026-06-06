@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useMarket } from '@/context/MarketContext';
 import { MarketInsights } from '@/components/dashboard/MarketInsights';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -51,6 +52,7 @@ const generateChartData = (base, volatility, days = 7) => {
 };
 
 export const MarketPage = () => {
+    const { t } = useTranslation();
     const { marketData, refresh, loading } = useMarket();
 
     const charts = useMemo(() => ({
@@ -115,33 +117,33 @@ export const MarketPage = () => {
                 <div className="mt-4 sm:mt-0 flex gap-2">
                     <Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="gap-2">
                         <RefreshCcw size={14} className={cn(loading && "animate-spin")} />
-                        {loading ? "Sincronizando..." : "Actualizar"}
+                        {loading ? (t('market.syncing') || 'Sincronizando...') : (t('market.refresh') || 'Actualizar')}
                     </Button>
 
                     <Dialog>
                         <DialogTrigger asChild>
                             <Button size="sm" className="gap-2">
-                                <Search size={14} /> Explorar
+                                <Search size={14} /> {t('market.explore') || 'Explorar'}
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                        <DialogContent className="sm:max-w-md p-0 overflow-hidden bg-card border-border/40">
                             <div className="px-6 pt-6 pb-4 border-b border-border/30">
                                 <DialogHeader>
-                                    <DialogTitle className="text-xl font-black tracking-tighter text-foreground">Asset Explorer</DialogTitle>
-                                    <DialogDescription className="text-xs text-muted-foreground/60">VanttFlow Global Connectivity</DialogDescription>
+                                    <DialogTitle className="text-xl font-black tracking-tighter text-foreground">{t('market.explorer_title') || 'Asset Explorer'}</DialogTitle>
+                                    <DialogDescription className="text-xs text-muted-foreground/60">{t('market.explorer_desc') || 'VanttFlow Global Connectivity'}</DialogDescription>
                                 </DialogHeader>
                             </div>
                             <div className="p-10 text-center space-y-6">
-                                <div className="w-20 h-20 bg-foreground/5 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-dashed border-border/30">
+                                <div className="w-20 h-20 bg-muted rounded-2xl flex items-center justify-center mx-auto mb-4 border border-dashed border-border/50">
                                     <Zap size={32} className="text-muted-foreground/40" />
                                 </div>
                                 <div className="space-y-2">
-                                    <h3 className="text-lg font-black tracking-tight text-foreground">Expansión Estratégica</h3>
+                                    <h3 className="text-lg font-black tracking-tight text-foreground">{t('market.strategic_exp') || 'Expansión Estratégica'}</h3>
                                     <p className="text-sm text-muted-foreground font-medium">
-                                        Integrando conexiones nativas con NASDAQ, NYSE y la BMV.
+                                        {t('market.strategic_desc') || 'Integrando conexiones nativas con NASDAQ, NYSE y la BMV.'}
                                     </p>
                                 </div>
-                                <Button variant="secondary" className="w-full mt-4" disabled>Lista de Espera VIP</Button>
+                                <Button variant="secondary" className="w-full mt-4" disabled>{t('market.vip_waitlist') || 'Lista de Espera VIP'}</Button>
                             </div>
                         </DialogContent>
                     </Dialog>
@@ -213,9 +215,9 @@ export const MarketPage = () => {
                     <div className="p-6 border-b border-border/30 flex items-center justify-between">
                         <h3 className="text-xl font-black tracking-tighter flex items-center gap-3">
                             <Filter size={20} className="text-primary" />
-                            Macro Analysis de la Semana
+                            {t('market.macro_analysis') || 'Macro Analysis de la Semana'}
                         </h3>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-3 py-1 bg-foreground/5 rounded-full">Actualizado hace 2h</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground px-3 py-1 bg-foreground/5 rounded-full">{t('market.updated_2h') || 'Actualizado hace 2h'}</span>
                     </div>
                     <div className="p-10">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -224,14 +226,14 @@ export const MarketPage = () => {
                                     <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
                                         <TrendingUp size={20} />
                                     </div>
-                                    <h4 className="font-black text-xs uppercase tracking-[0.2em] text-emerald-400">Fortaleza del Peso</h4>
+                                    <h4 className="font-black text-xs uppercase tracking-[0.2em] text-emerald-400">{t('market.peso_strength') || 'Fortaleza del Peso'}</h4>
                                 </div>
                                 <p className="text-base text-slate-400 leading-relaxed font-medium">
-                                    El USD/MXN se mantiene en niveles críticos. Una ruptura por debajo de los {marketData.usdMxn.price.toFixed(2)} podría indicar una fase de apreciación mayor debido a flujos externos.
+                                    {t('market.peso_desc', { price: marketData.usdMxn.price.toFixed(2) }) || `El USD/MXN se mantiene en niveles críticos. Una ruptura por debajo de los ${marketData.usdMxn.price.toFixed(2)} podría indicar una fase de apreciación mayor debido a flujos externos.`}
                                 </p>
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-[10px] font-black uppercase tracking-widest opacity-60">
-                                        <span>Índice de Confianza</span>
+                                        <span>{t('market.confidence_index') || 'Índice de Confianza'}</span>
                                         <span>65%</span>
                                     </div>
                                     <div className="h-2 w-full bg-foreground/5 rounded-full overflow-hidden">
@@ -245,10 +247,10 @@ export const MarketPage = () => {
                                     <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400">
                                         <Zap size={20} />
                                     </div>
-                                    <h4 className="font-black text-xs uppercase tracking-[0.2em] text-amber-400">Cripto Sentiment</h4>
+                                    <h4 className="font-black text-xs uppercase tracking-[0.2em] text-amber-400">{t('market.crypto_sentiment') || 'Cripto Sentiment'}</h4>
                                 </div>
                                 <p className="text-base text-slate-400 leading-relaxed font-medium">
-                                    Bitcoin muestra una consolidación saludable cerca de los ${(marketData.btcUsd.price / 1000).toFixed(0)}k. El mercado espera una reducción en la volatilidad global.
+                                    {t('market.crypto_desc', { price: (marketData.btcUsd.price / 1000).toFixed(0) }) || `Bitcoin muestra una consolidación saludable cerca de los $${(marketData.btcUsd.price / 1000).toFixed(0)}k. El mercado espera una reducción en la volatilidad global.`}
                                 </p>
                                 <div className="space-y-3">
                                     <div className="flex justify-between text-[10px] font-black uppercase tracking-widest opacity-60">
@@ -282,15 +284,15 @@ export const MarketPage = () => {
 
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button className="w-full h-14 rounded-2xl bg-primary text-foreground shadow-2xl shadow-primary/40 font-black tracking-widest uppercase text-[10px] transition-all hover:scale-105 active:scale-95">
-                                    Ver Análisis Completo
+                                <Button className="w-full h-14 rounded-2xl bg-primary text-primary-foreground shadow-2xl shadow-primary/20 font-black tracking-widest uppercase text-[10px] transition-all hover:scale-105 active:scale-95">
+                                    {t('market.full_analysis') || 'Ver Análisis Completo'}
                                     <ArrowRight size={18} className="ml-3" />
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="max-w-md rounded-[2.5rem] glass-premium border-border/30">
+                            <DialogContent className="max-w-md rounded-[2.5rem] bg-card border-border/40 p-6">
                                 <DialogHeader>
-                                    <DialogTitle className="text-2xl font-black tracking-tighter text-foreground">Market Intelligence</DialogTitle>
-                                    <DialogDescription className="font-black text-primary/60 uppercase tracking-widest text-[9px]">Análisis predictivo de flujo</DialogDescription>
+                                    <DialogTitle className="text-2xl font-black tracking-tighter text-foreground">{t('market.intelligence') || 'Market Intelligence'}</DialogTitle>
+                                    <DialogDescription className="font-black text-primary/60 uppercase tracking-widest text-[9px]">{t('market.intelligence_desc') || 'Análisis predictivo de flujo'}</DialogDescription>
                                 </DialogHeader>
                                 <MarketInsights data={marketData} />
                             </DialogContent>

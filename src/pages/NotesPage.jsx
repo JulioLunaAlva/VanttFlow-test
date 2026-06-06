@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFinance } from '@/context/FinanceContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -362,6 +363,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin, onArchive }) => {
 // Main Page
 // ─────────────────────────────────────────────
 export const NotesPage = () => {
+    const { t } = useTranslation();
     const { ious, deleteIOU, notes, deleteNote, togglePinNote, archiveNote } = useFinance();
     const [activeTab, setActiveTab] = useState('ious');
     const [iouDialog, setIouDialog] = useState({ open: false, initial: null });
@@ -458,13 +460,13 @@ export const NotesPage = () => {
                     <div className="grid grid-cols-3 gap-4">
                         <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4">
                             <p className="text-xs text-emerald-400 font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                                <ArrowUpRight size={12} /> Me deben
+                                <ArrowUpRight size={12} /> {t('notes.they_owe') || 'Me deben'}
                             </p>
                             <p className="text-2xl font-black text-emerald-400">{fmt(totalLent)}</p>
                         </div>
                         <div className="bg-rose-500/10 border border-rose-500/20 rounded-2xl p-4">
                             <p className="text-xs text-rose-400 font-bold uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                                <ArrowDownLeft size={12} /> Yo debo
+                                <ArrowDownLeft size={12} /> {t('notes.i_owe') || 'Yo debo'}
                             </p>
                             <p className="text-2xl font-black text-rose-400">{fmt(totalBorrowed)}</p>
                         </div>
@@ -473,7 +475,7 @@ export const NotesPage = () => {
                             netBalance >= 0 ? 'bg-blue-500/10 border-blue-500/20' : 'bg-orange-500/10 border-orange-500/20'
                         )}>
                             <p className={cn('text-xs font-bold uppercase tracking-wider mb-1', netBalance >= 0 ? 'text-blue-400' : 'text-orange-400')}>
-                                Saldo Neto
+                                {t('notes.net_balance') || 'Saldo Neto'}
                             </p>
                             <p className={cn('text-2xl font-black', netBalance >= 0 ? 'text-blue-400' : 'text-orange-400')}>
                                 {netBalance >= 0 ? '+' : ''}{fmt(netBalance)}
@@ -484,9 +486,11 @@ export const NotesPage = () => {
                     {/* Filter Chips */}
                     <div className="flex gap-2 flex-wrap">
                         {[
-                            { id: 'all', label: 'Todas' }, { id: 'lent', label: 'Me deben' },
-                            { id: 'borrowed', label: 'Yo debo' }, { id: 'pending', label: 'Pendientes' },
-                            { id: 'settled', label: 'Saldadas' },
+                            { id: 'all', label: t('notes.filter_all') || 'Todas' }, 
+                            { id: 'lent', label: t('notes.they_owe') || 'Me deben' },
+                            { id: 'borrowed', label: t('notes.i_owe') || 'Yo debo' }, 
+                            { id: 'pending', label: t('notes.filter_pending') || 'Pendientes' },
+                            { id: 'settled', label: t('notes.filter_settled') || 'Saldadas' },
                         ].map(f => (
                             <button key={f.id} onClick={() => setIouFilter(f.id)}
                                 className={cn(

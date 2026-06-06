@@ -192,7 +192,7 @@ export const SettingsPage = () => {
                     </div>
                     <div>
                         <h2 className="text-title font-black text-foreground">{t('settings.title')}</h2>
-                        <p className="text-caption text-muted-foreground/50 mt-0.5">Configuración y Personalización</p>
+                        <p className="text-caption text-muted-foreground/50">{t('settings.title_desc') || 'Configuración y Personalización'}</p>
                     </div>
                 </div>
                 <div className="mt-3 sm:mt-0">
@@ -263,110 +263,110 @@ export const SettingsPage = () => {
             </div>
 
             {/* Preferences Section */}
-            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
-                <div className="p-8 border-b border-border/30">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-500 shadow-glow">
-                            <Globe size={22} />
+            <div className="card-base overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-500">
+                            <Globe size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.appearance')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.appearance_desc')}</p>
+                            <h3 className="text-base font-black tracking-tight text-foreground">{t('settings.appearance') || 'Preferencias'}</h3>
+                            <p className="text-caption text-muted-foreground/50">{t('settings.appearance_desc') || 'Configuración regional'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8 space-y-6">
-                    <div className="grid gap-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.currency_label')}</Label>
-                        <select
+                <div className="p-5 space-y-6">
+                    <div className="grid gap-1.5">
+                        <Label className="text-caption text-muted-foreground/60">{t('settings.currency_label') || 'Moneda Principal'}</Label>
+                        <Select
                             value={formData.currency}
                             onChange={e => setFormData({ ...formData, currency: e.target.value })}
-                            className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
+                            className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                         >
-                            <option value="MXN">Peso Mexicano (MXN)</option>
-                            <option value="USD">Dólar Americano (USD)</option>
-                            <option value="EUR">Euro (EUR)</option>
-                            <option value="COP">Peso Colombiano (COP)</option>
-                        </select>
-                        <p className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] px-2">
-                            {t('settings.currency_note')}
+                            <option value="MXN">{t('settings.currency_mxn') || 'Peso Mexicano (MXN)'}</option>
+                            <option value="USD">{t('settings.currency_usd') || 'Dólar Americano (USD)'}</option>
+                            <option value="EUR">{t('settings.currency_eur') || 'Euro (EUR)'}</option>
+                            <option value="COP">{t('settings.currency_cop') || 'Peso Colombiano (COP)'}</option>
+                        </Select>
+                        <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mt-1">
+                            {t('settings.currency_note') || '* La moneda solo afecta la visualización'}
                         </p>
                     </div>
-                    <div className="h-px bg-foreground/5" />
+
+                    <div className="h-px bg-border/40" />
 
                     <div className="pt-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">{t('settings.tour_label')}</Label>
-                        <div className="mt-4 text-center p-10 border-2 border-dashed border-border/30 rounded-[2.5rem] glass-premium">
-                            <Sparkles className="w-10 h-10 text-primary mx-auto mb-4 opacity-50 drop-shadow-glow" />
-                            <p className="text-foreground/30 text-[10px] font-black uppercase tracking-[0.2em] mb-6">{t('settings.tour_desc')}</p>
+                        <Label className="text-caption text-muted-foreground/60">{t('settings.tour_label') || 'Tour de la App'}</Label>
+                        <div className="mt-4 text-center p-6 border border-dashed border-border/50 rounded-2xl bg-muted/20">
+                            <Sparkles className="w-8 h-8 text-primary mx-auto mb-3 opacity-50" />
+                            <p className="text-xs font-bold text-muted-foreground mb-4">{t('settings.tour_desc') || '¿Quieres volver a ver el tutorial inicial?'}</p>
                             <Button
                                 variant="outline"
-                                size="sm"
                                 onClick={() => {
                                     localStorage.removeItem('vanttflow_tour_completed');
-                                    toast.success(t('settings.tour_success'));
+                                    toast.success(t('settings.tour_success') || 'Tour reiniciado');
                                 }}
-                                className="glass-premium border-border/50 hover:border-primary/50 rounded-2xl h-12 px-8 font-black text-[10px] uppercase tracking-[0.2em] text-foreground hover:bg-foreground/5"
+                                className="w-full"
                             >
-                                {t('settings.tour_restart')}
+                                {t('settings.tour_restart') || 'Reiniciar Tutorial'}
                             </Button>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
 
             {/* Language Settings */}
-            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
-                <div className="p-8 border-b border-border/30">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 shadow-glow">
-                            <Languages size={22} />
+            <div className="card-base overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500">
+                            <Languages size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.language')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.select_language')}</p>
+                            <h3 className="text-base font-black tracking-tight text-foreground">{t('settings.language') || 'Idioma'}</h3>
+                            <p className="text-caption text-muted-foreground/50">{t('settings.select_language') || 'Elige tu idioma'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8">
-                    <div className="grid gap-2">
-                        <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 px-1">{t('settings.language')}</Label>
-                        <select
+                <div className="p-5">
+                    <div className="grid gap-1.5">
+                        <Label className="text-caption text-muted-foreground/60">{t('settings.language') || 'Idioma'}</Label>
+                        <Select
                             value={i18n.language}
                             onChange={e => i18n.changeLanguage(e.target.value)}
-                            className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all appearance-none cursor-pointer"
+                            className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                         >
-                            <option value="es">Español 🇪🇸</option>
-                            <option value="en">English 🇺🇸</option>
-                            <option value="pt">Português 🇧🇷</option>
-                            <option value="fr">Français 🇫🇷</option>
-                        </select>
+                            <option value="es">{t('settings.lang_es') || 'Español 🇪🇸'}</option>
+                            <option value="en">{t('settings.lang_en') || 'English 🇺🇸'}</option>
+                            <option value="pt">{t('settings.lang_pt') || 'Português 🇧🇷'}</option>
+                            <option value="fr">{t('settings.lang_fr') || 'Français 🇫🇷'}</option>
+                        </Select>
                     </div>
                 </div>
             </div>
 
             {/* Data Management Section */}
-            <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
-                <div className="p-8 border-b border-border/30">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 text-purple-500 shadow-glow">
-                            <Download size={22} />
+            <div className="card-base overflow-hidden">
+                <div className="px-5 py-4 border-b border-border/40">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-500">
+                            <Download size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.data')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.data_desc')}</p>
+                            <h3 className="text-base font-black tracking-tight text-foreground">{t('settings.data') || 'Datos y Respaldo'}</h3>
+                            <p className="text-caption text-muted-foreground/50">{t('settings.data_desc') || 'Exporta e importa tu información'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8 space-y-4">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase text-[10px] tracking-[0.2em] text-foreground active:scale-95 transition-all duration-500" onClick={handleExport}>
-                            <Download size={20} className="text-purple-500" />
-                            {t('settings.export_btn')}
+                <div className="p-5">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
+                            <Download size={16} className="text-purple-500" />
+                            {t('settings.export_btn') || 'Exportar Datos'}
                         </Button>
-                        <Button variant="ghost" className="flex-1 gap-3 h-16 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase text-[10px] tracking-[0.2em] text-foreground active:scale-95 transition-all duration-500" onClick={() => fileInputRef.current?.click()}>
-                            <Upload size={20} className="text-emerald-500" />
-                            {t('settings.import_btn')}
+                        <Button variant="outline" className="flex-1 gap-2 h-12" onClick={() => fileInputRef.current?.click()}>
+                            <Upload size={16} className="text-emerald-500" />
+                            {t('settings.import_btn') || 'Importar Datos'}
                         </Button>
                         <input
                             type="file"
@@ -380,58 +380,53 @@ export const SettingsPage = () => {
             </div>
 
             {/* Gamification Settings */}
-            <div className="glass-premium rounded-[3rem] border-primary/20 bg-primary/5 overflow-hidden group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent pointer-events-none" />
-                <div className="p-8 border-b border-border/30 relative z-10">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-primary/20 border border-primary/30 text-primary shadow-glow animate-pulse">
-                            <Sword size={22} />
+            <div className="card-base overflow-hidden border-primary/20 bg-primary/5">
+                <div className="px-5 py-4 border-b border-primary/10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-primary/20 border border-primary/30 text-primary">
+                            <Sword size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-primary drop-shadow-lg">{t('settings.spirit_title')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.spirit_desc')}</p>
+                            <h3 className="text-base font-black tracking-tight text-primary">{t('settings.spirit_title') || 'Spirit Companion'}</h3>
+                            <p className="text-caption text-primary/60">{t('settings.spirit_desc') || 'Tu compañero financiero'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8 space-y-6 relative z-10">
-                    <div className="flex items-center justify-between p-6 rounded-[2rem] glass-premium border-primary/20">
-                        <div className="space-y-2">
-                            <Label className="text-lg font-black tracking-tighter text-foreground">{t('settings.spirit_enable')}</Label>
-                            <p className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.2em]">{t('dashboard.gamification_desc')}</p>
+                <div className="p-5 space-y-6">
+                    <div className="flex items-center justify-between p-4 rounded-xl bg-background border border-border/50">
+                        <div>
+                            <Label className="text-sm font-bold">{t('settings.spirit_enable') || 'Habilitar Gamificación'}</Label>
+                            <p className="text-xs text-muted-foreground mt-0.5">{t('dashboard.gamification_desc') || 'Gana XP por tus buenos hábitos'}</p>
                         </div>
                         <Button
                             variant={isEnabled ? "default" : "outline"}
                             size="sm"
                             onClick={() => setIsEnabled(!isEnabled)}
-                            className={cn(
-                                "rounded-full px-10 h-12 font-black tracking-[0.2em] text-[9px] uppercase transition-all duration-500",
-                                isEnabled ? "shadow-glow bg-primary hover:bg-primary/80" : "border-border/30 glass-premium text-foreground"
-                            )}
                         >
-                            {isEnabled ? t('settings.spirit_on') : t('settings.spirit_off')}
+                            {isEnabled ? (t('settings.spirit_on') || 'Activado') : (t('settings.spirit_off') || 'Desactivado')}
                         </Button>
                     </div>
 
                     {isEnabled && (
-                        <div className="pt-6 border-t border-border/30 animate-in fade-in slide-in-from-top-4 duration-700">
-                            <Label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 mb-6 block px-1">{t('settings.spirit_pet_label')}</Label>
-                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-4">
+                        <div className="pt-4 border-t border-border/40 animate-in fade-in slide-in-from-top-4">
+                            <Label className="text-caption text-muted-foreground/60 mb-4 block">{t('settings.spirit_pet_label') || 'Elige a tu compañero'}</Label>
+                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-3">
                                 {PET_OPTIONS.map(pet => (
                                     <button
                                         key={pet.id}
                                         onClick={() => {
                                             setSelectedPet(pet.id);
-                                            toast.success(t('settings.spirit_change_success', { name: pet.name }));
+                                            toast.success(t('settings.spirit_change_success', { name: pet.name }) || `Mascota cambiada a ${pet.name}`);
                                         }}
                                         className={cn(
-                                            "flex flex-col items-center justify-center p-4 rounded-[2rem] border-2 transition-all duration-500 hover:scale-110 active:scale-90",
+                                            "flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all hover:scale-105 active:scale-95",
                                             selectedPet === pet.id
-                                                ? "border-primary bg-primary/10 shadow-glow scale-105"
-                                                : "border-transparent glass-premium grayscale opacity-30 hover:opacity-100 hover:grayscale-0"
+                                                ? "border-primary bg-primary/10 scale-105"
+                                                : "border-transparent bg-muted/50 grayscale opacity-50 hover:opacity-100 hover:grayscale-0"
                                         )}
                                     >
-                                        <span className="text-4xl mb-2">{pet.emoji}</span>
-                                        <span className="text-[8px] font-black uppercase truncate w-full text-center tracking-[0.15em] text-foreground/60">{pet.name}</span>
+                                        <span className="text-3xl mb-1.5">{pet.emoji}</span>
+                                        <span className="text-[9px] font-bold uppercase truncate w-full text-center text-foreground/60">{pet.name}</span>
                                     </button>
                                 ))}
                             </div>
@@ -441,103 +436,103 @@ export const SettingsPage = () => {
             </div>
 
             {/* Notification Settings (PWA) */}
-            <div className="glass-premium rounded-[3rem] border-indigo-500/20 bg-indigo-500/5 overflow-hidden">
-                <div className="p-8 border-b border-indigo-500/10">
-                    <div className="flex items-center gap-5">
-                        <div className="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500 shadow-glow">
-                            <Bell size={22} />
+            <div className="card-base overflow-hidden border-indigo-500/20 bg-indigo-500/5">
+                <div className="px-5 py-4 border-b border-indigo-500/10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500">
+                            <Bell size={18} />
                         </div>
                         <div>
-                            <h3 className="text-2xl font-black tracking-tighter text-indigo-400 drop-shadow-lg">{t('settings.notifications')}</h3>
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.notifications_desc')}</p>
+                            <h3 className="text-base font-black tracking-tight text-indigo-500">{t('settings.notifications') || 'Notificaciones'}</h3>
+                            <p className="text-caption text-indigo-500/60">{t('settings.notifications_desc') || 'Avisos y recordatorios'}</p>
                         </div>
                     </div>
                 </div>
-                <div className="p-8 space-y-4">
-                    <div className="flex items-center justify-between p-6 rounded-[2rem] glass-premium border-indigo-500/20">
-                        <div className="space-y-2">
-                            <Label className="text-lg font-black tracking-tighter text-indigo-400">
-                                {t('settings.notif_status')}: {permission === 'granted' ? t('settings.notif_status_on') : permission === 'denied' ? t('settings.notif_status_blocked') : t('settings.notif_status_off')}
+                <div className="p-5 space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-background border border-border/50 gap-4">
+                        <div>
+                            <Label className="text-sm font-bold text-foreground">
+                                {t('settings.notif_status') || 'Estado'}: {permission === 'granted' ? (t('settings.notif_status_on') || 'Activas') : permission === 'denied' ? (t('settings.notif_status_blocked') || 'Bloqueadas') : (t('settings.notif_status_off') || 'Desactivadas')}
                             </Label>
-                            <p className="text-[10px] text-foreground/30 font-black uppercase tracking-[0.2em]">
+                            <p className="text-xs text-muted-foreground mt-0.5">
                                 {permission === 'granted'
-                                    ? t('settings.notif_on_desc')
-                                    : t('settings.notif_off_desc')}
+                                    ? (t('settings.notif_on_desc') || 'Las notificaciones están funcionando')
+                                    : (t('settings.notif_off_desc') || 'Permite las notificaciones en tu navegador')}
                             </p>
                         </div>
                         {permission !== 'granted' ? (
-                            <Button size="sm" onClick={requestPermission} className="rounded-full px-8 h-12 font-black tracking-[0.2em] text-[10px] uppercase shadow-glow bg-indigo-500 hover:bg-indigo-400">
-                                {t('settings.notif_activate_btn')}
+                            <Button size="sm" onClick={requestPermission} className="w-full sm:w-auto bg-indigo-500 hover:bg-indigo-600 text-white">
+                                {t('settings.notif_activate_btn') || 'Activar'}
                             </Button>
                         ) : (
-                            <div className="flex gap-3">
-                                <Button variant="ghost" size="sm" onClick={() => sendNotification("Test", "The notification system works!")} className="glass-premium rounded-full px-6 border-indigo-500/20 font-black tracking-[0.2em] text-[9px] uppercase text-indigo-400 h-10">
-                                    {t('settings.notif_test_btn')}
+                            <div className="flex gap-2">
+                                <Button variant="outline" size="sm" onClick={() => sendNotification("Test", "The notification system works!")} className="text-indigo-500 hover:text-indigo-600">
+                                    {t('settings.notif_test_btn') || 'Probar'}
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={triggerMotivation} title="Surprise Message" className="glass-premium rounded-full w-10 h-10 hover:bg-yellow-500/10 text-yellow-500 border-yellow-500/20">
+                                <Button variant="outline" size="icon" onClick={triggerMotivation} title="Surprise Message" className="text-amber-500 hover:text-amber-600">
                                     <Zap size={16} />
                                 </Button>
                             </div>
                         )}
                     </div>
-                    <p className="text-[10px] text-foreground/20 italic px-4 font-medium">
-                        {t('settings.notif_ios_note')}
+                    <p className="text-xs text-muted-foreground italic px-2">
+                        {t('settings.notif_ios_note') || '* En iOS debes añadir la app a la pantalla de inicio primero.'}
                     </p>
                 </div>
             </div>
 
             {/* Session & Danger Zone */}
-            <div className="grid gap-8 md:grid-cols-2">
-                <div className="glass-premium rounded-[3rem] border-rose-500/20 bg-rose-500/5 overflow-hidden group">
-                    <div className="p-8 border-b border-rose-500/10">
+            <div className="grid gap-6 md:grid-cols-2">
+                <div className="card-base overflow-hidden border-rose-500/30">
+                    <div className="px-5 py-4 border-b border-rose-500/10 bg-rose-500/5">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-500 shadow-glow">
-                                <Trash2 size={20} />
+                            <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500">
+                                <Trash2 size={18} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-black tracking-tighter text-rose-500 drop-shadow-lg">{t('settings.danger_title')}</h3>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.danger_desc')}</p>
+                                <h3 className="text-base font-black tracking-tight text-rose-500">{t('settings.danger_title') || 'Zona Peligrosa'}</h3>
+                                <p className="text-caption text-rose-500/60">{t('settings.danger_desc') || 'Acciones irreversibles'}</p>
                             </div>
                         </div>
                     </div>
-                    <div className="p-8">
-                        <Button variant="destructive" className="w-full h-14 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-glow bg-rose-600 hover:bg-rose-500 active:scale-95 transition-all duration-500" onClick={handleResetData}>
-                            {t('settings.danger_btn')}
+                    <div className="p-5">
+                        <Button variant="destructive" className="w-full h-12" onClick={handleResetData}>
+                            {t('settings.danger_btn') || 'Borrar todos mis datos'}
                         </Button>
                     </div>
                 </div>
 
-                <div className="glass-premium rounded-[3rem] border-border/30 overflow-hidden">
-                    <div className="p-8 border-b border-border/30">
+                <div className="card-base overflow-hidden">
+                    <div className="px-5 py-4 border-b border-border/40">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-2xl bg-foreground/10 border border-border/30 text-foreground/60">
-                                <LogOut size={20} />
+                            <div className="p-2.5 rounded-xl bg-muted border border-border/50 text-foreground">
+                                <LogOut size={18} />
                             </div>
                             <div>
-                                <h3 className="text-xl font-black tracking-tighter text-foreground drop-shadow-lg">{t('settings.session_title')}</h3>
-                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/30">{t('settings.session_desc')}</p>
+                                <h3 className="text-base font-black tracking-tight text-foreground">{t('settings.session_title') || 'Sesión'}</h3>
+                                <p className="text-caption text-muted-foreground/50">{t('settings.session_desc') || 'Seguridad de la cuenta'}</p>
                             </div>
                         </div>
                     </div>
-                    <div className="p-8 space-y-6">
-                        <div className="grid gap-2">
-                            <Label className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40"><Timer size={14} /> {t('settings.autolock_label')}</Label>
-                            <select
+                    <div className="p-5 space-y-4">
+                        <div className="grid gap-1.5">
+                            <Label className="flex items-center gap-2 text-caption text-muted-foreground/60"><Timer size={14} /> {t('settings.autolock_label') || 'Bloqueo Automático'}</Label>
+                            <Select
                                 value={autoLockMinutes}
                                 onChange={e => setAutoLockMinutes(Number(e.target.value))}
-                                className="flex h-14 w-full items-center rounded-2xl border border-border/30 bg-foreground/5 px-5 py-2 text-sm font-black tracking-tight text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer appearance-none"
+                                className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                             >
-                                <option value={0}>{t('settings.autolock_never')}</option>
-                                <option value={1}>{t('settings.autolock_min')}</option>
-                                <option value={2}>{t('settings.autolock_mins', { count: 2 })}</option>
-                                <option value={5}>{t('settings.autolock_mins', { count: 5 })}</option>
-                                <option value={15}>{t('settings.autolock_mins', { count: 15 })}</option>
-                                <option value={30}>{t('settings.autolock_mins', { count: 30 })}</option>
-                            </select>
+                                <option value={0}>{t('settings.autolock_never') || 'Nunca'}</option>
+                                <option value={1}>{t('settings.autolock_min') || '1 minuto'}</option>
+                                <option value={2}>{t('settings.autolock_mins', { count: 2 }) || '2 minutos'}</option>
+                                <option value={5}>{t('settings.autolock_mins', { count: 5 }) || '5 minutos'}</option>
+                                <option value={15}>{t('settings.autolock_mins', { count: 15 }) || '15 minutos'}</option>
+                                <option value={30}>{t('settings.autolock_mins', { count: 30 }) || '30 minutos'}</option>
+                            </Select>
                         </div>
-                        <div className="h-px bg-foreground/5" />
-                        <Button variant="ghost" className="w-full h-14 rounded-2xl glass-premium border-border/30 hover:bg-foreground/5 font-black uppercase tracking-[0.2em] text-[10px] text-foreground active:scale-95 transition-all duration-500" onClick={logout}>
-                            {t('settings.logout_btn')}
+                        <div className="h-px bg-border/40" />
+                        <Button variant="outline" className="w-full h-12" onClick={logout}>
+                            {t('settings.logout_btn') || 'Cerrar Sesión'}
                         </Button>
                     </div>
                 </div>

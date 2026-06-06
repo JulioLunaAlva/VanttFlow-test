@@ -62,15 +62,15 @@ export const AccountsPage = () => {
                 </div>
 
                 <div
-                    className="h-44 p-8 text-foreground flex flex-col justify-between relative overflow-hidden"
+                    className="h-44 p-8 text-white flex flex-col justify-between relative overflow-hidden"
                     style={{
                         background: `linear-gradient(135deg, ${account.color || '#1e293b'} 0%, #000000 100%)`,
                     }}
                 >
                     <div className="flex justify-between items-start z-10">
                         <div>
-                            <p className="opacity-60 text-[10px] font-bold uppercase tracking-widest mb-1">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
-                            <h3 className="font-black text-2xl tracking-tight truncate pr-12">{account.name}</h3>
+                            <p className="opacity-80 text-[10px] font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.credit_card') || 'Tarjeta de Crédito'}</p>
+                            <h3 className="font-black text-2xl tracking-tight truncate pr-12 text-white">{account.name}</h3>
                         </div>
                         <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
                             <CreditCard className="w-6 h-6 text-white" />
@@ -78,7 +78,7 @@ export const AccountsPage = () => {
                     </div>
                     
                     <div className="z-10 mt-auto">
-                        <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest mb-1">{t('accounts.current_debt') || 'Deuda Actual'}</p>
+                        <p className="text-[10px] opacity-60 font-bold uppercase tracking-widest mb-1 text-white">{t('accounts.current_debt') || 'Deuda Actual'}</p>
                         <p className="text-2xl font-black tracking-tight font-mono text-white">
                             <PrivacyBlur intensity="lg">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
