@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 
 export const LoginPage = () => {
-    const { login, user, isAuthenticated } = useIdentity();
+    const { login, biometricLogin, user, isAuthenticated } = useIdentity();
     const { loginWithGoogle, isSyncing } = useSync();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -48,6 +48,70 @@ export const LoginPage = () => {
             toast.error(t('auth.incorrect_pin'));
         } else {
             // Success sound or haptic could go here
+        }
+    };
+
+    const handleBiometrics = async () => {
+        try {
+            if (!window.PublicKeyCredential) {
+                toast.error("Tu dispositivo no soporta Face ID / Biometría Web");
+                return;
+            }
+
+            const credentialId = localStorage.getItem('vantt_biometrics');
+            const challenge = new Uint8Array(32);
+            window.crypto.getRandomValues(challenge);
+
+            if (!credentialId) {
+                toast.info("Configurando Face ID / Huella por primera vez...");
+                const credential = await navigator.credentials.create({
+                    publicKey: {
+                        challenge,
+                        rp: { name: "VanttFlow", id: window.location.hostname },
+                        user: {
+                            id: new Uint8Array(16),
+                            name: user.name,
+                            displayName: user.name
+                        },
+                        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+                        authenticatorSelection: {
+                            authenticatorAttachment: "platform",
+                            userVerification: "required"
+                        },
+                        timeout: 60000
+                    }
+                });
+
+                if (credential) {
+                    const idBase64 = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+                    localStorage.setItem('vantt_biometrics', idBase64);
+                    biometricLogin();
+                }
+            } else {
+                const rawId = Uint8Array.from(atob(credentialId), c => c.charCodeAt(0));
+                const assertion = await navigator.credentials.get({
+                    publicKey: {
+                        challenge,
+                        allowCredentials: [{
+                            id: rawId,
+                            type: "public-key"
+                        }],
+                        userVerification: "required",
+                        rpId: window.location.hostname
+                    }
+                });
+
+                if (assertion) {
+                    biometricLogin();
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            if (error.name === 'NotAllowedError') {
+                // El usuario canceló la biometría
+            } else {
+                toast.error("Face ID no disponible o denegado.");
+            }
         }
     };
 
@@ -110,7 +174,10 @@ export const LoginPage = () => {
                     
                     {/* Bottom Row */}
                     <div className="flex items-center justify-center">
-                        <button className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center transition-all duration-200 active:bg-foreground/10 text-primary/80 group">
+                        <button 
+                            onClick={handleBiometrics}
+                            className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center transition-all duration-200 active:bg-foreground/10 text-primary/80 hover:text-primary hover:bg-primary/5 group"
+                        >
                             <Fingerprint size={32} strokeWidth={1.5} className="group-active:scale-90 transition-transform duration-200" />
                         </button>
                     </div>

@@ -43,6 +43,13 @@ export const IdentityProvider = ({ children }) => {
         return false;
     };
 
+    const biometricLogin = () => {
+        if (!user) return false;
+        setIsAuthenticated(true);
+        toast.success(`Desbloqueado con Face ID / Huella`);
+        return true;
+    };
+
     const register = async (name, pin, currency = 'MXN') => {
         const hashedPin = await hashPin(pin);
         const newUser = {
@@ -111,6 +118,7 @@ export const IdentityProvider = ({ children }) => {
         autoLockMinutes,
         setAutoLockMinutes,
         login,
+        biometricLogin,
         register,
         logout,
         updateProfile
