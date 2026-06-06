@@ -87,33 +87,24 @@ export const TransactionsCalendarPage = () => {
 
     // Header component
     const renderHeader = () => (
-        <div className="flex flex-col md:flex-row md:items-center justify-between glass-premium p-10 rounded-[3rem] border-border/50 mb-8 group relative overflow-hidden active:scale-95 transition-all duration-500">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            <div className="relative z-10">
-                <h2 className="text-3xl md:text-4xl font-black tracking-tighter capitalize text-foreground drop-shadow-2xl">
-                    {format(currentMonth, 'MMMM yyyy', { locale })}
-                </h2>
-                <div className="text-[11px] font-black uppercase tracking-[0.5em] text-primary/60 mt-3 flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-primary shadow-glow animate-pulse" />
-                    {t('common.calendar_view') || 'Vista de Calendario'}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+            <div className="flex items-center gap-4">
+                <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                    <CalendarIcon size={20} />
+                </div>
+                <div>
+                    <h2 className="text-title font-black capitalize text-foreground">
+                        {format(currentMonth, 'MMMM yyyy', { locale })}
+                    </h2>
+                    <p className="text-caption text-muted-foreground/50 mt-0.5">{t('common.calendar_view') || 'Vista de Calendario'}</p>
                 </div>
             </div>
-            <div className="flex items-center gap-4 mt-6 md:mt-0 relative z-10">
-                <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={prevMonth} 
-                    className="glass-premium border-border/50 hover:border-primary/50 bg-foreground/5 text-foreground h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
-                >
-                    <ChevronLeft size={24} className="group-hover/btn:-translate-x-1 transition-transform" />
+            <div className="flex items-center gap-2 mt-4 sm:mt-0">
+                <Button variant="outline" size="icon" onClick={prevMonth} className="h-10 w-10">
+                    <ChevronLeft size={18} />
                 </Button>
-                <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={nextMonth} 
-                    className="glass-premium border-border/50 hover:border-primary/50 bg-foreground/5 text-foreground h-14 w-14 rounded-2xl shadow-xl hover:scale-110 active:scale-90 transition-all duration-500 group/btn"
-                >
-                    <ChevronRight size={24} className="group-hover/btn:translate-x-1 transition-transform" />
+                <Button variant="outline" size="icon" onClick={nextMonth} className="h-10 w-10">
+                    <ChevronRight size={18} />
                 </Button>
             </div>
         </div>
@@ -136,8 +127,7 @@ export const TransactionsCalendarPage = () => {
     // Calendar grid
     const renderCells = () => {
         return (
-            <div className="glass-premium rounded-[3rem] overflow-hidden border-border/50 mb-10 shadow-3xl relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent pointer-events-none" />
+            <div className="card-elevated rounded-[2.5rem] overflow-hidden p-0 mb-10 relative">
                 <div className="grid grid-cols-7 relative z-10">
                     {calendarDays.map((day) => {
                     const dateStr = format(day, 'yyyy-MM-dd');
@@ -252,14 +242,13 @@ export const TransactionsCalendarPage = () => {
                             />
                         ))
                     ) : (
-                        <div className="text-center py-20 glass-premium rounded-[3rem] border-2 border-dashed border-border/30 mt-4 active:scale-98 transition-all duration-500 flex flex-col items-center justify-center group overflow-hidden relative">
-                            <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                            <div className="glass-premium p-10 rounded-[2.5rem] mb-8 shadow-2xl border-border/50 animate-bounce-slow inline-block bg-primary/5 relative z-10">
-                                <CalendarIcon className="mx-auto h-16 w-16 text-foreground/20 drop-shadow-glow" />
+                        <div className="py-20 card-base border-dashed text-center flex flex-col items-center justify-center space-y-4">
+                            <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
+                                <CalendarIcon size={40} />
                             </div>
-                            <div className="text-center max-w-sm relative z-10 px-6">
-                                <h3 className="text-2xl font-black tracking-tighter text-foreground/60 mb-2 drop-shadow-2xl">{t('transactions.no_movements') || 'Sin movimientos este día'}</h3>
-                                <p className="text-foreground/40 font-black uppercase tracking-[0.2em] text-[10px]">
+                            <div>
+                                <p className="text-xl font-black tracking-tighter text-foreground">{t('transactions.no_movements') || 'Sin movimientos este día'}</p>
+                                <p className="text-xs text-muted-foreground/60 font-medium px-4 mt-1">
                                     Selecciona otro día para ver su actividad
                                 </p>
                             </div>

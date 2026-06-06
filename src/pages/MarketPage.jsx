@@ -100,82 +100,58 @@ export const MarketPage = () => {
 
     return (
         <div className="space-y-8 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Header section with glassmorphism */}
-            <div className="relative p-10 rounded-[2.5rem] glass-premium border-border/30 overflow-hidden group">
-                <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-all duration-1000 animate-pulse-slow" />
-                <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-emerald-500/10 rounded-full blur-[80px]" />
-
-                <div className="relative z-10 flex flex-col xl:flex-row xl:items-center justify-between gap-8">
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-primary/20 text-primary border border-primary/20 flex items-center justify-center shadow-xl shadow-primary/10">
-                                <TrendingUp size={30} />
-                            </div>
-                            <div>
-                                <h2 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground">Mercado & Intel</h2>
-                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-1">Global Financial Monitor v2.5</p>
-                            </div>
-                        </div>
-                        <p className="text-slate-400 font-medium max-w-xl leading-relaxed text-lg">
-                            Análisis estratégico y monitoreo en tiempo real de activos clave para potenciar tu salud financiera.
-                        </p>
+            {/* Header Compacto */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <TrendingUp size={20} />
                     </div>
+                    <div>
+                        <h2 className="text-title font-black text-foreground">Mercado & Intel</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">Global Financial Monitor v2.5</p>
+                    </div>
+                </div>
 
-                    <div className="flex flex-wrap items-center gap-4">
-                        <Button
-                            variant="ghost"
-                            className="rounded-2xl border border-border/30 bg-foreground/5 backdrop-blur-xl h-14 px-8 font-black tracking-widest uppercase text-xs transition-all hover:bg-foreground/10"
-                            onClick={refresh}
-                            disabled={loading}
-                        >
-                            <RefreshCcw size={18} className={cn("mr-3", loading && "animate-spin")} />
-                            {loading ? "Sincronizando..." : "Actualizar Mercado"}
-                        </Button>
+                <div className="mt-4 sm:mt-0 flex gap-2">
+                    <Button variant="outline" size="sm" onClick={refresh} disabled={loading} className="gap-2">
+                        <RefreshCcw size={14} className={cn(loading && "animate-spin")} />
+                        {loading ? "Sincronizando..." : "Actualizar"}
+                    </Button>
 
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button className="rounded-2xl h-14 px-8 font-black tracking-widest uppercase text-xs shadow-2xl shadow-primary/30 transition-all hover:scale-105 active:scale-95">
-                                    Explorar Activos
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-md rounded-[2.5rem] glass-premium border-border/30">
+                    <Dialog>
+                        <DialogTrigger asChild>
+                            <Button size="sm" className="gap-2">
+                                <Search size={14} /> Explorar
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                            <div className="px-6 pt-6 pb-4 border-b border-border/30">
                                 <DialogHeader>
-                                    <DialogTitle className="text-3xl font-black tracking-tighter flex items-center gap-3 text-foreground">
-                                        <div className="w-12 h-12 rounded-xl bg-primary/20 text-primary flex items-center justify-center">
-                                            <Search size={22} />
-                                        </div>
-                                        Asset Explorer
-                                    </DialogTitle>
-                                    <DialogDescription className="font-black text-muted-foreground/60 uppercase tracking-widest text-[9px]">
-                                        VanttFlow Global Connectivity
-                                    </DialogDescription>
+                                    <DialogTitle className="text-xl font-black tracking-tighter text-foreground">Asset Explorer</DialogTitle>
+                                    <DialogDescription className="text-xs text-muted-foreground/60">VanttFlow Global Connectivity</DialogDescription>
                                 </DialogHeader>
-                                <div className="py-12 text-center space-y-6">
-                                    <div className="w-28 h-28 bg-foreground/5 rounded-[2.5rem] flex items-center justify-center mx-auto mb-4 border-2 border-dashed border-border/30 rotate-3 transition-transform hover:rotate-6 duration-700">
-                                        <Zap size={44} className="text-primary/40 -rotate-3" />
-                                    </div>
-                                    <div className="space-y-3">
-                                        <h3 className="text-2xl font-black tracking-tighter text-foreground">Expansión Estratégica</h3>
-                                        <p className="text-sm text-slate-400 max-w-[300px] mx-auto leading-relaxed font-medium">
-                                            Integrando conexiones nativas con **NASDAQ**, **NYSE** y la **BMV** para una visibilidad total de tu portafolio.
-                                        </p>
-                                    </div>
-                                    <div className="pt-4 px-4">
-                                        <Button variant="outline" className="rounded-2xl w-full h-14 font-black tracking-widest uppercase text-[10px] border-border/30 bg-foreground/5" disabled>
-                                            Lista de Espera VIP
-                                        </Button>
-                                    </div>
+                            </div>
+                            <div className="p-10 text-center space-y-6">
+                                <div className="w-20 h-20 bg-foreground/5 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-dashed border-border/30">
+                                    <Zap size={32} className="text-muted-foreground/40" />
                                 </div>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
+                                <div className="space-y-2">
+                                    <h3 className="text-lg font-black tracking-tight text-foreground">Expansión Estratégica</h3>
+                                    <p className="text-sm text-muted-foreground font-medium">
+                                        Integrando conexiones nativas con NASDAQ, NYSE y la BMV.
+                                    </p>
+                                </div>
+                                <Button variant="secondary" className="w-full mt-4" disabled>Lista de Espera VIP</Button>
+                            </div>
+                        </DialogContent>
+                    </Dialog>
                 </div>
             </div>
 
             {/* Price Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {stats.map((stat, i) => (
-                    <div key={i} className="glass-card card-glow border-border/30 overflow-hidden group hover:-translate-y-2 transition-all duration-700 cursor-default">
+                    <div key={i} className="card-base card-interactive overflow-hidden cursor-default p-0 flex flex-col">
                         <div className="p-8 pb-4">
                             <div className="flex justify-between items-start mb-6">
                                 <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg border border-border/30 transition-transform group-hover:scale-110 duration-500", stat.bg, stat.color)}>
@@ -232,8 +208,8 @@ export const MarketPage = () => {
             </div>
 
             {/* Bottom Insight Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <div className="lg:col-span-8 glass-card border-border/30 overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div className="lg:col-span-8 card-base overflow-hidden p-0 flex flex-col">
                     <div className="p-6 border-b border-border/30 flex items-center justify-between">
                         <h3 className="text-xl font-black tracking-tighter flex items-center gap-3">
                             <Filter size={20} className="text-primary" />
@@ -288,11 +264,11 @@ export const MarketPage = () => {
                     </div>
                 </div>
 
-                <div className="lg:col-span-4 glass-premium card-glow border-primary/20 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-1000">
+                <div className="lg:col-span-4 card-base relative overflow-hidden group flex flex-col">
+                    <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform duration-500">
                         <TrendingUp size={160} />
                     </div>
-                    <div className="p-10 flex flex-col h-full justify-between relative z-10">
+                    <div className="p-8 flex flex-col h-full justify-between relative z-10">
                         <div>
                             <div className="w-12 h-12 rounded-2xl bg-primary/20 text-primary flex items-center justify-center mb-6 shadow-xl shadow-primary/10">
                                 <Sparkles size={24} />

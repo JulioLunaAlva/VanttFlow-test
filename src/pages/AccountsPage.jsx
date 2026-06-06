@@ -191,22 +191,19 @@ export const AccountsPage = () => {
 
     return (
         <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/30 group relative overflow-hidden transition-all duration-500">
-                <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/5 rounded-full blur-[80px]" />
-                <div className="relative z-10 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                        <CreditCard size={22} className="text-primary" />
+            {/* Header Compacto */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <CreditCard size={20} />
                     </div>
                     <div>
-                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
-                            {t('accounts.title') || 'Mis Cuentas'}
-                        </h2>
-                        <p className="text-xs font-black uppercase tracking-[0.3em] text-primary/60 mt-1">
-                            {t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}
-                        </p>
+                        <h2 className="text-title font-black text-foreground">{t('accounts.title') || 'Mis Cuentas'}</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">{t('accounts.subtitle') || 'Gestiona tu liquidez y líneas de crédito'}</p>
                     </div>
                 </div>
-                <div className="flex items-center gap-4 mt-4 sm:mt-0 relative z-10">
+
+                <div className="mt-4 sm:mt-0">
                     <AccountManager />
                 </div>
             </div>
@@ -222,13 +219,13 @@ export const AccountsPage = () => {
                     </div>
                 </div>
                 {debitAccounts.length === 0 ? (
-                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-border/30 rounded-[3rem] opacity-60 space-y-6 group hover:border-emerald-500/30 transition-all duration-700">
-                        <div className="w-24 h-24 bg-foreground/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
-                            <Wallet size={48} className="text-muted-foreground/40 group-hover:text-emerald-500/60 transition-colors" />
+                    <div className="py-20 card-base border-dashed text-center flex flex-col items-center justify-center space-y-4">
+                        <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
+                            <Wallet size={40} />
                         </div>
-                        <div className="text-center">
-                            <p className="font-black text-xl tracking-tight text-foreground/80">{t('accounts.no_debit_accounts') || 'No hay cuentas registradas'}</p>
-                            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground/30 px-12 mt-2">{t('accounts.no_debit_accounts_desc') || 'Agregas tus cuentas bancarias o efectivo para ver sus saldos.'}</p>
+                        <div>
+                            <p className="text-xl font-black tracking-tighter text-foreground">{t('accounts.no_debit_accounts') || 'No hay cuentas registradas'}</p>
+                            <p className="text-xs text-muted-foreground/60 font-medium px-4 mt-1">{t('accounts.no_debit_accounts_desc') || 'Agrega tus cuentas bancarias o efectivo para ver sus saldos.'}</p>
                         </div>
                     </div>
                 ) : (
@@ -249,13 +246,13 @@ export const AccountsPage = () => {
                     </div>
                 </div>
                 {creditCards.length === 0 ? (
-                    <div className="py-24 flex flex-col items-center justify-center glass-premium border-2 border-dashed border-border/30 rounded-[3rem] opacity-60 space-y-6 group hover:border-primary/30 transition-all duration-700">
-                        <div className="w-24 h-24 bg-foreground/5 rounded-full flex items-center justify-center shadow-black/50 shadow-2xl group-hover:scale-110 transition-transform">
-                            <CreditCard size={48} className="text-muted-foreground/40 group-hover:text-primary/60 transition-colors" />
+                    <div className="py-20 card-base border-dashed text-center flex flex-col items-center justify-center space-y-4">
+                        <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
+                            <CreditCard size={40} />
                         </div>
-                        <div className="text-center">
-                            <p className="font-black text-xl tracking-tight text-foreground/80">{t('accounts.no_credit_cards') || 'Sin tarjetas registradas'}</p>
-                            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground/30 px-12 mt-2">{t('accounts.no_credit_cards_desc') || 'Mantén el control de tus fechas de corte y límites utilizados.'}</p>
+                        <div>
+                            <p className="text-xl font-black tracking-tighter text-foreground">{t('accounts.no_credit_cards') || 'Sin tarjetas registradas'}</p>
+                            <p className="text-xs text-muted-foreground/60 font-medium px-4 mt-1">{t('accounts.no_credit_cards_desc') || 'Mantén el control de tus fechas de corte y límites utilizados.'}</p>
                         </div>
                     </div>
                 ) : (
@@ -266,17 +263,14 @@ export const AccountsPage = () => {
             </div>
 
             <Dialog open={!!editingAccount} onOpenChange={(val) => !val && setEditingAccount(null)}>
-                <DialogContent className="max-w-md glass-premium border-border/30 p-0 overflow-hidden rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.8)]">
-                    <div className="p-10 border-b border-border/30 bg-foreground/5 backdrop-blur-3xl relative overflow-hidden group">
-                         {/* Background mystical glow */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-1000" />
-                        
-                        <DialogHeader className="relative z-10">
-                            <DialogTitle className="text-3xl font-black tracking-tighter text-foreground drop-shadow-2xl">{t('accounts.edit_account') || 'Editar Cuenta'}</DialogTitle>
-                            <p className="text-[10px] font-black uppercase tracking-[0.4em] text-primary/60 mt-2">{t('accounts.edit_desc') || 'Ajusta los detalles de tu cuenta financiera'}</p>
+                <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                    <div className="px-6 pt-6 pb-4 border-b border-border/30">
+                        <DialogHeader>
+                            <DialogTitle className="text-xl font-black tracking-tighter text-foreground">{t('accounts.edit_account') || 'Editar Cuenta'}</DialogTitle>
+                            <p className="text-xs text-muted-foreground/60">{t('accounts.edit_desc') || 'Ajusta los detalles de tu cuenta financiera'}</p>
                         </DialogHeader>
                     </div>
-                    <div className="p-10 bg-black/40 backdrop-blur-3xl">
+                    <div className="p-6 pt-4">
                         {editingAccount && (
                             <AccountForm
                                 initialData={editingAccount}

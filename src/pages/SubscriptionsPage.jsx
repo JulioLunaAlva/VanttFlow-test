@@ -23,7 +23,7 @@ const POPULAR_SUBSCRIPTIONS = [
     { name: 'Amazon Prime',      domain: 'amazon.com',        price: 99,   color: '#FF9900', category: 'Entretenimiento' },
     { name: 'iCloud+',           domain: 'icloud.com',        price: 25,   color: '#3A82F7', category: 'Almacenamiento' },
     { name: 'ChatGPT Plus',      domain: 'openai.com',        price: 230,  color: '#10A37F', category: 'Productividad' },
-    { name: 'Claude Pro',        domain: 'anthropic.com',     price: 230,  color: '#D97757', category: 'Productividad' },
+    { name: 'Claude Pro',        domain: 'claude.ai',         price: 400,  color: '#D97757', category: 'Productividad' },
     { name: 'Xbox Game Pass',    domain: 'xbox.com',          price: 249,  color: '#107C10', category: 'Gaming' },
     { name: 'Canva Pro',         domain: 'canva.com',         price: 199,  color: '#7D2AE8', category: 'Diseño' },
     { name: 'Adobe Creative',    domain: 'adobe.com',         price: 299,  color: '#FF0000', category: 'Diseño' },
@@ -41,10 +41,10 @@ const ServiceLogo = ({ domain, name, color, size = 'md' }) => {
     if (imgError) {
         return (
             <div
-                className={cn("rounded-xl flex items-center justify-center font-black text-white shadow-lg flex-shrink-0", sizeClass)}
+                className={cn("rounded-xl flex items-center justify-center font-bold text-white shadow-sm flex-shrink-0 bg-gradient-to-br from-white/10 to-transparent backdrop-blur-md", sizeClass)}
                 style={{ backgroundColor: color }}
             >
-                {name.charAt(0)}
+                {name.charAt(0).toUpperCase()}
             </div>
         );
     }
@@ -123,68 +123,49 @@ export const SubscriptionsPage = () => {
         <div className="space-y-6 max-w-7xl mx-auto px-0 pt-4 pb-32 md:pb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
             {/* ── Page Header ─────────────────────────────────────────── */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/30 group relative overflow-hidden transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
-                <div className="relative z-10 flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                        <Zap size={22} className="text-primary" />
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <Zap size={20} />
                     </div>
                     <div>
-                        <h2 className="text-2xl md:text-3xl font-black tracking-tighter text-foreground">
-                            {t('subscriptions.title')}
-                        </h2>
-                        <div className="text-xs font-black uppercase tracking-[0.3em] text-primary/60 mt-1 flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                            {t('subscriptions.subtitle')}
-                        </div>
+                        <h2 className="text-title font-black text-foreground">{t('subscriptions.title')}</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">{t('subscriptions.subtitle')}</p>
                     </div>
                 </div>
-                <div className="mt-4 sm:mt-0 relative z-10">
-                    <Button
-                        onClick={openEmpty}
-                        className="glass-premium border-border/50 hover:border-primary/50 bg-primary/10 hover:bg-primary/20 text-foreground shadow-xl gap-3 rounded-2xl h-12 font-black px-6 group/btn transition-all duration-500 hover:scale-105 active:scale-95"
-                    >
-                        <Plus size={20} className="group-hover/btn:rotate-90 transition-transform duration-500 text-primary" />
-                        <span className="tracking-tight">{t('subscriptions.new_subscription')}</span>
+                <div className="mt-4 sm:mt-0">
+                    <Button onClick={openEmpty} size="sm" className="w-full sm:w-auto gap-2">
+                        <Plus size={16} /> 
+                        {t('subscriptions.new_subscription')}
                     </Button>
                 </div>
             </div>
 
             {/* ── Stats ────────────────────────────────────────────────── */}
             <div className="grid gap-4 sm:grid-cols-2">
-                <div className="glass-premium rounded-[2rem] border-border/30 relative overflow-hidden bg-primary/5 group">
-                    <div className="px-6 py-5 md:px-8 md:py-6 flex items-center justify-between relative z-10">
-                        <div>
-                            <p className="text-xs font-black text-primary uppercase tracking-[0.3em] mb-2 flex items-center gap-2">
-                                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                                {t('subscriptions.projected_monthly_fixed')}
-                            </p>
-                            <h3 className="text-3xl md:text-4xl font-black tracking-tighter text-foreground">
-                                {formatCurrency(totalMonthlyFixed)}
-                            </h3>
-                            <p className="text-[11px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] mt-2 flex items-center gap-2">
-                                <AlertCircle size={12} className="text-primary/40" />
-                                {t('subscriptions.monthly_ready_note')}
-                            </p>
-                        </div>
-                        <div className="p-5 rounded-[1.5rem] glass-premium border-border/30 shadow-2xl group-hover:scale-110 group-hover:rotate-12 transition-all duration-700">
-                            <RefreshCw size={28} className="text-primary" />
+                <div className="card-base p-6 flex flex-col justify-between">
+                    <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2 flex items-center gap-2">
+                        {t('subscriptions.projected_monthly_fixed')}
+                    </p>
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-3xl font-black tracking-tighter text-foreground">
+                            {formatCurrency(totalMonthlyFixed)}
+                        </h3>
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                            <RefreshCw size={20} />
                         </div>
                     </div>
-                    <div className="absolute -top-16 -right-8 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
                 </div>
 
-                <div className="glass-premium rounded-[2rem] border-border/30 flex items-center justify-between px-6 py-5 md:px-8 md:py-6 group relative overflow-hidden">
-                    <div>
-                        <p className="text-xs font-black text-muted-foreground/40 uppercase tracking-[0.3em] mb-2">
-                            {t('subscriptions.active_subscriptions')}
-                        </p>
-                        <span className="text-4xl font-black tracking-tighter text-foreground">{activeSubscriptions}</span>
-                        <p className="text-[11px] font-black text-primary/40 uppercase tracking-[0.2em] mt-2">servicios activos</p>
-                    </div>
-                    <div className="w-20 h-20 rounded-[1.5rem] glass-premium border-border/30 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-700">
-                        <Zap size={32} className="text-primary" />
+                <div className="card-base p-6 flex flex-col justify-between">
+                    <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-2">
+                        {t('subscriptions.active_subscriptions')}
+                    </p>
+                    <div className="flex items-center justify-between">
+                        <span className="text-3xl font-black tracking-tighter text-foreground">{activeSubscriptions}</span>
+                        <div className="w-10 h-10 rounded-xl bg-foreground/5 flex items-center justify-center">
+                            <Zap size={20} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -229,10 +210,10 @@ export const SubscriptionsPage = () => {
                                                 onClick={() => !alreadyAdded && openWithPreset(svc)}
                                                 disabled={alreadyAdded}
                                                 className={cn(
-                                                    "relative flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 active:scale-95 group/tile text-center",
+                                                    "card-interactive relative flex flex-col items-center gap-3 p-4 border text-center transition-all duration-300 rounded-2xl",
                                                     alreadyAdded
-                                                        ? "border-primary/30 bg-primary/5 opacity-60 cursor-default"
-                                                        : "border-transparent bg-foreground/5 hover:border-primary/40 hover:bg-primary/5 hover:shadow-lg cursor-pointer"
+                                                        ? "border-primary/30 bg-primary/5 opacity-60 cursor-default pointer-events-none"
+                                                        : "cursor-pointer"
                                                 )}
                                             >
                                                 {alreadyAdded && (
@@ -281,37 +262,26 @@ export const SubscriptionsPage = () => {
                             initial={{ opacity: 0, y: 16 }}
                             animate={{ opacity: 1, y: 0 }}
                             className={cn(
-                                "glass-premium rounded-[2rem] border-border/30 group transition-all duration-500 relative overflow-hidden",
+                                "card-base p-0 group flex flex-col overflow-hidden",
                                 payment.status === 'paused' && "opacity-50 grayscale"
                             )}
                         >
-                            {/* Glow accent por servicio */}
-                            {popularMatch && (
-                                <div
-                                    className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-[60px] opacity-20"
-                                    style={{ backgroundColor: popularMatch.color }}
-                                />
-                            )}
-
                             <div className="p-5 border-b border-border/30 flex items-center justify-between relative z-10">
                                 <div className="flex items-center gap-4 min-w-0">
                                     {popularMatch ? (
                                         <ServiceLogo domain={popularMatch.domain} name={popularMatch.name} color={popularMatch.color} size="sm" />
                                     ) : (
-                                        <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+                                        <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
                                             <Zap size={18} className="text-primary" />
                                         </div>
                                     )}
                                     <div className="min-w-0">
-                                        <h4 className="text-base font-black tracking-tight text-foreground truncate">{payment.name}</h4>
-                                        <div className="flex items-center gap-1.5 mt-0.5">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-                                            <span className="text-[10px] font-black text-primary/60 uppercase tracking-widest">mensual</span>
-                                        </div>
+                                        <h4 className="text-base font-bold text-foreground truncate">{payment.name}</h4>
+                                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">mensual</p>
                                     </div>
                                 </div>
                                 <div className={cn(
-                                    "px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border flex-shrink-0",
+                                    "px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-widest border flex-shrink-0",
                                     payment.status === 'active'
                                         ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
                                         : "bg-foreground/5 text-foreground/30 border-border/30"
@@ -385,14 +355,16 @@ export const SubscriptionsPage = () => {
                 })}
 
                 {scheduledPayments.length === 0 && (
-                    <div className="col-span-full py-20 glass-premium rounded-[2.5rem] border-2 border-dashed border-border/30 flex flex-col items-center justify-center text-center px-6">
-                        <div className="w-20 h-20 rounded-[1.5rem] glass-premium border-border/30 flex items-center justify-center mb-6 shadow-2xl">
-                            <Zap size={32} className="text-primary" />
+                    <div className="col-span-full py-20 card-base border-dashed text-center flex flex-col items-center justify-center space-y-4">
+                        <div className="w-20 h-20 rounded-[2.5rem] bg-foreground/5 flex items-center justify-center border border-border/30 text-muted-foreground/20">
+                            <Zap size={40} />
                         </div>
-                        <h3 className="text-xl font-black tracking-tight text-foreground mb-2">{t('subscriptions.no_subscriptions')}</h3>
-                        <p className="text-sm text-muted-foreground/50 font-bold max-w-xs leading-relaxed">
-                            Usa el catálogo de arriba para agregar tus servicios favoritos con un solo toque
-                        </p>
+                        <div>
+                            <p className="text-xl font-black tracking-tighter text-foreground">{t('subscriptions.no_subscriptions')}</p>
+                            <p className="text-xs text-muted-foreground/60 font-medium px-4 mt-1">
+                                Usa el catálogo de arriba para agregar tus servicios favoritos con un solo toque
+                            </p>
+                        </div>
                     </div>
                 )}
             </div>

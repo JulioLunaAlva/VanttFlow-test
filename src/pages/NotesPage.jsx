@@ -247,8 +247,7 @@ const IOUCard = ({ iou, onSettle, onEdit, onDelete }) => {
 
     return (
         <div className={cn(
-            'group relative bg-card border rounded-2xl p-4 transition-all duration-300',
-            'hover:shadow-lg hover:shadow-black/10 hover:-translate-y-0.5',
+            'group relative card-base card-interactive p-4 border transition-all duration-300',
             iou.status === 'settled' ? 'opacity-60' : ''
         )}>
             {/* Header */}
@@ -319,7 +318,7 @@ const NoteCard = ({ note, onEdit, onDelete, onPin, onArchive }) => {
     return (
         <div className={cn(
             'group relative rounded-2xl border p-4 transition-all duration-300',
-            'hover:shadow-lg hover:shadow-black/10 hover:-translate-y-0.5',
+            'hover:shadow-lg hover:shadow-black/5 hover:-translate-y-0.5 card-interactive',
             colors.bg, colors.border,
             note.archived ? 'opacity-50' : ''
         )}>
@@ -396,23 +395,28 @@ export const NotesPage = () => {
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 pb-20 md:pb-0">
 
             {/* ── Header ── */}
-            <div className="flex justify-between items-center bg-card/50 p-4 rounded-xl border backdrop-blur">
-                <div>
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-                        <BookOpen className="text-primary" size={28} /> Cuaderno
-                    </h2>
-                    <p className="text-xs text-muted-foreground mt-1">Deudas pendientes y notas financieras</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
+                <div className="flex items-center gap-4">
+                    <div className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0 bg-primary/10 border border-primary/20 text-primary">
+                        <BookOpen size={20} />
+                    </div>
+                    <div>
+                        <h2 className="text-title font-black text-foreground">Cuaderno</h2>
+                        <p className="text-caption text-muted-foreground/50 mt-0.5">Deudas pendientes y notas financieras</p>
+                    </div>
                 </div>
-                <Button
-                    size="sm"
-                    className="gap-2"
-                    onClick={() => activeTab === 'ious'
-                        ? setIouDialog({ open: true, initial: null })
-                        : setNoteDialog({ open: true, initial: null })
-                    }>
-                    <Plus size={16} />
-                    {activeTab === 'ious' ? 'Nueva Deuda' : 'Nueva Nota'}
-                </Button>
+                <div className="mt-4 sm:mt-0 flex gap-2">
+                    <Button
+                        size="sm"
+                        className="gap-2 w-full sm:w-auto"
+                        onClick={() => activeTab === 'ious'
+                            ? setIouDialog({ open: true, initial: null })
+                            : setNoteDialog({ open: true, initial: null })
+                        }>
+                        <Plus size={16} />
+                        {activeTab === 'ious' ? 'Nueva Deuda' : 'Nueva Nota'}
+                    </Button>
+                </div>
             </div>
 
             {/* ── Tabs ── */}

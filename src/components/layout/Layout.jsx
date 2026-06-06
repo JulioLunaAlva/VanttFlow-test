@@ -188,29 +188,31 @@ export const Layout = ({ children }) => {
             <Sidebar className="hidden xl:flex" />
 
             <div className="flex-1 flex flex-col pb-32 md:pb-0 min-w-0"> {/* Padding bottom para barra de nav más alta */}
-                <header className="pt-safe border-b glass-premium px-6 flex items-center justify-between xl:hidden sticky top-0 z-40 h-24">
-                    <Link to="/" className="flex items-center gap-3 active:opacity-70 transition-opacity">
-                        <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-xl shadow-md" />
-                        <span className="font-black text-2xl tracking-tighter bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-                            VanttFlow
-                        </span>
-                    </Link>
-                    <div className="flex items-center gap-3">
-                        <LevelProgress variant="compact" className="w-28 xs:w-36" />
-                        <div className="flex items-center gap-1.5 ml-1">
-                            <SidebarPrivacyToggle />
-                            <ModeToggle id="tour-theme-toggle-mobile" />
+                <header className="pt-safe bg-background/95 backdrop-blur-xl border-b border-border/50 px-5 flex flex-col justify-center xl:hidden sticky top-0 z-40">
+                    <div className="flex items-center justify-between py-3">
+                        <Link to="/" className="flex items-center gap-2.5 active:opacity-70 transition-opacity">
+                            <img src="/logo.png" alt="Logo" className="w-8 h-8 rounded-lg shadow-sm border border-border/30" />
+                            <span className="font-black text-lg tracking-tight text-foreground">
+                                VanttFlow
+                            </span>
+                        </Link>
+                        <div className="flex items-center gap-2">
+                            <LevelProgress variant="compact" className="w-24 xs:w-32 hidden xs:flex" />
+                            <div className="flex items-center gap-0.5 ml-1">
+                                <SidebarPrivacyToggle />
+                                <ModeToggle id="tour-theme-toggle-mobile" />
+                            </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="hidden xl:flex h-20 px-8 items-center justify-between border-b border-border/40">
+                <div className="hidden xl:flex h-20 px-10 items-center justify-between border-b border-border/50 bg-background/50 backdrop-blur-md">
                     <div className="flex flex-col">
-                        <h2 className="font-black text-2xl tracking-tighter">
+                        <h2 className="text-title font-black text-foreground">
                             {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
                         </h2>
                         {ROUTE_LABELS[location.pathname]?.subtitle && (
-                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest -mt-1 opacity-60">
+                            <span className="text-caption text-muted-foreground mt-0.5">
                                 {t(ROUTE_LABELS[location.pathname].subtitle)}
                             </span>
                         )}
@@ -221,17 +223,12 @@ export const Layout = ({ children }) => {
                 </div>
 
                 {/* Mobile Tablet Header Sub-Nav - Dynamic section title */}
-                <div className="xl:hidden px-6 py-4 border-b border-border/10 bg-muted/20">
+                <div className="xl:hidden px-5 py-3 border-b border-border/50 bg-card/80 backdrop-blur-md">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex flex-col min-w-0">
-                            <h2 className="font-black text-lg tracking-tight truncate">
+                            <h2 className="font-black text-base tracking-tight truncate text-foreground">
                                 {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
                             </h2>
-                            {ROUTE_LABELS[location.pathname]?.subtitle && (
-                                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest opacity-60 truncate">
-                                    {t(ROUTE_LABELS[location.pathname].subtitle)}
-                                </p>
-                            )}
                         </div>
                         <MonthSelector />
                     </div>

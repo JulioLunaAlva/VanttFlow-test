@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFinance } from "@/context/FinanceContext";
 import { ArrowUpRight, ArrowDownLeft, Trash2, ArrowRightLeft, Image as ImageIcon, Edit2 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import { cn, parseLocalDateStr } from '@/lib/utils';
@@ -13,11 +14,11 @@ export const TransactionItem = ({ transaction, onEdit }) => {
 
     const t = transaction;
     const getAccountName = (id) => accounts.find(a => a.id === id)?.name || 'Desconocida';
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-    const handleDelete = (id) => {
-        if (window.confirm('¿Estás seguro de eliminar esta transacción?')) {
-            deleteTransaction(id);
-        }
+    const handleDelete = () => {
+        deleteTransaction(t.id);
+        setIsDeleteDialogOpen(false);
     };
 
     return (
@@ -96,12 +97,27 @@ export const TransactionItem = ({ transaction, onEdit }) => {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 rounded-xl text-muted-foreground hover:text-rose-500 hover:bg-rose-500/10 transition-all active:scale-90"
-                        onClick={() => handleDelete(t.id)}
+                        onClick={() => setIsDeleteDialogOpen(true)}
                     >
                         <Trash2 size={14} />
                     </Button>
                 </div>
             </div>
+
+            <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>¿Eliminar transacción?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Esta acción no se puede deshacer. La transacción se eliminará permanentemente de tu historial.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">Eliminar</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };
