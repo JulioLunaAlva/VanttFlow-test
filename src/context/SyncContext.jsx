@@ -40,7 +40,7 @@ export const SyncProvider = ({ children }) => {
             return { status: 'NEW_USER', user: result.user };
         } catch (error) {
             console.error('Error in Google Login:', error);
-            toast.error('Error al iniciar sesión con Google');
+            toast.error(`Error: ${error.message || 'Desconocido'}`);
             return { status: 'ERROR', error };
         }
     };
