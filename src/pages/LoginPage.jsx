@@ -55,79 +55,84 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#020617] text-foreground flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans select-none">
-            {/* Ultra-Premium Background Design */}
-            <div className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[150px] pointer-events-none animate-pulse-slow" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-indigo-900/20 rounded-full blur-[120px] pointer-events-none animate-pulse-slow" />
+    return (
+        <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+            {/* Orbs de luz de fondo premium */}
+            <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-primary/10 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
+            <div className="absolute bottom-0 left-0 w-[60vw] h-[60vw] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -translate-x-1/3 translate-y-1/3" />
 
-            <div className="z-10 w-full max-w-sm space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                {/* Brand & User Header */}
-                <div className="text-center space-y-8">
-                    <div className="relative inline-block group">
-                        <div className="absolute -inset-4 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition duration-1000"></div>
-                        <div className="relative glass-premium p-6 rounded-[2.5rem] border-border/50 shadow-2xl transition-all duration-700 hover:scale-105 active:scale-95">
-                            <img src="/logo.png" alt="VanttFlow" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_0_15px_rgba(59,130,246,0.3)]" />
+            <div className="z-10 w-full max-w-sm flex flex-col items-center animate-in fade-in slide-in-from-bottom-8 duration-1000 h-[100dvh] py-12 justify-between">
+                
+                {/* Header (Avatar & Greeting) */}
+                <div className="flex flex-col items-center mt-8">
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-br from-primary/40 to-blue-600/40 rounded-full blur-lg opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+                        <div className="w-20 h-20 rounded-full glass-premium border-border/50 flex items-center justify-center relative z-10 overflow-hidden shadow-2xl">
+                            <div className="w-full h-full bg-background/80 flex items-center justify-center text-3xl font-bold text-foreground">
+                                {user.name.charAt(0).toUpperCase()}
+                            </div>
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        <h1 className="text-3xl font-black tracking-tighter text-foreground">
-                            {t('auth.welcome_user', { name: user.name })}
-                        </h1>
-                        <div className="flex justify-center">
-                            <span className="glass-premium px-4 py-1.5 rounded-full border-border/30 text-muted-foreground/60 text-[10px] font-black tracking-[0.3em] uppercase">
-                                {t('auth.enter_pin')}
-                            </span>
-                        </div>
-                    </div>
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground mt-6 mb-1">
+                        Hola, {user.name}
+                    </h1>
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground/60">
+                        {t('auth.enter_pin')}
+                    </p>
                 </div>
 
-                {/* PIN Display */}
-                <div className={`flex justify-center gap-6 py-6 ${errorShake ? 'animate-shake' : ''}`}>
+                {/* PIN Display Slots */}
+                <div className={`flex justify-center gap-6 my-12 ${errorShake ? 'animate-shake text-rose-500' : ''}`}>
                     {[0, 1, 2, 3].map((i) => (
-                        <div
-                            key={i}
-                            className={cn(
-                                "w-6 h-6 rounded-full transition-all duration-500 border-2",
-                                i < pin.length
-                                    ? "bg-blue-500 border-blue-400 shadow-[0_0_25px_rgba(59,130,246,0.8)] scale-125"
-                                    : "bg-foreground/5 border-border/30 scale-100"
-                            )}
-                        />
+                        <div key={i} className="flex flex-col items-center justify-end h-6 w-6">
+                            <div className={cn(
+                                "transition-all duration-300 ease-out rounded-full",
+                                i < pin.length 
+                                    ? "w-4 h-4 bg-primary shadow-[0_0_15px_rgba(59,130,246,0.6)]" 
+                                    : "w-2.5 h-2.5 bg-foreground/20"
+                            )} />
+                        </div>
                     ))}
                 </div>
 
-                {/* Tactile Keypad */}
-                <div className="grid grid-cols-3 gap-y-8 gap-x-12 px-4">
+                {/* Ultra-Clean Keypad */}
+                <div className="w-full max-w-[280px] mx-auto grid grid-cols-3 gap-x-6 gap-y-4">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
                         <button
                             key={num}
                             onClick={() => handleNumberClick(num)}
-                            className="w-20 h-20 rounded-[2rem] glass-card flex items-center justify-center text-2xl font-black tracking-tighter transition-all duration-300 hover:scale-110 active:scale-90 hover:bg-foreground/10 border-border/30 shadow-xl group"
+                            className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center text-4xl font-light text-foreground transition-all duration-200 active:bg-foreground/10 hover:bg-foreground/5 relative group"
                         >
-                            <span className="group-hover:scale-125 transition-transform duration-300">{num}</span>
+                            <span className="group-active:scale-90 transition-transform duration-200">{num}</span>
                         </button>
                     ))}
+                    
+                    {/* Bottom Row */}
                     <div className="flex items-center justify-center">
-                         <div className="w-12 h-12 rounded-2xl bg-foreground/5 flex items-center justify-center opacity-20">
-                            <Fingerprint size={32} />
-                         </div>
+                        <button className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center transition-all duration-200 active:bg-foreground/10 text-primary/80 group">
+                            <Fingerprint size={32} strokeWidth={1.5} className="group-active:scale-90 transition-transform duration-200" />
+                        </button>
                     </div>
+                    
                     <button
                         onClick={() => handleNumberClick(0)}
-                        className="w-20 h-20 rounded-[2rem] glass-card flex items-center justify-center text-2xl font-black tracking-tighter transition-all duration-300 hover:scale-110 active:scale-90 hover:bg-foreground/10 border-border/30 shadow-xl group"
+                        className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center text-4xl font-light text-foreground transition-all duration-200 active:bg-foreground/10 hover:bg-foreground/5 relative group"
                     >
-                        <span className="group-hover:scale-125 transition-transform duration-300">0</span>
+                        <span className="group-active:scale-90 transition-transform duration-200">0</span>
                     </button>
-                    <button
-                        onClick={handleDelete}
-                        className="w-20 h-20 rounded-[2rem] flex items-center justify-center transition-all duration-300 hover:bg-foreground/5 active:scale-90 text-foreground/30 hover:text-rose-500 group"
-                    >
-                        <Delete size={32} className="group-hover:-translate-x-1 transition-transform" />
-                    </button>
+                    
+                    <div className="flex items-center justify-center">
+                        <button
+                            onClick={handleDelete}
+                            className="w-[72px] h-[72px] mx-auto rounded-full flex items-center justify-center transition-all duration-200 active:bg-foreground/10 text-foreground/50 hover:text-foreground group"
+                        >
+                            <Delete size={28} strokeWidth={1.5} className="group-active:-translate-x-1 transition-transform duration-200" />
+                        </button>
+                    </div>
                 </div>
 
-                <div className="text-center pt-8">
-                    <Button variant="link" size="sm" onClick={() => navigate('/setup')} className="text-foreground/20 text-[10px] font-black uppercase tracking-[0.3em] hover:text-foreground/50 transition-colors">
+                <div className="mt-8 mb-4">
+                    <Button variant="link" size="sm" onClick={() => navigate('/setup')} className="text-foreground/30 text-[10px] font-black uppercase tracking-[0.3em] hover:text-foreground/70 transition-colors">
                         {t('auth.forgot_pin')}
                     </Button>
                 </div>
