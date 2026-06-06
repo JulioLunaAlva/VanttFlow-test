@@ -12,7 +12,9 @@ import { toast } from 'sonner';
 import { useGamification } from '@/context/GamificationContext';
 import { useFinance } from '@/context/FinanceContext';
 import { useNotifications } from '@/context/NotificationContext';
-import { Download, Upload, Bell, Zap } from 'lucide-react';
+import { useSync } from '@/context/SyncContext';
+import { db } from '@/lib/db';
+import { Download, Upload, Bell, Zap, Cloud, CloudOff, CloudUpload } from 'lucide-react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Languages } from 'lucide-react';
@@ -22,6 +24,7 @@ export const SettingsPage = () => {
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
     const { state: _financeState, dispatch: _dispatch } = useFinance(); // Removed unused as per lint, but keeping destructuring logic structure if needed later
     const { permission, requestPermission, sendNotification, triggerMotivation } = useNotifications();
+    const { firebaseUser, isSyncing, lastSyncTime, loginWithGoogle, logoutGoogle, backupToCloud } = useSync();
     const { t, i18n } = useTranslation();
     const fileInputRef = useRef(null);
 
@@ -61,18 +64,22 @@ export const SettingsPage = () => {
         }
     };
 
-    const handleExport = () => {
-        const data = {
-            version: '1.2',
-            exportedAt: new Date().toISOString(),
-            // Finance Keys
-            transactions: JSON.parse(localStorage.getItem('finance_transactions') || '[]'),
-            categories: JSON.parse(localStorage.getItem('finance_categories') || '[]'),
-            accounts: JSON.parse(localStorage.getItem('finance_accounts') || '[]'),
-            scheduledPayments: JSON.parse(localStorage.getItem('finance_scheduled') || '[]'),
-            paymentInstances: JSON.parse(localStorage.getItem('finance_scheduled_instances') || '[]'),
-            budgets: JSON.parse(localStorage.getItem('finance_budgets') || '[]'),
-            goals: JSON.parse(localStorage.getItem('finance_goals') || '[]'),
+    const handleExport = async () => {
+        const toastId = toast.loading('Generando respaldo...');
+        try {
+            const data = {
+                version: '1.2',
+                exportedAt: new Date().toISOString(),
+                // Finance Keys (from Dexie)
+                transactions: await db.transactions.toArray(),
+                categories: await db.categories.toArray(),
+                accounts: await db.accounts.toArray(),
+                scheduledPayments: await db.scheduledPayments.toArray(),
+                paymentInstances: await db.paymentInstances.toArray(),
+                budgets: await db.budgets.toArray(),
+                goals: await db.goals.toArray(),
+                notes: await db.notes.toArray(),
+                ious: await db.ious.toArray(),
             // Identity Keys
             identity: JSON.parse(localStorage.getItem('vantt_identity')),
             privacyMode: JSON.parse(localStorage.getItem('vantt_privacy_mode') || 'false'),
@@ -100,7 +107,11 @@ export const SettingsPage = () => {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        toast.success(t('settings.export_success'));
+        toast.success(t('settings.export_success'), { id: toastId });
+        } catch (error) {
+            console.error(error);
+            toast.error('Error al generar respaldo', { id: toastId });
+        }
     };
 
     const validateBackupData = (data) => {
@@ -115,68 +126,80 @@ export const SettingsPage = () => {
         return { valid: true };
     };
 
-    const handleImport = (e) => {
+    const handleImport = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = (event) => {
+        reader.onload = async (event) => {
+            const toastId = toast.loading('Restaurando respaldo...');
             try {
                 const data = JSON.parse(event.target.result);
 
                 const { valid, reason } = validateBackupData(data);
                 if (!valid) {
-                    toast.error(`${t('settings.import_invalid_format') || 'Formato de archivo inválido'}: ${reason}`);
+                    toast.error(`${t('settings.import_invalid_format') || 'Formato de archivo inválido'}: ${reason}`, { id: toastId });
                     return;
                 }
 
                 if (confirm(t('settings.import_confirm'))) {
-                    // Support both v1.2 (transactions) and older format (finance_data key from backup.js)
-                    const transactions = data.transactions || data.finance_data || [];
-                    
-                    // Start atomic-like update by verifying keys first
-                    const backupKeys = {
-                        'finance_transactions': transactions,
-                        'finance_categories': data.categories,
-                        'finance_accounts': data.accounts,
-                        'finance_scheduled': data.scheduledPayments || [],
-                        'finance_scheduled_instances': data.paymentInstances || [],
-                        'finance_budgets': data.budgets || [],
-                        'finance_goals': data.goals || [],
-                        'market_data_real': data.market || null,
-                        'vantt_privacy_mode': data.privacyMode ?? false
-                    };
+                    // Restore Dexie
+                    await db.transaction('rw', db.transactions, db.categories, db.accounts, db.scheduledPayments, db.paymentInstances, db.budgets, db.goals, db.notes, db.ious, async () => {
+                        await db.transactions.clear();
+                        if (data.transactions && data.transactions.length) await db.transactions.bulkAdd(data.transactions);
+                        
+                        await db.categories.clear();
+                        if (data.categories && data.categories.length) await db.categories.bulkAdd(data.categories);
 
-                    // Only restore identity if it exists in backup and has required fields
-                    if (data.identity && data.identity.name) {
-                        backupKeys['vantt_identity'] = data.identity;
-                    }
+                        await db.accounts.clear();
+                        if (data.accounts && data.accounts.length) await db.accounts.bulkAdd(data.accounts);
 
-                    // Gamification
-                    if (data.gamification) {
-                        backupKeys['gamification_enabled'] = data.gamification.enabled ?? true;
-                        backupKeys['gamification_selected_pet'] = data.gamification.pet || "fox";
-                        backupKeys['gamification_xp'] = data.gamification.xp || 0;
-                        backupKeys['gamification_achievements'] = data.gamification.achievements || [];
-                        backupKeys['gamification_last_login'] = data.gamification.lastLogin;
-                        backupKeys['gamification_streak'] = data.gamification.streak || 0;
-                        backupKeys['gamification_daily_missions'] = data.gamification.missions || [];
-                        backupKeys['gamification_missions_date'] = data.gamification.missionsDate;
-                    }
+                        await db.scheduledPayments.clear();
+                        if (data.scheduledPayments && data.scheduledPayments.length) await db.scheduledPayments.bulkAdd(data.scheduledPayments);
 
-                    // Apply all to localStorage
-                    Object.entries(backupKeys).forEach(([key, value]) => {
-                        if (value !== null && value !== undefined) {
-                            localStorage.setItem(key, JSON.stringify(value));
-                        }
+                        await db.paymentInstances.clear();
+                        if (data.paymentInstances && data.paymentInstances.length) await db.paymentInstances.bulkAdd(data.paymentInstances);
+
+                        await db.budgets.clear();
+                        if (data.budgets && data.budgets.length) await db.budgets.bulkAdd(data.budgets);
+
+                        await db.goals.clear();
+                        if (data.goals && data.goals.length) await db.goals.bulkAdd(data.goals);
+
+                        await db.notes.clear();
+                        if (data.notes && data.notes.length) await db.notes.bulkAdd(data.notes);
+
+                        await db.ious.clear();
+                        if (data.ious && data.ious.length) await db.ious.bulkAdd(data.ious);
                     });
 
-                    toast.success(`${t('settings.import_success')} — ${transactions.length} transacciones restauradas`);
+                    // Restore LocalStorage
+                    if (data.identity && data.identity.name) {
+                        localStorage.setItem('vantt_identity', JSON.stringify(data.identity));
+                    }
+                    if (data.privacyMode !== undefined) {
+                        localStorage.setItem('vantt_privacy_mode', JSON.stringify(data.privacyMode));
+                    }
+                    if (data.market) {
+                        localStorage.setItem('market_data_real', JSON.stringify(data.market));
+                    }
+                    if (data.gamification) {
+                        localStorage.setItem('gamification_enabled', JSON.stringify(data.gamification.enabled ?? true));
+                        localStorage.setItem('gamification_selected_pet', JSON.stringify(data.gamification.pet || "fox"));
+                        localStorage.setItem('gamification_xp', JSON.stringify(data.gamification.xp || 0));
+                        localStorage.setItem('gamification_achievements', JSON.stringify(data.gamification.achievements || []));
+                        localStorage.setItem('gamification_last_login', JSON.stringify(data.gamification.lastLogin));
+                        localStorage.setItem('gamification_streak', JSON.stringify(data.gamification.streak || 0));
+                        localStorage.setItem('gamification_daily_missions', JSON.stringify(data.gamification.missions || []));
+                        localStorage.setItem('gamification_missions_date', JSON.stringify(data.gamification.missionsDate));
+                    }
+
+                    toast.success(`${t('settings.import_success')} — ${data.transactions?.length || 0} transacciones restauradas`, { id: toastId });
                     setTimeout(() => window.location.reload(), 1500);
                 }
             } catch (error) {
                 console.error('Import error:', error);
-                toast.error(`${t('settings.import_error')}: ${error.message}`);
+                toast.error(`${t('settings.import_error')}: ${error.message}`, { id: toastId });
             }
         };
         reader.readAsText(file);
@@ -342,6 +365,69 @@ export const SettingsPage = () => {
                             <option value="fr">{t('settings.lang_fr') || 'Français 🇫🇷'}</option>
                         </Select>
                     </div>
+                </div>
+            </div>
+
+            {/* Cloud Sync Section */}
+            <div className="card-base overflow-hidden border-blue-500/20 bg-blue-500/5">
+                <div className="px-5 py-4 border-b border-blue-500/10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-500">
+                            {firebaseUser ? <Cloud size={18} /> : <CloudOff size={18} />}
+                        </div>
+                        <div className="flex-1">
+                            <h3 className="text-base font-black tracking-tight text-blue-500">Sincronización en la Nube</h3>
+                            <p className="text-caption text-blue-500/60">
+                                {firebaseUser ? `Conectado como ${firebaseUser.displayName || firebaseUser.email}` : 'Respalda tus datos de forma segura'}
+                            </p>
+                        </div>
+                        {firebaseUser && (
+                            <Button variant="ghost" size="sm" onClick={logoutGoogle} className="text-blue-500 hover:bg-blue-500/20">
+                                Desconectar
+                            </Button>
+                        )}
+                    </div>
+                </div>
+                <div className="p-5">
+                    {firebaseUser ? (
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <p className="text-sm font-medium">Última sincronización:</p>
+                                <p className="text-xs text-muted-foreground">
+                                    {lastSyncTime ? new Date(lastSyncTime).toLocaleString() : 'Nunca'}
+                                </p>
+                            </div>
+                            <Button 
+                                onClick={() => backupToCloud()} 
+                                disabled={isSyncing}
+                                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20"
+                            >
+                                {isSyncing ? (
+                                    <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin mr-2" />
+                                ) : (
+                                    <CloudUpload size={16} className="mr-2" />
+                                )}
+                                {isSyncing ? 'Subiendo...' : 'Sincronizar Ahora'}
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <p className="text-sm text-muted-foreground">Inicia sesión con Google para respaldar tus datos en la nube y no perderlos al cambiar de dispositivo.</p>
+                            <Button 
+                                onClick={loginWithGoogle} 
+                                variant="outline"
+                                className="border-blue-500/30 text-blue-500 hover:bg-blue-500/10"
+                            >
+                                <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
+                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                                </svg>
+                                Conectar Google
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
 

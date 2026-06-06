@@ -27,6 +27,7 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import { GamificationProvider } from "@/context/GamificationContext";
 import { MarketProvider } from "@/context/MarketContext";
 import { NotificationProvider } from '@/context/NotificationContext';
+import { SyncProvider } from '@/context/SyncContext';
 import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { UpdatePrompt } from "@/components/pwa/UpdatePrompt";
@@ -70,8 +71,9 @@ function App() {
               <MarketProvider>
                 <FinanceProvider>
                   <NotificationProvider>
-                    <Routes>
-                      {/* Public Routes */}
+                    <SyncProvider>
+                      <Routes>
+                        {/* Public Routes */}
                       <Route path="/" element={<RootRoute />} />
                       <Route path="/login" element={<LoginPage />} />
                       <Route path="/setup" element={<OnboardingWizard />} />
@@ -96,6 +98,7 @@ function App() {
                       <Route path="*" element={<Navigate to="/" replace />} />
                     </Routes>
                     <Toaster />
+                    </SyncProvider>
                   </NotificationProvider>
                 </FinanceProvider>
               </MarketProvider>
