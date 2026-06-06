@@ -83,14 +83,16 @@ const IOUDialog = ({ open, onClose, initial }) => {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-md">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Handshake size={18} className="text-primary" />
-                        {isEdit ? 'Editar Deuda' : 'Registrar Deuda'}
-                    </DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+            <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                <div className="px-6 pt-6 pb-4 border-b border-border/50 bg-muted/30">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-xl font-black tracking-tight text-foreground">
+                            <Handshake size={20} className="text-primary" />
+                            {isEdit ? 'Editar Deuda' : 'Registrar Deuda'}
+                        </DialogTitle>
+                    </DialogHeader>
+                </div>
+                <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-4">
                     {/* Type Toggle */}
                     <div className="flex gap-2 p-1 bg-muted rounded-lg">
                         <Button type="button" size="sm"
@@ -148,17 +150,19 @@ const SettleDialog = ({ open, onClose, iou }) => {
     if (!iou) return null;
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-sm">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <Banknote size={18} className="text-emerald-400" />
-                        Registrar pago — {iou.personName}
-                    </DialogTitle>
-                </DialogHeader>
-                <div className="pt-2 space-y-4">
-                    <p className="text-sm text-muted-foreground">
-                        Pendiente: <span className="font-bold text-foreground">{fmt(remaining)}</span>
-                    </p>
+            <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
+                <div className="px-6 pt-6 pb-4 border-b border-border/50 bg-muted/30">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-lg font-black tracking-tight text-foreground">
+                            <Banknote size={20} className="text-emerald-400" />
+                            Registrar pago
+                        </DialogTitle>
+                        <p className="text-xs text-muted-foreground mt-1">
+                            {iou.personName} — Pendiente: <span className="font-bold text-foreground">{fmt(remaining)}</span>
+                        </p>
+                    </DialogHeader>
+                </div>
+                <div className="px-6 pb-6 pt-4 space-y-4">
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <MoneyInput value={amount} onChange={setAmount} placeholder={`Hasta ${fmt(remaining)}`} required />
                         {iou.type === 'lent' && (
@@ -204,14 +208,16 @@ const NoteDialog = ({ open, onClose, initial }) => {
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-md">
-                <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
-                        <FileText size={18} className="text-primary" />
-                        {isEdit ? 'Editar Nota' : 'Nueva Nota'}
-                    </DialogTitle>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 pt-2">
+            <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+                <div className="px-6 pt-6 pb-4 border-b border-border/50 bg-muted/30">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 text-xl font-black tracking-tight text-foreground">
+                            <FileText size={20} className="text-primary" />
+                            {isEdit ? 'Editar Nota' : 'Nueva Nota'}
+                        </DialogTitle>
+                    </DialogHeader>
+                </div>
+                <form onSubmit={handleSubmit} className="px-6 pb-6 pt-4 space-y-4">
                     <Input placeholder="Título *" value={form.title} onChange={e => set('title', e.target.value)} required />
                     <textarea
                         className="w-full h-28 rounded-md border border-input bg-background px-3 py-2 text-sm resize-none focus:outline-none focus:ring-1 focus:ring-ring"
