@@ -55,7 +55,6 @@ export const LoginPage = () => {
     }
 
     return (
-    return (
         <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans select-none">
             {/* Orbs de luz de fondo premium */}
             <div className="absolute top-0 right-0 w-[50vw] h-[50vw] bg-primary/10 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3" />
