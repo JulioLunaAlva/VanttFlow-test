@@ -419,45 +419,7 @@ export const FinanceProvider = ({ children }) => {
         });
     }, [transactions, selectedMonth]);
 
-    // Memoized Summary
-    const summary = useMemo(() => {
-        const income = filteredTransactions
-            .filter(t => t.type === 'income')
-            .reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-        const expense = filteredTransactions
-            .filter(t => t.type === 'expense' && !t.isInstallmentTotal)
-            .reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-        const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + Number(curr.amount), 0);
-        const totalExpense = transactions.filter(t => t.type === 'expense' && !t.isInstallmentTotal).reduce((acc, curr) => acc + Number(curr.amount), 0);
-
-        const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
-        const balance = initialBalancesSum + totalIncome - totalExpense;
-
-        // --- Separar activos reales de deuda de crédito ---
-        // Activos netos: solo cuentas que NO son tarjetas de crédito
-        const nonCreditAccounts = accounts.filter(a => a.type !== 'credit');
-        const creditAccounts = accounts.filter(a => a.type === 'credit');
-
-        const netAssets = nonCreditAccounts.reduce((acc, account) => {
-            return acc + (allBalances[account.id] || 0);
-        }, 0);
-
-        // Deuda total de crédito: suma de deudas actuales en cada tarjeta
-        let totalCreditDebt = 0;
-        let totalCreditLimit = 0;
-        creditAccounts.forEach(account => {
-            const bal = allBalances[account.id] || 0;
-            // Saldo negativo = deuda
-            totalCreditDebt += bal < 0 ? Math.abs(bal) : 0;
-            totalCreditLimit += Number(account.limit || 0);
-        });
-
-        const creditUtilization = totalCreditLimit > 0 ? (totalCreditDebt / totalCreditLimit) * 100 : 0;
-
-        return { income, expense, balance, netAssets, totalCreditDebt, totalCreditLimit, creditUtilization };
-    }, [filteredTransactions, transactions, accounts, allBalances]);
+    // NOTE: summary is defined AFTER allBalances (below) to avoid temporal dead zone
 
     // --- LOGICA CATEGORIAS ---
     const addCategory = (category) => {
@@ -583,6 +545,44 @@ export const FinanceProvider = ({ children }) => {
         });
         return balances;
     }, [transactions, accounts]);
+
+    // Memoized Summary — defined here because it depends on allBalances above
+    const summary = useMemo(() => {
+        const income = filteredTransactions
+            .filter(t => t.type === 'income')
+            .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+        const expense = filteredTransactions
+            .filter(t => t.type === 'expense' && !t.isInstallmentTotal)
+            .reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+        const totalIncome = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + Number(curr.amount), 0);
+        const totalExpense = transactions.filter(t => t.type === 'expense' && !t.isInstallmentTotal).reduce((acc, curr) => acc + Number(curr.amount), 0);
+
+        const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
+        const balance = initialBalancesSum + totalIncome - totalExpense;
+
+        // Activos netos: solo cuentas que NO son tarjetas de crédito
+        const nonCreditAccounts = accounts.filter(a => a.type !== 'credit');
+        const creditAccounts = accounts.filter(a => a.type === 'credit');
+
+        const netAssets = nonCreditAccounts.reduce((acc, account) => {
+            return acc + (allBalances[account.id] || 0);
+        }, 0);
+
+        // Deuda total de crédito
+        let totalCreditDebt = 0;
+        let totalCreditLimit = 0;
+        creditAccounts.forEach(account => {
+            const bal = allBalances[account.id] || 0;
+            totalCreditDebt += bal < 0 ? Math.abs(bal) : 0;
+            totalCreditLimit += Number(account.limit || 0);
+        });
+
+        const creditUtilization = totalCreditLimit > 0 ? (totalCreditDebt / totalCreditLimit) * 100 : 0;
+
+        return { income, expense, balance, netAssets, totalCreditDebt, totalCreditLimit, creditUtilization };
+    }, [filteredTransactions, transactions, accounts, allBalances]);
 
     const getAccountBalance = (accountId) => {
         return allBalances[accountId] || 0;
