@@ -28,7 +28,7 @@ const DashboardHero = ({ isNewUser }) => {
     const { t } = useTranslation();
     const { user } = useIdentity();
     const { summary } = useFinance();
-    const { balance, income: totalIncome, expense: totalExpenses } = summary;
+    const { netAssets, income: totalIncome, expense: totalExpenses, totalCreditDebt, creditUtilization } = summary;
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
 
@@ -77,16 +77,16 @@ const DashboardHero = ({ isNewUser }) => {
 
                 {/* Label */}
                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/50 mb-1.5">
-                    Patrimonio neto
+                    Activos líquidos
                 </p>
 
                 {/* Balance — número dominante estilo Revolut */}
                 <div className="text-amount-xl font-black text-foreground mb-4 md:mb-5">
-                    <PrivacyBlur intensity="lg">{fmt(balance)}</PrivacyBlur>
+                    <PrivacyBlur intensity="lg">{fmt(netAssets)}</PrivacyBlur>
                 </div>
 
                 {/* Income / Expense mini stats */}
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/15">
                         <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot flex-shrink-0" />
                         <span className="text-[11px] font-bold text-success tracking-[-0.01em]">
@@ -99,11 +99,26 @@ const DashboardHero = ({ isNewUser }) => {
                             <PrivacyBlur intensity="md">-{fmtShort(Math.abs(totalExpenses))}</PrivacyBlur>
                         </span>
                     </div>
+                    {/* Badge de deuda de crédito — solo si hay tarjetas con saldo */}
+                    {totalCreditDebt > 0 && (
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500 flex-shrink-0"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                            <span className="text-[11px] font-bold text-amber-500 tracking-[-0.01em]">
+                                <PrivacyBlur intensity="md">Deuda {fmtShort(totalCreditDebt)}</PrivacyBlur>
+                            </span>
+                            {creditUtilization > 0 && (
+                                <span className="text-[9px] font-black text-amber-500/60 bg-amber-500/10 px-1.5 py-0.5 rounded-full">
+                                    {creditUtilization.toFixed(0)}%
+                                </span>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
 };
+
 
 const WIDGETS_CONFIG = [
     { id: 'balance', component: BalanceBarChart, labelKey: 'dashboard.balance', className: 'col-span-1 md:col-span-2 lg:col-span-8' },

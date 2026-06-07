@@ -435,8 +435,29 @@ export const FinanceProvider = ({ children }) => {
         const initialBalancesSum = accounts.reduce((acc, curr) => acc + Number(curr.initialBalance || 0), 0);
         const balance = initialBalancesSum + totalIncome - totalExpense;
 
-        return { income, expense, balance };
-    }, [filteredTransactions, transactions, accounts]);
+        // --- Separar activos reales de deuda de crédito ---
+        // Activos netos: solo cuentas que NO son tarjetas de crédito
+        const nonCreditAccounts = accounts.filter(a => a.type !== 'credit');
+        const creditAccounts = accounts.filter(a => a.type === 'credit');
+
+        const netAssets = nonCreditAccounts.reduce((acc, account) => {
+            return acc + (allBalances[account.id] || 0);
+        }, 0);
+
+        // Deuda total de crédito: suma de deudas actuales en cada tarjeta
+        let totalCreditDebt = 0;
+        let totalCreditLimit = 0;
+        creditAccounts.forEach(account => {
+            const bal = allBalances[account.id] || 0;
+            // Saldo negativo = deuda
+            totalCreditDebt += bal < 0 ? Math.abs(bal) : 0;
+            totalCreditLimit += Number(account.limit || 0);
+        });
+
+        const creditUtilization = totalCreditLimit > 0 ? (totalCreditDebt / totalCreditLimit) * 100 : 0;
+
+        return { income, expense, balance, netAssets, totalCreditDebt, totalCreditLimit, creditUtilization };
+    }, [filteredTransactions, transactions, accounts, allBalances]);
 
     // --- LOGICA CATEGORIAS ---
     const addCategory = (category) => {
