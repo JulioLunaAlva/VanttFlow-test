@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useFinance } from "@/context/FinanceContext";
-import { Plus, Calendar, Power, Trash2, Zap, AlertCircle, RefreshCw, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Plus, Calendar, Power, Trash2, Zap, AlertCircle, RefreshCw, Sparkles, ChevronDown, ChevronUp, Edit2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { CategorySelect } from "@/components/ui/CategorySelect";
@@ -61,7 +61,7 @@ const ServiceLogo = ({ domain, name, color, size = 'md' }) => {
 
 export const SubscriptionsPage = () => {
     const { t, i18n } = useTranslation();
-    const { scheduledPayments, addScheduledPayment, toggleScheduledStatus, deleteScheduledPayment, categories, accounts } = useFinance();
+    const { scheduledPayments, addScheduledPayment, toggleScheduledStatus, deleteScheduledPayment, updateScheduledPayment, categories, accounts } = useFinance();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -74,6 +74,39 @@ export const SubscriptionsPage = () => {
     const [categoryId, setCategoryId] = useState('');
     const [accountId, setAccountId] = useState('');
     const [dayOfMonth, setDayOfMonth] = useState(1);
+
+    // Estado para edición
+    const [editingPayment, setEditingPayment] = useState(null);
+    const [editName, setEditName] = useState('');
+    const [editAmount, setEditAmount] = useState('');
+    const [editDayOfMonth, setEditDayOfMonth] = useState(1);
+    const [editType, setEditType] = useState('expense');
+    const [editCategoryId, setEditCategoryId] = useState('');
+    const [editAccountId, setEditAccountId] = useState('');
+
+    const openEditDialog = (payment) => {
+        setEditingPayment(payment);
+        setEditName(payment.name);
+        setEditAmount(payment.amount.toString());
+        setEditDayOfMonth(payment.dayOfMonth || 1);
+        setEditType(payment.type || 'expense');
+        setEditCategoryId(payment.categoryId || '');
+        setEditAccountId(payment.accountId || '');
+    };
+
+    const handleEditSubmit = (e) => {
+        e.preventDefault();
+        if (!editingPayment) return;
+        updateScheduledPayment(editingPayment.id, {
+            name: editName,
+            amount: parseFloat(editAmount),
+            type: editType,
+            categoryId: editCategoryId,
+            accountId: editAccountId,
+            dayOfMonth: parseInt(editDayOfMonth),
+        });
+        setEditingPayment(null);
+    };
 
     const openEmpty = () => {
         setName(''); setAmount(''); setCategoryId(''); setDayOfMonth(1);
@@ -312,24 +345,33 @@ export const SubscriptionsPage = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                    <div className="flex gap-2">
                                         <Button
                                             variant="ghost"
                                             size="icon"
-                                            className="h-10 w-10 glass-premium bg-foreground/5 hover:bg-foreground/10 rounded-xl border border-border/30"
+                                            className="h-9 w-9 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl border border-primary/20"
+                                            onClick={() => openEditDialog(payment)}
+                                            title="Editar"
+                                        >
+                                            <Edit2 size={14} />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="h-9 w-9 glass-premium bg-foreground/5 hover:bg-foreground/10 rounded-xl border border-border/30"
                                             onClick={() => toggleScheduledStatus(payment.id)}
                                             title={payment.status === 'active' ? 'Pausar' : 'Activar'}
                                         >
-                                            <Power size={16} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
+                                            <Power size={14} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
                                         </Button>
                                         <AlertDialog>
                                             <AlertDialogTrigger asChild>
                                                 <Button
                                                     variant="ghost"
                                                     size="icon"
-                                                    className="h-10 w-10 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl border border-rose-500/20"
+                                                    className="h-9 w-9 bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 rounded-xl border border-rose-500/20"
                                                 >
-                                                    <Trash2 size={16} />
+                                                    <Trash2 size={14} />
                                                 </Button>
                                             </AlertDialogTrigger>
                                             <AlertDialogContent>
@@ -494,6 +536,64 @@ export const SubscriptionsPage = () => {
                         >
                             {t('subscriptions.save_btn')} ✓
                         </Button>
+                    </form>
+                </DialogContent>
+            </Dialog>
+
+            {/* ── Dialog de Edición ────────────────────────────────────── */}
+            <Dialog open={!!editingPayment} onOpenChange={(v) => !v && setEditingPayment(null)}>
+                <DialogContent className="p-0 overflow-hidden rounded-[2rem] border-none shadow-2xl max-w-md">
+                    <div className="px-6 pt-6 pb-5 border-b border-border/30 bg-gradient-to-br from-primary/5 to-transparent">
+                        <DialogHeader>
+                            <DialogTitle className="text-2xl font-black tracking-tighter flex items-center gap-3">
+                                <Edit2 size={22} className="text-primary" />
+                                Editar suscripción
+                            </DialogTitle>
+                            <p className="text-xs text-muted-foreground/60 font-bold uppercase tracking-widest mt-1">
+                                {editingPayment?.name}
+                            </p>
+                        </DialogHeader>
+                    </div>
+                    <form onSubmit={handleEditSubmit} className="px-6 py-5 space-y-5">
+                        {/* Tipo */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <button type="button" onClick={() => setEditType('income')} className={cn("py-3 rounded-2xl font-black text-sm border-2 transition-all", editType === 'income' ? "bg-emerald-500 text-white border-emerald-500" : "border-border/30 text-muted-foreground")}>
+                                💰 Ingreso recurrente
+                            </button>
+                            <button type="button" onClick={() => setEditType('expense')} className={cn("py-3 rounded-2xl font-black text-sm border-2 transition-all", editType === 'expense' ? "bg-rose-500 text-white border-rose-500" : "border-border/30 text-muted-foreground")}>
+                                💸 Gasto fijo
+                            </button>
+                        </div>
+                        {/* Nombre */}
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Nombre</label>
+                            <Input value={editName} onChange={e => setEditName(e.target.value)} required className="h-12 rounded-xl font-bold" />
+                        </div>
+                        {/* Monto + Día */}
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Monto mensual</label>
+                                <Input type="number" value={editAmount} onChange={e => setEditAmount(e.target.value)} required className="h-12 rounded-xl font-bold" />
+                            </div>
+                            <div className="space-y-1.5">
+                                <label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Día de cobro</label>
+                                <Input type="number" min="1" max="31" value={editDayOfMonth} onChange={e => setEditDayOfMonth(e.target.value)} required className="h-12 rounded-xl font-bold" />
+                            </div>
+                        </div>
+                        {/* Categoría */}
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Categoría (opcional)</label>
+                            <CategorySelect categories={categories.filter(c => c.type === editType || c.type === 'both')} value={editCategoryId} onChange={setEditCategoryId} placeholder="Categoría" />
+                        </div>
+                        {/* Cuenta */}
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-black uppercase tracking-widest text-muted-foreground/60">Cuenta (opcional)</label>
+                            <AccountSelect accounts={accounts} value={editAccountId} onChange={setEditAccountId} placeholder="Cuenta de cargo" />
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                            <Button type="button" variant="ghost" onClick={() => setEditingPayment(null)} className="flex-1 h-12 rounded-2xl">Cancelar</Button>
+                            <Button type="submit" className="flex-1 h-12 rounded-2xl font-black bg-primary hover:bg-primary/90 shadow-lg shadow-primary/25">Guardar cambios ✓</Button>
+                        </div>
                     </form>
                 </DialogContent>
             </Dialog>

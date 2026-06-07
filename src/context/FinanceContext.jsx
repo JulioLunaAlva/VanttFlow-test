@@ -680,6 +680,11 @@ export const FinanceProvider = ({ children }) => {
         toast.success('Pago programado eliminado');
     };
 
+    const updateScheduledPayment = (id, updates) => {
+        db.scheduledPayments.update(id, updates);
+        toast.success('Pago actualizado');
+    };
+
     const getScheduledForMonth = (monthDate) => {
         const monthKey = format(monthDate, 'yyyy-MM');
 
@@ -861,6 +866,7 @@ export const FinanceProvider = ({ children }) => {
         addScheduledPayment,
         toggleScheduledStatus,
         deleteScheduledPayment,
+        updateScheduledPayment,
         getScheduledForMonth,
         processScheduledPayment,
         summary,

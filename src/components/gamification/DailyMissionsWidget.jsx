@@ -2,10 +2,13 @@ import React from 'react';
 import { useGamification } from '@/context/GamificationContext';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from '@/lib/utils';
-import { CheckCircle2, Circle, Target, Receipt, Sparkles } from 'lucide-react';
+import { CheckCircle2, Circle, Target, Receipt, Sparkles, CalendarClock, PieChart, BarChart3 } from 'lucide-react';
 const ICON_MAP = {
     Receipt,
     Target,
+    CalendarClock,
+    PieChart,
+    BarChart3,
 };
 import { useTranslation } from 'react-i18next';
 
@@ -64,7 +67,12 @@ export const DailyMissionsWidget = () => {
                                         "text-[13px] font-black tracking-tight leading-tight truncate transition-all",
                                         mission.completed ? "text-primary/40 line-through decoration-1" : "text-foreground group-hover/item:translate-x-1"
                                     )}>
-                                        {t(`dashboard.missions.${mission.id}`)}
+                                        {(() => {
+                                            const key = `dashboard.missions.${mission.id}`;
+                                            const translated = t(key);
+                                            // Si la traducción devuelve la clave cruda (no encontrada), usar el título original
+                                            return translated === key ? mission.title : translated;
+                                        })()}
                                     </p>
                                     <div className="flex items-center gap-2 mt-2">
                                         <div className={cn(

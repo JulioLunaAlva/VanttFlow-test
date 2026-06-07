@@ -181,6 +181,8 @@ const resources = {
                 missions: {
                     reg_trans: "Registrar una transacción",
                     add_goal: "Definir un nuevo sueño (Meta)",
+                    check_budget: "Revisar mis límites (Presupuestos)",
+                    add_scheduled: "Programar un pago futuro",
                     visit_analytics: "Analizar mis números"
                 },
                 advice: {

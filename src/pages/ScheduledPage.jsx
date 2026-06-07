@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { useFinance } from "@/context/FinanceContext";
-import { Plus, CalendarClock, Calendar, Power, Trash2, CheckCircle2, RotateCcw } from 'lucide-react';
+import { Plus, CalendarClock, Calendar, Power, Trash2, CheckCircle2, RotateCcw, Edit2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { CategorySelect } from "@/components/ui/CategorySelect";
@@ -17,7 +17,7 @@ import { Label } from "@/components/ui/label";
 
 export const ScheduledPage = () => {
     const { t, i18n } = useTranslation();
-    const { scheduledPayments, addScheduledPayment, toggleScheduledStatus, deleteScheduledPayment, categories, accounts } = useFinance();
+    const { scheduledPayments, addScheduledPayment, toggleScheduledStatus, deleteScheduledPayment, updateScheduledPayment, categories, accounts } = useFinance();
     const { user } = useIdentity();
     const currency = user?.currency || 'MXN';
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -32,6 +32,45 @@ export const ScheduledPage = () => {
     const [dayOfMonth, setDayOfMonth] = useState(1);
     const [specificDate, setSpecificDate] = useState('');
     const [endDate, setEndDate] = useState(''); // Optional end date for monthly
+
+    // Estado para edición
+    const [editingPayment, setEditingPayment] = useState(null);
+    const [editName, setEditName] = useState('');
+    const [editAmount, setEditAmount] = useState('');
+    const [editType, setEditType] = useState('expense');
+    const [editFrequency, setEditFrequency] = useState('monthly');
+    const [editDayOfMonth, setEditDayOfMonth] = useState(1);
+    const [editSpecificDate, setEditSpecificDate] = useState('');
+    const [editCategoryId, setEditCategoryId] = useState('');
+    const [editAccountId, setEditAccountId] = useState('');
+
+    const openEditDialog = (payment) => {
+        setEditingPayment(payment);
+        setEditName(payment.name);
+        setEditAmount(payment.amount.toString());
+        setEditType(payment.type || 'expense');
+        setEditFrequency(payment.frequency || 'monthly');
+        setEditDayOfMonth(payment.dayOfMonth || 1);
+        setEditSpecificDate(payment.descDate || '');
+        setEditCategoryId(payment.categoryId || '');
+        setEditAccountId(payment.accountId || '');
+    };
+
+    const handleEditSubmit = (e) => {
+        e.preventDefault();
+        if (!editingPayment) return;
+        updateScheduledPayment(editingPayment.id, {
+            name: editName,
+            amount: parseFloat(editAmount),
+            type: editType,
+            frequency: editFrequency,
+            categoryId: editCategoryId,
+            accountId: editAccountId,
+            dayOfMonth: editFrequency === 'monthly' ? parseInt(editDayOfMonth) : null,
+            descDate: editFrequency === 'one-time' ? editSpecificDate : null,
+        });
+        setEditingPayment(null);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -55,6 +94,7 @@ export const ScheduledPage = () => {
     };
 
     return (
+        <>
         <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto">
             {/* Header Compacto */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
@@ -209,6 +249,9 @@ export const ScheduledPage = () => {
                                         <span className="text-[10px] font-black uppercase tracking-widest opacity-60 truncate max-w-[100px]">{account?.name}</span>
                                     </div>
                                     <div className="flex gap-2">
+                                        <Button variant="outline" size="icon-sm" onClick={() => openEditDialog(payment)} title="Editar" className="hover:bg-primary/10 hover:text-primary hover:border-primary/30">
+                                            <Edit2 size={14} />
+                                        </Button>
                                         <Button variant="outline" size="icon-sm" onClick={() => toggleScheduledStatus(payment.id)}>
                                             <Power size={16} className={payment.status === 'active' ? "text-orange-500" : "text-emerald-500"} />
                                         </Button>
@@ -251,6 +294,69 @@ export const ScheduledPage = () => {
                     </div>
                 )}
             </div>
-        </div >
+        </div>
+
+            {/* ── Dialog de Edición de Pago Programado ───────────────── */}
+            <Dialog open={!!editingPayment} onOpenChange={(v) => !v && setEditingPayment(null)}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle className="flex items-center gap-2 font-black text-xl tracking-tight">
+                            <Edit2 size={20} className="text-primary" />
+                            Editar pago programado
+                        </DialogTitle>
+                    </DialogHeader>
+                    <form onSubmit={handleEditSubmit} className="space-y-5 pt-4">
+                        {/* Tipo */}
+                        <div className="grid grid-cols-2 gap-4 p-1 bg-foreground/5 rounded-2xl border border-border/30">
+                            <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter", editType === 'income' ? "bg-emerald-500 text-foreground" : "")} onClick={() => setEditType('income')}>Ingreso</Button>
+                            <Button type="button" variant="ghost" className={cn("rounded-xl font-black tracking-tighter", editType === 'expense' ? "bg-rose-500 text-foreground" : "")} onClick={() => setEditType('expense')}>Gasto</Button>
+                        </div>
+                        {/* Nombre */}
+                        <div className="space-y-2">
+                            <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Concepto</Label>
+                            <Input value={editName} onChange={e => setEditName(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5 px-4 font-bold" />
+                        </div>
+                        {/* Frecuencia */}
+                        <div className="flex gap-2 p-1 bg-foreground/5 border border-border/30 rounded-2xl">
+                            <Button type="button" variant="ghost" className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase", editFrequency === 'monthly' ? "bg-primary text-foreground" : "text-muted-foreground")} onClick={() => setEditFrequency('monthly')}>Mensual</Button>
+                            <Button type="button" variant="ghost" className={cn("flex-1 h-10 rounded-xl text-[10px] font-black tracking-widest uppercase", editFrequency === 'one-time' ? "bg-primary text-foreground" : "text-muted-foreground")} onClick={() => setEditFrequency('one-time')}>Pago único</Button>
+                        </div>
+                        {/* Monto + Día/Fecha */}
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Monto</Label>
+                                <Input type="number" step="0.01" value={editAmount} onChange={e => setEditAmount(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5 px-4 font-black text-xl" />
+                            </div>
+                            {editFrequency === 'monthly' ? (
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Día del mes</Label>
+                                    <Input type="number" min="1" max="31" value={editDayOfMonth} onChange={e => setEditDayOfMonth(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5 px-4 font-black text-xl" />
+                                </div>
+                            ) : (
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Fecha</Label>
+                                    <DatePicker value={editSpecificDate} onChange={e => setEditSpecificDate(e.target.value)} required className="h-12 rounded-2xl border-border/30 bg-foreground/5" />
+                                </div>
+                            )}
+                        </div>
+                        {/* Categoría + Cuenta */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Categoría</Label>
+                                <CategorySelect categories={categories.filter(c => c.type === editType || c.type === 'both')} value={editCategoryId} onChange={setEditCategoryId} placeholder="Categoría" />
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-black uppercase tracking-widest opacity-50 px-1">Cuenta</Label>
+                                <AccountSelect accounts={accounts} value={editAccountId} onChange={setEditAccountId} placeholder="Cuenta" />
+                            </div>
+                        </div>
+                        <div className="flex gap-3">
+                            <Button type="button" variant="ghost" onClick={() => setEditingPayment(null)} className="flex-1 h-12 rounded-2xl">Cancelar</Button>
+                            <Button type="submit" className="flex-1 h-14 rounded-2xl font-black text-lg shadow-xl shadow-primary/20">Guardar cambios</Button>
+                        </div>
+                    </form>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 };

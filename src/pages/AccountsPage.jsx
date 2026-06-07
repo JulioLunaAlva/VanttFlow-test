@@ -54,14 +54,16 @@ export const AccountsPage = () => {
 
         return (
             <div key={account.id} className="card-interactive overflow-hidden group relative flex flex-col h-auto min-h-[320px]">
-                <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                {/* Botón editar — siempre visible en mobile, hover en desktop */}
+                <div className="absolute top-4 right-4 z-20 md:opacity-0 md:group-hover:opacity-100 md:transition-all md:duration-300">
                     <Button
                         size="icon"
                         variant="ghost"
-                        className="h-10 w-10 bg-background/50 backdrop-blur-sm border border-border/30 rounded-2xl shadow-sm hover:bg-background/80 hover:text-primary transition-colors"
+                        className="h-9 w-9 bg-white/15 backdrop-blur-sm border border-white/20 rounded-2xl shadow-sm hover:bg-white/25 text-white transition-colors"
                         onClick={() => setEditingAccount(account)}
+                        title="Editar tarjeta"
                     >
-                        <Edit2 size={16} />
+                        <Edit2 size={15} />
                     </Button>
                 </div>
 
