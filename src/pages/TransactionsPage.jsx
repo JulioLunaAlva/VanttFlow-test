@@ -18,7 +18,7 @@ export const TransactionsPage = () => {
     }, [location]);
 
     return (
-        <div className="space-y-6 pt-4 pb-32 md:pb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-6 pt-4 pb-32 xl:pb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between glass-premium px-6 py-5 md:px-10 md:py-8 rounded-[2rem] border-border/50 group relative overflow-hidden transition-all duration-500">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
                 <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/10 rounded-full blur-[80px]" />
@@ -36,7 +36,7 @@ export const TransactionsPage = () => {
                 </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-24 md:pb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-24 xl:pb-8">
                 <div className={cn(
                     "lg:col-span-4 transition-all duration-1000 relative group",
                     new URLSearchParams(location.search).get('action') === 'new' && "animate-pulse"

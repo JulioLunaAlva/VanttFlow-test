@@ -87,7 +87,7 @@ export const CategoriesPage = () => {
     };
 
     return (
-        <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-24 md:pb-8">
+        <div className="space-y-8 pt-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 pb-24 xl:pb-8">
             {/* Header Compacto */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
                 <div>

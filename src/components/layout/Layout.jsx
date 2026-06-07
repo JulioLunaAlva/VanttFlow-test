@@ -243,7 +243,7 @@ export const Layout = ({ children }) => {
             {/* Desktop Sidebar */}
             <Sidebar className="hidden xl:flex" />
 
-            <div className="flex-1 flex flex-col pb-[5.5rem] md:pb-0 min-w-0">
+            <div className="flex-1 flex flex-col pb-[5.5rem] xl:pb-0 min-w-0">
 
                 {/* Mobile / Tablet Top Header */}
                 <header className={cn(
@@ -295,11 +295,13 @@ export const Layout = ({ children }) => {
                     "border-b border-border/30 dark:border-white/[0.04]",
                     "bg-background/60 backdrop-blur-md"
                 )}>
-                    <div className="flex items-center justify-between gap-3">
-                        <h2 className="font-black text-[15px] tracking-[-0.025em] text-foreground truncate">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h2 className="font-black text-[15px] tracking-[-0.025em] text-foreground">
                             {t(ROUTE_LABELS[location.pathname]?.title || 'dashboard.title')}
                         </h2>
-                        <MonthSelector />
+                        <div className="flex items-center justify-start sm:justify-end">
+                            <MonthSelector />
+                        </div>
                     </div>
                 </div>
 

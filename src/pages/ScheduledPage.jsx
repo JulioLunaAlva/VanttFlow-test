@@ -95,7 +95,7 @@ export const ScheduledPage = () => {
 
     return (
         <>
-        <div className="space-y-6 pb-32 md:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto">
+        <div className="space-y-6 pb-32 xl:pb-8 pt-4 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-5xl mx-auto">
             {/* Header Compacto */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">
                 <div className="flex items-center gap-4">

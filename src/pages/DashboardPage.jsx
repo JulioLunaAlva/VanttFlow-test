@@ -238,7 +238,7 @@ export const DashboardPage = () => {
     };
 
     return (
-        <div className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-32 md:pb-8">
+        <div className="space-y-4 pt-4 animate-in fade-in slide-in-from-bottom-4 pb-32 xl:pb-8">
 
             {/* Hero patrimonio */}
             <DashboardHero isNewUser={isNewUser} />

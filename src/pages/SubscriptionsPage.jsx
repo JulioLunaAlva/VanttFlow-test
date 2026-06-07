@@ -153,7 +153,7 @@ export const SubscriptionsPage = () => {
     const existingNames = new Set(scheduledPayments.map(p => p.name.toLowerCase()));
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto px-0 pt-4 pb-32 md:pb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-6 max-w-7xl mx-auto px-0 pt-4 pb-32 xl:pb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
             {/* ── Page Header ─────────────────────────────────────────── */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between card-elevated px-5 py-4 md:px-8 md:py-6 rounded-3xl mb-6">

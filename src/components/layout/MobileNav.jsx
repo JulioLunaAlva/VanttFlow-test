@@ -345,7 +345,7 @@ export const MobileNav = () => {
         <>
             {/* ── Tab Bar Principal — Revolut Style ── */}
             <nav className={cn(
-                "md:hidden fixed bottom-0 left-0 right-0 z-50",
+                "xl:hidden fixed bottom-0 left-0 right-0 z-50",
                 "bg-background/95 dark:bg-[hsl(240_12%_7%/0.97)] backdrop-blur-2xl",
                 "border-t border-border/40 dark:border-white/[0.05]",
                 "shadow-[0_-1px_0_rgba(0,0,0,0.04)]",
