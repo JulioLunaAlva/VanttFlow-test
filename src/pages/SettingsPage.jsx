@@ -14,7 +14,7 @@ import { useFinance } from '@/context/FinanceContext';
 import { useNotifications } from '@/context/NotificationContext';
 import { useSync } from '@/context/SyncContext';
 import { db } from '@/lib/db';
-import { Download, Upload, Bell, Zap, Cloud, CloudOff, CloudUpload } from 'lucide-react';
+import { Download, Upload, Bell, Zap, Cloud, CloudOff, CloudUpload, CloudDownload, RefreshCw } from 'lucide-react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Languages } from 'lucide-react';
@@ -24,7 +24,7 @@ export const SettingsPage = () => {
     const { isEnabled, setIsEnabled, selectedPet, setSelectedPet } = useGamification();
     const { state: _financeState, dispatch: _dispatch } = useFinance(); // Removed unused as per lint, but keeping destructuring logic structure if needed later
     const { permission, requestPermission, sendNotification, triggerMotivation } = useNotifications();
-    const { firebaseUser, isSyncing, lastSyncTime, loginWithGoogle, logoutGoogle, backupToCloud } = useSync();
+    const { firebaseUser, isSyncing, lastSyncTime, loginWithGoogle, logoutGoogle, backupToCloud, restoreFromCloud } = useSync();
     const { t, i18n } = useTranslation();
     const fileInputRef = useRef(null);
 
@@ -394,25 +394,47 @@ export const SettingsPage = () => {
                 </div>
                 <div className="p-5">
                     {firebaseUser ? (
-                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div>
-                                <p className="text-sm font-medium">Última sincronización:</p>
-                                <p className="text-xs text-muted-foreground">
-                                    {lastSyncTime ? new Date(lastSyncTime).toLocaleString() : 'Nunca'}
-                                </p>
+                        <div className="flex flex-col gap-4">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-sm font-medium">Última sincronización:</p>
+                                    <p className="text-xs text-muted-foreground">
+                                        {lastSyncTime ? new Date(lastSyncTime).toLocaleString() : 'Nunca'}
+                                    </p>
+                                </div>
+                                <Button 
+                                    onClick={() => backupToCloud()} 
+                                    disabled={isSyncing}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20"
+                                >
+                                    {isSyncing ? (
+                                        <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin mr-2" />
+                                    ) : (
+                                        <CloudUpload size={16} className="mr-2" />
+                                    )}
+                                    {isSyncing ? 'Subiendo...' : 'Sincronizar Ahora'}
+                                </Button>
                             </div>
-                            <Button 
-                                onClick={() => backupToCloud()} 
-                                disabled={isSyncing}
-                                className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20"
-                            >
-                                {isSyncing ? (
-                                    <div className="w-4 h-4 border-2 border-white/50 border-t-white rounded-full animate-spin mr-2" />
-                                ) : (
-                                    <CloudUpload size={16} className="mr-2" />
-                                )}
-                                {isSyncing ? 'Subiendo...' : 'Sincronizar Ahora'}
-                            </Button>
+                            <div className="h-px bg-blue-500/10" />
+                            <div className="flex items-center justify-between p-3 rounded-xl bg-blue-500/5 border border-blue-500/10">
+                                <div>
+                                    <p className="text-sm font-medium text-blue-500">Restaurar desde la nube</p>
+                                    <p className="text-xs text-blue-500/60">Recupera tu backup más reciente de Firebase</p>
+                                </div>
+                                <Button 
+                                    onClick={() => {
+                                        if (confirm('¿Restaurar datos desde la nube? Esto reemplazará los datos locales actuales.')) {
+                                            restoreFromCloud();
+                                        }
+                                    }}
+                                    disabled={isSyncing}
+                                    variant="outline"
+                                    className="border-blue-500/30 text-blue-500 hover:bg-blue-500/10 gap-2"
+                                >
+                                    <CloudDownload size={16} />
+                                    Restaurar
+                                </Button>
+                            </div>
                         </div>
                     ) : (
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
