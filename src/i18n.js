@@ -286,7 +286,10 @@ const resources = {
                 attach_receipt: "Adjuntar comprobante/foto",
                 installments_label: "Diferir en parcialidades",
                 num_payments: "Núm. de pagos",
-                fortnightly: "Quincenal"
+                fortnightly: "Quincenal",
+                amount: "Monto",
+                date: "Fecha",
+                no_movements: "No hay movimientos registrados"
             },
             summary: {
                 total_balance: "Balance Total",
@@ -401,7 +404,14 @@ const resources = {
                 title: "Reportes Avanzados",
                 comparative_title: "Comparativa Semestral (Ingresos vs Gastos)",
                 income_label: "Ingresos",
-                expense_label: "Gastos"
+                expense_label: "Gastos",
+                semiannual_comparison: "Comparativa Semestral",
+                expenses_by_category: "Gastos por Categoría",
+                financial_health_metrics: "Métricas de Salud Financiera",
+                recommended_target: "Objetivo Recomendado",
+                average_income: "Ingreso Promedio",
+                average_expense: "Gasto Promedio",
+                savings_rate: "Tasa de Ahorro"
             },
             onboarding: {
                 step1_title: "¡Bienvenido a VanttFlow!",
@@ -508,7 +518,10 @@ const resources = {
                 payment_day: "Día de Pago",
                 installments: "Parcialidades",
                 fortnightly: "Quincenal",
-                monthly: "Mensual"
+                monthly: "Mensual",
+                investment: "Inversión",
+                credit: "Crédito",
+                debit: "Débito"
             },
             notes: {
                 title: "Cuaderno",
@@ -643,6 +656,12 @@ const resources = {
                     back: "Back",
                     save: "Save",
                     cancel: "Cancel",
+                    delete: "Delete",
+                    great_job: "Great job!",
+                    more: "More",
+                    others: "Others",
+                    continue: "Continue",
+                    start: "Start",
                     export_csv: "Export CSV",
                     main_menu: "Main",
                     tools: "Tools",
@@ -654,12 +673,20 @@ const resources = {
                         more: "More",
                         menu: "Menu",
                         calendar: "Calendar"
+                    },
+                    quick_actions: {
+                        title: "Quick Actions",
+                        new_transaction: "New Transaction",
+                        new_account: "New Account",
+                        new_goal: "New Goal",
+                        new_category: "New Category"
                     }
                 },
                 dashboard: {
                     title: "Dashboard",
                     subtitle: "Personal Finance Management",
                     balance: "Net Balance",
+                    accounts_breakdown: "Accounts Breakdown",
                     balance_chart: {
                         title: "Net Balance",
                         subtitle: "Period balance",
@@ -715,6 +742,28 @@ const resources = {
                     create_first_goal: "Create first goal",
                     view_all_goals: "View all",
                     ai_advice: "VanttAI Advisor",
+                    accounts_breakdown: "Accounts Breakdown",
+                    more_goals_count: "more goals",
+                    no_accounts: "No Accounts",
+                    saved_amount: "Saved",
+                    advice: {
+                        ask_advice: "How am I doing?",
+                        how_am_i: "Health status",
+                        check_budget: "View Budgets",
+                        view_analytics: "View Charts",
+                        danger_forecast_title: "FLOW ALERT",
+                        danger_forecast_desc: "Your projected expenses exceed your income this month. Be careful!",
+                        budget_limit_title: "LIMIT NEAR",
+                        budget_limit_desc: "You've used {{percentage}}% of your {{category}} budget.",
+                        low_savings_title: "SAVING CAPACITY",
+                        low_savings_desc: "Your expenses consume almost all your income. Try to reduce variables.",
+                        great_score_title: "EXCELLENT SCORE!",
+                        great_score_desc: "Your financial discipline is impeccable. Keep it up!",
+                        trend_increase_title: "SPENDING TREND",
+                        trend_increase_desc: "Your {{category}} spending rose {{percentage}}% this month.",
+                        default_title: "ALL IN ORDER",
+                        default_desc: "Keep logging your expenses to receive personalized tips."
+                    },
                     goal_target: "Target",
                     more_goals: "+ {{count}} more goals being tracked",
                     active_efficiency: "ACTIVE EFFICIENCY",
@@ -777,8 +826,15 @@ const resources = {
                         maiden: { name: "Magic Maiden", happy: "Savings magic is with us.", neutral: "I feel a disturbance in the flow.", sad: "Oh no! The spell is broken." }
                     },
                     market_pulses: "Market Pulses",
-                    smart_market: "Smart Market",
+                    smart_market: "VanttAI Market Insight",
                     market_tip: "The currency is strong today. It's a good time to settle debts in foreign currency.",
+                    market_tips: {
+                        usd_stable: "The peso is strong today. Good time to settle dollar-denominated debts.",
+                        usd_high: "The dollar is rising. Avoid unnecessary expenses in foreign currencies.",
+                        crypto_up: "Crypto in the green. Consider taking profits if you hit your targets.",
+                        crypto_down: "High crypto volatility. Stay calm and stick to your long-term plan.",
+                        low_volatility: "Stable market. Great time to review your recurring investments."
+                    },
                     dollar: "Dólar",
                     bitcoin: "Bitcoin",
                     ethereum: "Ethereum",
@@ -1053,7 +1109,11 @@ const resources = {
                     payment_day: "Payment Day",
                     installments: "Installments",
                     fortnightly: "Biweekly",
-                    monthly: "Monthly"
+                    monthly: "Monthly",
+                    investment: "Investment",
+                    credit: "Credit",
+                    debit: "Debit",
+                    total_assets: "Assets"
                 },
                 notes: {
                     title: "Notebook",
@@ -1089,6 +1149,7 @@ const resources = {
                 },
                 budget: {
                     title: "Budgets",
+                    subtitle: "Plan and control your monthly expenses",
                     total_budget: "Total Budget",
                     monthly_planning: "Monthly Planning",
                     accumulated_consumption: "Accumulated Spending",
@@ -1181,6 +1242,18 @@ const resources = {
                     back: "Voltar",
                     save: "Salvar",
                     cancel: "Cancelar",
+                    delete: "Excluir",
+                    great_job: "Bom trabalho!",
+                    more: "Mais",
+                    others: "Outros",
+                    continue: "Continuar",
+                    start: "Começar",
+                    accounts: "Contas",
+                    calendar: "Calendário",
+                    today: "Hoje",
+                    assets: "Ativos",
+                    liabilities: "Passivos",
+                    calendar_view: "Visualização de Calendário",
                     export_csv: "Exportar CSV",
                     main_menu: "Principal",
                     tools: "Ferramentas",
@@ -1190,13 +1263,28 @@ const resources = {
                         movs: "Movs",
                         cards: "Contas",
                         more: "Mais",
-                        menu: "Menu"
+                        menu: "Menu",
+                        calendar: "Calendário"
+                    },
+                    quick_actions: {
+                        title: "Ações Rápidas",
+                        new_transaction: "Nova Transação",
+                        new_account: "Nova Conta",
+                        new_goal: "Nova Meta",
+                        new_category: "Nova Categoria"
                     }
                 },
                 dashboard: {
                     title: "Painel de Controle",
                     subtitle: "Gestão de Finanças Pessoais",
                     balance: "Balanço Geral",
+                    balance_chart: {
+                        title: "Balanço Geral",
+                        subtitle: "Saldo do período",
+                        difference: "Diferença",
+                        no_data: "Sem dados de saldo",
+                        no_data_desc: "Registre suas primeiras transações para ver sua comparação aqui"
+                    },
                     forecast: "Previsão Fim do Mês",
                     vanttscore: "VanttScore (Saúde)",
                     oracle: "O Oráculo",
@@ -1244,6 +1332,29 @@ const resources = {
                     no_goals_desc: "Você ainda não definiu metas. Comece a poupar para o que você mais deseja.",
                     create_first_goal: "Criar primeira meta",
                     view_all_goals: "Ver todas",
+                    ai_advice: "VanttAI Advisor",
+                    accounts_breakdown: "Resumo de Contas",
+                    more_goals_count: "metas a mais",
+                    no_accounts: "Sem Contas",
+                    saved_amount: "Economizado",
+                    advice: {
+                        ask_advice: "Como estou?",
+                        how_am_i: "Status de saúde",
+                        check_budget: "Ver Orçamentos",
+                        view_analytics: "Ver Gráficos",
+                        danger_forecast_title: "ALERTA DE FLUXO",
+                        danger_forecast_desc: "Suas despesas projetadas excedem sua renda este mês. Cuidado!",
+                        budget_limit_title: "LIMITE PRÓXIMO",
+                        budget_limit_desc: "Você usou {{percentage}}% do seu orçamento em {{category}}.",
+                        low_savings_title: "CAPACIDADE DE POUPANÇA",
+                        low_savings_desc: "Suas despesas consomem quase toda sua renda. Tente reduzir variáveis.",
+                        great_score_title: "EXCELENTE SCORE!",
+                        great_score_desc: "Sua disciplina financeira é impecável. Continue assim!",
+                        trend_increase_title: "TENDÊNCIA DE GASTO",
+                        trend_increase_desc: "Seu gasto em {{category}} subiu {{percentage}}% este mês.",
+                        default_title: "TUDO EM ORDEM",
+                        default_desc: "Continue registrando suas despesas para receber dicas personalizadas."
+                    },
                     goal_target: "Objetivo",
                     more_goals: "+ {{count}} mais metas em acompanhamento",
                     active_efficiency: "EFICIÊNCIA ATIVA",
@@ -1306,8 +1417,15 @@ const resources = {
                         maiden: { name: "Dama Mágica", happy: "A magia da poupança está conosco.", neutral: "Sinto uma perturbação no fluxo.", sad: "Ah não! O feitiço quebrou." }
                     },
                     market_pulses: "Pulsos do Mercado",
-                    smart_market: "Mercado Inteligente",
+                    smart_market: "VanttAI Market Insight",
                     market_tip: "A moeda está forte hoje. É um bom momento para quitar dívidas em dólar.",
+                    market_tips: {
+                        usd_stable: "O peso está forte hoje. Bom momento para quitar dívidas em dólar.",
+                        usd_high: "O dólar está subindo. Evite gastos desnecessários em moedas estrangeiras.",
+                        crypto_up: "Criptos no verde. Considere realizar lucros se atingir suas metas.",
+                        crypto_down: "Alta volatilidade em criptomoedas. Mantenha a calma e seu plano de longo prazo.",
+                        low_volatility: "Mercado estável. Ótimo momento para revisar seus investimentos recorrentes."
+                    },
                     dollar: "Dólar",
                     bitcoin: "Bitcoin",
                     ethereum: "Ethereum",
@@ -1348,7 +1466,8 @@ const resources = {
                         at_risk: "Risco de cheque especial",
                         real_available: "Saldo real disponível",
                         pending_payments: "Pagamentos pendentes",
-                        expected_income: "Receitas esperadas:"
+                        expected_income: "Receitas esperadas:",
+                        buffer_safety: "Margem de segurança"
                     }
                 },
                 transactions: {
@@ -1363,7 +1482,11 @@ const resources = {
                     attach_receipt: "Anexar comprovante/foto",
                     installments_label: "Parcelar em prestações",
                     num_payments: "Nº de pagamentos",
-                    fortnightly: "Quinzenal"
+                    fortnightly: "Quinzenal",
+                    amount: "Valor",
+                    date: "Data",
+                    no_movements: "Sem transações registradas",
+                    manage_desc: "Controle suas receitas e despesas de forma detalhada."
                 },
                 summary: {
                     total_balance: "Saldo Total",
@@ -1552,7 +1675,33 @@ const resources = {
                     no_credit_cards: "Não há cartões de crédito",
                     no_credit_cards_desc: "Registre seus plásticos para controlar limites e fechamentos.",
                     no_debit_accounts: "Sem contas de débito",
-                    no_debit_accounts_desc: "Adicione seu dinheiro inicial ou contas de salário."
+                    no_debit_accounts_desc: "Adicione seu dinheiro inicial ou contas de salário.",
+                    total_assets: "Ativos",
+                    total_debts: "Passivos",
+                    proportion: "{{percent}}% do total",
+                    account_name: "Nome da Conta",
+                    account_type: "Tipo de Conta",
+                    add_new: "Adicionar Conta",
+                    available_balance: "Saldo Disponível",
+                    cash_option: "Dinheiro",
+                    confirm_delete: "Tem certeza que deseja excluir esta conta?",
+                    credit_option: "Cartão de Crédito",
+                    current_balance: "Saldo Atual",
+                    debit_option: "Conta de Débito",
+                    delete_desc: "Esta ação não pode ser desfeita.",
+                    distinctive_color: "Cor Distintiva",
+                    edit_desc: "Modifique os detalhes da sua conta",
+                    initial_debt: "Dívida Inicial",
+                    investment_option: "Investimento",
+                    investment: "Investimento",
+                    credit: "Crédito",
+                    debit: "Débito",
+                    manage: "Gerenciar Contas",
+                    manage_subtitle: "Gerencie suas contas, cartões e dinheiro",
+                    payment_day: "Dia de Pagamento",
+                    installments: "Parcelas",
+                    fortnightly: "Quinzenal",
+                    monthly: "Mensal"
                 },
                 categories: {
                     title: "Categorias",
@@ -1579,6 +1728,7 @@ const resources = {
                 },
                 budget: {
                     title: "Orçamentos",
+                    subtitle: "Planeje e controle seus gastos mensais",
                     total_budget: "Orçamento Total",
                     monthly_planning: "Planejamento Mensal",
                     accumulated_consumption: "Consumo Acumulado",
@@ -1647,6 +1797,19 @@ const resources = {
                     date_label: "Data: {{date}}",
                     category_placeholder: "Categoria",
                     account_placeholder: "Conta de Débito/Crédito"
+                },
+                reports: {
+                    title: "Relatórios Avançados",
+                    comparative_title: "Comparativo Semestral (Receitas vs Despesas)",
+                    income_label: "Receitas",
+                    expense_label: "Despesas",
+                    semiannual_comparison: "Comparativo Semestral",
+                    expenses_by_category: "Despesas por Categoria",
+                    financial_health_metrics: "Métricas de Saúde Financeira",
+                    recommended_target: "Objetivo Recomendado",
+                    average_income: "Receita Média",
+                    average_expense: "Gasto Médio",
+                    savings_rate: "Taxa de Poupança"
                 }
             }
         },
@@ -1671,6 +1834,18 @@ const resources = {
                     back: "Retour",
                     save: "Enregistrer",
                     cancel: "Annuler",
+                    delete: "Supprimer",
+                    great_job: "Bon travail !",
+                    more: "Plus",
+                    others: "Autres",
+                    continue: "Continuer",
+                    start: "Commencer",
+                    accounts: "Comptes",
+                    calendar: "Calendrier",
+                    today: "Aujourd'hui",
+                    assets: "Actifs",
+                    liabilities: "Passifs",
+                    calendar_view: "Vue Calendrier",
                     export_csv: "Exporter CSV",
                     main_menu: "Principal",
                     tools: "Outils",
@@ -1680,13 +1855,28 @@ const resources = {
                         movs: "Trans",
                         cards: "Comptes",
                         more: "Plus",
-                        menu: "Menu"
+                        menu: "Menu",
+                        calendar: "Calendrier"
+                    },
+                    quick_actions: {
+                        title: "Actions Rapides",
+                        new_transaction: "Nouvelle Transaction",
+                        new_account: "Nouveau Compte",
+                        new_goal: "Nouvel Objectif",
+                        new_category: "Nouvelle Catégorie"
                     }
                 },
                 dashboard: {
                     title: "Tableau de bord",
                     subtitle: "Gestion des Finances Personnelles",
                     balance: "Bilan global",
+                    balance_chart: {
+                        title: "Bilan global",
+                        subtitle: "Solde de la période",
+                        difference: "Différence",
+                        no_data: "Pas de données de solde",
+                        no_data_desc: "Enregistrez vos premières transactions pour voir votre comparaison ici"
+                    },
                     forecast: "Prévisions fin de mois",
                     vanttscore: "VanttScore (Santé)",
                     oracle: "L'Oracle",
@@ -1734,6 +1924,29 @@ const resources = {
                     no_goals_desc: "Vous n'avez pas encore défini d'objectifs. Commencez à épargner pour ce que vous voulez le plus.",
                     create_first_goal: "Créer un premier objectif",
                     view_all_goals: "Voir tout",
+                    ai_advice: "VanttAI Advisor",
+                    accounts_breakdown: "Résumé des Comptes",
+                    more_goals_count: "objectifs de plus",
+                    no_accounts: "Aucun Compte",
+                    saved_amount: "Économisé",
+                    advice: {
+                        ask_advice: "Comment je vais ?",
+                        how_am_i: "État de santé",
+                        check_budget: "Voir les Budgets",
+                        view_analytics: "Voir les Graphiques",
+                        danger_forecast_title: "ALERTE DE FLUX",
+                        danger_forecast_desc: "Vos dépenses prévues dépassent vos revenus ce mois. Attention !",
+                        budget_limit_title: "LIMITE PROCHE",
+                        budget_limit_desc: "Vous avez utilisé {{percentage}}% de votre budget {{category}}.",
+                        low_savings_title: "CAPACITÉ D'ÉPARGNE",
+                        low_savings_desc: "Vos dépenses consomment presque tous vos revenus. Essayez de réduire les variables.",
+                        great_score_title: "EXCELLENT SCORE !",
+                        great_score_desc: "Votre discipline financière est impeccable. Continuez ainsi !",
+                        trend_increase_title: "TENDANCE DE DÉPENSES",
+                        trend_increase_desc: "Vos dépenses {{category}} ont augmenté de {{percentage}}% ce mois.",
+                        default_title: "TOUT EN ORDRE",
+                        default_desc: "Continuez à enregistrer vos dépenses pour recevoir des conseils personnalisés."
+                    },
                     goal_target: "Objectif",
                     more_goals: "+ {{count}} autres objectifs suivis",
                     active_efficiency: "EFFICIENCE ACTIVE",
@@ -1796,8 +2009,15 @@ const resources = {
                         maiden: { name: "Dame Magique", happy: "La magie de l'épargne est là.", neutral: "Je sens une perturbation dans le flux.", sad: "Oh non ! Le sort est rompu." }
                     },
                     market_pulses: "Pulsions du marché",
-                    smart_market: "Marché intelligent",
+                    smart_market: "VanttAI Market Insight",
                     market_tip: "La monnaie est forte aujourd'hui. C'est le bon moment pour régler vos dettes en devises.",
+                    market_tips: {
+                        usd_stable: "Le peso est fort aujourd'hui. Bon moment pour régler des dettes en dollars.",
+                        usd_high: "Le dollar monte. Évitez les dépenses inutiles en devises étrangères.",
+                        crypto_up: "Cryptos au vert. Envisagez de prendre des bénéfices si vous atteignez vos objectifs.",
+                        crypto_down: "Haute volatilité des cryptos. Restez calme et tenez votre plan à long terme.",
+                        low_volatility: "Marché stable. Bon moment pour revoir vos investissements récurrents."
+                    },
                     dollar: "Dollar",
                     bitcoin: "Bitcoin",
                     ethereum: "Ethereum",
@@ -1838,7 +2058,8 @@ const resources = {
                         at_risk: "Risque de découvert",
                         real_available: "Solde réel disponible",
                         pending_payments: "Paiements en attente",
-                        expected_income: "Revenus attendus :"
+                        expected_income: "Revenus attendus :",
+                        buffer_safety: "Marge de sécurité"
                     }
                 },
                 transactions: {
@@ -1853,7 +2074,11 @@ const resources = {
                     attach_receipt: "Joindre un reçu/photo",
                     installments_label: "Fractionner en versements",
                     num_payments: "Nbre de paiements",
-                    fortnightly: "Bimensuel"
+                    fortnightly: "Bimensuel",
+                    amount: "Montant",
+                    date: "Date",
+                    no_movements: "Aucune transaction enregistrée",
+                    manage_desc: "Contrôlez vos revenus et dépenses en détail."
                 },
                 summary: {
                     total_balance: "Solde Total",
@@ -1966,7 +2191,14 @@ const resources = {
                     title: "Rapports Avancés",
                     comparative_title: "Comparaison Semestrielle (Revenus vs Dépenses)",
                     income_label: "Revenus",
-                    expense_label: "Dépenses"
+                    expense_label: "Dépenses",
+                    semiannual_comparison: "Comparaison Semestrielle",
+                    expenses_by_category: "Dépenses par Catégorie",
+                    financial_health_metrics: "Métriques de Santé Financière",
+                    recommended_target: "Objectif Recommandé",
+                    average_income: "Revenu Moyen",
+                    average_expense: "Dépense Moyenne",
+                    savings_rate: "Taux d'Épargne"
                 },
                 onboarding: {
                     step1_title: "Bienvenue sur VanttFlow !",
@@ -2047,7 +2279,33 @@ const resources = {
                     no_credit_cards: "Pas de cartes de crédit",
                     no_credit_cards_desc: "Enregistrez vos plastiques pour contrôler les limites et les clôtures.",
                     no_debit_accounts: "Aucun compte de débit",
-                    no_debit_accounts_desc: "Ajoutez vos espèces initiales ou vos comptes de salaire."
+                    no_debit_accounts_desc: "Ajoutez vos espèces initiales ou vos comptes de salaire.",
+                    total_assets: "Actifs",
+                    total_debts: "Passifs",
+                    proportion: "{{percent}}% du total",
+                    account_name: "Nom du Compte",
+                    account_type: "Type de Compte",
+                    add_new: "Ajouter un Compte",
+                    available_balance: "Solde Disponible",
+                    cash_option: "Espèces",
+                    confirm_delete: "Êtes-vous sûr de vouloir supprimer ce compte ?",
+                    credit_option: "Carte de Crédit",
+                    current_balance: "Solde Actuel",
+                    debit_option: "Compte de Débit",
+                    delete_desc: "Cette action est irréversible.",
+                    distinctive_color: "Couleur Distinctive",
+                    edit_desc: "Modifiez les détails de votre compte",
+                    initial_debt: "Dette Initiale",
+                    investment_option: "Investissement",
+                    investment: "Investissement",
+                    credit: "Crédit",
+                    debit: "Débit",
+                    manage: "Gérer les Comptes",
+                    manage_subtitle: "Gérez vos comptes, cartes et espèces",
+                    payment_day: "Jour de Paiement",
+                    installments: "Versements",
+                    fortnightly: "Bimensuel",
+                    monthly: "Mensuel"
                 },
                 categories: {
                     title: "Catégories",
@@ -2074,6 +2332,7 @@ const resources = {
                 },
                 budget: {
                     title: "Budgets",
+                    subtitle: "Planifiez et contrôlez vos dépenses mensuelles",
                     total_budget: "Budget Total",
                     monthly_planning: "Planification Mensuelle",
                     accumulated_consumption: "Consommation Accumulée",

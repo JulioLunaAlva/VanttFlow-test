@@ -151,8 +151,10 @@ export const ReportsPage = () => {
                     <CardContent className="space-y-8">
                         {/* Simple calculations based on historical data average */}
                         {(() => {
-                            const totalIncome = historicalData.reduce((acc, curr) => acc + curr.Ingresos, 0);
-                            const totalExpense = historicalData.reduce((acc, curr) => acc + curr.Gastos, 0);
+                            const incomeKey = t('reports.income_label');
+                            const expenseKey = t('reports.expense_label');
+                            const totalIncome = historicalData.reduce((acc, curr) => acc + (curr[incomeKey] || 0), 0);
+                            const totalExpense = historicalData.reduce((acc, curr) => acc + (curr[expenseKey] || 0), 0);
                             const savingsRate = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
 
                             return (
