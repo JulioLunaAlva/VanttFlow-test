@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { NavLink, useLocation, Link } from 'react-router-dom';
 import {
     LayoutDashboard, Receipt, Plus, BarChart3, MoreHorizontal,
     Zap, Target, CalendarClock, Upload, Tags, PieChart,
     Settings, CandlestickChart, BookOpen, Landmark,
-    Sparkles, CreditCard
+    CreditCard, X, ChevronRight
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { Button } from '@/components/ui/button';
@@ -20,48 +20,167 @@ import { useTranslation } from 'react-i18next';
 import { useFinance } from '@/context/FinanceContext';
 
 // ─────────────────────────────────────────────
-// Tab item individual
+// Tab individual — estilo Revolut con pill background animado
 // ─────────────────────────────────────────────
-const NavTab = ({ to, icon: Icon, label, exact = false }) => (
-    <NavLink
-        to={to}
-        end={exact}
-        className={({ isActive }) => cn(
-            "relative flex flex-col items-center justify-center flex-1 h-full gap-1 transition-all duration-200 outline-none",
-            isActive ? "text-primary" : "text-muted-foreground/60"
-        )}
+const NavTab = ({ to, icon: Icon, label, exact = false, isActive: externalActive }) => {
+    return (
+        <NavLink
+            to={to}
+            end={exact}
+            className="relative flex flex-col items-center justify-center flex-1 h-full gap-1 outline-none select-none touch-none"
+            aria-label={label}
+        >
+            {({ isActive }) => {
+                const active = externalActive !== undefined ? externalActive : isActive;
+                return (
+                    <>
+                        {/* Pill background deslizante */}
+                        {active && (
+                            <motion.div
+                                layoutId="tab-pill-bg"
+                                className="absolute inset-x-1.5 inset-y-1.5 rounded-2xl bg-primary/10 dark:bg-primary/15"
+                                transition={{ type: 'spring', stiffness: 500, damping: 42, mass: 0.8 }}
+                            />
+                        )}
+
+                        {/* Dot indicator superior */}
+                        <AnimatePresence>
+                            {active && (
+                                <motion.div
+                                    initial={{ scale: 0, opacity: 0 }}
+                                    animate={{ scale: 1, opacity: 1 }}
+                                    exit={{ scale: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                                />
+                            )}
+                        </AnimatePresence>
+
+                        <Icon
+                            size={21}
+                            strokeWidth={active ? 2.3 : 1.7}
+                            className={cn(
+                                "relative z-10 transition-all duration-200",
+                                active ? "text-primary" : "text-muted-foreground/55"
+                            )}
+                        />
+                        <span className={cn(
+                            "relative z-10 text-[10px] font-bold leading-none tracking-[-0.01em]",
+                            "transition-all duration-200",
+                            active ? "text-primary" : "text-muted-foreground/50"
+                        )}>
+                            {label}
+                        </span>
+                    </>
+                );
+            }}
+        </NavLink>
+    );
+};
+
+// ─────────────────────────────────────────────
+// Botón Más — integrado en la nav bar
+// ─────────────────────────────────────────────
+const MoreTab = ({ isActive, onPress, label }) => (
+    <button
+        onClick={onPress}
+        className="relative flex flex-col items-center justify-center flex-1 h-full gap-1 outline-none select-none"
+        aria-label={label}
     >
-        {({ isActive }) => (
-            <>
-                {/* Pill indicador activo */}
-                {isActive && (
-                    <motion.div
-                        layoutId="nav-indicator"
-                        className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-primary"
-                        transition={{ type: 'spring', stiffness: 500, damping: 40 }}
-                    />
-                )}
-                <Icon
-                    size={24}
-                    strokeWidth={isActive ? 2.5 : 1.8}
-                    className="transition-transform duration-200"
-                    style={{ transform: isActive ? 'scale(1.1)' : 'scale(1)' }}
-                />
-                <span className={cn(
-                    "text-[11px] font-bold leading-none",
-                    isActive ? "text-primary" : "text-muted-foreground/50"
-                )}>
-                    {label}
-                </span>
-            </>
+        {isActive && (
+            <motion.div
+                layoutId="tab-pill-bg"
+                className="absolute inset-x-1.5 inset-y-1.5 rounded-2xl bg-primary/10 dark:bg-primary/15"
+                transition={{ type: 'spring', stiffness: 500, damping: 42, mass: 0.8 }}
+            />
         )}
-    </NavLink>
+
+        <AnimatePresence>
+            {isActive && (
+                <motion.div
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+                />
+            )}
+        </AnimatePresence>
+
+        <AnimatePresence mode="wait">
+            {isActive ? (
+                <motion.div
+                    key="close"
+                    initial={{ rotate: -45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 45, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                    className="relative z-10"
+                >
+                    <MoreHorizontal
+                        size={21}
+                        strokeWidth={2.3}
+                        className="text-primary"
+                    />
+                </motion.div>
+            ) : (
+                <motion.div
+                    key="open"
+                    initial={{ rotate: 45, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -45, opacity: 0 }}
+                    transition={{ duration: 0.18 }}
+                    className="relative z-10"
+                >
+                    <MoreHorizontal
+                        size={21}
+                        strokeWidth={1.7}
+                        className="text-muted-foreground/55"
+                    />
+                </motion.div>
+            )}
+        </AnimatePresence>
+
+        <span className={cn(
+            "relative z-10 text-[10px] font-bold leading-none tracking-[-0.01em] transition-all duration-200",
+            isActive ? "text-primary" : "text-muted-foreground/50"
+        )}>
+            {label}
+        </span>
+    </button>
 );
 
 // ─────────────────────────────────────────────
-// Ítem del sheet de "Más"
+// Botón + Agregar — central pill premium
 // ─────────────────────────────────────────────
-const MoreItem = ({ to, icon: Icon, label, iconBg, iconColor, onClose }) => {
+const AddTab = ({ onPress }) => (
+    <button
+        onClick={onPress}
+        className="relative flex flex-col items-center justify-center flex-1 h-full gap-1 outline-none select-none"
+        aria-label="Agregar"
+    >
+        <motion.div
+            className={cn(
+                "relative z-10 w-11 h-11 rounded-2xl",
+                "bg-primary text-primary-foreground",
+                "flex items-center justify-center",
+                "shadow-[0_4px_20px_hsl(var(--primary)/0.5)]",
+            )}
+            whileTap={{ scale: 0.88 }}
+            transition={{ type: 'spring', stiffness: 600, damping: 30 }}
+        >
+            <Plus size={22} strokeWidth={2.5} />
+        </motion.div>
+        <span className="relative z-10 text-[10px] font-bold leading-none tracking-[-0.01em] text-muted-foreground/50">
+            Agregar
+        </span>
+    </button>
+);
+
+// ─────────────────────────────────────────────
+// Item del sheet "Más" — grid style
+// ─────────────────────────────────────────────
+const MoreGridItem = ({ to, icon: Icon, label, color, bgColor, onClose }) => {
     const location = useLocation();
     const isActive = location.pathname === to;
 
@@ -70,48 +189,57 @@ const MoreItem = ({ to, icon: Icon, label, iconBg, iconColor, onClose }) => {
             to={to}
             onClick={onClose}
             className={cn(
-                "flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-150 active:scale-[0.97]",
+                "flex flex-col items-center gap-2 p-4 rounded-2xl",
+                "transition-all duration-150 active:scale-[0.94]",
                 isActive
                     ? "bg-primary/10 border border-primary/20"
-                    : "hover:bg-foreground/5"
+                    : "bg-foreground/[0.035] dark:bg-white/[0.04] border border-transparent hover:border-border/40"
             )}
         >
             <div className={cn(
-                "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0",
-                iconBg
+                "w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0",
+                bgColor
             )}>
-                <Icon size={18} className={iconColor} />
+                <Icon size={22} className={color} strokeWidth={1.8} />
             </div>
             <span className={cn(
-                "text-base font-semibold",
-                isActive ? "text-primary" : "text-foreground"
+                "text-[12px] font-bold text-center leading-tight",
+                isActive ? "text-primary" : "text-foreground/80"
             )}>
                 {label}
             </span>
             {isActive && (
-                <div className="ml-auto w-2 h-2 rounded-full bg-primary" />
+                <div className="w-1.5 h-1.5 rounded-full bg-primary" />
             )}
         </Link>
     );
 };
 
 // ─────────────────────────────────────────────
-// Botón de acción rápida en el sheet del +
+// Item de acción rápida
 // ─────────────────────────────────────────────
-const QuickAction = ({ icon: Icon, label, iconBg, iconColor, onClick }) => (
-    <button
+const QuickActionItem = ({ icon: Icon, label, color, bgColor, onClick }) => (
+    <motion.button
         onClick={onClick}
-        className="flex flex-col items-center gap-3 p-5 rounded-2xl bg-foreground/4 hover:bg-foreground/8 active:scale-95 transition-all duration-150"
+        whileTap={{ scale: 0.93 }}
+        className={cn(
+            "flex flex-col items-center gap-3 p-5 rounded-2xl",
+            "bg-foreground/[0.04] dark:bg-white/[0.04]",
+            "border border-border/30 dark:border-white/[0.06]",
+            "active:bg-foreground/8 transition-all duration-150"
+        )}
     >
-        <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center", iconBg)}>
-            <Icon size={26} className={iconColor} />
+        <div className={cn("w-14 h-14 rounded-2xl flex items-center justify-center", bgColor)}>
+            <Icon size={26} className={color} strokeWidth={1.8} />
         </div>
-        <span className="text-sm font-bold text-center leading-tight">{label}</span>
-    </button>
+        <span className="text-[13px] font-bold text-center leading-tight text-foreground">
+            {label}
+        </span>
+    </motion.button>
 );
 
 // ─────────────────────────────────────────────
-// Componente principal
+// Componente principal MobileNav
 // ─────────────────────────────────────────────
 export const MobileNav = () => {
     const { t } = useTranslation();
@@ -122,24 +250,30 @@ export const MobileNav = () => {
     const [activeAction, setActiveAction] = useState('transaction');
 
     // Long press para el botón +
-    const [longPressTimer, setLongPressTimer] = useState(null);
+    const longPressTimer = useRef(null);
 
-    const handleTouchStart = () => {
-        const timer = setTimeout(() => {
-            triggerHaptic('heavy');
-            setIsQuickMenuOpen(true);
-            setLongPressTimer(null);
-        }, 500);
-        setLongPressTimer(timer);
+    const handleAddPress = () => {
+        triggerHaptic('light');
+        setActiveAction('transaction');
+        setIsAddOpen(true);
     };
 
-    const handleTouchEnd = () => {
-        if (longPressTimer) {
-            clearTimeout(longPressTimer);
-            setLongPressTimer(null);
-            setActiveAction('transaction');
-            setIsAddOpen(true);
-            triggerHaptic('light');
+    const handleLongPress = () => {
+        triggerHaptic('heavy');
+        setIsQuickMenuOpen(true);
+    };
+
+    const handleAddTouchStart = () => {
+        longPressTimer.current = setTimeout(handleLongPress, 480);
+    };
+
+    const handleAddTouchEnd = () => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+            if (!isQuickMenuOpen) {
+                handleAddPress();
+            }
         }
     };
 
@@ -175,32 +309,32 @@ export const MobileNav = () => {
         }
     };
 
-    // Items del sheet "Más" — agrupados
+    // Secciones del menú "Más"
     const moreSections = [
         {
             label: 'Finanzas',
             items: [
-                { to: '/budget',        icon: PieChart,         label: t('common.budget'),        iconBg: 'bg-violet-500/10', iconColor: 'text-violet-500' },
-                { to: '/goals',         icon: Target,           label: t('common.goals'),         iconBg: 'bg-pink-500/10',   iconColor: 'text-pink-500' },
-                { to: '/subscriptions', icon: Zap,              label: t('common.subscriptions'), iconBg: 'bg-amber-500/10',  iconColor: 'text-amber-500' },
-                { to: '/accounts',      icon: CreditCard,       label: t('common.accounts'),      iconBg: 'bg-blue-500/10',   iconColor: 'text-blue-500' },
+                { to: '/budget',        icon: PieChart,         label: t('common.budget'),        bgColor: 'bg-violet-500/12', color: 'text-violet-500' },
+                { to: '/goals',         icon: Target,           label: t('common.goals'),         bgColor: 'bg-pink-500/12',   color: 'text-pink-500' },
+                { to: '/subscriptions', icon: Zap,              label: t('common.subscriptions'), bgColor: 'bg-amber-500/12',  color: 'text-amber-500' },
+                { to: '/accounts',      icon: CreditCard,       label: t('common.accounts') || 'Cuentas', bgColor: 'bg-blue-500/12', color: 'text-blue-500' },
             ]
         },
         {
             label: 'Herramientas',
             items: [
-                { to: '/market',    icon: CandlestickChart, label: t('common.market'),    iconBg: 'bg-emerald-500/10', iconColor: 'text-emerald-500' },
-                { to: '/calendar',  icon: CalendarClock,    label: 'Calendario',          iconBg: 'bg-sky-500/10',     iconColor: 'text-sky-500' },
-                { to: '/notes',     icon: BookOpen,         label: t('common.notes') || 'Notas', iconBg: 'bg-indigo-500/10', iconColor: 'text-indigo-500' },
-                { to: '/scheduled', icon: CalendarClock,    label: t('common.scheduled'), iconBg: 'bg-teal-500/10',    iconColor: 'text-teal-500' },
+                { to: '/market',    icon: CandlestickChart, label: t('common.market'),    bgColor: 'bg-emerald-500/12', color: 'text-emerald-500' },
+                { to: '/calendar',  icon: CalendarClock,    label: t('common.calendar') || 'Calendario', bgColor: 'bg-sky-500/12', color: 'text-sky-500' },
+                { to: '/notes',     icon: BookOpen,         label: t('common.notes') || 'Notas', bgColor: 'bg-indigo-500/12', color: 'text-indigo-500' },
+                { to: '/scheduled', icon: CalendarClock,    label: t('common.scheduled'), bgColor: 'bg-teal-500/12',    color: 'text-teal-500' },
             ]
         },
         {
             label: 'Sistema',
             items: [
-                { to: '/categories', icon: Tags,     label: t('common.categories'), iconBg: 'bg-orange-500/10', iconColor: 'text-orange-500' },
-                { to: '/import',     icon: Upload,   label: t('common.import'),     iconBg: 'bg-gray-500/10',   iconColor: 'text-muted-foreground' },
-                { to: '/settings',   icon: Settings, label: t('common.settings'),   iconBg: 'bg-gray-500/10',   iconColor: 'text-muted-foreground' },
+                { to: '/categories', icon: Tags,     label: t('common.categories'), bgColor: 'bg-orange-500/12', color: 'text-orange-500' },
+                { to: '/import',     icon: Upload,   label: t('common.import'),     bgColor: 'bg-slate-500/12',  color: 'text-muted-foreground' },
+                { to: '/settings',   icon: Settings, label: t('common.settings'),   bgColor: 'bg-slate-500/12',  color: 'text-muted-foreground' },
             ]
         }
     ];
@@ -209,90 +343,105 @@ export const MobileNav = () => {
 
     return (
         <>
-            {/* ── Tab Bar Principal ── */}
+            {/* ── Tab Bar Principal — Revolut Style ── */}
             <nav className={cn(
                 "md:hidden fixed bottom-0 left-0 right-0 z-50",
-                "bg-background/95 backdrop-blur-xl",
-                "border-t border-border/50",
-                "shadow-[0_-1px_0_rgba(0,0,0,0.06),0_-8px_32px_rgba(0,0,0,0.08)]",
-                "dark:shadow-[0_-1px_0_rgba(255,255,255,0.05),0_-8px_32px_rgba(0,0,0,0.4)]",
-                "flex items-stretch justify-around",
-                "h-[4.5rem] pb-safe"
+                "bg-background/95 dark:bg-[hsl(240_12%_7%/0.97)] backdrop-blur-2xl",
+                "border-t border-border/40 dark:border-white/[0.05]",
+                "shadow-[0_-1px_0_rgba(0,0,0,0.04)]",
+                "dark:shadow-[0_-1px_0_rgba(255,255,255,0.04)]",
+                "flex items-stretch",
+                "h-[4.25rem] pb-safe"
             )}>
-
                 {/* Tab 1: Dashboard */}
-                <NavTab to="/" icon={LayoutDashboard} label={t('common.nav.home')} exact />
+                <NavTab
+                    to="/"
+                    icon={LayoutDashboard}
+                    label={t('common.nav.home')}
+                    exact
+                />
 
                 {/* Tab 2: Transacciones */}
-                <NavTab to="/transactions" icon={Receipt} label={t('common.nav.movs')} />
+                <NavTab
+                    to="/transactions"
+                    icon={Receipt}
+                    label={t('common.nav.movs')}
+                />
 
-                {/* Tab 3: Botón + central */}
-                <div className="relative flex flex-col items-center justify-center flex-shrink-0 px-4">
-                    <button
-                        className={cn(
-                            "relative -top-3.5",
-                            "h-14 w-14 rounded-full",
-                            "bg-primary text-primary-foreground",
-                            "flex items-center justify-center",
-                            "shadow-[0_4px_24px_rgba(59,130,246,0.5)]",
-                            "active:scale-90 transition-transform duration-150",
-                            "border-4 border-background",
-                            "select-none touch-none"
-                        )}
-                        onTouchStart={handleTouchStart}
-                        onTouchEnd={handleTouchEnd}
-                        onMouseDown={handleTouchStart}
-                        onMouseUp={handleTouchEnd}
-                        onMouseLeave={() => longPressTimer && (clearTimeout(longPressTimer), setLongPressTimer(null))}
-                        aria-label="Agregar"
-                    >
-                        <Plus size={28} strokeWidth={2.5} />
-                    </button>
+                {/* Tab 3: Botón Agregar */}
+                <div
+                    className="relative flex flex-col items-center justify-center flex-1 h-full gap-1 select-none"
+                    onTouchStart={handleAddTouchStart}
+                    onTouchEnd={handleAddTouchEnd}
+                    onMouseDown={handleAddTouchStart}
+                    onMouseUp={handleAddTouchEnd}
+                    onMouseLeave={() => {
+                        if (longPressTimer.current) {
+                            clearTimeout(longPressTimer.current);
+                            longPressTimer.current = null;
+                        }
+                    }}
+                >
+                    <AddTab onPress={handleAddPress} />
                 </div>
 
-                {/* Tab 4: Analítica */}
-                <NavTab to="/analytics" icon={BarChart3} label={t('common.analytics')} />
+                {/* Tab 4: Analytics */}
+                <NavTab
+                    to="/analytics"
+                    icon={BarChart3}
+                    label={t('common.analytics')}
+                />
 
-                {/* Tab 5: Más (sheet) */}
+                {/* Tab 5: Más */}
                 <Sheet open={isMoreOpen} onOpenChange={setIsMoreOpen}>
                     <SheetTrigger asChild>
-                        <button className={cn(
-                            "relative flex flex-col items-center justify-center flex-1 h-full gap-1 outline-none transition-all duration-200",
-                            isMoreOpen ? "text-primary" : "text-muted-foreground/60"
-                        )}>
-                            {isMoreOpen && (
-                                <motion.div
-                                    layoutId="nav-indicator"
-                                    className="absolute top-0 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-primary"
-                                />
-                            )}
-                            <MoreHorizontal size={24} strokeWidth={isMoreOpen ? 2.5 : 1.8} />
-                            <span className={cn("text-[11px] font-bold leading-none", isMoreOpen ? "text-primary" : "text-muted-foreground/50")}>
-                                {t('common.nav.more')}
-                            </span>
-                        </button>
+                        <div className="flex-1 h-full">
+                            <MoreTab
+                                isActive={isMoreOpen}
+                                onPress={() => setIsMoreOpen(true)}
+                                label={t('common.nav.more')}
+                            />
+                        </div>
                     </SheetTrigger>
 
-                    {/* Sheet "Más" */}
-                    <SheetContent side="bottom" className="rounded-t-[1.75rem] border-border/40 bg-background p-0 max-h-[82dvh] overflow-y-auto">
+                    {/* Sheet "Más" — Premium Redesign */}
+                    <SheetContent
+                        side="bottom"
+                        className={cn(
+                            "rounded-t-[1.75rem] p-0",
+                            "max-h-[88dvh] overflow-y-auto",
+                            "bg-background dark:bg-[hsl(240_12%_7%)]",
+                            "border-t border-border/30 dark:border-white/[0.07]"
+                        )}
+                    >
                         {/* Handle */}
-                        <div className="flex justify-center pt-3 pb-0">
-                            <div className="w-10 h-1 rounded-full bg-foreground/15" />
+                        <div className="flex justify-center pt-3 pb-1">
+                            <div className="w-9 h-1 rounded-full bg-foreground/12 dark:bg-white/12" />
                         </div>
 
-                        <SheetHeader className="px-5 pt-4 pb-3 border-b border-border/40">
-                            <SheetTitle className="text-xl font-black tracking-tight">
-                                {t('common.nav.menu') || 'Menú'}
-                            </SheetTitle>
+                        <SheetHeader className="px-5 pt-3 pb-4">
+                            <div className="flex items-center justify-between">
+                                <SheetTitle className="text-[20px] font-black tracking-[-0.03em]">
+                                    {t('common.nav.menu') || 'Menú'}
+                                </SheetTitle>
+                                <button
+                                    onClick={() => setIsMoreOpen(false)}
+                                    className="w-8 h-8 rounded-full bg-foreground/6 dark:bg-white/8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                                >
+                                    <X size={15} strokeWidth={2.5} />
+                                </button>
+                            </div>
                         </SheetHeader>
 
-                        <div className="px-4 py-3 pb-8 space-y-5">
+                        <div className="px-4 pb-8 space-y-5">
                             {moreSections.map((section) => (
                                 <div key={section.label}>
-                                    <p className="text-caption text-muted-foreground px-1 mb-2">{section.label}</p>
-                                    <div className="space-y-0.5 rounded-2xl overflow-hidden bg-foreground/[0.03] border border-border/40">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground/45 px-1 mb-2.5">
+                                        {section.label}
+                                    </p>
+                                    <div className="grid grid-cols-4 gap-2">
                                         {section.items.map((item) => (
-                                            <MoreItem
+                                            <MoreGridItem
                                                 key={item.to}
                                                 {...item}
                                                 onClose={() => setIsMoreOpen(false)}
@@ -308,49 +457,65 @@ export const MobileNav = () => {
 
             {/* ── Quick Action Menu (long press en +) ── */}
             <Sheet open={isQuickMenuOpen} onOpenChange={setIsQuickMenuOpen}>
-                <SheetContent side="bottom" className="rounded-t-[1.75rem] border-border/40 bg-background p-0">
-                    <div className="flex justify-center pt-3">
-                        <div className="w-10 h-1 rounded-full bg-foreground/15" />
+                <SheetContent
+                    side="bottom"
+                    className={cn(
+                        "rounded-t-[1.75rem] p-0",
+                        "bg-background dark:bg-[hsl(240_12%_7%)]",
+                        "border-t border-border/30 dark:border-white/[0.07]"
+                    )}
+                >
+                    <div className="flex justify-center pt-3 pb-1">
+                        <div className="w-9 h-1 rounded-full bg-foreground/12" />
                     </div>
-                    <SheetHeader className="px-5 pt-4 pb-3">
-                        <SheetTitle className="text-xl font-black tracking-tight">
-                            {t('common.quick_actions.title')}
-                        </SheetTitle>
+                    <SheetHeader className="px-5 pt-3 pb-4">
+                        <div className="flex items-center justify-between">
+                            <SheetTitle className="text-[20px] font-black tracking-[-0.03em]">
+                                {t('common.quick_actions.title')}
+                            </SheetTitle>
+                            <button
+                                onClick={() => setIsQuickMenuOpen(false)}
+                                className="w-8 h-8 rounded-full bg-foreground/6 flex items-center justify-center text-muted-foreground"
+                            >
+                                <X size={15} strokeWidth={2.5} />
+                            </button>
+                        </div>
                     </SheetHeader>
+
                     <div className="grid grid-cols-2 gap-3 px-5 pb-8">
-                        <QuickAction
+                        <QuickActionItem
                             icon={Receipt}
                             label={t('common.quick_actions.new_transaction')}
-                            iconBg="bg-blue-500/10"
-                            iconColor="text-blue-500"
+                            bgColor="bg-blue-500/10"
+                            color="text-blue-500"
                             onClick={() => handleActionClick('transaction')}
                         />
-                        <QuickAction
+                        <QuickActionItem
                             icon={Landmark}
                             label={t('common.quick_actions.new_account')}
-                            iconBg="bg-emerald-500/10"
-                            iconColor="text-emerald-500"
+                            bgColor="bg-emerald-500/10"
+                            color="text-emerald-500"
                             onClick={() => handleActionClick('account')}
                         />
-                        <QuickAction
+                        <QuickActionItem
                             icon={Target}
                             label={t('common.quick_actions.new_goal')}
-                            iconBg="bg-violet-500/10"
-                            iconColor="text-violet-500"
+                            bgColor="bg-violet-500/10"
+                            color="text-violet-500"
                             onClick={() => handleActionClick('goal')}
                         />
-                        <QuickAction
+                        <QuickActionItem
                             icon={Tags}
                             label={t('common.quick_actions.new_category')}
-                            iconBg="bg-amber-500/10"
-                            iconColor="text-amber-500"
+                            bgColor="bg-amber-500/10"
+                            color="text-amber-500"
                             onClick={() => handleActionClick('category')}
                         />
                     </div>
                 </SheetContent>
             </Sheet>
 
-            {/* ── Form Dialog (nueva transacción / cuenta / meta) ── */}
+            {/* ── Form Dialog ── */}
             <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                 <DialogContent>
                     <DialogHeader>

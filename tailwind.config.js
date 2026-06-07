@@ -93,9 +93,11 @@ export default {
       animation: {
         'spin-slow':    'spin 8s linear infinite',
         'bounce-slow':  'bounce 3s ease-in-out infinite',
-        'float':        'float 6s ease-in-out infinite',
-        'fade-scale':   'fade-scale 0.25s cubic-bezier(0.16,1,0.3,1)',
-        'slide-up':     'slide-up 0.35s cubic-bezier(0.16,1,0.3,1)',
+        'float':        'float 7s ease-in-out infinite',
+        'fade-scale':   'fade-scale 0.22s cubic-bezier(0.16,1,0.3,1)',
+        'slide-up':     'slide-up 0.3s cubic-bezier(0.16,1,0.3,1)',
+        'pulse-dot':    'pulse-dot 2s ease-in-out infinite',
+        'shake':        'shake 0.28s cubic-bezier(.36,.07,.19,.97) both',
       },
       transitionTimingFunction: {
         'spring': 'cubic-bezier(0.16, 1, 0.3, 1)',

@@ -28,23 +28,35 @@ const DashboardHero = ({ isNewUser }) => {
     const { t } = useTranslation();
     const { user } = useIdentity();
     const { summary } = useFinance();
-    const { balance } = summary;
+    const { balance, income: totalIncome, expense: totalExpenses } = summary;
     const hour = new Date().getHours();
-    const greeting = hour < 12 ? '☀️ Buenos días' : hour < 19 ? '👋 Buenas tardes' : '🌙 Buenas noches';
+    const greeting = hour < 12 ? 'Buenos días' : hour < 19 ? 'Buenas tardes' : 'Buenas noches';
 
     const fmt = (v) => new Intl.NumberFormat('es-MX', {
         style: 'currency', currency: user?.currency || 'MXN', maximumFractionDigits: 0
     }).format(v);
 
+    const fmtShort = (v) => new Intl.NumberFormat('es-MX', {
+        style: 'currency', currency: user?.currency || 'MXN',
+        maximumFractionDigits: 0,
+        notation: Math.abs(v) >= 10000 ? 'compact' : 'standard'
+    }).format(v);
+
     if (isNewUser) {
         return (
-            <div className="relative overflow-hidden rounded-3xl p-6 bg-primary/5 border border-primary/15 mb-2">
-                <div className="absolute -top-12 -right-12 w-40 h-40 bg-primary/10 rounded-full blur-[60px]" />
-                <div className="relative z-10 flex items-center gap-5">
-                    <span className="text-5xl">🚀</span>
+            <div className="hero-balance-card p-6 mb-2">
+                <div className="absolute -top-12 -right-12 w-44 h-44 bg-primary/12 rounded-full blur-[70px] pointer-events-none" />
+                <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                        <span className="text-3xl">🚀</span>
+                    </div>
                     <div>
-                        <h3 className="text-title font-black text-foreground">{t('dashboard.welcome_title')}</h3>
-                        <p className="text-body text-muted-foreground mt-1">{t('dashboard.welcome_desc')}</p>
+                        <h3 className="text-[16px] font-black tracking-[-0.025em] text-foreground">
+                            {t('dashboard.welcome_title')}
+                        </h3>
+                        <p className="text-[13px] text-muted-foreground mt-0.5 font-medium leading-snug">
+                            {t('dashboard.welcome_desc')}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -52,13 +64,41 @@ const DashboardHero = ({ isNewUser }) => {
     }
 
     return (
-        <div className="relative overflow-hidden rounded-3xl p-5 bg-primary/5 border border-primary/15 mb-2">
-            <div className="absolute -top-16 -right-16 w-48 h-48 bg-primary/15 rounded-full blur-[80px]" />
+        <div className="hero-balance-card p-5 md:p-7 mb-2">
+            {/* Background glow */}
+            <div className="absolute -top-20 -right-20 w-56 h-56 bg-primary/10 rounded-full blur-[90px] pointer-events-none" />
+            <div className="absolute -bottom-16 -left-12 w-40 h-40 bg-primary/5 rounded-full blur-[60px] pointer-events-none" />
+
             <div className="relative z-10">
-                <p className="text-caption text-muted-foreground/50 mb-3">{greeting}, {user?.name?.split(' ')[0] || 'bienvenido'}</p>
-                <p className="text-caption text-primary/50 mb-1">PATRIMONIO NETO</p>
-                <div className="text-amount-xl font-black text-foreground">
+                {/* Greeting */}
+                <p className="text-[12px] font-semibold text-muted-foreground/60 mb-3 tracking-[0.01em]">
+                    {greeting}, <span className="text-foreground/70 font-bold">{user?.name?.split(' ')[0] || 'bienvenido'}</span>
+                </p>
+
+                {/* Label */}
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/50 mb-1.5">
+                    Patrimonio neto
+                </p>
+
+                {/* Balance — número dominante estilo Revolut */}
+                <div className="text-amount-xl font-black text-foreground mb-4 md:mb-5">
                     <PrivacyBlur intensity="lg">{fmt(balance)}</PrivacyBlur>
+                </div>
+
+                {/* Income / Expense mini stats */}
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/15">
+                        <div className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot flex-shrink-0" />
+                        <span className="text-[11px] font-bold text-success tracking-[-0.01em]">
+                            <PrivacyBlur intensity="md">+{fmtShort(totalIncome)}</PrivacyBlur>
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-destructive/10 border border-destructive/15">
+                        <div className="w-1.5 h-1.5 rounded-full bg-destructive flex-shrink-0" />
+                        <span className="text-[11px] font-bold text-destructive tracking-[-0.01em]">
+                            <PrivacyBlur intensity="md">-{fmtShort(Math.abs(totalExpenses))}</PrivacyBlur>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

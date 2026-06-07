@@ -10,34 +10,37 @@ const StatCard = ({ label, sublabel, value, icon: Icon, iconBg, iconColor, value
     <div
         id={id}
         className={cn(
-            "relative overflow-hidden rounded-3xl p-5",
-            "bg-card border border-border/60",
-            "shadow-[0_2px_16px_rgba(0,0,0,0.06)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.25)]",
+            "relative overflow-hidden rounded-2xl p-4 md:p-5",
+            "bg-card border border-border/40 dark:border-white/[0.06]",
+            "shadow-[0_2px_12px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.3)]",
             "transition-all duration-200 active:scale-[0.98]"
         )}
     >
-        {/* Accent glow sutil en esquina */}
+        {/* Accent glow */}
         <div
-            className="absolute -top-8 -right-8 w-24 h-24 rounded-full blur-[40px] opacity-40"
+            className="absolute -top-10 -right-10 w-28 h-28 rounded-full blur-[50px] opacity-35"
             style={{ background: accentColor }}
         />
 
-        <div className="relative z-10 flex items-start justify-between mb-4">
-            {/* Info */}
+        <div className="relative z-10 flex items-start justify-between mb-3">
             <div>
-                <p className="text-caption text-muted-foreground/60">{label}</p>
+                <p className="text-[10px] font-black uppercase tracking-[0.15em] text-muted-foreground/55">
+                    {label}
+                </p>
                 {sublabel && (
-                    <p className="text-[10px] text-muted-foreground/30 font-medium mt-0.5">{sublabel}</p>
+                    <p className="text-[10px] text-muted-foreground/35 font-medium mt-0.5">
+                        {sublabel}
+                    </p>
                 )}
             </div>
-            {/* Ícono */}
-            <div className={cn("w-9 h-9 rounded-xl flex items-center justify-center", iconBg)}>
-                <Icon size={16} className={iconColor} />
+            {/* Icon */}
+            <div className={cn("w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0", iconBg)}>
+                <Icon size={15} className={iconColor} strokeWidth={2} />
             </div>
         </div>
 
-        {/* Monto */}
-        <div className={cn("text-amount-lg font-black tracking-tighter", valueColor)}>
+        {/* Amount */}
+        <div className={cn("text-[1.5rem] font-black tracking-[-0.035em] leading-none", valueColor)}>
             <PrivacyBlur intensity="lg">{value}</PrivacyBlur>
         </div>
     </div>
@@ -56,7 +59,7 @@ export const SummaryCards = React.memo(() => {
     }).format(amount);
 
     return (
-        <div className="grid gap-3 grid-cols-1 sm:grid-cols-3">
+        <div className="grid gap-2.5 grid-cols-1 sm:grid-cols-3">
             <StatCard
                 id="tour-balance"
                 label={t('summary.total_balance')}
@@ -66,7 +69,7 @@ export const SummaryCards = React.memo(() => {
                 iconBg="bg-primary/10"
                 iconColor="text-primary"
                 valueColor="text-foreground"
-                accentColor="hsl(217 91% 65% / 0.3)"
+                accentColor="hsl(217 100% 65% / 0.3)"
             />
             <StatCard
                 label={t('summary.income')}
@@ -76,7 +79,7 @@ export const SummaryCards = React.memo(() => {
                 iconBg="bg-emerald-500/10"
                 iconColor="text-emerald-500"
                 valueColor="text-emerald-500"
-                accentColor="rgb(16 185 129 / 0.2)"
+                accentColor="rgb(16 185 129 / 0.25)"
             />
             <StatCard
                 label={t('summary.expense')}
@@ -86,7 +89,7 @@ export const SummaryCards = React.memo(() => {
                 iconBg="bg-rose-500/10"
                 iconColor="text-rose-500"
                 valueColor="text-rose-500"
-                accentColor="rgb(244 63 94 / 0.2)"
+                accentColor="rgb(244 63 94 / 0.25)"
             />
         </div>
     );
