@@ -48,6 +48,10 @@ export const AccountsPage = () => {
             currentDebt: 0, availableCredit: 0, nextPaymentDate: null, utilization: 0
         };
 
+        // Clamp availableCredit to min 0 for display
+        const displayAvailable = Math.max(0, availableCredit);
+        const hasLimit = account.limit > 0;
+
         return (
             <div key={account.id} className="card-interactive overflow-hidden group relative flex flex-col h-auto min-h-[320px]">
                 <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-all duration-300">
@@ -82,42 +86,60 @@ export const AccountsPage = () => {
                         <p className="text-3xl font-black tracking-tight font-mono text-white leading-none">
                             <PrivacyBlur intensity="lg">{formatCurrency(currentDebt)}</PrivacyBlur>
                         </p>
+                        {/* Alerta si el límite no está configurado */}
+                        {!hasLimit && (
+                            <p className="text-[10px] text-yellow-300/80 font-semibold mt-1.5 flex items-center gap-1">
+                                <AlertCircle size={10} />
+                                Configura el límite de crédito
+                            </p>
+                        )}
                     </div>
 
                     <div className="absolute bottom-[-20%] left-[-10%] w-40 h-40 bg-white/5 rounded-full blur-[40px] pointer-events-none" />
                 </div>
 
                 <div className="flex-1 p-6 flex flex-col gap-6 bg-card border-t border-border/50">
-                    <div className="space-y-3">
-                        <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.3em]">
-                            <span className="text-muted-foreground/60">{t('accounts.limit_used') || 'Uso de Crédito'}</span>
-                            <span className={cn(
-                                "p-1 px-3 rounded-full text-[9px]",
-                                utilization > 80 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
-                            )}>{utilization.toFixed(1)}%</span>
+                    {hasLimit ? (
+                        <div className="space-y-3">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.3em]">
+                                <span className="text-muted-foreground/60">{t('accounts.limit_used') || 'Uso de Crédito'}</span>
+                                <span className={cn(
+                                    "p-1 px-3 rounded-full text-[9px]",
+                                    utilization > 80 ? 'bg-rose-500/10 text-rose-500 border border-rose-500/20' : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+                                )}>{utilization.toFixed(1)}%</span>
+                            </div>
+                            <div className="h-2.5 w-full bg-foreground/5 rounded-full overflow-hidden p-[1px] border border-border/30">
+                                <Progress
+                                    value={Math.min(utilization, 100)}
+                                    className="h-full rounded-full"
+                                    indicatorClassName={cn(
+                                        "transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                                        utilization > 80 ? 'bg-gradient-to-r from-rose-600 to-rose-400' : 'bg-gradient-to-r from-emerald-600 to-emerald-400'
+                                    )}
+                                />
+                            </div>
+                            <div className="flex justify-between text-[10px] font-black tracking-[0.1em] text-muted-foreground/40 pt-1">
+                                <span className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-glow" /> {t('accounts.limit_available', { amount: formatCurrency(displayAvailable) })}</span>
+                                <span>{t('accounts.limit_total', { amount: formatCurrency(account.limit) })}</span>
+                            </div>
                         </div>
-                        <div className="h-2.5 w-full bg-foreground/5 rounded-full overflow-hidden p-[1px] border border-border/30">
-                            <Progress 
-                                value={utilization} 
-                                className="h-full rounded-full" 
-                                indicatorClassName={cn(
-                                    "transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                                    utilization > 80 ? 'bg-gradient-to-r from-rose-600 to-rose-400' : 'bg-gradient-to-r from-emerald-600 to-emerald-400'
-                                )} 
-                            />
+                    ) : (
+                        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-yellow-500/8 border border-yellow-500/20">
+                            <AlertCircle size={14} className="text-yellow-500 flex-shrink-0" />
+                            <p className="text-[11px] font-semibold text-yellow-600 dark:text-yellow-400">
+                                Edita la tarjeta para configurar el límite y ver el uso de crédito.
+                            </p>
                         </div>
-                        <div className="flex justify-between text-[10px] font-black tracking-[0.1em] text-muted-foreground/40 pt-1">
-                            <span className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-glow" /> {t('accounts.limit_available') || 'Disponible'}: {formatCurrency(availableCredit)}</span>
-                            <span>Total: <span className="text-foreground/40">{formatCurrency(account.limit)}</span></span>
-                        </div>
-                    </div>
+                    )}
 
                     <div className="grid grid-cols-2 gap-4 mt-auto">
                         <div className="bg-muted/30 p-3.5 rounded-2xl border border-border/40">
                             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
                                 <Calendar size={12} className="text-primary" /> {t('accounts.cutoff_day') || 'Corte'}
                             </div>
-                            <p className="font-black text-sm text-foreground">{t('accounts.day') || 'Día'} {account.cutOffDay}</p>
+                            <p className="font-black text-sm text-foreground">
+                                {account.cutOffDay ? `${t('accounts.day') || 'Día'} ${account.cutOffDay}` : '—'}
+                            </p>
                         </div>
                         <div className="bg-muted/30 p-3.5 rounded-2xl border border-border/40">
                             <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground mb-1">
@@ -127,7 +149,7 @@ export const AccountsPage = () => {
                                 "font-black text-sm",
                                 utilization > 0 ? "text-rose-500" : "text-foreground"
                             )}>
-                                {nextPaymentDate ? format(nextPaymentDate, 'dd MMM', { locale: currentLocale }) : 'N/A'}
+                                {nextPaymentDate ? format(nextPaymentDate, 'dd MMM', { locale: currentLocale }) : '—'}
                             </p>
                         </div>
                     </div>

@@ -38,9 +38,15 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
     }, [initialData]);
     const handleSubmit = (e) => {
         e.preventDefault();
+        const parsedBalance = parseFloat(balance) || 0;
+        // Para tarjetas de crédito, la deuda inicial SIEMPRE debe ser negativa
+        // Si el usuario pone un número positivo, lo convertimos automáticamente
+        const initialBalance = type === 'credit'
+            ? (parsedBalance > 0 ? -parsedBalance : parsedBalance)
+            : parsedBalance;
         onSubmit({
             name,
-            initialBalance: parseFloat(balance) || 0,
+            initialBalance,
             type,
             limit: parseFloat(limit) || 0,
             cutOffDay: parseInt(cutOffDay) || 1,
@@ -95,15 +101,19 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                             </div>
                             <div className="space-y-2 group/field">
                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
-                                    {t('accounts.initial_debt') || 'Deuda Inicial (-)'}
+                                    {t('accounts.initial_debt') || 'Deuda Actual'}
                                 </label>
                                 <Input
                                     type="number"
                                     value={balance}
                                     onChange={e => setBalance(e.target.value)}
-                                    placeholder="-1500"
+                                    placeholder="1500"
+                                    min="0"
                                     className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                                 />
+                                <p className="text-[10px] text-muted-foreground/50 ml-1">
+                                    Ingresa el monto de deuda actual (número positivo)
+                                </p>
                             </div>
                         </div>
                         <div className="grid grid-cols-2 gap-6">
