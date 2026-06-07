@@ -301,6 +301,7 @@ const resources = {
             },
             settings: {
                 title: "Configuración",
+                title_desc: "Configuración y Personalización",
                 profile: "Perfil e Identidad",
                 profile_desc: "Gestiona tu información personal y de seguridad.",
                 appearance: "Preferencias Regionales",
@@ -905,6 +906,7 @@ const resources = {
                 },
                 settings: {
                     title: "Settings",
+                    title_desc: "Settings & Personalization",
                     profile: "Profile & Identity",
                     profile_desc: "Manage your personal and security information.",
                     appearance: "Regional Preferences",
@@ -1505,6 +1507,7 @@ const resources = {
                 },
                 settings: {
                     title: "Configurações",
+                    title_desc: "Configurações e Personalização",
                     profile: "Perfil e Identidade",
                     profile_desc: "Gerencie suas informações pessoais e de segurança.",
                     appearance: "Preferências Regionais",
@@ -2103,6 +2106,7 @@ const resources = {
                 },
                 settings: {
                     title: "Paramètres",
+                    title_desc: "Paramètres et Personnalisation",
                     profile: "Profil et Identité",
                     profile_desc: "Gérez vos informations personnelles et de sécurité.",
                     appearance: "Préférences Régionales",
@@ -2432,6 +2436,12 @@ i18n
     .init({
         resources,
         fallbackLng: 'es',
+        detection: {
+            // localStorage first so user's language choice persists across sessions
+            order: ['localStorage', 'navigator', 'htmlTag'],
+            lookupLocalStorage: 'i18nextLng',
+            caches: ['localStorage'],
+        },
         interpolation: {
             escapeValue: false
         }

@@ -168,9 +168,6 @@ export const TransactionForm = ({ initialData = null, onSuccess, submitLabel }) 
 
     return (
         <div className="flex flex-col w-full">
-            <div className="pb-4 mb-4 border-b border-border/20 flex items-center justify-between">
-                <h2 className="text-title font-black text-foreground">{initialData ? t('transactions.edit_title') : t('transactions.new_title')}</h2>
-            </div>
             <div className="relative">
                 <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Premium Segmented Control for Type */}

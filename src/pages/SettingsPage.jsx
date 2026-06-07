@@ -356,7 +356,11 @@ export const SettingsPage = () => {
                         <Label className="text-caption text-muted-foreground/60">{t('settings.language') || 'Idioma'}</Label>
                         <Select
                             value={i18n.language}
-                            onChange={e => i18n.changeLanguage(e.target.value)}
+                            onChange={e => {
+                                const lang = e.target.value;
+                                i18n.changeLanguage(lang);
+                                localStorage.setItem('i18nextLng', lang);
+                            }}
                             className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                         >
                             <option value="es">Español 🇪🇸</option>
