@@ -398,7 +398,8 @@ const resources = {
                 category_breakdown: "Desglose por Categoría",
                 no_data: "No hay datos para comparar este mes.",
                 vs: "vs",
-                others: "Otros"
+                others: "Otros",
+                monthly_spend: "Gasto Mensual"
             },
             reports: {
                 title: "Reportes Avanzados",
@@ -986,6 +987,11 @@ const resources = {
                     net_savings: "Net Savings (This Month)",
                     of_income_spent: "of your income has been spent",
                     no_income_data: "No income data for this month",
+                    cash_flow_title: "Historical Cash Flow",
+                    savings_summary: "Savings Summary",
+                    net_savings: "Net Savings (This Month)",
+                    of_income_spent: "of your income has been spent",
+                    no_income_data: "No income data for this month",
                     patrimony: "Patrimony",
                     empty_history: "No patrimony history",
                     empty_history_sub: "Make transactions to see your evolution.",
@@ -1000,7 +1006,8 @@ const resources = {
                     category_breakdown: "Category Breakdown",
                     no_data: "No data to compare this month.",
                     vs: "vs",
-                    others: "Others"
+                    others: "Others",
+                    monthly_spend: "Monthly Spend"
                 },
                 reports: {
                     title: "Advanced Reports",
@@ -1578,6 +1585,11 @@ const resources = {
                     cash_flow_title: "Fluxo de Caixa Histórico",
                     savings_summary: "Resumo de Poupança",
                     net_savings: "Poupança Líquida (Este Mês)",
+                    of_income_spent: "da sua renda foi gasta",
+                    no_income_data: "Sem dados de renda para este mês",
+                    cash_flow_title: "Fluxo de Caixa Histórico",
+                    savings_summary: "Resumo de Poupança",
+                    net_savings: "Poupança Líquida (Este Mês)",
                     of_income_spent: "de sua renda foi gasta",
                     no_income_data: "Sem dados de renda para este mês",
                     patrimony: "Patrimônio",
@@ -1594,7 +1606,8 @@ const resources = {
                     category_breakdown: "Resumo por Categoria",
                     no_data: "Não há dados para comparar este mês.",
                     vs: "vs",
-                    others: "Outros"
+                    others: "Outros",
+                    monthly_spend: "Gasto Mensal"
                 },
                 onboarding: {
                     step1_title: "Bem-vindo ao VanttFlow!",
@@ -2168,6 +2181,11 @@ const resources = {
                     comparing: "Comparaison {{current}} vs {{previous}}",
                     patrimony_evolution: "Évolution du Patrimoine",
                     cash_flow_title: "Flux de Trésorerie Historique",
+                    savings_summary: "Résumé d'Épargne",
+                    net_savings: "Épargne Nette (Ce Mois)",
+                    of_income_spent: "de vos revenus ont été dépensés",
+                    no_income_data: "Aucune donnée de revenus pour ce mois",
+                    cash_flow_title: "Flux de Trésorerie Historique",
                     savings_summary: "Résumé de l'Épargne",
                     net_savings: "Épargne Nette (Ce Mois)",
                     of_income_spent: "de vos revenus ont été dépensés",
@@ -2185,7 +2203,8 @@ const resources = {
                     category_breakdown: "Répartition par Catégorie",
                     no_data: "Aucune donnée à comparer ce mois-ci.",
                     vs: "vs",
-                    others: "Autres"
+                    others: "Autres",
+                    monthly_spend: "Dépense Mensuelle"
                 },
                 reports: {
                     title: "Rapports Avancés",

@@ -1,21 +1,24 @@
 
 import React from 'react';
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label"; // Assuming standard Shadcn Label or use html label
+import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { ColorPicker } from "@/components/ui/ColorPicker";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { Check, X } from "lucide-react";
+import { X, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
     const [name, setName] = React.useState(initialData?.name || '');
-    const [balance, setBalance] = React.useState(initialData?.initialBalance || ''); // For credit, this might be 0 start
+    const [balance, setBalance] = React.useState(initialData?.initialBalance || '');
     const [type, setType] = React.useState(initialData?.type || 'debit');
     const [limit, setLimit] = React.useState(initialData?.limit || '');
     const [cutOffDay, setCutOffDay] = React.useState(initialData?.cutOffDay || '');
     const [paymentDay, setPaymentDay] = React.useState(initialData?.paymentDay || '');
     const [color, setColor] = React.useState(initialData?.color || '#000000');
+    const { t } = useTranslation();
+
     React.useEffect(() => {
         if (initialData) {
             setName(initialData.name || '');
@@ -26,7 +29,6 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
             setPaymentDay(initialData.paymentDay || 1);
             setColor(initialData.color || '#000000');
         } else {
-            // Reset to defaults if needed or keep blank
             setName('');
             setBalance(0);
             setType('debit');
@@ -36,11 +38,11 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
             setColor('#000000');
         }
     }, [initialData]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const parsedBalance = parseFloat(balance) || 0;
         // Para tarjetas de crédito, la deuda inicial SIEMPRE debe ser negativa
-        // Si el usuario pone un número positivo, lo convertimos automáticamente
         const initialBalance = type === 'credit'
             ? (parsedBalance > 0 ? -parsedBalance : parsedBalance)
             : parsedBalance;
@@ -54,12 +56,14 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
             color
         });
     };
-    const { t } = useTranslation();
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="space-y-4">
-                <div className="space-y-2 group">
+        <form onSubmit={handleSubmit} className="flex flex-col">
+            {/* ── Scrollable fields ── */}
+            <div className="space-y-5 pb-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+                {/* Account Name */}
+                <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                         {t('accounts.account_name') || 'Nombre de la Cuenta'}
                     </label>
@@ -72,7 +76,8 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                     />
                 </div>
 
-                <div className="space-y-2 group">
+                {/* Account Type */}
+                <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                         {t('accounts.account_type') || 'Tipo de Cuenta'}
                     </label>
@@ -84,10 +89,11 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                     </Select>
                 </div>
 
+                {/* Credit-specific fields */}
                 {type === 'credit' ? (
-                    <div className="space-y-6 pt-4">
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="space-y-2 group/field">
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                                     {t('accounts.credit_limit') || 'Límite de Crédito'}
                                 </label>
@@ -99,7 +105,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                                 />
                             </div>
-                            <div className="space-y-2 group/field">
+                            <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                                     {t('accounts.initial_debt') || 'Deuda Actual'}
                                 </label>
@@ -112,12 +118,12 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                                 />
                                 <p className="text-[10px] text-muted-foreground/50 ml-1">
-                                    Ingresa el monto de deuda actual (número positivo)
+                                    {t('accounts.initial_debt_hint') || 'Monto de deuda actual (positivo)'}
                                 </p>
                             </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-6">
-                            <div className="space-y-2 group/field">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                                     {t('accounts.cutoff_day') || 'Día de Corte'}
                                 </label>
@@ -130,7 +136,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                                     className="h-12 bg-background border-border/50 rounded-xl px-4 font-bold"
                                 />
                             </div>
-                            <div className="space-y-2 group/field">
+                            <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                                     {t('accounts.payment_day') || 'Día de Pago'}
                                 </label>
@@ -146,7 +152,7 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                         </div>
                     </div>
                 ) : (
-                    <div className="space-y-2 group pt-4">
+                    <div className="space-y-2">
                         <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                             {t('accounts.current_balance') || 'Saldo Actual'}
                         </label>
@@ -160,7 +166,8 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                     </div>
                 )}
 
-                <div className="space-y-2 group pt-4">
+                {/* Color Picker */}
+                <div className="space-y-2">
                     <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground ml-1">
                         {t('accounts.distinctive_color') || 'Color Distintivo'}
                     </label>
@@ -170,19 +177,24 @@ export const AccountForm = ({ initialData, onSubmit, onCancel }) => {
                 </div>
             </div>
 
-            <div className="pt-6 flex justify-end gap-3 border-t border-border/50">
+            {/* ── Sticky Save/Cancel bar — ALWAYS VISIBLE ── */}
+            <div className="sticky bottom-0 pt-4 pb-4 bg-card border-t border-border/40 flex gap-3 mt-4">
                 {onCancel && (
-                    <Button 
-                        type="button" 
-                        variant="ghost" 
-                        onClick={onCancel} 
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={onCancel}
+                        className="flex-1 h-12 rounded-xl font-bold border border-border/50"
                     >
+                        <X size={16} className="mr-2" />
                         {t('common.cancel') || 'Cancelar'}
                     </Button>
                 )}
-                <Button 
-                    type="submit" 
+                <Button
+                    type="submit"
+                    className="flex-1 h-12 rounded-xl font-black bg-primary text-primary-foreground shadow-lg hover:opacity-90 active:scale-95 transition-all"
                 >
+                    <Save size={16} className="mr-2" />
                     {t('common.save') || 'Guardar'}
                 </Button>
             </div>

@@ -281,14 +281,14 @@ export const AccountsPage = () => {
             </div>
 
             <Dialog open={!!editingAccount} onOpenChange={(val) => !val && setEditingAccount(null)}>
-                <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-                    <div className="px-6 pt-6 pb-4 border-b border-border/30">
+                <DialogContent className="sm:max-w-md p-0 overflow-hidden flex flex-col max-h-[90dvh]">
+                    <div className="px-6 pt-6 pb-4 border-b border-border/30 flex-shrink-0">
                         <DialogHeader>
                             <DialogTitle className="text-xl font-black tracking-tighter text-foreground">{t('accounts.edit_account') || 'Editar Cuenta'}</DialogTitle>
                             <p className="text-xs text-muted-foreground/60">{t('accounts.edit_desc') || 'Ajusta los detalles de tu cuenta financiera'}</p>
                         </DialogHeader>
                     </div>
-                    <div className="p-6 pt-4">
+                    <div className="overflow-y-auto flex-1 px-6 pt-4 pb-0">
                         {editingAccount && (
                             <AccountForm
                                 initialData={editingAccount}
